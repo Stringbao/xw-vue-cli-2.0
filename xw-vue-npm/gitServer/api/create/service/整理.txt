@@ -1,0 +1,156 @@
+api.json
+[
+    {
+        "url": "/detail/api",
+        "compName": "_detail_api",
+        "servicesName": "getDetail",
+        "type": "get",
+        "hasParams": true
+    }
+]
+说明：
+    api可添加的地方 ： dataSource + 5 
+    参数说明 ： {
+        url : url地址
+        compName : api map的key,
+        servicesName : services和api的function name，
+        type : 请求方式 datasouce + detail + getList 全部是get \ save、update、remove 是post
+        hasParams : datasouce - false  5大接口 - true ,false或者空则不添加params
+    }
+
+
+store.json
+{
+    "state": {
+        "dataSource": [
+            "sex",
+        ],
+        "entity": [
+            "sex",
+        ]
+    },
+    "action": [
+        {
+            "actionName": "getSex",
+            "commit": "setSex",
+            "checkDataSource": "sex"
+        },
+    ],
+    "mutation": [
+        {
+            "mutationName": "setSex",
+            "stateName": "sex",
+            "isSelect": true
+        },
+    ]
+}
+
+说明 ：
+store.state.datasouce ----- datasouce可添加
+store.state.entity --------- form dialog
+store.action ------ datasouce + 5 
+store.mutation ------ datasouce + detail 
+action:{
+    "actionName": action的function name,
+    "commit": 掉用commit的 空即不掉用commit
+    "checkDataSource": 判断datasource中是否包含的，如果为空则不进行判断
+}
+mutation:{
+    "mutationName": mutationName的funtion name,
+    "stateName": 要设置的字段名字,
+    "isSelect": 是否是select下面的 ture/false
+}
+
+
+
+page.json
+[
+    {
+        "subName": 子模块名称,
+        "pagePath": 子模块路径,
+        "pageName": 文件名字,
+        "pageOption": {
+            "fileName": 文件名字,
+            "path": 子模块路径,
+            "type": 1 list 2 save,
+            "searchOpts": {
+                "search": {
+                    "btn": [
+                        {
+                            "btnName": 按钮名称,
+                            "btnType": 按钮类型,
+                            "btnHandle": 按钮click的名字
+                        }
+                    ],
+                    "cols":搜索列 [
+                        {
+                            "type": 类型,
+                            "key": 提交后台的字段,
+                            "label": label字段,
+                            "labelWidth": labelwidth字段,
+                            "url": 请求的url,
+                            "dataSource": datasouce的名字,
+                            "displayName": "name",
+                            "displayValue": "code"
+                        },
+                        
+                    ]
+                },
+                "tableOptions":table的配置
+                "tableTitle": table的标题
+            },
+            "dialog": {
+                "hasDialog": 是否含有dialog 1含有,
+                "form": {
+                    "cols": [
+                        同上
+                    ]
+                }
+            }
+        },
+        "pageType": 1列表页 2save,
+        "compName": 文件name兼表格ref,
+        "routerData": {
+            "routerName": router的key,
+            "routerPath": router的地址
+        }
+    },
+]
+
+global.json
+{
+	"router": [
+		{
+			"routerName": "router的模块名字",
+			"routerPath": "router的path",
+			"type": "1列表 2save"
+		}
+	],
+	"moduleList": [
+		"module的名字",
+	]
+}
+
+proxy.json
+    保存所有proxy
+   [{
+       key : proxy的key(第一个作为默认,生成的所有文件以这个key为基准),
+       url : proxy代理的地址
+   }]
+
+
+
+
+生成顺序步骤：
+1、选择一个项目
+2、配置proxy，生成proxyUrl.js 和 webpack。config。js，写入proxy的记录
+3、添加子模块、创建子模块文件夹
+4、配置页面以及保存
+5、页面配置完成，保存子模块，生成globejson，写如page、api、store的history
+6、接着下一个模块配置 循环345
+7、所有模块配置完成，保存整个模块，生成storeIndex和router的index页面，写入globe的history
+8、配置完成
+
+清空所有配置
+清空当前的pagejson、globaljson、apijson、storejson、proxyjson 但是不清空history
+

@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无分页table</title>
+</head>
+<body>
+	<div class="tableBox">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						<div>
+							<input type="checkbox" class="singleSelected">
+						</div>
+					</th>
+					<th>姓名</th>
+					<th>年龄</th>
+					<th>介绍</th>
+					<th>职务</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 有数据 -->
+				<tr>
+					<td>
+						<div>
+							<input type="checkbox" class="singleSelected">
+						</div>
+					</td>
+
+					<td><input type="text"/></td>
+					<td>
+						<select>
+							<option>20</option>
+							<option>30</option>
+							<option>40</option>
+							<option>50</option>
+						</select></td>
+					<td>没有介绍</td>
+					<td>开发</td>
+				</tr>
+				<!-- 没有数据 -->
+				<tr>
+					<td colspan="5"><#暂无数据#></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
+
+<style type="text/css">
+	*{
+		margin:0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+		list-style:none;
+		text-decoration: none;
+	}
+
+	.fl{
+		float: left;
+	}
+
+	.fr{
+		float: right;
+	}
+
+	.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+
+	.tableBox {
+		width: 100%;
+		overflow: scroll;
+	}
+
+	.table{
+		min-width: 100%;
+		width: auto;
+		border-collapse: collapse;
+		font-size: 14px;
+		overflow: hidden;
+		margin-bottom: 0px;
+	}
+
+	table thead{
+		height: 38px;
+		line-height: 38px;
+		font-size: 14px;
+		color: #fff;
+		background-color: #e3e3e3;
+	}
+
+	table tbody{
+		height: 38px;
+		line-height: 38px;
+		font-size: 12px;
+	}
+
+	thead tr th {
+		border: 1px solid rgba(0,0,0,0.09);
+		border-bottom: none;
+		font-weight: 600;
+		text-align: center;
+		color: rgba(0,0,0,0.85);
+		font-size: 14px;
+		min-width: 50px;
+	}
+
+	tbody tr td {
+		color: rgba(0,0,0,0.65);
+		border: 1px solid #ddd;
+		vertical-align: middle;
+		text-align: center;
+		word-break: keep-all;
+		white-space: nowrap;
+		padding: 0 10px;
+		/* max-width: 300px; */
+		overflow: hidden;
+	}
+
+	tbody tr td input,select{
+		width: 80%;
+		min-height: 30px;
+		display: inline-block;
+		border-radius: 3px;
+		border: 1px solid #ddd;
+		padding: 0 5px;
+		outline: none;
+		color: rgba(0,0,0,0.65);
+		font-size: 12px;
+		min-width: 100px;
+	}
+
+
+	tbody tr td .singleSelected{
+		width: auto;
+		min-width: auto;
+	}
+
+
+
+
+
+</style>

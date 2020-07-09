@@ -1,0 +1,160 @@
+<template>
+    <div class="form-item">
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
+        <div  class="form-item-div fa" :class="state.successIcon">
+            <span :class="{'readonlyIcon':readonlyFlag}" class="span" @click="changeCK(item)" v-for="(item,index) in data" :key="index">
+                <span class="fa" :class="item.ck?'fa-dot-circle-o':'fa-circle-o'"></span>
+                <span>{{item[displayName]}}</span>
+            </span>
+            <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
+            <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
+        </div>
+    </div>
+</template>
+
+<script>
+
+import tool from "../leCompsTool.js";
+import define from "../define.js";
+
+export default {
+    name:"LeRadioList",
+    props:["displayName","displayValue","value","dataSource","readonly"],
+    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
+    data(){
+        return {
+            state:{
+                successIcon:"",
+                showError:false,
+            },
+            data:[],
+            validataComponentType:"Radio",
+            name:tool._idSeed.newId(),
+            formLabelWidth:"0"
+        }
+    },
+    computed:{
+        labelWidthVal(){
+            if(this.$attrs.labelWidth){
+                return this.$attrs.labelWidth;
+            }
+            if(this.formLabelWidth != 0){
+                return this.formLabelWidth;
+            }
+            return define.LABELWIDTH;
+        },
+        readonlyFlag(){
+            if(this.readonly == undefined){
+                return false;
+            }
+            if(this.readonly === ""){
+                return true;
+            }
+            if(this.readonly === false){
+                return false;
+            }
+            return true;
+        }
+    },
+    watch:{
+        value(val){
+            this.setValue(val);
+        },
+        dataSource(val){
+            if(val && val.length >0){
+                this.init(val);
+                this.setValue(this.value);
+            }
+        }
+    },
+    methods:{
+        /**
+         * @description 设置数据源，自动添加ck属性来控制是否选中状态
+         * @returns
+         */
+        init(data){
+            this.data = JSON.parse(JSON.stringify(tool.object.addPrimaryAndCk(data)));
+        },
+        /**
+         * @description 重置数据源
+         * @returns
+         */
+        resetData(){
+            this.data.forEach(item=>{
+                item.ck = false;
+            })
+        },
+        /**
+         * @description radio的change事件，会触发父组件的change回调
+         * @returns 回传2个参数到父组件的回调，当前item和数据源data
+         */
+        changeCK(item){
+            if(this.readonlyFlag){
+                return;
+            }
+            this.resetData();
+            item.ck = true;
+            this.state.showError = false;
+            this.$emit('input',item[this.displayValue]);
+            this.$emit("change",item,this.data);
+        },
+        /**
+         * @description 设置选中项, 数据回写用
+         * @param val 单个值
+         * @returns
+         */
+        setValue(val = ""){
+            val = val.toString();
+            this.resetData();
+            if(val){
+                this.data.forEach(item=>{
+                    if(item[this.displayValue].toString() == val){
+                        item.ck = true;
+                    }
+                })  
+            }
+        },
+        /**
+         * @description 获取选中的值
+         * @returns
+         */
+        getValue(){
+            let res = tool.object.getCheckedItems(this.data,this.displayValue);
+            return res.vals.join(',');
+        },
+    },
+    created(){
+        let that = this;
+        tool._form_event_publisher.on(that._uid,(data)=>{
+            this.formLabelWidth = data;
+        });
+    },
+    mounted(){
+        if(this.dataSource && this.dataSource.length >0){
+            this.init(this.dataSource);
+        }
+        this.setValue(this.value);
+    }
+}
+</script>
+
+<style scoped>
+    .span{
+        position:relative;
+        cursor: pointer;
+        display: inline-block;
+        margin: 10px 20px 10px 0;
+        color: #606266;
+        font-size: 14px;
+    }
+    .ck{
+        position:absolute;
+        left:49px;
+        z-index:-100
+    }
+
+    .form-item .form-item-div .readonlyIcon{
+        color:#d3cfcf;
+        background-color: #fff;
+    }
+</style>

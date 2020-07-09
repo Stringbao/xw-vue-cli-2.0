@@ -1,0 +1,13 @@
+1：npm login (string_bao@163.com)
+2：https://www.npmjs.com/settings/string_bao/packages
+3：本地link命令以及安装
+    1：sudo cnpm link  或者  sudo cnpm link --no-optional
+    2：npm install le-vue
+    3：le-init [项目名称]
+    4：
+    5：
+    6:
+
+PS开发须知: 
+windows 环境需要先 npm link到本地服务，必须先注释掉gitServer里面index.js里面的init()方法，然后在外部gitbash里面 le-init <项目名称>开始从git down项目
+项目在本地下载完毕后，需要先停掉le-init的服务，然后重新取消注释index.js里面的init方法，然后启动本地服务即可.

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <td>delivername</td>
+                <td>delivermobile</td>
+                <td>deliverprovice</td>
+                <td>provinceNo</td>
+                <td>delivercity</td>
+                <td>cityNo</td>
+                <td>delivercounty</td>
+                <td>countyNo</td>
+                <td>towerShip</td>
+                <td>townshipNo</td>
+                <td>deliverStreet</td>
+                <td>isDefault</td>
+                <td>zip</td>
+                <td>delivertele</td>
+                <td>type</td>
+            </tr>
+        </thead>
+        <tbody id="tbody1"></tbody>
+    </table>
+</body>
+
+</html>
+<script>
+    function getPhone(){
+        let str = "186";
+        let ran = Math.ceil(Math.random()*9);
+        str  = str + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9) + Math.ceil(Math.random()*9);
+        return str;
+    }
+
+    function createData(addressStr){
+        let res = [];
+    
+        let provices1 = { name: "上海市", code: "020" };
+        let citys1 = {"name":"上海市","code":"1339"};
+        let counties = [
+            {"name":"宝山区","code":"10377"},
+            {"name":"长宁区","code":"13224"},
+            {"name":"崇明区","code":"10873"},
+            {"name":"奉贤区","code":"12651"},
+            {"name":"虹口区","code":"12642"},
+            {"name":"黄浦区","code":"11542"},
+            {"name":"嘉定区","code":"11600"},
+            {"name":"金山区","code":"10861"},
+            {"name":"静安区","code":"10876"},
+            {"name":"普陀区","code":"10591"},
+            {"name":"浦东新区","code":"12947"},
+            {"name":"青浦区","code":"12610"},
+            {"name":"松江区","code":"10856"},
+            {"name":"徐汇区","code":"12845"},{"name":"杨浦区","code":"11641"},{"name":"闵行区","code":"12377"}]
+        let _10377 = [{"name":"宝山城市工业园区","code":"146059"},{"name":"大场镇","code":"146051"},{"name":"高境镇","code":"146056"},{"name":"顾村镇","code":"146055"},{"name":"罗店镇","code":"146050"},{"name":"罗泾镇","code":"146054"},{"name":"庙行镇","code":"146057"},{"name":"其它","code":"160309"},{"name":"吴淞街道","code":"146048"},{"name":"杨行镇","code":"146052"},{"name":"友谊路街道","code":"146047"},{"name":"月浦镇","code":"146053"},{"name":"张庙街道","code":"146049"},{"name":"淞南镇","code":"146058"}];
+        let _13224 = [{"name":"北新泾街道","code":"146322"},{"name":"程家桥街道","code":"146321"},{"name":"虹桥街道","code":"146320"},{"name":"华阳路街道","code":"146314"},{"name":"江苏路街道","code":"146315"},{"name":"其它","code":"162735"},{"name":"天山路街道","code":"146318"},{"name":"仙霞新村街道","code":"146319"},{"name":"新华路街道","code":"146316"},{"name":"新泾镇","code":"146323"},{"name":"周家桥街道","code":"146317"}];
+        let _10873 = [{"name":"堡镇","code":"146102"},{"name":"长兴镇","code":"146116"},{"name":"陈家镇","code":"146110"},{"name":"城桥镇","code":"146101"},{"name":"东平林场","code":"146120"},{"name":"东平镇","code":"146115"},{"name":"港西镇","code":"146112"},{"name":"港沿镇","code":"146108"},{"name":"横沙乡","code":"146118"},{"name":"建设镇","code":"146113"},{"name":"绿华镇","code":"146111"},{"name":"庙镇","code":"146104"},{"name":"其它","code":"160717"},{"name":"前卫农场","code":"146119"},{"name":"三星镇","code":"146107"},{"name":"上实现代农业园区","code":"146121"},{"name":"竖新镇","code":"146105"},{"name":"向化镇","code":"146106"},{"name":"新村乡","code":"146117"},{"name":"新海镇","code":"146114"},{"name":"新河镇","code":"146103"},{"name":"中兴镇","code":"146109"}];
+        let _12651 = [{"name":"奉城镇","code":"146248"},{"name":"奉浦街道","code":"146246"},{"name":"海湾镇","code":"146254"},{"name":"金海社区","code":"146256"},{"name":"金汇镇","code":"146250"},{"name":"南桥镇","code":"146247"},{"name":"其它","code":"162236"},{"name":"青村镇","code":"146252"},{"name":"上海海港综合经济开发区","code":"146257"},{"name":"上海市奉贤区海湾旅游区","code":"146255"},{"name":"四团镇","code":"146251"},{"name":"西渡街道","code":"146245"},{"name":"庄行镇","code":"146249"},{"name":"柘林镇","code":"146253"}];
+        let _12642 = [{"name":"广中路街道","code":"146239"},{"name":"嘉兴路街道","code":"146240"},{"name":"江湾镇街道","code":"146244"},{"name":"凉城新村街道","code":"146241"},{"name":"欧阳路街道","code":"146237"},{"name":"其它","code":"162228"},{"name":"曲阳路街道","code":"146238"},{"name":"四川北路街道","code":"146242"},{"name":"提篮桥街道","code":"146243"}];
+        let _11542 = [{"name":"半淞园路街道","code":"146138"},{"name":"打浦桥街道","code":"146143"},{"name":"淮海中路街道","code":"146144"},{"name":"老西门街道","code":"146141"},{"name":"南京东路街道","code":"146136"},{"name":"其它","code":"161287"},{"name":"瑞金二路街道","code":"146145"},{"name":"外滩街道","code":"146137"},{"name":"五里桥街道","code":"146142"},{"name":"小东门街道","code":"146139"},{"name":"豫园街道","code":"146140"}];
+        let _11600 = [{"name":"安亭镇","code":"146151"},{"name":"华亭镇","code":"146154"},{"name":"嘉定工业区","code":"146157"},{"name":"嘉定镇街道","code":"146149"},{"name":"江桥镇","code":"146156"},{"name":"菊园新区管委会","code":"146148"},{"name":"马陆镇","code":"146152"},{"name":"南翔镇","code":"146150"},{"name":"其它","code":"161336"},{"name":"外冈镇","code":"146155"},{"name":"新成路街道","code":"146146"},{"name":"徐行镇","code":"146153"},{"name":"真新街道","code":"146147"}];
+        let _10861 = [{"name":"枫泾镇","code":"146092"},{"name":"金山工业区","code":"146100"},{"name":"金山卫镇","code":"146097"},{"name":"廊下镇","code":"146096"},{"name":"吕巷镇","code":"146095"},{"name":"其它","code":"160706"},{"name":"山阳镇","code":"146099"},{"name":"石化街道","code":"146090"},{"name":"亭林镇","code":"146094"},{"name":"张堰镇","code":"146093"},{"name":"朱泾镇","code":"146091"},{"name":"漕泾镇","code":"146098"}];
+        let _10876 = [{"name":"宝山路街道","code":"146129"},{"name":"北站街道","code":"146128"},{"name":"曹家渡街道","code":"146126"},{"name":"大宁路街道","code":"146131"},{"name":"共和新路街道","code":"146130"},{"name":"江宁路街道","code":"146122"},{"name":"静安寺街道","code":"146125"},{"name":"临汾路街道","code":"146133"},{"name":"南京西路街道","code":"146124"},{"name":"彭浦新村街道","code":"146132"},{"name":"彭浦镇","code":"146135"},{"name":"其它","code":"160719"},{"name":"石门二路街道","code":"146123"},{"name":"天目西路街道","code":"146127"},{"name":"芷江西路街道","code":"146134"}];
+        let _10591 = [{"name":"曹杨新村街道","code":"146060"},{"name":"长风新村街道","code":"146061"},{"name":"长寿路街道","code":"146062"},{"name":"长征镇","code":"146068"},{"name":"甘泉路街道","code":"146063"},{"name":"其它","code":"160475"},{"name":"石泉路街道","code":"146064"},{"name":"桃浦镇","code":"146069"},{"name":"万里街道","code":"146066"},{"name":"宜川路街道","code":"146065"},{"name":"真如镇街道","code":"146067"}];
+        let _12947 = [{"name":"北蔡镇","code":"146286"},{"name":"曹路镇","code":"146289"},{"name":"朝阳农场","code":"146310"},{"name":"川沙新镇","code":"146284"},{"name":"大团镇","code":"146298"},{"name":"东海农场","code":"146309"},{"name":"东明路街道","code":"146282"},{"name":"高东镇","code":"146292"},{"name":"高桥镇","code":"146285"},{"name":"高行镇","code":"146291"},{"name":"航头镇","code":"146300"},{"name":"合庆镇","code":"146287"},{"name":"沪东新村街道","code":"146278"},{"name":"花木街道","code":"146283"},{"name":"惠南镇","code":"146295"},{"name":"金桥经济技术开发区","code":"146312"},{"name":"金桥镇","code":"146290"},{"name":"金杨新村街道","code":"146279"},{"name":"康桥镇","code":"146299"},{"name":"老港镇","code":"146306"},{"name":"芦潮港农场","code":"146308"},{"name":"陆家嘴街道","code":"146273"},{"name":"南汇新城镇","code":"146307"},{"name":"南码头路街道","code":"146277"},{"name":"泥城镇","code":"146302"},{"name":"浦兴路街道","code":"146281"},{"name":"其它","code":"162499"},{"name":"三林镇","code":"146294"},{"name":"上钢新村街道","code":"146276"},{"name":"书院镇","code":"146304"},{"name":"塘桥街道","code":"146275"},{"name":"唐镇","code":"146288"},{"name":"万祥镇","code":"146305"},{"name":"潍坊新村街道","code":"146272"},{"name":"新场镇","code":"146297"},{"name":"宣桥镇","code":"146303"},{"name":"洋泾街道","code":"146280"},{"name":"张江高科技园区","code":"146313"},{"name":"张江镇","code":"146293"},{"name":"中国（上海）自由贸易试验区（保税片区）","code":"146311"},{"name":"周家渡街道","code":"146274"},{"name":"周浦镇","code":"146296"},{"name":"祝桥镇","code":"146301"}];
+        let _12610 = [{"name":"白鹤镇","code":"146236"},{"name":"华新镇","code":"146234"},{"name":"金泽镇","code":"146231"},{"name":"练塘镇","code":"146230"},{"name":"其它","code":"162200"},{"name":"夏阳街道","code":"146226"},{"name":"香花桥街道","code":"146228"},{"name":"徐泾镇","code":"146233"},{"name":"盈浦街道","code":"146227"},{"name":"赵巷镇","code":"146232"},{"name":"重固镇","code":"146235"},{"name":"朱家角镇","code":"146229"}];
+        let _10856 = [{"name":"车墩镇","code":"146078"},{"name":"洞泾镇","code":"146080"},{"name":"方松街道","code":"146072"},{"name":"广富林街道","code":"146074"},{"name":"九里亭街道","code":"146075"},{"name":"九亭镇","code":"146081"},{"name":"其它","code":"160701"},{"name":"上海松江出口加工区","code":"146089"},{"name":"石湖荡镇","code":"146083"},{"name":"松江工业区","code":"146087"},{"name":"小昆山镇","code":"146086"},{"name":"新桥镇","code":"146079"},{"name":"新浜镇","code":"146084"},{"name":"叶榭镇","code":"146085"},{"name":"永丰街道","code":"146071"},{"name":"岳阳街道","code":"146070"},{"name":"中山街道","code":"146073"},{"name":"佘山度假区","code":"146088"},{"name":"佘山镇","code":"146077"},{"name":"泗泾镇","code":"146076"},{"name":"泖港镇","code":"146082"}];
+        let _12845 = [{"name":"长桥街道","code":"146262"},{"name":"枫林路街道","code":"146261"},{"name":"虹梅路街道","code":"146264"},{"name":"湖南路街道","code":"146259"},{"name":"华泾镇","code":"146270"},{"name":"康健新村街道","code":"146265"},{"name":"凌云路街道","code":"146267"},{"name":"龙华街道","code":"146268"},{"name":"其它","code":"162408"},{"name":"天平路街道","code":"146258"},{"name":"田林街道","code":"146263"},{"name":"斜土路街道","code":"146260"},{"name":"徐家汇街道","code":"146266"},{"name":"漕河泾街道","code":"146269"},{"name":"漕河泾新兴技术开发区","code":"146271"}];
+        let _11641 = [{"name":"长白新村街道","code":"146163"},{"name":"大桥街道","code":"146166"},{"name":"定海路街道","code":"146158"},{"name":"江浦路街道","code":"146160"},{"name":"控江路街道","code":"146162"},{"name":"平凉路街道","code":"146159"},{"name":"其它","code":"161372"},{"name":"四平路街道","code":"146161"},{"name":"五角场街道","code":"146167"},{"name":"五角场镇","code":"146169"},{"name":"新江湾城街道","code":"146168"},{"name":"延吉新村街道","code":"146164"},{"name":"殷行街道","code":"146165"}];
+        let _12377 = [{"name":"古美街道","code":"146213"},{"name":"虹桥镇","code":"146220"},{"name":"华漕镇","code":"146219"},{"name":"江川路街道","code":"146212"},{"name":"马桥镇","code":"146223"},{"name":"梅陇镇","code":"146221"},{"name":"浦江镇","code":"146224"},{"name":"浦锦街道","code":"146215"},{"name":"七宝镇","code":"146217"},{"name":"其它","code":"161997"},{"name":"吴泾镇","code":"146222"},{"name":"新虹街道","code":"146214"},{"name":"莘庄工业区","code":"146225"},{"name":"莘庄镇","code":"146216"},{"name":"颛桥镇","code":"146218"}];
+
+        counties.forEach(x=>{
+            x.chiildren = eval("_"+x.code);
+        })
+        
+        counties.forEach(x=>{
+            x.chiildren.forEach((item,index)=>{
+                let tmp = {isDefault:"1",zip:"100000",delivertele:"",type:"SH",delivername:"",delivermobile:"",deliverprovice:provices1.name,provinceNo:provices1.code,delivercity:citys1.name,cityNo:citys1.code,delivercounty:"",countyNo:"",towerShip:"",townshipNo:"",deliverStreet:""};
+                tmp.delivercounty = x.name;
+                tmp.countyNo = x.code;
+                tmp.towerShip = item.name;
+                tmp.townshipNo = item.code;
+                tmp.deliverStreet = item.name + addressStr + (1+index) + "号";
+                let phone = getPhone();
+                tmp.delivermobile = phone;
+                tmp.delivername = phone;
+
+                res.push(tmp);
+            })
+        })
+
+        return res;
+    }
+
+    function render(data){
+        let html = "";
+        data.forEach(x=>{
+            html += "<tr>";
+            html += "<td>"+x.delivername+"</td>";
+            html += "<td>"+x.delivermobile+"</td>";
+            html += "<td>"+x.deliverprovice+"</td>";
+            html += "<td>'"+x.provinceNo+"</td>";
+            html += "<td>"+x.delivercity+"</td>";
+            html += "<td>"+x.cityNo+"</td>";
+            html += "<td>"+x.delivercounty+"</td>";
+            html += "<td>"+x.countyNo+"</td>";
+            html += "<td>"+x.towerShip+"</td>";
+            html += "<td>"+x.townshipNo+"</td>";
+            html += "<td>"+x.deliverStreet+"</td>";
+            html += "<td>"+x.isDefault+"</td>";
+            html += "<td>"+x.zip+"</td>";
+            html += "<td>"+x.delivertele+"</td>";
+            html += "<td>"+x.type+"</td>";
+            html += "</tr>";
+        })
+
+        $("#tbody1").append($(html));
+    }
+    
+    let res1 = createData("市中心街道");
+    let res2 = createData("北广场");
+    let res3 = createData("胡同口");
+
+    Array.prototype.push.apply(res1,res2);
+    Array.prototype.push.apply(res1,res3);
+    
+    render(res1);
+    
+    
+</script>
