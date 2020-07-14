@@ -18,7 +18,7 @@ const fsTool = {
     },
     file:{
         createFile:(path)=>{
-            this.deleteFile(path);
+            // this.deleteFile(path);
             fs.createFileSync(path);
         },
         deleteFile:(path)=>{

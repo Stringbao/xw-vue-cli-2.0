@@ -1,5 +1,6 @@
  let temp = {
-    "Modules": [{
+    "Modules": [
+        {
         "ModuleName": "Roles",
         "Pages": [
             {
@@ -77,12 +78,15 @@
         ],
         "Services": {
             "create": {
+                "reqType":"post",
                 "url": "/api/getRoleTypes"
             },
             "update": {
-                "url": "/api/getRoleTypes"
+                "reqType":"post",
+                "url": ""
             },
             "remove": {
+                "reqType":"post",
                 "url": "/api/getRoleTypes"
             },
             "detail": {
@@ -90,23 +94,33 @@
             },
             "list": {
                 "url": "/api/getRoleTypes"
+            },
+            "querySubItems":{
+                "url": "/api/getSubItems"
             }
         },
         "Store": {
-            "state": [{
+            "state": [
+                {
                     "name": "salesRoute",
                     "type": "array",
                     "url": "/api/getRoleTypes"
                 },
                 {
-                    "name": "salesRoute-B",
+                    "name": "salesRoute_A",
                     "type": "array",
-                    "Enum": "KEYS.SALES.ACTION_LIST"
+                    "reqType":"post",
+                    "url": "/api/getRoleTypes"
                 },
                 {
-                    "name": "salesRoute-C",
-                    "type": "json",
-                    "Enum": "KEYS.SALES.ACTION_List_C"
+                    "name": "salesRoute_B",
+                    "type": "enum",
+                    "url": "KEYS.SALES.ACTION_LIST"
+                },
+                {
+                    "name": "salesRoute_C",
+                    "type": "enum",
+                    "url": "KEYS.SALES.ACTION_List_C"
                 }
             ]
         }
