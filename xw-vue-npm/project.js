@@ -1,5 +1,4 @@
-{
-    "Project": "Security",
+ let temp = {
     "Modules": [{
         "ModuleName": "Roles",
         "Pages": [
@@ -113,3 +112,5 @@
         }
     }]
 }
+
+module.exports = temp;

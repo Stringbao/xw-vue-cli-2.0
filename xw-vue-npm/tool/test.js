@@ -1,3 +1,4 @@
+const ejs = require("ejs");
 const _config = require("../../pathConfig");
 const ejsTool = require("../../ejs/ejsapi");
 const path = require("path");
@@ -13,7 +14,7 @@ module.exports = (projectPath,moduleName,proxyDefaultKey,data) => {
         data:data,
         proxyDefaultKey,
     };
-    let _data = ejsTool.renderEjsTemplate(ejsStr,ejsData);
+    let _data = ejs.compile(ejsStr)(ejsData);
     fsTool.writeFile(apiPath,_data);
     console.log("写入api成功");
 }

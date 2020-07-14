@@ -4,7 +4,7 @@ const ResponseEntity = {
     setEneity:options=>{
         if(!options){
             options = {
-                res:res,
+                res:options.res,
                 status:"200",
                 msg:"",
                 data:[]
