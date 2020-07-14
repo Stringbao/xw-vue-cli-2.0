@@ -16,7 +16,7 @@
                         pages
                     </div>
                     <div>
-                        store
+                        <store-form :storeArr="module.store"></store-form>
                     </div>
                 </TabPane>
             </template>
@@ -44,6 +44,7 @@
 <script>
 import Tab from "@pages/components/tab/Tab.vue";
 import TabPane from "@pages/components/tab/TabPane.vue";
+import StoreForm from "./StoreForm.vue";
 import { mapState, mapActions } from "vuex";
 export default {
     data() {
@@ -59,7 +60,8 @@ export default {
     },
     components: {
         Tab,
-        TabPane
+        TabPane,
+        StoreForm
     },
     methods: {
         ...mapActions(["addModules", "removeModules","changeModules"]),

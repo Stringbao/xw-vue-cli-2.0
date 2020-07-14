@@ -1,12 +1,19 @@
+import Enum from "./enum.js";
 export default {
     state:{
         project:"",
         modules:[
 
         ],
-        currentModule:null
+        currentModule:null,
+        dataSource:{
+            storeTypeUrl:Enum.storeTypeUrl,
+            storeType:Enum.storeType
+        },
+        storeArr:[],
     },
     mutations:{
+        //创建modules的方法
         addModules(state,data){
             let idx = state.modules.findIndex(item=>item.ModuleName == data.ModuleName);
             if(idx < 0){
@@ -30,8 +37,17 @@ export default {
         },
         addStore(state,data){
             console.log(data)
+        },
+        //创建store的方法
+        addStore(state,data){
+            let idx = state.storeArr.findIndex(item=>item.state.name == data.state.name);
+            if(idx < 0){
+                state.storeArr.push(data);
+            }else{
+                alert("the module name is unique,this module is exist");
+                return;
+            }
         }
-
     },
     actions:{
         addModules({commit,state},ModuleName){
