@@ -1,0 +1,115 @@
+{
+    "Project": "Security",
+    "Modules": [{
+        "ModuleName": "Roles --> 一个Module只有一个Store",
+        "Pages": [{
+                "PageName": "list.vue",
+                "type": "list",
+                "PageTitle": "角色管理列表",
+                "config": {
+                    "searchModel": [
+                        {
+                            "label": "角色名称",
+                            "type": "text",
+                            "field": "roleName"
+                        },
+                        {
+                            "label": "角色类型",
+                            "type": "select",
+                            "field": "roleType",
+                            "displayName": "name",
+                            "displayValue": "value",
+                            "dataSource": "salesRoute //选择数据源"
+                        }
+                    ],
+                    "table": {
+                        "url": "/api/getRoleTypes",
+                        "map": [
+                            {
+                                "field": "channelCode",
+                                "label": "Sale Channel"
+                            },
+                            {
+                                "field": "materialNumber",
+                                "label": "Material"
+                            }
+                        ],
+                        "page": {
+                            "pageSize": "pageSize",
+                            "currentPage": "currentPage"
+                        }
+                    },
+                    "dialog":[
+                        {
+                            "label": "角色类型",
+                            "type": "select",
+                            "field": "roleType",
+                            "displayName": "name",
+                            "displayValue": "value",
+                            "dataSource": "salesRouteA",
+                            "on": true,
+                            "required": true
+                        }
+                    ]
+                }
+            },
+            {
+                "PageName": "save.vue",
+                "type": "save",
+                "config": {
+                    "model": [{
+                            "label": "角色类型",
+                            "type": "select",
+                            "field": "roleType",
+                            "displayName": "name",
+                            "displayValue": "value",
+                            "dataSource": "salesRouteA",
+                            "on": true,
+                            "required": true
+                        },
+                        {
+                            "label": "角色名称",
+                            "type": "text",
+                            "field": "roleName"
+                        }
+                    ]
+                }
+            }
+        ],
+        "Services": {
+            "create": {
+                "url": "/api/getRoleTypes"
+            },
+            "update": {
+                "url": "/api/getRoleTypes"
+            },
+            "remove": {
+                "url": "/api/getRoleTypes"
+            },
+            "detail": {
+                "url": "/api/getRoleTypes"
+            },
+            "list": {
+                "url": "/api/getRoleTypes"
+            }
+        },
+        "Store": {
+            "state": [{
+                    "name": "salesRoute",
+                    "type": "array",
+                    "url": "/api/getRoleTypes"
+                },
+                {
+                    "name": "salesRoute-B",
+                    "type": "array",
+                    "Enum": "KEYS.SALES.ACTION_LIST"
+                },
+                {
+                    "name": "salesRoute-C",
+                    "type": "json",
+                    "Enum": "KEYS.SALES.ACTION_List_C"
+                }
+            ]
+        }
+    }]
+}
