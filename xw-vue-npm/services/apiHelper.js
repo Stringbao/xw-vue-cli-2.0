@@ -59,11 +59,11 @@ let APIhelper = {
         fsTool.file.createFile(filePath);
 
         let maps = [];
-        for(let i in serviceItem){
-            if(serviceItem[i].url){
-                maps.push({name:i, url:serviceItem[i].url, type:'services',fnName:i,reqType:serviceItem[i].reqType});
+        serviceItem.forEach(x=>{
+            if(x.url){
+                maps.push({name:x.name, url:x.url, type:'services',fnName:x.name,reqType:x.reqType});
             }
-        }
+        })
         storeItems.forEach(x=>{
             maps.push({name:x.name, url:x.url, type:x.type,fnName: "get"+this.firstChatUpperLower(x.name, true), reqType:x.reqType});
         })
@@ -131,7 +131,35 @@ let APIhelper = {
     },
     //创建单个Module下的Store文件, 并且写入数据
     createStoreFile(projectPath, storeItems, moduleName){
+        let path = projectPath + "/src/store/modules/";
+        let filePath = path + this.firstChatUpperLower(moduleName, false) + ".js"; 
+        fsTool.file.createFile(filePath);
+
+        let stateKeys = [];
+        let mutations = [];
+        let actions = [];
+        storeItems.forEach(x=>{
+            stateKeys.push(x.name);
+            mutations.push("set"+x.name);
+            actions.push({fnName:"get"+x.name, stateKey:x.name, type:x.type, url:x.url, serviceName:'get'+x.name});
+        })
+
+        let str = stateKeys.join(';') + mutations.join(';') + JSON.stringify(actions);
+        //write content to file
+        fsTool.file.writeFile(filePath, str);
+    },
+    //写入Store Index入口文件
+    writeStoreIndex(projectPath, storeKeys){
+        let filePath = projectPath + "/src/store/index.js";
+
+        let fileNames = [];
+        let StoreNames = [];
+        storeKeys.forEach(x=>{
+            fileNames.push(this.firstChatUpperLower(x, false) + ".js");
+            StoreNames.push(this.firstChatUpperLower(x, true) + "Store");
+        })
         
+        fsTool.file.writeFile(filePath, fileNames.join(';') + StoreNames.join(';'));
     }
 }
 
