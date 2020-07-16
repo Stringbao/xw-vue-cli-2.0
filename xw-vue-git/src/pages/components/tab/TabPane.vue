@@ -29,6 +29,7 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
+    background-color: #ececec;
 }
 .component-fade-enter-active,
 .component-fade-leave-active {

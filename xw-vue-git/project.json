@@ -2,7 +2,8 @@
     "Project": "Security",
     "Modules": [{
         "ModuleName": "Roles --> 一个Module只有一个Store",
-        "Pages": [{
+        "Pages": [
+            {
                 "PageName": "list.vue",
                 "type": "list",
                 "PageTitle": "角色管理列表",
@@ -94,7 +95,8 @@
             }
         },
         "Store": {
-            "state": [{
+            "state": [
+                {
                     "name": "salesRoute",
                     "type": "array",
                     "url": "/api/getRoleTypes"
