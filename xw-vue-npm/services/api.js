@@ -1,5 +1,5 @@
 
-const fsTool = require("../tool/fsapi.js");
+
 const resEntity = require("../tool/responseEntity");
 const path = require("path");
 const APIhelper = require("./apiHelper.js");
@@ -9,6 +9,9 @@ const data = require("../project.js");
 const projectPath = '/Users/wupeng/Documents/bbb';
 
 const api = {
+    test(req,res){
+        debugger
+    },
     create(req,res){
         //create all the files by module (one by one)
         let routers = [];
@@ -62,6 +65,6 @@ const api = {
     }   
 }
 
-api.create();
+// api.create();
 
 module.exports = api;
