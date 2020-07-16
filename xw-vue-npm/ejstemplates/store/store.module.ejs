@@ -1,0 +1,38 @@
+import <%= data.ModuleName %>Service from "@service/<%= data.ModuleName %>.js";
+
+export default {
+    namespaced: true,
+    state:{
+    <%_ data.state.forEach(function(row){ -%>
+        <%_ if (row.type == 'array'){ -%>
+            <%= row.name %>: [],
+        <%_ _%><% }else if (row.type == 'json'){ -%>
+            <%= row.name %>: {},
+        <%_ _%><% } -%>
+    <%_ _%><% }) -%>
+    },
+    mutations:{
+    <%_ data.state.forEach(function(row){ -%>
+        set<%= row.name %>(state,data){
+            state.<%= row.name %> = data;
+        },
+    <%_ _%><% }) -%>
+    },
+    actions:{
+    <%_ data.state.forEach(function(row){ -%>
+        get<%= row.name %>(context,cb){
+        <%_ if(row.Enum) { -%>
+            context.commit("set<%= row.name %>", <%= row.Enum %>);
+            <%_ _%><% } else { -%>
+            if(context.state.<%= row.name %>.length >0){
+                return;
+            }
+            <%= row.name %>Services.get<%= row.name %>().then((res)=>{
+                context.commit("set<%= row.name %>",res.data.data);
+                cb && cb(res);
+            });
+            <%_ _%><% } -%>
+        },
+    <%_ _%><% }) -%>
+    }
+}

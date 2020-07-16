@@ -1,0 +1,50 @@
+import Ajax from "@util/http.js";
+
+const map = {
+<%= data.ModuleName %>List:"/productAPI/index/queryList/190",
+    create: "<%= data.create.url%>",
+    update:"<%= data.update.url%>",
+    remove:"<%= data.remove.url%>",
+    detail:"<%= data.detail.url%>",
+    list:"<%= data.list.url%>"
+}
+
+export default {
+    get<%= data.ModuleName %>List(){
+        return Ajax.get(map.SalesRoute);
+    },
+    save(model){
+        if(model.id){
+            return this.update(model);
+        }else{
+            return this.create(model);
+        }
+    },
+    create(model){
+        let params = {
+            ...model
+        };
+        return Ajax.postFormData(map.create, params);
+    },
+    update(model){
+        let params = {
+            ...model
+        };
+        return Ajax.postFormData(map.update, params);
+    },
+    remove(model){
+        let params = {
+            ...model
+        };
+        return Ajax.postFormData(map.remove, params);
+    },
+    list(){
+        return Ajax.get(map.list);
+    },
+    detail(model){
+        let params = {
+            ...model
+    };
+        return Ajax.get(map.detail,params);
+    }
+}
