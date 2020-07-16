@@ -8,25 +8,25 @@
                 </span>
             </button>
         </div>
-        <le-dialog title="create Store" v-model="dialog.showDialog">
+        <le-dialog title="create Store" v-model="dialog.showDialog" width="700" height="600">
             <div slot="body">
                 <le-form ref="store">
                     <le-input
                         label="storeName:"
                         msg="请输入storeName"
-                        v-model="storeName"
+                        v-model="storeObj.storeName"
                         on
                         required
                     ></le-input>
                     <le-local-select
                         label="storeType:"
                         msg="请输入storeType"
-                        v-model="storeType"
                         on
                         required
                         :data-source="dataSource.storeType"
                         display-name="name"
                         display-value="code"
+                        v-model="storeObj.storeType"
                     ></le-local-select>
                     <div class="form-item">
                         <le-radio-list 
@@ -37,13 +37,27 @@
                             :data-source="dataSource.storeTypeUrl"
                             display-name="name"
                             display-value="code"
+                            v-model="storeObj.storeTypeUrl"
+                        >
+                        </le-radio-list>
+                    </div>
+                    <div class="form-item">
+                        <le-radio-list 
+                            on 
+                            required 
+                            msg ="please select RequestType"
+                            label="requestType:"
+                            :data-source="dataSource.requestType"
+                            display-name="name"
+                            display-value="code"
+                            v-model="storeObj.requestType"
                         >
                         </le-radio-list>
                     </div>
                     <le-input
                         label="storeTypeURL:"
                         msg="请输入storeTypeURL"
-                        v-model="storeTypeURL"
+                        v-model="storeObj.storeTypeURL"
                         on
                         required
                     ></le-input>
@@ -62,20 +76,27 @@
                         <th>Store Type</th>
                         <th>Select StoreType Url</th>
                         <th>Store Type Url</th>
+                        <th>RequestType</th>
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody v-if="storeArr.length==0?false:isTrue">
-                    <tr v-for="(item,idx) in storeArr" :key="idx">
-                        <td>{{item.name}}</td>
+            
+                <tbody v-if="storeArrs.length==0?false:true">
+                    <tr v-for="(item,idx) in storeArrs" :key="idx">
+                        <td>{{item.storeName}}</td>
+                        <td>{{item.storeType == 1?"array":"json"}}</td>
+                        <td>{{item.storeTypeUrl == 1?"URL":"ENUM"}}</td> 
+                        <td>{{item.storeTypeURL}}</td> 
+                        <td>{{item.requestType == 1?"GET":"POST"}}</td>
                         <td>
-                            <le-button type="remove" value="删除"></le-button>
+                            <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
+                            <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
                         </td>
                     </tr>
                 </tbody>
                 <tbody v-else style="width:100%;">
-                    <tr style="width:100%;text-align:center;">
-                        <td colspan="5">
+                    <tr style="width:100%;height:60px;line-height:60px;text-align:center;">
+                        <td colspan="6">
                             暂无数据
                         </td>
                     </tr>
@@ -95,40 +116,66 @@ export default {
     },
     data(){
         return {
-            isTrue:false,
             dialog:{
                 showDialog:false,
             },
-            storeName:"",
-            storeTypeURL:"",
+            storeObj:{
+                storeName:"",
+                storeType:1,
+                storeTypeURL:"",
+                storeTypeUrl:1,
+                requestType:1
+            },
+            storeArrs:[],
+        }
+    },
+    watch:{
+        storeArr(newVal,old){
+            this.storeArrs = newVal;
         }
     },
     computed: {
-        ...mapState(["dataSource"])
+        ...mapState(["dataSource","storeArray"]),
     },
     methods:{
-        ...mapActions(["addStore"]),
+        ...mapActions(["addStore","removeStore"]),
         add(){
             this.dialog.showDialog = true;
         },
-        handleSave() {
+        del(item,idx){
+            this.alert.showConfirm("Are you sure you want to do this?",()=>{
+                this.removeStore(idx);
+            })
+        },
+        update(item,idx){
+            console.log(item,idx)
+            this.dialog.showDialog = true;
+        },
+        handleSave(){
+            let that = this;
             this.$refs.store
                 .validate()
                 .then(res => {
                     if (res.success) {
-                        this.addStore(this.storeName,dataSource.storeType,dataSource.storeTypeUrl,this.storeTypeURL);
+                        debugger
+                        let obj = {...this.storeObj}
+                        this.addStore(obj);
                         this.dialog.showDialog = false;
-                        this.storeName = "";
+                        this.$refs.store.reset();
                     }
                 })
                 .catch(err => {
-                    this.alert.showAlert("error", err.info[0]);
+                    this.alert.showAlert("error", err.info);
                 });
         },
         handleClose() {
+            let that = this;
             this.dialog.showDialog = false;
-            this.storeName = "";
+            this.$refs.store.reset();
         }
+    },
+    mounted(){
+        console.log(this.storeArr)
     }
 }
 </script>
@@ -138,6 +185,10 @@ export default {
         display: flex;
         width: 100%;
         transition: transform 0.3s;
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        margin-top: 20px;
         .le_page_name{
             width: 100%;
             text-align: center;
@@ -174,7 +225,6 @@ export default {
             thead{
                 width: 100%;
                 th{
-                    width: 20%;
                     height: 32px;
                     line-height: 32px;
                     text-align: center;
@@ -189,7 +239,6 @@ export default {
                     width: 100%;
                     border-bottom: 1px solid #ccc;
                     td{
-                        width: 20%;
                         text-align: center;
                         border-right: 1px solid #ccc;
                         border-left: 1px solid #ccc;

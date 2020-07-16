@@ -10,13 +10,13 @@
                 >
                     {{module.ModuleName}}
                     <div>
-                        Services
+                        <Service :sevices="module.Services"></Service>
                     </div>
                     <div>
                         pages
                     </div>
                     <div>
-                        <store-form :storeArr="module.store"></store-form>
+                        <storeForm :storeArr="module.Store.state"></storeForm>
                     </div>
                 </TabPane>
             </template>
@@ -45,6 +45,7 @@
 import Tab from "@pages/components/tab/Tab.vue";
 import TabPane from "@pages/components/tab/TabPane.vue";
 import StoreForm from "./StoreForm.vue";
+import Service from "./service.vue";
 import { mapState, mapActions } from "vuex";
 export default {
     data() {
@@ -61,7 +62,8 @@ export default {
     components: {
         Tab,
         TabPane,
-        StoreForm
+        StoreForm,
+        Service
     },
     methods: {
         ...mapActions(["addModules", "removeModules","changeModules"]),
