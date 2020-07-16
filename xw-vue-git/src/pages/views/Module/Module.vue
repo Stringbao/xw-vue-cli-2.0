@@ -16,7 +16,7 @@
                         pages
                     </div>
                     <div>
-                        <storeForm :storeArr="module.Store.state"></storeForm>
+                        <storeForm :stores="module.Store.state"></storeForm>
                     </div>
                 </TabPane>
             </template>
