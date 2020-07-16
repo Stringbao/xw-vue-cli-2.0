@@ -12,7 +12,7 @@ server.set('view engine','ejs');
 server.set('views','./view');
 
 server.get('/router',(req,res)=>{
-    let resultJson = fs.readFileSync('./router.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/router.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson)
     }
@@ -20,7 +20,7 @@ server.get('/router',(req,res)=>{
 });
 
 server.get('/service',(req,res)=>{
-    let resultJson = fs.readFileSync('./service.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/service.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson)
     }
@@ -28,7 +28,7 @@ server.get('/service',(req,res)=>{
 });
 
 server.get('/store/index',(req,res)=>{
-    let resultJson = fs.readFileSync('./store.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/store.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson)
     }
@@ -36,7 +36,7 @@ server.get('/store/index',(req,res)=>{
 });
 
 server.get('/store/module',(req,res)=>{
-    let resultJson = fs.readFileSync('./storeModule.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/storeModule.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson)
     }
@@ -44,7 +44,7 @@ server.get('/store/module',(req,res)=>{
 });
 
 server.get('/list',(req,res)=>{
-    let resultJson = fs.readFileSync('./list.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/list.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson);
     }
@@ -53,7 +53,7 @@ server.get('/list',(req,res)=>{
 });
 
 server.get('/save',(req,res)=>{
-    let resultJson = fs.readFileSync('./list.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/list.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson);
     }
@@ -64,7 +64,7 @@ server.get('/save',(req,res)=>{
 
 
 server.get('/model',(req,res)=>{
-    let resultJson = fs.readFileSync('./model.json' ,"utf8");
+    let resultJson = fs.readFileSync('./json/model.json' ,"utf8");
     if (resultJson) {
         resultJson = JSON.parse(resultJson);
     }
