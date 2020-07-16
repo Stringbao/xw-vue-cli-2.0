@@ -1,7 +1,8 @@
 {
     "Project": "Security",
-    "Modules": [{
-        "ModuleName": "Roles --> 一个Module只有一个Store",
+    "Modules": [
+        {
+        "ModuleName": "Roles",
         "Pages": [
             {
                 "PageName": "list.vue",
@@ -20,7 +21,7 @@
                             "field": "roleType",
                             "displayName": "name",
                             "displayValue": "value",
-                            "dataSource": "salesRoute //选择数据源"
+                            "dataSource": "salesRoute"
                         }
                     ],
                     "table": {
@@ -39,61 +40,75 @@
                             "pageSize": "pageSize",
                             "currentPage": "currentPage"
                         }
-                    },
-                    "dialog":[
-                        {
-                            "label": "角色类型",
-                            "type": "select",
-                            "field": "roleType",
-                            "displayName": "name",
-                            "displayValue": "value",
-                            "dataSource": "salesRouteA",
-                            "on": true,
-                            "required": true
-                        }
-                    ]
-                }
+                    }
+                },
+                "model":[
+                    {
+                        "label": "角色类型",
+                        "type": "select",
+                        "field": "roleType",
+                        "displayName": "name",
+                        "displayValue": "value",
+                        "dataSource": "salesRouteA",
+                        "on": true,
+                        "required": true
+                    }
+                ]
             },
             {
                 "PageName": "save.vue",
                 "type": "save",
-                "config": {
-                    "model": [{
-                            "label": "角色类型",
-                            "type": "select",
-                            "field": "roleType",
-                            "displayName": "name",
-                            "displayValue": "value",
-                            "dataSource": "salesRouteA",
-                            "on": true,
-                            "required": true
-                        },
-                        {
-                            "label": "角色名称",
-                            "type": "text",
-                            "field": "roleName"
-                        }
-                    ]
-                }
+                "model":[
+                    {
+                        "label": "角色类型",
+                        "type": "select",
+                        "field": "roleType",
+                        "displayName": "name",
+                        "displayValue": "value",
+                        "dataSource": "salesRouteA",
+                        "on": true,
+                        "required": true
+                    },
+                    {
+                        "label": "角色名称",
+                        "type": "text",
+                        "field": "roleName"
+                    }
+                ]
             }
         ],
-        "Services": {
-            "create": {
+        "Services": [
+            {
+                "name":"create",
+                "reqType":"post",
                 "url": "/api/getRoleTypes"
             },
-            "update": {
+            {
+                "name":"update",
+                "reqType":"post",
+                "url": ""
+            },
+            {
+                "name":"remove",
+                "reqType":"post",
                 "url": "/api/getRoleTypes"
             },
-            "remove": {
+            {
+                "name":"detail",
+                "reqType":"get",
                 "url": "/api/getRoleTypes"
             },
-            "detail": {
+            {
+                "name":"list",
+                "reqType":"post",
                 "url": "/api/getRoleTypes"
             },
-            "list": {
-                "url": "/api/getRoleTypes"
+            {
+                "name":"querySubItems",
+                "reqType":"post",
+                "url": "/api/getSubItems"
             }
-        },
+        ],
         "Store": {
             "state": [
                 {
@@ -102,14 +117,20 @@
                     "url": "/api/getRoleTypes"
                 },
                 {
-                    "name": "salesRoute-B",
+                    "name": "salesRoute_A",
                     "type": "array",
-                    "Enum": "KEYS.SALES.ACTION_LIST"
+                    "reqType":"post",
+                    "url": "/api/getRoleTypes"
                 },
                 {
-                    "name": "salesRoute-C",
-                    "type": "json",
-                    "Enum": "KEYS.SALES.ACTION_List_C"
+                    "name": "salesRoute_B",
+                    "type": "enum",
+                    "url": "KEYS.SALES.ACTION_LIST"
+                },
+                {
+                    "name": "salesRoute_C",
+                    "type": "enum",
+                    "url": "KEYS.SALES.ACTION_List_C"
                 }
             ]
         }

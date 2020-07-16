@@ -8,26 +8,41 @@
                     :index="i"
                     :currentIndex="currentIndex"
                 >
-                    <h2 class="ModuleName">{{module.ModuleName}}</h2>
+                    {{module.ModuleName}}
                     <div class="card">
-                        <h3 class="cardTitle">Services</h3>
+                        <Service :sevices="module.Services"></Service>
                     </div>
-                    <div class="card">
-                        <h3 class="cardTitle">
-                            pages
-                            <le-button class="fr" type="create" value="添加" @click="createPage"></le-button>
-                        </h3>
-                        <ul class="pages">
-                            <li v-for="(item,idx) in module.Pages" :key="idx">
-                                <div>
-                                    <span><i>PageName :</i>{{item.PageName}}</span>
-                                    <span><i>PageTitle :</i>{{item.PageTitle}}</span>
-                                    <span><i>PageType :</i>{{item.type}}</span>
-                                </div>
-                                <le-button type="update" value="modify" @click="modifyPageHandle(item,i)"></le-button>
-                                <le-button type="remove" value="delete" @click="removePageHandle(item,i)"></le-button>
-                            </li>
-                        </ul>
+                    <div class="card pagesCard">
+                        <div class="head">
+                            <h4 class="le_page_name" style="text-align:center;">Pages Management</h4>
+                            <button class="tab_add" @click="createPage">
+                                <span role="img" class="actions_add">
+                                    <i class="iconfont icon-add"></i>
+                                </span>
+                            </button>
+                        </div>
+                        
+                        <table class="le_table_container">
+                            <thead>
+                                <tr>
+                                    <th>PageName</th>
+                                    <th>PageTitle</th>
+                                    <th>PageType</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item,idx) in module.Pages" :key="idx">
+                                    <td>{{item.PageName}}</td>
+                                    <td>{{item.PageTitle}}</td>
+                                    <td>{{item.type}}</td>
+                                    <td>
+                                        <le-button type="update" value="modify" @click="modifyPageHandle(item,i)"></le-button>
+                                        <le-button type="remove" value="delete" @click="removePageHandle(item,i)"></le-button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <le-dialog :title="pageDialogTitle" v-model="dialog.showCreatePage" width="900" height="600">
                             <div slot="body">
                                 <le-local-select label="页面类型:" class="pagesType"
@@ -52,7 +67,7 @@
                         </le-dialog>
                     </div>
                     <div class="card">
-                        <h3 class="cardTitle">store</h3>
+                        <storeForm :stores="module.Store.state"></storeForm>
                     </div>
                 </TabPane>
             </template>
@@ -82,6 +97,8 @@ import Tab from "@pages/components/tab/Tab.vue";
 import TabPane from "@pages/components/tab/TabPane.vue";
 import PageListForm from "@pages/views/Module/PageListForm.vue";
 import PageSaveForm from "@pages/views/Module/PageSaveForm.vue";
+import StoreForm from "./StoreForm.vue";
+import Service from "./service.vue";
 import { mapState, mapActions } from "vuex";
 export default {
     data() {
@@ -115,7 +132,9 @@ export default {
         Tab,
         TabPane,
         PageListForm,
-        PageSaveForm
+        PageSaveForm,
+        StoreForm,
+        Service
     },
     methods: {
         ...mapActions(["addModules", "removeModules","changeModules","removePages"]),
@@ -180,41 +199,74 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pages{
+.pagesCard{
     padding: 10px;
-    font-size: 16px;
     color: #333;
     font-style: normal;
-    li {
-    border-bottom: 1px solid #e6e2e2;
-    padding: 10px 0;
-    display: flex;
-        div{
-            flex: 1;
-            line-height: 36px;
-            span{
-                    width: 28%;
-                    display: inline-block;
-                    word-break: break-all;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    margin: 0 10px;
+    .le_table_container {
+            width: 100%;
+            thead {
+                width: 100%;
+                th {
+                    height: 32px;
+                    line-height: 32px;
+                    text-align: center;
+                    border-right: 1px solid #ccc;
+                    border-left: 1px solid #ccc;
+                    border-bottom: 1px solid #ccc;
+                }
             }
+            tbody {
+                width: 100%;
+                tr {
+                    width: 100%;
+                    border-bottom: 1px solid #ccc;
+                    td {
+                        text-align: center;
+                        border-right: 1px solid #ccc;
+                        border-left: 1px solid #ccc;
+                    }
+                }
+            }
+    }
+    .head {
+        position: relative;
+        display: flex;
+        width: 100%;
+        transition: transform 0.3s;
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        margin-top: 20px;
+        .le_page_name {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
         }
-        span{
-            margin: 0 30px;
-            color: rgba(0,0,0,0.65);
-        }
-        .asBtn{
-            margin: 3px;
-            color: #fff;
-        }
-        i{
-            font-style: normal;
-            font-weight: 600;
-            margin-right: 10px;
-            font-size: 14px;
+        .tab_add {
+            min-width: 40px;
+            padding: 0 8px;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+            border-radius: 2px 2px 0 0;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            .actions_add {
+                display: inline-block;
+                color: inherit;
+                font-style: normal;
+                line-height: 0;
+                text-align: center;
+                text-transform: none;
+                vertical-align: -0.125em;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                svg {
+                    display: inline-block;
+                }
+            }
         }
     }
 }

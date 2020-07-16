@@ -27,14 +27,15 @@
                     
                     <le-input label="label:" v-model="item.label"></le-input>
                     <le-input label="field:" v-model="item.field"></le-input>
-                    <div v-if="item.type == 'select'">
+                    <div class="clearfix" v-if="item.type == 'select'">
                         <le-input label="displayName:" v-model="item.displayName"></le-input>
                         <le-input label="displayValue:" v-model="item.displayValue"></le-input>
                         <le-local-select label="dataSource" :data-source="dataSource.state" 
                             display-name="name" display-value="name"
                             v-model="item.dataSource">
                         </le-local-select>
-                        <le-button value="add" @click="showDatasource"></le-button>
+                        <!-- 新建DataSource -->
+                        <le-button class="fr" type="create" value="addDatasource" @click="showDatasource"></le-button>
                     </div>
                 </div>
             </div>
@@ -89,6 +90,8 @@
                             display-name="name" display-value="name" 
                             v-model="item.dataSource">
                         </le-local-select>
+                        <!-- 新建DataSource -->
+                        <le-button class="fr" type="create" value="addDatasource" @click="showDatasource"></le-button>
                     </div>
                     <le-radio-list label="on:" :data-source="dialogValidateType" 
                         display-name="name" display-value="code" 
@@ -101,18 +104,19 @@
                 </div>
             </div>
             <!-- datasource的配置 -->
-            <le-dialog title="新建弹层" height="505" width="1000" v-model="datasourceDialog">
+            <le-dialog title="新建dataSource" height="505" width="1000" v-model="datasourceDialog">
                 <div slot="body">
-                    <div class="" v-if="dataSource.state.length == 0">
-                        <!-- <div class="configItem-title clearfix" style="width:100%">
-                            <h4 class="label">addDataSource
-                                <i class="fr addParams iconfont icon-add" type="button" @click="addDataSource"></i>
-                            </h4>
-                        </div> -->
+                    <div class="">
                         <div class="clearfix">
                             <le-input label="name:" v-model="newAddDataSource.name"></le-input>
-                            <le-input label="type:" v-model="newAddDataSource.type"></le-input>
-                            <le-input label="reqType:" v-model="newAddDataSource.reqType"></le-input>
+                            <le-radio-list label="type:" :data-source="dataSourceType" 
+                                display-name="name" display-value="code" 
+                                v-model="newAddDataSource.type">
+                            </le-radio-list>
+                            <le-radio-list label="reqType:" :data-source="dataSourceReqType" 
+                                display-name="name" display-value="code" 
+                                v-model="newAddDataSource.reqType">
+                            </le-radio-list>
                             <le-input label="url:" v-model="newAddDataSource.url"></le-input>
                         </div>
                     </div>
@@ -122,7 +126,6 @@
                     <le-button type="save" value="<#保存#>" @click="saveDatasourceDialog"></le-button>
                 </div>
             </le-dialog>
-
         </div>
         <div class="le_new_page_btn_group">
             <le-button value="返回" type="back" @click="close"></le-button>
@@ -148,6 +151,14 @@ export default {
             dialogValidateType:[
                 {name:"true",code:true},
                 {name:"false",code:false},
+            ],
+            dataSourceType:[
+                {name:"array",code:"array"},
+                {name:"enum",code:"enum"},
+            ],
+            dataSourceReqType:[
+                {name:"get",code:"get"},
+                {name:"post",code:"post"},
             ],
             //用户添加的多个用来搜索的searchmodel数据
             searchModelArr:[],
@@ -179,7 +190,7 @@ export default {
                 }
             },
             //用户配置的dataSource的数据
-            newAddDataSource:[]
+            newAddDataSource:{}
         }
     },
     props: {
@@ -245,10 +256,11 @@ export default {
                     this.pageModel.config.table = this.tableModel;
                     this.pageModel.config.dialog = this.dialogArr;
                     let cloneData = JSON.parse(JSON.stringify( this.pageModel ));
+                    debugger
                     if(this.isEditPages){
                         //如果是修改配置的话就把store.js中 保存的数据先删除了  然后在添加新修改过的数据
                         this.removePages(cloneData);
-                    };
+                    }
                     this.addPages(cloneData);
                     this.$emit("closePagesDialog");
                     this.resetPageModel();
@@ -322,15 +334,21 @@ export default {
         },
         //如果storee中的DataSource为空则显示新建DataSource的框
         addDataSource(){
-            let dataSource = {
+            this.newAddDataSource = {
                 name : "",
                 type : "",
                 reqType : "",
                 url : ""
             };
-            this.newAddDataSource.push(dataSource);
+            // this.newAddDataSource.push(dataSource);
         },
         showDatasource(){
+            this.newAddDataSource = {
+                name : "",
+                type : "",
+                reqType : "",
+                url : ""
+            };
             this.datasourceDialog = true; 
         },
         saveDatasourceDialog(){

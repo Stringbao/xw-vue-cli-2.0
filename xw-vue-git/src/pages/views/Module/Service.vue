@@ -1,7 +1,7 @@
 <template>
     <div class="le_comps_core_css">
         <div class="head">
-            <h4 class="le_page_name">Store Management</h4>
+            <h4 class="le_page_name" style="text-align:center;">Service Management</h4>
             <button class="tab_add" @click="add">
                 <span role="img" class="actions_add">
                     <i class="iconfont icon-add"></i>
@@ -12,65 +12,63 @@
             <table>
                 <thead>
                     <tr>
-                        <th>name</th>
-                        <th>type</th>
-                        <th>url</th>
-                        <th>Request Type</th>
+                        <th>URL Name</th>
+                        <th>RequestType</th>
+                        <th>URL</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody >
-                    <tr v-for="(item,idx) in stores" :key="idx">
+                    <tr v-for="(item,idx) in sevices" :key="idx">
                         <td>{{item.name}}</td>
-                        <td>{{item.type}}</td>
-                        <td>{{item.url}}</td>
                         <td>{{item.reqType}}</td>
+                        <td>{{item.url}}</td>
                         <td>
                             <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
                         </td>
                     </tr>
-                    <tr v-if="!stores.length" style="width:100%;height:60px;line-height:60px;text-align:center;">
+                    <tr v-show="!sevices.length" style="width:100%;height:60px;line-height:60px;text-align:center;">
                         <td colspan="6">暂无数据</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <le-dialog title="create Store" v-model="dialog.showDialog" width="700" height="600">
-            <div slot="body">
-                <StoreDialog :store="store" :action="dialog.action" ref="store" />
-            </div>
-            <div slot="button">
-                <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
-                <le-button type="save" value="<#保存#>" @click="handleSave"></le-button>
-            </div>
-        </le-dialog>
+
+        <ServiceDialog 
+            :title="dialog.title" 
+            :showDialog="dialog.showDialog" 
+            :params="dialog.params"
+            @cancel="this.handleClose"
+            @confirm="this.handleSave"
+        ></ServiceDialog>
     </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
-import StoreDialog from "@pages/dialog/Store.vue";
+import ServiceDialog from "@pages/dialog/Service.vue";
 export default {
-    name: "storeManage",
+    name: "serviceManage",
     props: {
-        stores: {
+        sevices: {
             type: Array
         }
     },
     components:{
-        StoreDialog
+        ServiceDialog
     },
     data() {
         return {
             dialog: {
                 showDialog: false,
-                action:""
+                title:"",
+                action:"",
+                params:null
             },
-            store: {
+            service: {
                 name: "",
-                type: "array",
                 url: "",
-                reqType: "get",
+                reqType: "get"
             },
         };
     },
@@ -78,40 +76,50 @@ export default {
         ...mapState(["dataSource"])
     },
     methods: {
-        ...mapActions(["addStore", "removeStore"]),
-        clearStore(){
-            this.store = {
-                name: "",
-                type: "array",
-                url: "",
-                reqType: "get",
-            }
-        },
+        ...mapActions(["addService", "removeService", "updateService"]),
         add() {
-            this.clearStore()
+            this.clearService();
             this.dialog.showDialog = true;
+            this.dialog.title = "create Service";
             this.dialog.action = "create";
-        },
-        del(item, idx) {
-            this.alert.showConfirm("Are you sure you want to do this?", () => {
-                this.removeStore(idx);
-            });
+            this.dialog.params = this.service;
         },
         update(item, idx) {
-            this.clearStore();
-            this.store = item;
+            this.service = item;
             this.dialog.showDialog = true;
+            this.dialog.title = "edit Service";
             this.dialog.action = "update";
+            this.dialog.params = this.service;
         },
+        //删除
+        del(item, idx) {
+            this.alert.showConfirm("Are you sure you want to do this?", () => {
+                this.removeService(idx);
+            });
+        },
+        
         handleSave() {
-            this.$refs.store.submit().then(()=>{
-                this.dialog.showDialog = false;
-            }).catch(err=>{
-                this.dialog.showDialog = false;
-            })
+            let service = {
+                name:this.dialog.params.name,
+                reqType:this.dialog.params.reqType,
+                url:this.dialog.params.url
+            };
+            if(this.dialog.action === "create"){
+                this.addService(service);
+            }else{
+                this.updateService(service);
+            }
+            this.dialog.showDialog = false;
         },
         handleClose() {
             this.dialog.showDialog = false;
+        },
+        clearService(){
+            this.service = {
+                name: "",
+                url: "",
+                reqType: "get"
+            }
         }
     },
     mounted() {}

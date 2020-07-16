@@ -1,57 +1,65 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const argv = require('yargs-parser')(process.argv.slice(2));
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require("webpack");
 module.exports = {
+    mode:"development",
+    devtool:'eval-source-map',
     context: path.resolve(__dirname, ".."),
-    entry: {
-        index: './src/index.js',
-    },
-    output: {
+    entry: "./app/index.js",
+    output:{
         path: path.resolve(__dirname, '../dist'),
-        filename: 'scripts/[name].[hash].bundle.js',
     },
-    module: {
-        rules: [
+    module:{
+        rules:[
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "babel-loader",
             },
-            
             {
                 test:/.vue$/,
                 loader: 'vue-loader'
             },
             {
-                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
-                    }
-                }]
-            },
+                test: /\.(sc|sa|c)ss$/,
+                use: [
+                    'vue-style-loader',
+                    "css-loader",
+                    'sass-loader'
+                ],
+           }
         ]
     },
-    resolve: {
-        alias: {
-            "@constant":path.resolve(__dirname,"..","./src/constant"),
-            "@model":path.resolve(__dirname,"..","./src/model"),
-            "@route":path.resolve(__dirname,"..","./src/route"),
-            "@css": path.resolve(__dirname,'..','./src/css'),
-            "@services": path.resolve(__dirname,'..','./src/services'),
-            "@util": path.resolve(__dirname,'..','./src/util'),
-            "@helper": path.resolve(__dirname,'..','./src/helper'),
-            "@store": path.resolve(__dirname,'..','./src/store'),
-            "@pages": path.resolve(__dirname,'..','./src/pages'),
-            "@assets": path.resolve(__dirname,'..','./src/assets')
+    resolve:{
+        alias:{
+            "@root":path.resolve(__dirname,".."),
+            "@":path.resolve(__dirname,"../src/"),
+            "@components":path.resolve(__dirname,"../src/components"),
+            "@assets":path.resolve(__dirname,"../src/assets"),
+            "@route":path.resolve(__dirname,"../app/route"),
+            "@pages":path.resolve(__dirname,"../app/pages"),
+            "@util":path.resolve(__dirname,"../src/tool"),
         },
         extensions: ['.vue', '.js','.json']
     },
-    plugins: [
+    devServer: {
+        contentBase: "./dist",
+        compress: true,
+        watchContentBase: true,
+        openPage:"./index.html",
+        port: 9000,
+        open:true,
+        hot:true,
+        proxy:{
+            '/': {
+                target: 'https://admin.nec.lenovouat.com/',
+                secure: false,
+                changeOrigin: true
+            }
+        }
+    },
+    plugins:[
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             title: 'test title',
@@ -68,7 +76,6 @@ module.exports = {
                     <div id="app"></div> 
                 </body>
             </html>`,
-            chunks:['index','runtime','vendors'],
             inject: true,
             minify: {
                html5: true,
@@ -79,9 +86,10 @@ module.exports = {
                removeComments: false
             }
         }),
-        new webpack.ProvidePlugin({
-            Ajax: [path.resolve(__dirname,'..','./src/util/http.js'),"default"],
-            // ...
-        })
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
     ],
+    watchOptions: {
+        ignored: /node_modules/
+    }
 }

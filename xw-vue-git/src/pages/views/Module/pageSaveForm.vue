@@ -29,6 +29,8 @@
                             display-name="name" display-value="name" 
                             v-model="item.dataSource">
                         </le-local-select>
+                        <!-- 新建DataSource -->
+                        <le-button class="fr" type="create" value="addDatasource" @click="showDatasource"></le-button>
                     </div>
                     <le-radio-list label="on:" :data-source="dialogValidateType" 
                         display-name="name" display-value="code" 
@@ -40,12 +42,36 @@
                     </le-radio-list>
                 </div>
             </div>
+            <!-- datasource的配置 -->
+            <le-dialog title="新建dataSource" height="505" width="1000" v-model="datasourceDialog">
+                <div slot="body">
+                    <div class="">
+                        <div class="clearfix">
+                            <le-input label="name:" v-model="newAddDataSource.name"></le-input>
+                            <le-radio-list label="type:" :data-source="dataSourceType" 
+                                display-name="name" display-value="code" 
+                                v-model="newAddDataSource.type">
+                            </le-radio-list>
+                            <le-radio-list label="reqType:" :data-source="dataSourceReqType" 
+                                display-name="name" display-value="code" 
+                                v-model="newAddDataSource.reqType">
+                            </le-radio-list>
+                            <le-input label="url:" v-model="newAddDataSource.url"></le-input>
+                        </div>
+                    </div>
+                </div>
+                <div slot="button">
+                    <le-button type="cancel" value="<#取消#>" @click="closeDatasourceDialog"></le-button>
+                    <le-button type="save" value="<#保存#>" @click="saveDatasourceDialog"></le-button>
+                </div>
+            </le-dialog>
         </div>
         <div class="le_new_page_btn_group">
             <le-button value="返回" type="back" @click="close"></le-button>
             <le-button value="确定" type="save" @click="save"></le-button>
         </div>
     </le-form>
+    
 </template>
 <script>
 import Util from "@util/util.js";
@@ -53,6 +79,7 @@ import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     data(){
         return {
+            datasourceDialog:false,
             searchModelTypes:[
                 {name:"text",code:"text"},
                 {name:"select",code:"select"}
@@ -71,7 +98,17 @@ export default {
                         
                     ],
                 }
-            }
+            },
+            dataSourceType:[
+                {name:"array",code:"array"},
+                {name:"enum",code:"enum"},
+            ],
+            dataSourceReqType:[
+                {name:"get",code:"get"},
+                {name:"post",code:"post"},
+            ],
+            //用户配置的dataSource的数据
+            newAddDataSource:{}
         }
     },
     props: {
@@ -91,7 +128,7 @@ export default {
     },
     components:{},
     methods:{
-        ...mapActions(["addPages","removePages"]),
+        ...mapActions(["addPages","removePages","addStore"]),
          //添加搜搜条件
         addModel(){
             let obj = {
@@ -154,6 +191,22 @@ export default {
         close(){
             this.$emit("closePagesDialog");
             this.resetPageModel();
+        },
+        showDatasource(){
+            this.newAddDataSource = {
+                name : "",
+                type : "",
+                reqType : "",
+                url : ""
+            };
+            this.datasourceDialog = true; 
+        },
+        saveDatasourceDialog(){
+            this.addStore(this.newAddDataSource);
+            this.closeDatasourceDialog(); 
+        },
+        closeDatasourceDialog(){
+            this.datasourceDialog = false; 
         }
     },
     mounted(){

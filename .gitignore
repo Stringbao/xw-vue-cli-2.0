@@ -17,3 +17,4 @@ pids
 lib-cov
 coverage
 tempFolder
+yarn.lock

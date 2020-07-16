@@ -1,0 +1,19 @@
+{
+  "state": [{
+    "name": "salesRoute",
+    "type": "array",
+    "url": "/api/getRoleTypes"
+  },
+    {
+      "name": "salesRoute-B",
+      "type": "array",
+      "Enum": "KEYS.SALES.ACTION_LIST"
+    },
+    {
+      "name": "salesRoute-C",
+      "type": "json",
+      "Enum": "KEYS.SALES.ACTION_List_C"
+    }
+  ],
+  "ModuleName": "Roles"
+}
