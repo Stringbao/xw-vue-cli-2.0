@@ -13,16 +13,11 @@ require('./route/index.js')(app);
 
 app.set('view options', { pretty: true });
 
-const init = (projectPath,projectName)=>{
-    app.listen(9998,d=>{
-
+let init = function(){
+    console.log(1);
+    app.listen(9876,d=>{
+        console.log("listen in 9876");
     })
 }
 
-/**
- * 发布到生产环境后需要注释init方法, 项目下载完毕后会直接启动node服务
- * 测试环境需要打开init方法，直接启动node服务
- */
-// init("/Users/wupeng/Documents/aaa","aaa");
-
-module.exports = init;
+module.exports =  init;
