@@ -1,15 +1,15 @@
 {
-    "name": "le-vue",
-    "version": "1.1.5",
+    "name": "lev2-vue",
+    "version": "1.0.2",
     "description": "",
     "main": "index.js",
     "scripts": {
         "release": "npm publish . --registry http://registry.npmjs.org"
     },
     "bin": {
-        "le": "bin/index",
-        "le-init": "bin/index-init",
-        "le-server": "bin/index-server"
+        "lev2": "bin/index",
+        "lev2-init": "bin/index-init",
+        "lev2-server": "bin/index-server"
     },
     "keywords": [],
     "author": "string_bao <string_bao@163.com>",
