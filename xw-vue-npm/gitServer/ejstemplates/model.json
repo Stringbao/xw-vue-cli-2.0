@@ -1,0 +1,4 @@
+{
+  "className": "SalesModel",
+  "data": ["roleType", "roleName"]
+}

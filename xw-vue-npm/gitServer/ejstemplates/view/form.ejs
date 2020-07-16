@@ -11,8 +11,8 @@
                     <%_ if(col.label && col.label != ''){ -%>
                         <%_  %> label="<%= col.label %>:"<%_  -%>
                     <%_ } -%>
-                    <%_ if(col.key && col.key != ''){ -%>
-                        <%_  %> v-model="entity.<%= col.key %>"<%_  -%>
+                    <%_ if(col.field && col.field != ''){ -%>
+                        <%_  %> v-model="<%= col.field %>"<%_  -%>
                     <%_ } -%>
                     <%_ if(col.on && col.on == '1'){ -%>
                         <%_  %> on<%_  -%>
@@ -38,11 +38,11 @@
                             <%_ if(col.label && col.label != ''){ -%>
                                 <%_  %> label="<%= col.label %>:"<%  -%>
                             <%_ } _%>
-                            <%_ if(col.key && col.key != ''){ -%>
-                                <%_  %> v-model="entity.<%=col.key%>"<%  -%>
+                            <%_ if(col.field && col.field != ''){ -%>
+                                <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                             <%_ } _%>
                             <%_ if(col.dataSource && col.dataSource != ''){ -%>
-                                <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
+                                <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
                             <%_ } _%>
                             <%_ if(col.displayName && col.displayName != ''){ -%>
                                 <%_  %> display-name="<%= col.displayName %>"<%  -%>
@@ -65,8 +65,8 @@
                         <%_ if(col.label && col.label != ''){ -%>
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.key && col.key != ''){ -%>
-                            <%_  %> v-model="entity.<%=col.key%>"<%  -%>
+                        <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.dataSource && col.dataSource != ''){ -%>
                             <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
@@ -92,11 +92,11 @@
                         <%_ if(col.label && col.label != ''){ -%>
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.key && col.key != ''){ -%>
-                            <%_  %> v-model="entity.<%=col.key%>"<%  -%>
+                        <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.dataSource && col.dataSource != ''){ -%>
-                            <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
+                            <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.displayName && col.displayName != ''){ -%>
                             <%_  %> display-name="<%= col.displayName %>"<%  -%>
@@ -122,8 +122,8 @@
                         <%_ if(col.label && col.label != ''){ -%>
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.key && col.key != ''){ -%>
-                            <%_  %> v-model="entity.<%=col.key%>"<%  -%>
+                        <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.required && col.required == '1'){ -%>
                             <%_  %> on<%_  -%>
@@ -143,8 +143,8 @@
                         <%_ if(col.label && col.label != ''){ -%>
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.key && col.key != ''){ -%>
-                            <%_  %> v-model="entity.<%=col.key%>"<%  -%>
+                        <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.required && col.required == '1'){ -%>
                             <%_  %> on<%_  -%>
@@ -164,8 +164,8 @@
                         <%_ if(col.label && col.label != ''){ -%>
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.key && col.key != ''){ -%>
-                            <%_  %> v-model="entity.<%=col.key%>"<%  -%>
+                        <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.required && col.required == '1'){ -%>
                             <%_  %> on<%_  -%>

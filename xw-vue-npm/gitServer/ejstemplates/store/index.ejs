@@ -1,19 +1,10 @@
-import Vue from "vue";
-import Vuex from 'vuex';
-Vue.use(Vuex);
-
-import login_store from "@store/modules/login.js";
-import menus_store from "@store/modules/menu.js";
 <%_ data.forEach(function(row){ -%>
-import <%= row %>_store from "@store/modules/<%= row %>.js"; 
+import <%= row.ModuleName %>Store from "./modules/<%= row.ModuleName %>.js";
 <%_ _%><% }) -%>
-export default new Vuex.Store({
-    namespaced:true,
-    modules:{
-        login_store:login_store,
-        menus_store:menus_store,
-    <%_ data.forEach(function(row){ -%>
-        <%= row %>Store:<%= row %>_store,
-    <%_ _%><% }) -%>
-    }
-})
+
+
+export default {
+<%_ data.forEach(function(row){ -%>
+    <%= row.ModuleName %>Store,
+<%_ _%><% }) -%>
+}

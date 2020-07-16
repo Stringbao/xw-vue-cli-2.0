@@ -1,0 +1,28 @@
+
+export default class <%= data.className %>{
+    constructor(){
+        this.clear();
+    }   
+
+    get(){
+        return {
+<%_ if (data.data.length){ -%>
+<%_ data.data.forEach(function(item){ -%>
+           <%= item %>: this.<%= item %>,
+           <%_ _%><% }) -%>
+<%_ _%><% } -%>
+        }
+    }
+
+    set(data){
+        Object.assign(this, data)
+    }
+
+    clear() {
+<%_ if (data.data.length){ -%>
+<%_ data.data.forEach(function(item){ -%>
+        this.<%= item %> = '';
+    <%_ _%><% }) -%>
+<%_ _%><% } -%>
+    }
+}

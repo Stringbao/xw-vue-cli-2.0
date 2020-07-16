@@ -1,10 +1,9 @@
 <template>
     <div class="le_comps_core_css">
-        <h4 class="le_page_name"><%= data.tableTitle %></h4>
+        <h4 class="le_page_name"><%= data.PageTitle %></h4>
         <div class='le_list_search_pannel clearfix'>
-            <%_ data.cols.forEach(function(row){ -%>
+            <%_ data.config.searchModel.forEach(function(col){ -%>
             <div class="<%= 'col' + data.colsCount %>"><%_ %>
-            <%_ row.forEach(function(col){ -%>
                 <%_ if(col.type == "text"){ -%>
                 <le-input<%  _%>
                     <%_ if(col.placeholder && col.placeholder != ''){ -%>
@@ -16,8 +15,8 @@
                     <%_ if(col.label && col.label != ''){ -%>
                         <%_  %> label="<%= col.label %>:"<%_  -%>
                     <%_ } -%>
-                    <%_ if(col.key && col.key != ''){ -%>
-                        <%_  %> v-model="searchModel.<%= col.key %>"<%_  -%>
+                    <%_ if(col.field && col.field != ''){ -%>
+                        <%_  %> v-model="searchModel.<%= col.field %>"<%_  -%>
                     <%_ } -%>></le-input>
                 <%_ } -%>
                 <%_ if(col.type == "select"){ -%>
@@ -31,11 +30,11 @@
                             <%_ if(col.label && col.label != ''){ -%>
                                 <%_  %> label="<%= col.label %>:"<%  -%>
                             <%_ } _%>
-                            <%_ if(col.key && col.key != ''){ -%>
-                                <%_  %> v-model="searchModel.<%=col.key%>"<%  -%>
+                            <%_ if(col.field && col.field != ''){ -%>
+                                <%_  %> v-model="searchModel.<%=col.field%>"<%  -%>
                             <%_ } _%>
                             <%_ if(col.dataSource && col.dataSource != ''){ -%>
-                                <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
+                                <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
                             <%_ } _%>
                             <%_ if(col.displayName && col.displayName != ''){ -%>
                                 <%_  %> display-name="<%= col.displayName %>"<%  -%>
@@ -52,11 +51,11 @@
                         <%_ if(col.label && col.label != ''){ -%>
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.key && col.key != ''){ -%>
-                            <%_  %> v-model="searchModel.<%=col.key%>"<%  -%>
+                        <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="searchModel.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.dataSource && col.dataSource != ''){ -%>
-                            <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
+                            <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.displayName && col.displayName != ''){ -%>
                             <%_  %> display-name="<%= col.displayName %>"<%  -%>
@@ -73,11 +72,11 @@
                     <%_ if(col.label && col.label != ''){ -%>
                         <%_  %> label="<%= col.label %>:"<%  -%>
                     <%_ } _%>
-                    <%_ if(col.key && col.key != ''){ -%>
-                        <%_  %> v-model="searchModel.<%=col.key%>"<%  -%>
+                    <%_ if(col.field && col.field != ''){ -%>
+                        <%_  %> v-model="searchModel.<%=col.field%>"<%  -%>
                     <%_ } _%>
                     <%_ if(col.dataSource && col.dataSource != ''){ -%>
-                        <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
+                        <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
                     <%_ } _%>
                     <%_ if(col.displayName && col.displayName != ''){ -%>
                         <%_  %> display-name="<%= col.displayName %>"<%  -%>
@@ -97,8 +96,8 @@
                     <%_ if(col.label && col.label != ''){ -%>
                         <%_  %> label="<%= col.label %>:"<%  -%>
                     <%_ } _%>
-                    <%_ if(col.key && col.key != ''){ -%>
-                        <%_  %> v-model="searchModel.<%=col.key%>"<%  -%>
+                    <%_ if(col.field && col.field != ''){ -%>
+                        <%_  %> v-model="searchModel.<%=col.field%>"<%  -%>
                     <%_ } _%>></le-date-picker>
                 <%_ } -%>
                 <%_ if(col.type == "timepicker"){ -%>
@@ -112,8 +111,8 @@
                     <%_ if(col.label && col.label != ''){ -%>
                         <%_  %> label="<%= col.label %>:"<%  -%>
                     <%_ } _%>
-                    <%_ if(col.key && col.key != ''){ -%>
-                        <%_  %> v-model="searchModel.<%=col.key%>"<%  -%>
+                    <%_ if(col.field && col.field != ''){ -%>
+                        <%_  %> v-model="searchModel.<%=col.field%>"<%  -%>
                     <%_ } _%>></le-time-picker>
                 <%_ } _%>
                 <%_ if(col.type == "dateTimepicker"){ -%>
@@ -127,12 +126,11 @@
                     <%_ if(col.label && col.label != ''){ -%>
                         <%_  %> label="<%= col.label %>:"<%  -%>
                     <%_ } _%>
-                    <%_ if(col.key && col.key != ''){ -%>
-                        <%_  %> v-model="searchModel.<%=col.key%>"<%  -%>
+                    <%_ if(col.field && col.field != ''){ -%>
+                        <%_  %> v-model="searchModel.<%=col.field%>"<%  -%>
                     <%_ } _%>
                 ></le-date-time-picker>
                 <%_ } _%>
-            <%_ }) _%>
             </div>
         <%_ _%><% }) -%>
         </div>
@@ -142,16 +140,16 @@
         <%_ }) _%>
         </div>
         <div class='le_table_container'>
-            <table-list title="<%= data.tableTitle %>" ref='<%= data.pageName %>_ref' :options='<%= data.tableOptionsName %>'></table-list>
+            <table-list title="<%= data.tableTitle %>" ref='<%= data.PageName %>_ref' :options='<%= data.tableOptionsName %>'></table-list>
         </div>
-        <%_ if(data.hasDialog && data.hasDialog == '1'){ _%>
-        <le-dialog v-model = "dialogTag" title = "<%= data.tableTitle %>">
+        <%_ if(data.model){ _%>
+        <le-dialog v-model = "dialogTag">
             <div slot = "body">
-        <%_ _%><%- include(data.viewFolderPath + "/form",{data:data.form.cols,isSavePage:false}) %>
+                <%_ _%><%- include("form.ejs",{data:data.model,model: data.ModuleName}) %>
             </div>
             <div slot="button">
                 <le-button type="cancel" value="取消" @click = "dialogCancel"></le-button>
-                <le-button type="save" value="确定"  @click = "dialogConfirm"></le-button>   
+                <le-button type="save" value="确定"  @click = "dialogConfirm"></le-button>
             </div>
         </le-dialog>
         <%_ } -%>
@@ -160,57 +158,81 @@
 <script>
 import CommonUtil from '@util';
 import { createNamespacedHelpers } from 'vuex';
-const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= moduleName %>Store');
+const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.ModuleName %>Store');
+<%_ if(data.model && data.model != ""){ -%>
+import <%= data.ModuleName %>Model from '@model/<%= data.ModuleName %>'
+<%_ } -%>
 export default {
-    name:"<%= data.pageName %>",
+    name:"<%= data.ModuleName %><%= data.PageName %>",
     data(){
         return {
             // 搜索条件
-            searchModel:{
-                <%_ data.cols.forEach(function(row){ -%>
-                    <%_ row.forEach(function(col){ -%>
-                        <%_ if(col.key && col.key != ""){ -%>
-                            <%_ %><%= col.key %> : "",
-                        <%_ } -%>
-                    <%_ }) -%>
-                <%_ }) -%>
-            },
+        searchModel:{
+            <%_ data.config.searchModel.forEach(function(col){ -%>
+                <%_ if(col.field && col.field != ""){ -%>
+                <%= col.field %> : "",
+                <%_ } -%>
+            <%_ }) -%>
+        },
             // dialog v-model的值 控制dialog显示/隐藏
-            <%_ if(data.hasDialog && data.hasDialog == '1'){ -%>
+            <%_ if(data.model){ -%>
             dialogTag:false,
+            <%= data.ModuleName %>: new <%= data.ModuleName %>Model(),
             <%_ } -%>
             // 表格的配置
-            <%= data.tableOptionsName %>:<%- data.tableOptions -%>
+            <%= data.tableOptionsName %>: <%= data.config.table %>
         }
     },
     computed:{
-        ...mapState(["dataSource"<%_ if(data.hasDialog && data.hasDialog == '1'){ -%>,"entity"<%_ } -%>])
+        ...mapState([
+            <%_ data.config.searchModel.forEach(function(actionName){ -%>
+            <%_ if (actionName.dataSource) { -%>
+            "<%= actionName.dataSource%>",
+            <%_ } -%>
+            <%_ }) -%>
+        ])
     },
     methods:{
         ...mapActions([
-        <%_ data.action.forEach(function(actionName){ -%>
-                "<%=  actionName -%>",
-        <%_ }) -%>
+            <%_ data.config.searchModel.forEach(function(actionName){ -%>
+            <%_ if (actionName.dataSource) { -%>
+            "get<%= actionName.dataSource%>",
+            <%_ } -%>
+            <%_ }) -%>
         ]),
         search(){
-            this.$refs["<%= data.pageName %>_ref"].search();
+            this.$refs["<%= data.PageName %>_ref"].search();
         },
         <%_ data.btn.forEach(function(item){ -%>
-        <%= item.btnHandle %>(){
-            
+        <%= item.btnHandle%>() {
+
         },
-        <%_ }) -%>
-        <%_ if(data.hasDialog && data.hasDialog == '1'){ _%>
+        <%_ }) _%>
+        <%_ if(data.model){ _%>
         dialogConfirm(){},
-        dialogCancel(){},
+        dialogCancel(){
+            this.dialogTag = false;
+        },
+        <%_ } else { -%>
+        createBtn(){
+            this.$router.push({path:'/<%= data.ModuleName + data.PageName %>', query: {tag: 'create'}});
+        },
+        updateBtn(item){
+            this.$router.push({path:'/<%= data.ModuleName + data.PageName %>', query: {tag: 'edit', id: item.id}});
+        },
+        detailInfo(item) {
+            this.$router.push({path:'/<%= data.ModuleName + data.PageName %>', query: {tag: 'detail', id: item.id}});
+        }
         <%_ } -%>
-            
+        }
 
     },
     mounted(){
-        <%_ data.action.forEach(function(actionName){ -%>
-        this.<%= actionName -%>();
-        <%_ }) -%>
+    <%_ data.config.searchModel.forEach(function(actionName){ -%>
+    <%_ if (actionName.dataSource) { -%>
+      this.get<%= actionName.dataSource%>()
+    <%_ } -%>
+    <%_ }) -%>
     }
 }
 </script>

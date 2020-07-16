@@ -1,7 +1,7 @@
 <template>
     <div class="le_comps_core_css new_page_width">
-        <h4 class="le_page_name"><%= data.pageName %></h4>
-    <%_ _%><%- include(data.viewFolderPath + "/form",{data:data.form.cols,isSavePage : true}) %>
+        <h4 class="le_page_name"><%= data.PageTitle %></h4>
+        <%_ _%><%- include("form.ejs",{data:data.model,model: data.ModuleName}) %>
         <div class="le_new_page_btn_group">
             <le-button type = "back" value = "返回" @click = "goBack"></le-button>
             <le-button type = "save" value = "保存" @click = "save"></le-button>
@@ -9,59 +9,64 @@
     </div>
 </template>
 <script>
-import CommonUtil from '@util';
-import { createNamespacedHelpers } from 'vuex';
-const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= moduleName %>Store');
+    import CommonUtil from '@util';
+    import <%= data.ModuleName %>Model from '@model/<%= data.ModuleName %>'
+    import <%= data.ModuleName %>Service from '@service/<%= data.ModuleName %>'
+    import { createNamespacedHelpers } from 'vuex';
+    const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.ModuleName %>Store');
 export default {
-    name:"<%= data.pageName %>",
+    name:"<%= data.ModuleName %><%= data.PageName %>",
     data(){
         return {
-           
+            <%= data.ModuleName %>: new <%= data.ModuleName %>Model()
         }
     },
     computed:{
-        ...mapState(["selectDataSource","entity"]),
+        ...mapState([
+            <%_ data.model.forEach(function(actionName){ -%>
+            <%_ if (actionName.dataSource) { -%>
+            "<%= actionName.dataSource%>",
+            <%_ } -%>
+            <%_ }) -%>
+        ]),
         isEdit(){
-            return this.$route.params.tag == "edit";
+            return this.$route.query.tag == "edit";
         },
         isCreate(){
-            return this.$route.params.tag == "create";
+            return this.$route.query.tag == "create";
         },
         isDetail(){
-            return this.$route.params.tag == "detail";
+            return this.$route.query.tag == "detail";
         },
     },
     methods:{
-        ...mapActions([
-            "doCreate",
-            "getInfo",
-            "doUpdate",
-    <%_ data.action.forEach(function(actionName){ -%>
-            "<%= actionName -%>",
+        ...mapActions(
+            [
+                <%_ data.model.forEach(function(actionName){ -%>
+                <%_ if (actionName.dataSource) { -%>
+                "get<%= actionName.dataSource%>",
+    <%_ } -%>
     <%_ }) -%>
-        ]),
+
+            ]
+        ),
         save(){
-            if(this.isCreate){
-                this.doCreate()
-                    .then((d)=>{
-                        this.alert.showAlert("success","新建成功");
-                        this.goBack();
-                    })
-            }
-            if(this.isEdit){
-                this.doUpdate()
-                    .then((d) => {
-                        this.alert.showAlert("success","修改成功");
-                        this.goBack();
-                    })
-            }
+            this.$refs.saveForm.validate().then(x => {
+                let data = this.salesModel.get();
+                if (this.isEdit) {
+                    data.id = this.$route.query.id
+                }
+                <%= data.ModuleName %>Service.save(data).then(res=>{
+                    this.alert.showAlert("success",res.msg);
+                    this.goBack();
+                }).catch(err=>{
+                    this.alert.showAlert("error",err.msg);
+                })
+            })
         },
         getDetail(){
-            this.getInfo({
-                context:this,
-                params:{
-
-                }
+            <%= data.ModuleName %>Service.detail({id: this.$route.query.id}).then(data => {
+                this.<%= data.ModuleName %>.set(data.data)
             })
         },
         goBack(){
@@ -69,8 +74,10 @@ export default {
         },
     },
     mounted(){
-    <%_ data.action.forEach(function(actionName){ -%>
-            this.<%= actionName -%>();
+    <%_ data.model.forEach(function(actionName){ -%>
+        <%_ if (actionName.dataSource) { -%>
+             this.get<%= actionName.dataSource -%>();
+        <%_ } -%>
     <%_ }) -%>
         this.$refs.saveForm.reset();
         if(this.isEdit || this.isDetail){

@@ -1,0 +1,18 @@
+{
+  "create": {
+    "url": "/api/getRoleTypes"
+  },
+  "update": {
+    "url": "/api/getRoleTypes"
+  },
+  "remove": {
+    "url": "/api/getRoleTypes"
+  },
+  "detail": {
+    "url": "/api/getRoleTypes"
+  },
+  "list": {
+    "url": "/api/getRoleTypes"
+  },
+  "ModuleName": "Roles"
+}
