@@ -7,7 +7,6 @@ export default {
         ],
         currentModule:null,
         dataSource:{
-            storeTypeUrl:Enum.storeTypeUrl,
             storeType:Enum.storeType,
             requestType:Enum.requestType
         },
@@ -38,8 +37,12 @@ export default {
         },
         //创建stores
         addStore(state,data){
-            state.currentModule.Store.state.push(data);
-            console.log(this.state.currentModule.Store.state)
+            let idx = state.currentModule.Store.state.findIndex(item=>item.name == data.name);
+            if(idx<0){
+                state.currentModule.Store.state.push(data)
+            }else{
+                alert("there had been exited a same store")
+            }
         },
         removeStore(state,data){
             state.currentModule.Store.state.splice(data,1)
@@ -47,22 +50,28 @@ export default {
         changeStore(state,data){
             state.currentModule.Store.state = data;
         },
+        updateStore(state,data){
+
+        },
         //创建services
         addService(state,data){
-            state.currentModule.Services.push(data)
+            let idx = state.currentModule.Services.findIndex(item=>item.name == data.name && item.reqType == data.reqType);
+            if(idx<0){
+                state.currentModule.Services.push(data)
+            }else{
+                alert("there had been exited a same service")
+            }
         },
         removeService(state,data){
-            console.log(data);
             state.currentModule.Services.splice(data,1)
         },
         getServiceId(state,data){
             console.log(data);
             state.currentModule = data;
         },
-        changeService(state,data){
+        updateService(state,data){
             // todo 
-            state.currentModule.Services;
-        }
+        },
     },
     actions:{
         addModules({commit,state},ModuleName){
@@ -70,31 +79,11 @@ export default {
                 ModuleName:ModuleName,
                 Pages:[],
                 Services:[
-                    {
-                        name:"create",
-                        type:"post",
-                        url:""
-                    },
-                    {
-                        name:"update",
-                        type:"post",
-                        url:""
-                    },
-                    {
-                        name:"remove",
-                        type:"post",
-                        url:""
-                    },
-                    {
-                        name:"detail",
-                        type:"get",
-                        url:""
-                    },
-                    {
-                        name:"list",
-                        type:"get",
-                        url:""
-                    }
+                    { name:"create",reqType:"post",url:""},
+                    { name:"update",reqType:"post",url:""},
+                    { name:"remove",reqType:"post",url:""},
+                    { name:"detail",reqType:"get",url:""},
+                    { name:"list",reqType:"get",url:""}
                 ],
                 Store:{
                   state:[]  
@@ -107,23 +96,29 @@ export default {
         changeModules({commit,state},module){
             commit("changeModules",module)
         },
+
         addPages({commit,state},data){
             commit("addPages",data)
         },
+
         addStore({commit,state},data){
             commit("addStore",data)
+        },
+        updateStore({commit,state},data){
+            commit("updateStore",data)
         },
         removeStore({commit,state},data){
             commit("removeStore",data);
         },
+        
         addService({commit,state},data){
             commit("addService",data);
         },
         removeService({commit,state},data){
             commit("removeService",data);
         },
-        changeService({commit,state},data){
-            commit("changeService",data);
+        updateService({commit,state},data){
+            commit("updateService",data);
         }
     }
 }

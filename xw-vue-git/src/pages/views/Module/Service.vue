@@ -18,28 +18,35 @@
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody v-if="sevices.length == 0?false:true">
+                <tbody >
                     <tr v-for="(item,idx) in sevices" :key="idx">
                         <td>{{item.name}}</td>
-                        <td>{{item.type == 1?"GET":"POST"}}</td>
+                        <td>{{item.reqType}}</td>
                         <td>{{item.url}}</td>
                         <td>
                             <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
                         </td>
                     </tr>
-                </tbody>
-                <tbody v-else style="width:100%;">
-                    <tr style="width:100%;height:60px;line-height:60px;text-align:center;">
+                    <tr v-show="!sevices.length" style="width:100%;height:60px;line-height:60px;text-align:center;">
                         <td colspan="6">暂无数据</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <ServiceDialog 
+            :title="dialog.title" 
+            :showDialog="dialog.showDialog" 
+            :params="dialog.params"
+            @cancel="this.handleClose"
+            @confirm="this.handleSave"
+        ></ServiceDialog>
     </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import ServiceDialog from "@pages/dialog/Service.vue";
 export default {
     name: "serviceManage",
     props: {
@@ -47,33 +54,42 @@ export default {
             type: Array
         }
     },
+    components:{
+        ServiceDialog
+    },
     data() {
         return {
             dialog: {
-                showDialog: false
+                showDialog: false,
+                title:"",
+                action:"",
+                params:null
             },
-            storeObj: {
+            service: {
                 name: "",
                 url: "",
-                type: 1
+                reqType: "get"
             },
-            dialogTitle: "create Service"
         };
-    },
-    watch: {
-        sevices(newVal, old) {
-            this.sevices = newVal;
-        }
     },
     computed: {
         ...mapState(["dataSource"])
     },
     methods: {
-        ...mapActions(["addService", "removeService", "changeService"]),
-        //新增
+        ...mapActions(["addService", "removeService", "updateService"]),
         add() {
+            this.clearService();
             this.dialog.showDialog = true;
-            this.dialogTitle = "create Service";
+            this.dialog.title = "create Service";
+            this.dialog.action = "create";
+            this.dialog.params = this.service;
+        },
+        update(item, idx) {
+            this.service = item;
+            this.dialog.showDialog = true;
+            this.dialog.title = "edit Service";
+            this.dialog.action = "update";
+            this.dialog.params = this.service;
         },
         //删除
         del(item, idx) {
@@ -81,45 +97,29 @@ export default {
                 this.removeService(idx);
             });
         },
-        //修改
-        update(item, idx) {
-            console.log(item, idx);
-            this.dialog.showDialog = true;
-            this.dialogTitle = "edit Service";
-            debugger;
-            this.storeObj = item;
-            // let obj = {...this.storeObj}
-        },
-        //新增、修改保存
+        
         handleSave() {
-            debugger;
-            let that = this;
-            this.$refs.servicesForm
-                .validate()
-                .then(res => {
-                    if (res.success) {
-                        if (that.dialogTitle == "create Service") {
-                            let obj = { ...that.storeObj };
-                            that.addService(obj);
-                            that.dialog.showDialog = false;
-                            that.$refs.servicesForm.reset();
-                        } else {
-                            let obj = { ...that.storeObj };
-                            if (!that.storeObj.name && !that.storeObj.type) {
-                                that.changeService(obj);
-                                that.dialog.showDialog = false;
-                                that.$refs.servicesForm.reset();
-                            }
-                        }
-                    }
-                })
-                .catch(err => {
-                    this.alert.showAlert("error", err.info);
-                });
+            let service = {
+                name:this.dialog.params.name,
+                reqType:this.dialog.params.reqType,
+                url:this.dialog.params.url
+            };
+            if(this.dialog.action === "create"){
+                this.addService(service);
+            }else{
+                this.updateService(service);
+            }
+            this.dialog.showDialog = false;
         },
         handleClose() {
             this.dialog.showDialog = false;
-            this.$refs.servicesForm.reset();
+        },
+        clearService(){
+            this.service = {
+                name: "",
+                url: "",
+                reqType: "get"
+            }
         }
     },
     mounted() {}
