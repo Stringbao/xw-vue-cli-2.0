@@ -1,0 +1,196 @@
+<template>
+    <div class="le_comps_core_css">
+        <div class="head">
+            <h4 class="le_page_name" style="text-align:center;">Service Management</h4>
+            <button class="tab_add" @click="add">
+                <span role="img" class="actions_add">
+                    <i class="iconfont icon-add"></i>
+                </span>
+            </button>
+        </div>
+        <div class="le_table_container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>URL Name</th>
+                        <th>RequestType</th>
+                        <th>URL</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody v-if="sevices.length == 0?false:true">
+                    <tr v-for="(item,idx) in sevices" :key="idx">
+                        <td>{{item.name}}</td>
+                        <td>{{item.type == 1?"GET":"POST"}}</td>
+                        <td>{{item.url}}</td>
+                        <td>
+                            <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
+                            <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody v-else style="width:100%;">
+                    <tr style="width:100%;height:60px;line-height:60px;text-align:center;">
+                        <td colspan="6">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+<script>
+import { mapState, mapActions } from "vuex";
+export default {
+    name: "serviceManage",
+    props: {
+        sevices: {
+            type: Array
+        }
+    },
+    data() {
+        return {
+            dialog: {
+                showDialog: false
+            },
+            storeObj: {
+                name: "",
+                url: "",
+                type: 1
+            },
+            dialogTitle: "create Service"
+        };
+    },
+    watch: {
+        sevices(newVal, old) {
+            this.sevices = newVal;
+        }
+    },
+    computed: {
+        ...mapState(["dataSource"])
+    },
+    methods: {
+        ...mapActions(["addService", "removeService", "changeService"]),
+        //新增
+        add() {
+            this.dialog.showDialog = true;
+            this.dialogTitle = "create Service";
+        },
+        //删除
+        del(item, idx) {
+            this.alert.showConfirm("Are you sure you want to do this?", () => {
+                this.removeService(idx);
+            });
+        },
+        //修改
+        update(item, idx) {
+            console.log(item, idx);
+            this.dialog.showDialog = true;
+            this.dialogTitle = "edit Service";
+            debugger;
+            this.storeObj = item;
+            // let obj = {...this.storeObj}
+        },
+        //新增、修改保存
+        handleSave() {
+            debugger;
+            let that = this;
+            this.$refs.servicesForm
+                .validate()
+                .then(res => {
+                    if (res.success) {
+                        if (that.dialogTitle == "create Service") {
+                            let obj = { ...that.storeObj };
+                            that.addService(obj);
+                            that.dialog.showDialog = false;
+                            that.$refs.servicesForm.reset();
+                        } else {
+                            let obj = { ...that.storeObj };
+                            if (!that.storeObj.name && !that.storeObj.type) {
+                                that.changeService(obj);
+                                that.dialog.showDialog = false;
+                                that.$refs.servicesForm.reset();
+                            }
+                        }
+                    }
+                })
+                .catch(err => {
+                    this.alert.showAlert("error", err.info);
+                });
+        },
+        handleClose() {
+            this.dialog.showDialog = false;
+            this.$refs.servicesForm.reset();
+        }
+    },
+    mounted() {}
+};
+</script>
+<style lang="scss" scoped>
+.head {
+    position: relative;
+    display: flex;
+    width: 100%;
+    transition: transform 0.3s;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    margin-top: 20px;
+    .le_page_name {
+        width: 100%;
+        text-align: center;
+    }
+    .tab_add {
+        min-width: 40px;
+        padding: 0 8px;
+        background: #fafafa;
+        border: 1px solid #f0f0f0;
+        border-radius: 2px 2px 0 0;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        .actions_add {
+            display: inline-block;
+            color: inherit;
+            font-style: normal;
+            line-height: 0;
+            text-align: center;
+            text-transform: none;
+            vertical-align: -0.125em;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            svg {
+                display: inline-block;
+            }
+        }
+    }
+}
+.le_table_container {
+    width: 100%;
+    table {
+        width: 100%;
+        thead {
+            width: 100%;
+            th {
+                height: 32px;
+                line-height: 32px;
+                text-align: center;
+                border-right: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+            }
+        }
+        tbody {
+            width: 100%;
+            tr {
+                width: 100%;
+                border-bottom: 1px solid #ccc;
+                td {
+                    text-align: center;
+                    border-right: 1px solid #ccc;
+                    border-left: 1px solid #ccc;
+                }
+            }
+        }
+    }
+}
+</style>

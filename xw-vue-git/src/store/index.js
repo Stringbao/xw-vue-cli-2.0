@@ -1,0 +1,129 @@
+import Enum from "./enum.js";
+export default {
+    state:{
+        project:"",
+        modules:[
+
+        ],
+        currentModule:null,
+        dataSource:{
+            storeTypeUrl:Enum.storeTypeUrl,
+            storeType:Enum.storeType,
+            requestType:Enum.requestType
+        },
+    },
+    mutations:{
+        //创建modules的方法
+        addModules(state,data){
+            let idx = state.modules.findIndex(item=>item.ModuleName == data.ModuleName);
+            if(idx < 0){
+                state.modules.push(data);
+            }else{
+                alert("the module name is unique,this module is exist");
+                return;
+            }
+        },
+        removeModules(state,data){
+            let idx = state.modules.findIndex(item=>item.ModuleName == data); 
+            if(idx >= 0){
+                state.modules.splice(idx,1);
+            }
+        },
+        changeModules(state,data){
+            state.currentModule = data;
+        },
+        //创建pages
+        addPages(state,data){
+            console.log(data)
+        },
+        //创建stores
+        addStore(state,data){
+            state.currentModule.Store.state.push(data);
+            console.log(this.state.currentModule.Store.state)
+        },
+        removeStore(state,data){
+            state.currentModule.Store.state.splice(data,1)
+        },
+        changeStore(state,data){
+            state.currentModule.Store.state = data;
+        },
+        //创建services
+        addService(state,data){
+            state.currentModule.Services.push(data)
+        },
+        removeService(state,data){
+            console.log(data);
+            state.currentModule.Services.splice(data,1)
+        },
+        getServiceId(state,data){
+            console.log(data);
+            state.currentModule = data;
+        },
+        changeService(state,data){
+            // todo 
+            state.currentModule.Services;
+        }
+    },
+    actions:{
+        addModules({commit,state},ModuleName){
+            commit("addModules",{
+                ModuleName:ModuleName,
+                Pages:[],
+                Services:[
+                    {
+                        name:"create",
+                        type:"post",
+                        url:""
+                    },
+                    {
+                        name:"update",
+                        type:"post",
+                        url:""
+                    },
+                    {
+                        name:"remove",
+                        type:"post",
+                        url:""
+                    },
+                    {
+                        name:"detail",
+                        type:"get",
+                        url:""
+                    },
+                    {
+                        name:"list",
+                        type:"get",
+                        url:""
+                    }
+                ],
+                Store:{
+                  state:[]  
+                }
+            });
+        },
+        removeModules({commit,state},ModuleName){
+            commit("removeModules",ModuleName)
+        },
+        changeModules({commit,state},module){
+            commit("changeModules",module)
+        },
+        addPages({commit,state},data){
+            commit("addPages",data)
+        },
+        addStore({commit,state},data){
+            commit("addStore",data)
+        },
+        removeStore({commit,state},data){
+            commit("removeStore",data);
+        },
+        addService({commit,state},data){
+            commit("addService",data);
+        },
+        removeService({commit,state},data){
+            commit("removeService",data);
+        },
+        changeService({commit,state},data){
+            commit("changeService",data);
+        }
+    }
+}
