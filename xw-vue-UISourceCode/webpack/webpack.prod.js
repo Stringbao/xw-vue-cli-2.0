@@ -36,14 +36,14 @@ module.exports = {
             }
         ]
     },
-    externals: { // 对象
-        jquery: { // UMD
-            commonjs: "jQuery",
-            commonjs2: "jQuery",
-            amd: "jQuery",
-            root: "$"
-        }
-    },
+    // externals: { // 对象
+    //     jquery: { // UMD
+    //         commonjs: "jQuery",
+    //         commonjs2: "jQuery",
+    //         amd: "jQuery",
+    //         root: "$"
+    //     }
+    // },
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "../src/"),
