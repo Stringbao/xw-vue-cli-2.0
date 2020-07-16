@@ -12,6 +12,7 @@ const api = {
     create(req,res){
         //create all the files by module (one by one)
         let routers = [];
+        let storeKeys = [];
         data.Modules.forEach(item => {
             let pages = item.Pages;
             let moduleName = item.ModuleName;
@@ -22,7 +23,11 @@ const api = {
             this.createServices(projectPath, services, stores, moduleName);
             this.createHelper(projectPath, moduleName);
             this.createStore(projectPath, stores.state, moduleName);
+
+            storeKeys.push(moduleName);
         });
+        
+        this.writeStoreIndex(projectPath, storeKeys);
     },
     createModel(projectPath, pages, moduleName){
         //create file and write data for model
@@ -38,6 +43,10 @@ const api = {
     },
     createStore(projectPath, storeItems, moduleName){
         APIhelper.createStoreFile(projectPath, storeItems, moduleName);
+    },
+    //write all store keys to store.index.js
+    writeStoreIndex(projectPath, storeKeys){
+        APIhelper.writeStoreIndex(projectPath, storeKeys);
     },
     createView(){
 
