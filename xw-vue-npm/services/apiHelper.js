@@ -26,7 +26,7 @@ let APIhelper = {
     //为单个model.js准备数据
     getMoldeDataFromPageItem(item, moduleName){
         let tmp = {className:"",data:[]};
-        let pageName = item.PageName;
+        let pageName = item.pageName;
         tmp.className = this.firstChatUpperLower(moduleName, true) + this.firstChatUpperLower(this.getFileName(pageName),true) + "Model";
         item.model.forEach(x=>{
             tmp.data.push(x.field);
@@ -39,7 +39,7 @@ let APIhelper = {
         let path = projectPath + "/src/model/";
         pages.forEach( item => {
             if(item.model){
-                let pageName = item.PageName;
+                let pageName = item.pageName;
                 
                 let filePath = path + this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(pageName), true) + "Model.js";
                 fsTool.file.createFile(filePath);
@@ -59,6 +59,7 @@ let APIhelper = {
         fsTool.file.createFile(filePath);
 
         let maps = [];
+        
         serviceItem.forEach(x=>{
             if(x.url){
                 maps.push({name:x.name, url:x.url, type:'services',fnName:x.name,reqType:x.reqType});
@@ -160,6 +161,36 @@ let APIhelper = {
         })
         
         fsTool.file.writeFile(filePath, fileNames.join(';') + StoreNames.join(';'));
+    },
+    //写入Route Index入口文件
+    writeRouter(projectPath, pages){
+        let filePath = projectPath + "/src/route/index.js";
+        let paths = [];
+        let names = [];
+        let componentPath = [];
+
+        pages.forEach(x=>{
+            let modelName = this.firstChatUpperLower(x.moduleName, false);
+            let _path = modelName + this.firstChatUpperLower(this.getFileName(x.pageName),false);
+            paths.push("/" + _path);
+            names.push(_path);
+            componentPath.push(modelName + "/" + x.pageName);
+        })
+
+        fsTool.file.writeFile(filePath, paths.join(';') + componentPath.join(';'));
+    },
+    //创建view文件，并且准备数据(维度：Module)
+    createView(projectPath, pages, moduleName){
+        let filePath = projectPath + "/src/pages/views";
+        let modulePath = filePath + "/" + this.firstChatUpperLower(moduleName, false);
+        //创建Module文件夹
+        fsTool.folder.createFolder(modulePath);
+
+        pages.forEach(x=>{
+            let vuePath = modulePath + "/" + this.firstChatUpperLower(x.pageName, false);
+            //创建vue文件
+            fsTool.file.createFile(vuePath);
+        })
     }
 }
 

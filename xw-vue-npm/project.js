@@ -2,9 +2,9 @@
      "Modules": [{
              "ModuleName": "Roles",
              "Pages": [{
-                     "PageName": "list.vue",
+                     "pageName": "list.vue",
                      "type": "list",
-                     "PageTitle": "角色管理列表",
+                     "pageTitle": "角色管理列表",
                      "config": {
                          "searchModel": [{
                                  "label": "角色名称",
@@ -49,7 +49,7 @@
                      }]
                  },
                  {
-                     "PageName": "save.vue",
+                     "pageName": "save.vue",
                      "type": "save",
                      "model": [{
                              "label": "角色类型",
@@ -125,9 +125,9 @@
          {
              "ModuleName": "Menus",
              "Pages": [{
-                     "PageName": "list.vue",
+                     "pageName": "list.vue",
                      "type": "list",
-                     "PageTitle": "菜单管理列表",
+                     "pageTitle": "菜单管理列表",
                      "config": {
                          "searchModel": [{
                                  "label": "菜单名称",
@@ -172,7 +172,7 @@
                      }]
                  },
                  {
-                     "PageName": "save.vue",
+                     "pageName": "save.vue",
                      "type": "save",
                      "model": [{
                              "label": "菜单类型",
@@ -204,20 +204,20 @@
                      "url": ""
                  },
                  {
-                     "name":"remove",
+                    "name":"remove",
                      "reqType": "post",
                      "url": "/api/getMenuTypes"
                  },
                  {
-                     "name":"detail",
+                    "name":"detail",
                      "url": "/api/getMenuTypes"
                  },
                  {
-                     "name":"list",
+                    "name":"list",
                      "url": "/api/getMenuTypes"
                  },
                  {
-                     "name":"querySubItems",
+                    "name":"querySubItems",
                      "url": "/api/getMenusSubItems"
                  }
             ],

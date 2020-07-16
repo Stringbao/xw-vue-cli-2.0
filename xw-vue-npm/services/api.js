@@ -6,7 +6,7 @@ const APIhelper = require("./apiHelper.js");
 
 const data = require("../project.js");
 
-const projectPath = '/Users/wupeng/Documents/aaa';
+const projectPath = '/Users/wupeng/Documents/bbb';
 
 const api = {
     create(req,res){
@@ -23,11 +23,17 @@ const api = {
             this.createServices(projectPath, services, stores, moduleName);
             this.createHelper(projectPath, moduleName);
             this.createStore(projectPath, stores.state, moduleName);
+            this.createView(projectPath, pages, moduleName);
 
             storeKeys.push(moduleName);
+            pages.forEach(x=>{
+                x.moduleName = moduleName;
+            })
+            Array.prototype.push.apply(routers,pages);
         });
         
         this.writeStoreIndex(projectPath, storeKeys);
+        this.writeRouter(projectPath, routers);
     },
     createModel(projectPath, pages, moduleName){
         //create file and write data for model
@@ -48,9 +54,12 @@ const api = {
     writeStoreIndex(projectPath, storeKeys){
         APIhelper.writeStoreIndex(projectPath, storeKeys);
     },
-    createView(){
-
-    }
+    writeRouter(projectPath, pages){
+        APIhelper.writeRouter(projectPath, pages);
+    },
+    createView(projectPath, pages, moduleName){
+        APIhelper.createView(projectPath, pages, moduleName);
+    }   
 }
 
 api.create();
