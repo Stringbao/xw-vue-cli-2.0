@@ -1,7 +1,7 @@
 const download = require('download-git-repo')
 const path = require('path');
 const ora = require('ora');
-const log = require('../tool/log');
+const log = require('../tool/log.js');
 
 /**
  * 下载git项目
@@ -29,7 +29,7 @@ function gitDownload(projectName){
     })
 }
 
-// gitDownload('/Users/wupeng/Documents/bbb');
+gitDownload('/aaa');
 
 
 module.exports = gitDownload;
