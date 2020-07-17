@@ -1,6 +1,6 @@
 <template>
     <div class="project_wrapper">
-      <h2>项目名称:{{data.Project}}</h2>
+      <h2>项目名称:{{project}}</h2>
       <table class="table" border="1">
         <thead>
           <tr>
@@ -8,7 +8,7 @@
             <th>页面</th>
           </tr>
         </thead>
-          <tbody v-for="(item,index) in data.Modules" :key="index">
+          <tbody v-for="(item,index) in modules" :key="index">
             <tr v-for="(childItem,childIndex) in item.Pages"  :key="childIndex">
                 <td :rowspan="item.Pages.length" v-if="childIndex == 0">{{item.ModuleName}}</td>
                 <td>
@@ -20,12 +20,14 @@
     </div>
 </template>
 <script>
-import projectJson from "../../../../project.json"
+import { mapState, mapActions } from "vuex";
 export default {
   data(){
       return {
-        data:projectJson
       }
+  },
+  computed: {
+        ...mapState(["modules","project"]),
   },
   mounted() {
       
