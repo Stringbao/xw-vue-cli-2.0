@@ -8,6 +8,9 @@
                 <li>
                     <router-link to="module">Module</router-link>
                 </li>
+                <li>
+                    <router-link to="project">Project</router-link>
+                </li>
             </ul>
         </div>
         <router-view class="content"></router-view>
