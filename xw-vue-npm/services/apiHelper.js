@@ -191,7 +191,16 @@ let APIhelper = {
             //创建vue文件
             fsTool.file.createFile(vuePath);
         })
+    },
+    dataForListView(page, modelName){
+        let pageTitle = page.pageTitle;
+        let searchModel = page.config.searchModel;
+        let pageOpts = page.config.table;
+        let tableTitle = this.firstChatUpperLower(modelName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table List";
+        let hasStore = false;
+        
     }
+
 }
 
 
