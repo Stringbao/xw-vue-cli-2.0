@@ -17,7 +17,7 @@ export default {
             return Promise.resolve({data:<%= row.url%>});
         <%_ _%><% }else { -%>
             let params = {};
-            return Ajax.<%= row.isGetReq%>(map.<%= row.mapKey%>, params);
+            return Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map.<%= row.mapKey%>, params);
             <%_ _%><% } -%>
         },
     <%_ _%><% }) -%>
