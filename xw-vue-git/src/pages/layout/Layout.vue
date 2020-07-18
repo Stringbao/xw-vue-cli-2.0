@@ -52,6 +52,7 @@ export default {
         padding: 42px 24px 50px;
         color: rgba(0, 0, 0, 0.85);
         border-bottom: 1px solid #f0f0f0;
+        overflow-y: auto;
     }
 }
 </style>
