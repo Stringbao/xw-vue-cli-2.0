@@ -65,8 +65,8 @@
                         </div>
                         <div class="item" v-for="(item,idx) in page.config.table.map" :key="idx">
                             <div class="le_form_row_item col3">
-                                <le-input label="field:" v-model="item.field"></le-input>
-                                <le-input label="label:" v-model="item.label"></le-input>
+                                <le-input label="key:" v-model="item.key"></le-input>
+                                <le-input label="val:" v-model="item.val"></le-input>
                                 <le-button class="fr" type="remove" value="deleteItem" @click="removeCurTableMap(item,idx)"></le-button>
                             </div>
                         </div>
@@ -213,8 +213,8 @@ export default {
         //添加table的map
         addTableModelMap(){
             let obj = {
-                field:"",
-                label:""
+                key:"",
+                val:""
             };
             this.page.config.table.map.push(obj)
         },
@@ -241,7 +241,7 @@ export default {
                 .then(res=>{
                     that.page.type = "list";
                     if(that.action == "create"){
-                        that.addPages(that.page);   
+                        that.addPages(that.page);  
                     }else{
                         that.updatePages({page:that.page,idx:that.idx})
                     }
