@@ -1,13 +1,12 @@
 <template>
     <le-form labelWidth='100' ref="saveForm">
         <div>
-            <le-input 
-                :readonly="isEditPages" on required msg="请输入页面名称"
-                label="PageName:" v-model="pageModel.PageName">
+            <le-input on required msg="请输入页面名称"
+                label="PageName:" v-model="page.PageName">
             </le-input>
             <le-input 
                 on required msg="请输入列表标题"
-                label="PageTitle:" v-model="pageModel.PageTitle">
+                label="PageTitle:" v-model="page.PageTitle">
             </le-input>
             <!-- searchModel的配置 -->
             <div class="configItem">
@@ -16,7 +15,7 @@
                         <i class="fr addParams iconfont icon-add" type="button" @click="addSearchModel"></i>
                     </h4>
                 </div>
-                <div class="item" v-for="(item, idx) in searchModelArr" :key="idx">
+                <div class="item" v-for="(item, idx) in page.config.searchModel" :key="idx">
                     <le-button class="fr" type="remove" 
                             value="" @click="removeCurSearchModelItem(item,idx)">
                         </le-button>
@@ -45,10 +44,10 @@
                     <h4 class="label">table</h4>
                 </div>
                 <div class="item">
-                    <le-input label="url:" v-model="tableModel.url"></le-input>
+                    <le-input label="url:" v-model="page.config.table.url"></le-input>
                     <div>
-                        <le-input label="pageSize:" v-model="tableModel.page.pageSize"></le-input>
-                        <le-input label="currentPage:" v-model="tableModel.page.currentPage"></le-input>
+                        <le-input label="pageSize:" v-model="page.config.table.page.pageSize"></le-input>
+                        <le-input label="currentPage:" v-model="page.config.table.page.currentPage"></le-input>
                     </div>
                     <div>
                         <div class="configItem-title">
@@ -56,7 +55,7 @@
                                 <i class="fr addParams iconfont icon-add" @click="addTableModelMap"></i>
                             </h4>
                         </div>
-                        <div class="item" v-for="(item,idx) in tableModel.map" :key="idx">
+                        <div class="item" v-for="(item,idx) in page.config.table.map" :key="idx">
                             <div class="le_form_row_item">
                                 <le-input label="field:" v-model="item.field"></le-input>
                                 <le-input label="label:" v-model="item.label"></le-input>
@@ -73,7 +72,7 @@
                         <i class="fr addParams iconfont icon-add" @click="addDialogArr"></i>
                     </h4>
                 </div>
-                <div class="item" v-for="(item, idx) in dialogArr" :key="idx">
+                <div class="item" v-for="(item, idx) in page.config.dialog" :key="idx">
                     <le-button class="fr" type="remove" 
                         value="" @click="removeCurConfigItem(item,idx)">
                     </le-button>
@@ -127,10 +126,6 @@
                 </div>
             </le-dialog>
         </div>
-        <div class="le_new_page_btn_group">
-            <le-button value="返回" type="back" @click="close"></le-button>
-            <le-button value="确定" type="save" @click="save"></le-button>
-        </div>
     </le-form>
 </template>
 <script>
@@ -160,48 +155,22 @@ export default {
                 {name:"get",code:"get"},
                 {name:"post",code:"post"},
             ],
-            //用户添加的多个用来搜索的searchmodel数据
-            searchModelArr:[],
-            //这个是用户用来配置分页的数据
-            tableModel:{
-                url:"",
-                map:[],
-                page:{
-                    pageSize:"",
-                    currentPage:""
-                }
-            },  
-            //用户配置的dialog的数据
-            dialogArr:[],
-            pageModel:{
-                PageName:"",
-                type:"list",
-                PageTitle:"",
-                config:{
-                    searchModel:[
-                        
-                    ],
-                    table:{
-
-                    },
-                    dialog:[
-
-                    ]
-                }
-            },
             //用户配置的dataSource的数据
             newAddDataSource:{}
         }
     },
     props: {
-        Pages: {
-            type: Array,
+        action:{
+            type: String
         },
-        isEditPages : {
-            type : Boolean
+        page:{
+            type : Object
         },
         dataSource : {
             type : Object
+        },
+        idx:{
+            type : Number
         }
     },
     computed:{
@@ -210,7 +179,7 @@ export default {
     },
     components:{},
     methods:{
-        ...mapActions(["addPages","removePages","addStore"]),
+        ...mapActions(["addPages","updatePages","addStore"]),
         //添加搜搜条件
         addSearchModel(){
             let obj = {
@@ -218,11 +187,11 @@ export default {
                 type: "text",
                 field: "",
             };
-            this.searchModelArr.push(obj);
+            this.page.config.searchModel.push(obj)
         },  
         //删除添加的搜索条件
         removeCurSearchModelItem(item,idx){
-            this.searchModelArr.splice(idx, 1)
+            this.page.config.searchModel.splice(idx, 1)
         },
         //添加table的map
         addTableModelMap(){
@@ -230,11 +199,11 @@ export default {
                 field:"",
                 label:""
             };
-            this.tableModel.map.push(obj)
+            this.page.config.table.map.push(obj)
         },
         //删除用户添加的tableMap参数
         removeCurTableMap(item,idx){
-            this.tableModel.map.splice(idx, 1)
+            this.page.config.table.map.splice(idx, 1)
         },  
         //添加dialog的参数
         addDialogArr(){
@@ -243,94 +212,27 @@ export default {
                 type: "text",
                 field: "",
             };
-            this.dialogArr.push(obj);
+            this.page.config.dialog.push(obj);
         },
         //删除用户添加的dialog参数
         removeCurConfigItem(item,idx){
-            this.dialogArr.splice(idx, 1)
+            this.page.config.dialog.splice(idx, 1)
         },
         save(){
+            let that = this;
             let res = this.$refs.saveForm.validate()
                 .then(res=>{
-                    this.pageModel.config.searchModel = this.searchModelArr;
-                    this.pageModel.config.table = this.tableModel;
-                    this.pageModel.config.dialog = this.dialogArr;
-                    let cloneData = JSON.parse(JSON.stringify( this.pageModel ));
-                    debugger
-                    if(this.isEditPages){
-                        //如果是修改配置的话就把store.js中 保存的数据先删除了  然后在添加新修改过的数据
-                        this.removePages(cloneData);
+                    that.page.type = "list";
+                    if(that.action == "create"){
+                        that.addPages(that.page);   
+                    }else{
+                        that.updatePages({page:that.page,idx:that.idx})
                     }
-                    this.addPages(cloneData);
-                    this.$emit("closePagesDialog");
-                    this.resetPageModel();
+                    this.$emit("closePageDialog");
                 })
                 .catch(error => {
-                    this.alert.showAlert("error", "请填写所有的必填项");
+                    that.alert.showAlert("error", "请填写所有的必填项");
                 })
-        },
-        //修改的时候 用传入的数据 初始化pageModel
-        initPageModel(data){
-            if(!data){
-                return
-            };
-            if(data.PageName !== "" && data.PageName !== undefined && data.PageName !== null){
-                this.pageModel.PageName = data.PageName;
-            };
-            if(data.type !== "" && data.type !== undefined && data.type !== null){
-                this.pageModel.type = data.type;
-            };
-            if(data.PageTitle !== "" && data.PageTitle !== undefined && data.PageTitle !== null){
-                this.pageModel.PageTitle = data.PageTitle;
-            };
-            if(data.config !== "" && data.config !== undefined && data.config !== null){
-                if(data.config.searchModel !== "" && data.config.searchModel !== undefined && data.config.searchModel !== null){
-                    this.searchModelArr = data.config.searchModel;
-                }; 
-                if(data.config.searchModel !== "" && data.config.searchModel !== undefined && data.config.searchModel !== null){
-                    this.searchModelArr = data.config.searchModel;
-                };  
-                if(data.config.table !== "" && data.config.table !== undefined && data.config.table !== null){
-                    this.tableModel = data.config.table;
-                };
-                if(data.config.dialog !== "" && data.config.dialog !== undefined && data.config.dialog !== null){
-                    this.dialogArr = data.config.dialog;
-                };
-            }
-        },
-        resetPageModel(){
-            this.$refs.saveForm.reset();
-            this.pageModel = {
-                PageName:"",
-                type:"list",
-                PageTitle:"",
-                config:{
-                    searchModel:[
-                        
-                    ],
-                    table:{
-
-                    },
-                    dialog:[
-
-                    ]
-                }
-            };
-            this.searchModelArr = [];
-            this.tableModel = {
-                url:"",
-                map:[],
-                page:{
-                    pageSize:"",
-                    currentPage:""
-                }
-            };
-            //用户配置的dialog的数据
-            this.dialogArr = []
-        },
-        close(){
-            this.$emit("closePagesDialog");
-            this.resetPageModel();
         },
         //如果storee中的DataSource为空则显示新建DataSource的框
         addDataSource(){
@@ -360,7 +262,7 @@ export default {
         }
     },
     mounted(){
-        
+        console.log(this.page)
     }
 }
 </script>
