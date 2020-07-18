@@ -156,6 +156,7 @@
 </template>
 <script>
 import util from "@util/util.js";
+import KEYS from "@constant/index.js";
 <%_ if( data.hasStore){ -%>
 import { createNamespacedHelpers } from 'vuex';
 const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.store.storeName %>');
@@ -169,13 +170,13 @@ export default {
     data(){
         return {
             // 搜索条件
-        searchModel:{
-            <%_ data.searchModel.forEach(function(col){ -%>
-                <%_ if(col.field && col.field != ""){ -%>
-                <%= col.field %> : "",
-                <%_ } -%>
-            <%_ }) -%>
-        },
+            searchModel:{
+                <%_ data.searchModel.forEach(function(col){ -%>
+                    <%_ if(col.field && col.field != ""){ -%>
+                    <%= col.field %> : "",
+                    <%_ } -%>
+                <%_ }) -%>
+            },
             // dialog v-model的值 控制dialog显示/隐藏
             <%_ if(data.hasModel){ -%>
             dialogTag:false,
@@ -183,9 +184,14 @@ export default {
             <%_ } -%>
             // 表格的配置
             list_table_options: {
-                map: <%- data.pageOpts.map %>,
+                map: [
+                    <%_ data.pageOpts.map.forEach(function(item){ -%>
+                    {key:'<%- item.key %>',val:'<%- item.val%>'},
+                    <%_ }) -%>
+                ],
+
                 getUrl: ()=> {
-                   return '<%= data.pageOpts.url%>'
+                   return <%- data.pageOpts.url%>;
                 },
                 pageOption: {
                     sizeKey: "<%= data.pageOpts.sizeKey%>",
@@ -194,20 +200,17 @@ export default {
                     size: 20
                 },
                 actions: [
-
+                    
                 ],
                 analysis: data => {
-                if (
-                    data &&
-                    data.data &&
-                    data.data.datas
-                ) {
-                    return {
-                        data: data.data.datas,
-                        count: data.data.totalCount
-                    };
-                } else {
-                    return { data: [], count: 0 };
+                    if (data &&data.data &&data.data.datas) {
+                        return {
+                            data: data.data.datas,
+                            count: data.data.totalCount
+                        };
+                    } else {
+                        return { data: [], count: 0 };
+                    }
                 }
             }
         }
@@ -233,10 +236,22 @@ export default {
             this.$refs["tableListRef"].searchCurrentIndex();
         },
         create() {
-
+            <%_ if(data.hasModel){ _%>
+                this.dialogTag = true;
+            <%_ }  -%>
         },
         <%_ if(data.hasModel){ _%>
-        dialogConfirm(){},
+        dialogConfirm(){
+            this.$refs.saveForm.validate().then(x => {
+                <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get()).then(res=>{
+                    this.alert.showAlert("success",res.msg);
+                    this.search();
+                    this.dialogCancel();
+                }).catch(err=>{
+                    this.alert.showAlert("error",err.msg);
+                })
+            }).catch(err=>{console.log(err)});
+        },
         dialogCancel(){
             this.dialogTag = false;
         },

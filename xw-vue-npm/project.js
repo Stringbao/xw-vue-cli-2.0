@@ -1,57 +1,74 @@
  let temp = {
      "Modules": [{
-             "ModuleName": "Roles",
-             "Pages": [{
+             "ModuleName": "Inventory",
+             "Pages": [
+                 {
                      "pageName": "list.vue",
                      "type": "list",
-                     "pageTitle": "角色管理列表",
+                     "pageTitle": "库存管理",
                      "config": {
-                         "searchModel": [{
-                                 "label": "角色名称",
+                         "searchModel": [
+                             {
+                                 "label": "商品名称",
                                  "type": "text",
-                                 "field": "roleName"
+                                 "field": "productCode"
                              },
                              {
-                                 "label": "角色类型",
+                                 "label": "库存类型",
                                  "type": "select",
                                  "field": "roleType",
                                  "displayName": "name",
-                                 "displayValue": "value",
-                                 "dataSource": "salesRoute"
+                                 "displayValue": "code",
+                                 "dataSource": "inventoryType"
                              }
                          ],
                          "table": {
-                             "url": "/api/getRoleTypes",
-                             "map": [{
-                                     "field": "channelCode",
-                                     "label": "Sale Channel"
-                                 },
-                                 {
-                                     "field": "materialNumber",
-                                     "label": "Material"
-                                 }
+                             "url": "/inventoryAPI/api/inventory/queryInventoryInfo.jhtm",
+                             "map": [
+                                { key: "productCode", val: "<#Product Code#>" },
+                                { key: "inventoryType", val: "<#Inventory Type#>"},
+                                { key: "restQuantity", val: "<#Rest Quantity#>" },
+                                { key: "reserveQuantity", val: "<#Reserve Quantity#>" },
+                                { key: "weeklyQuantity", val: "<#Weekly Quantity#>" },
+                                { key: "originalQuantity", val: "<#Original Quantity#>" },
+                                { key: "seccQuantity", val: "<#SECC Quantitiy#>" },
+                                { key: "limitQuantity", val: "<#Max Qty#>" },
+                                { key: "remainQuantity", val: "<#remain quantity#>" },
+                                { key: "createTimeLong", val: "<#Creation Time#>"},
+                                { key: "updateTimeLong", val: "<#Updated Time#>"}
                              ],
                              "page": {
                                  "pageSize": "pageSize",
-                                 "currentPage": "currentPage"
+                                 "currentPage": "pageNum"
                              }
                          }
                      },
-                     "model": [{
-                         "label": "角色类型",
-                         "type": "select",
-                         "field": "roleType",
-                         "displayName": "name",
-                         "displayValue": "value",
-                         "dataSource": "salesRouteA",
-                         "on": true,
-                         "required": true
-                     }]
+                     "model": [
+                        //  {
+                        //     "label": "角色类型",
+                        //     "type": "select",
+                        //     "field": "roleType",
+                        //     "displayName": "name",
+                        //     "displayValue": "code",
+                        //     "dataSource": "inventoryType",
+                        //     "on": true,
+                        //     "required": true
+                        // },
+                        // {
+                        //     "label": "商城类型",
+                        //     "type": "select",
+                        //     "field": "mallType",
+                        //     "displayName": "name",
+                        //     "displayValue": "code",
+                        //     "dataSource": "malls"
+                        // }
+                    ]
                  },
                  {
                      "pageName": "save.vue",
                      "type": "save",
-                     "model": [{
+                     "model": [
+                         {
                              "label": "角色类型",
                              "type": "select",
                              "field": "roleType",
@@ -98,27 +115,17 @@
                  }
              ],
              "Store": {
-                 "state": [{
-                         "name": "salesRoute",
-                         "type": "array",
-                         "url": "/api/getRoleTypes"
-                     },
+                 "state": [
                      {
-                         "name": "salesRoute_A",
-                         "type": "array",
-                         "reqType": "post",
-                         "url": "/api/getRoleTypes"
-                     },
-                     {
-                         "name": "salesRoute_B",
+                         "name": "inventoryType",
                          "type": "enum",
-                         "url": "KEYS.SALES.ACTION_LIST"
+                         "url": "KEYS.INVENTORY.INVENTORY_TYPE"
                      },
                      {
-                         "name": "salesRoute_C",
-                         "type": "enum",
-                         "url": "KEYS.SALES.ACTION_List_C"
-                     }
+                        "name": "malls",
+                        "type": "array",
+                        "url": "/auth/dict/getdictmap?keys=MallType"
+                    },
                  ]
              }
          },

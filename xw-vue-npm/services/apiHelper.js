@@ -2,8 +2,17 @@
 const fsTool = require("../tool/fsapi.js");
 const ejs = require("ejs");
 const NPath = require("path");
+const { isArray } = require("util");
 
 let APIhelper = {
+    //处理SearchModel
+    convertSearchModel(models){
+        let str = [];
+        models.forEach(x=>{
+            str.push(x.field + "=${this.searchModel."+x.field+"}");
+        })
+        return str.join('&');
+    },
     //获取文件名(去掉后缀)
     getFileName(str){
         if(!str){
@@ -45,7 +54,7 @@ let APIhelper = {
         //create model file
         let path = projectPath + "/src/model/";
         pages.forEach( item => {
-            if(item.model){
+            if(item.model && isArray(item.model) && item.model.length >0){
                 let pageName = item.pageName;
                 
                 let filePath = path + this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(pageName), true) + "Model.js";
@@ -192,7 +201,7 @@ let APIhelper = {
                     storeKeys.push(x.dataSource);
                 }
             })
-            let models = page.model;
+            let models = page.model ? page.model : [];
             models.forEach(x=>{
                 if(x.dataSource){
                     storeKeys.push(x.dataSource);
@@ -211,7 +220,22 @@ let APIhelper = {
     dataForListView(page, moduleName){
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
-        let pageOpts = page.config?JSON.stringify(page.config.table):"";
+        let pageOpts = {
+            url:"",
+            map:"",
+            sizeKey:"",
+            indexKey:""
+        };
+        if(page.config && page.config.table){
+            let t = page.config.table;
+            let urlSuff = t.url.indexOf('?') == -1?'?':"&";
+            pageOpts = {
+                url:"`"+ t.url + urlSuff + this.convertSearchModel(page.config.searchModel)+"`",
+                map:t.map,
+                sizeKey:t.page.pageSize,
+                indexKey:t.page.currentPage
+            }
+        }
         let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table List";
         let componentName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName),true);
 
@@ -227,7 +251,7 @@ let APIhelper = {
             })
         }
         let hasModel = true;
-        if(page.type == "list" && page.model.length  == 0){
+        if(page.type == "list" && page.model &&page.model.length  == 0){
             hasModel = false;
         }
 

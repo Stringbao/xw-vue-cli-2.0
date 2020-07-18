@@ -24,10 +24,13 @@ module.exports = merge(common,{
         openPage:"./index.html",
         port:9985,
         proxy:{
-            '/': {
-                target: 'localhost:9876',
+            '/v2API': {
+                target: 'http://localhost:9876',
                 secure: false,
-                changeOrigin: true
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/v2API": ""
+                },
             }
         }
     },

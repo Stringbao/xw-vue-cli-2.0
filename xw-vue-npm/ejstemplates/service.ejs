@@ -14,7 +14,7 @@ export default {
     <%_ data.fns.forEach(function(row){ -%>
         <%= row.fnName %>(model){
         <%_ if (row.isEnum) { -%>
-            return <%= row.url%>;
+            return Promise.resolve({data:<%= row.url%>});
         <%_ _%><% }else { -%>
             let params = {};
             return Ajax.<%= row.isGetReq ? 'get' : 'post'%>(map.<%= row.mapKey%>, params);

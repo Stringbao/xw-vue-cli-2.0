@@ -8,6 +8,7 @@ const gitDownload = require('../xw-vue-npm/services/download.js');
 const command = require("../xw-vue-npm/services/command.js");
 const webServer = require("../xw-vue-npm/index.js");
 const fsTool = require("../xw-vue-npm/tool/fsapi.js");
+const ProjectPath = require("../xw-vue-npm/services/projectPath.js");
 
 program.usage('<project-name>').parse(process.argv);
 
@@ -32,6 +33,8 @@ async function startServer() {
     await gitDownload(projectName);
 
     log.success("项目download Success, path:" + projectPath);
+
+    ProjectPath.set(projectPath);
 
     // install all the packages for git and node
     let _promise = command.installPackages();

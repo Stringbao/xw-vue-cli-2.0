@@ -21,7 +21,7 @@ export default {
     name:"<%= data.componentName %>",
     data(){
         return {
-        <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
+            <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
         }
     },
     computed:{
@@ -40,7 +40,7 @@ export default {
         },
         isDetail(){
             return this.$route.query.tag == "detail";
-        },
+        }
     },
     methods:{
         <%_ if( data.hasStore){ -%>

@@ -38,7 +38,7 @@ export default {
     },
     methods:{
         publish(){
-            Ajax.post('',{
+            Ajax.post('/v2API/comp/create',{
                 Project:this.project,
                 Modules:this.modules
             }).then(res=>{

@@ -1,22 +1,29 @@
 
 
-const resEntity = require("../tool/responseEntity");
 const path = require("path");
 const APIhelper = require("./apiHelper.js");
-
+const ProjectPathTool = require("./projectPath.js");
 const data = require("../project.js");
-
-const projectPath = '/Users/wupeng/Documents/bbb';
 
 const api = {
     test(req,res){
         debugger
+        const projectPath = ProjectPathTool.get();
+        console.log(projectPath,7777777);
+
+        return res.status(200).json({data:"options.data"});
     },
     create(req,res){
+        debugger
+        
+        let data = req.body.Modules;
+        console.log("body", req.body.Modules);
+        const projectPath = ProjectPathTool.get();
+        console.log(projectPath,7777777);
         //create all the files by module (one by one)
         let routers = [];
         let storeKeys = [];
-        data.Modules.forEach(item => {
+        data.forEach(item => {
             let pages = item.Pages;
             let moduleName = item.ModuleName;
             let services = item.Services;
@@ -65,6 +72,6 @@ const api = {
     }   
 }
 
-api.create();
+// api.create();
 
 module.exports = api;

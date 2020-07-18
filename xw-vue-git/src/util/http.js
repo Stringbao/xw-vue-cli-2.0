@@ -82,7 +82,8 @@ class Ajax {
             body: JSON.stringify(params),
             method: "POST",
             headers: {
-                'content-type': 'application/json'
+                "Accept":"application/json",
+                'Content-type': 'application/json'
             }
         }
         return fetch(url, options)
