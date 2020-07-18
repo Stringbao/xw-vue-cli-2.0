@@ -256,7 +256,6 @@ export default {
                     this.pageModel.config.table = this.tableModel;
                     this.pageModel.config.dialog = this.dialogArr;
                     let cloneData = JSON.parse(JSON.stringify( this.pageModel ));
-                    debugger
                     if(this.isEditPages){
                         //如果是修改配置的话就把store.js中 保存的数据先删除了  然后在添加新修改过的数据
                         this.removePages(cloneData);

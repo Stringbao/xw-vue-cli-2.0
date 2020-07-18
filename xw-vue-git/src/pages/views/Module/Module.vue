@@ -174,7 +174,6 @@ export default {
             console.log(this.modules)
         },
         modifyPageHandle(data,idx){
-            debugger
             this.dialog.showCreatePage = true;
             this.isEditPages = true;
             
