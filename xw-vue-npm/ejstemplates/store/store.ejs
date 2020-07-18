@@ -1,10 +1,10 @@
-<%_ data.forEach(function(row){ -%>
-import <%= row.ModuleName %>Store from "./modules/<%= row.ModuleName %>.js";
+<%_ data.imports.forEach(function(row){ -%>
+import <%= row.className %> from "./modules/<%= row.filePath %>";
 <%_ _%><% }) -%>
 
 
 export default {
-<%_ data.forEach(function(row){ -%>
-    <%= row.ModuleName %>Store,
+<%_ data.imports.forEach(function(row){ -%>
+    <%= row.className %>,
 <%_ _%><% }) -%>
 }
