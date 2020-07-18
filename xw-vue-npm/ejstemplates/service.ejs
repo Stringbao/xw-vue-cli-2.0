@@ -12,13 +12,17 @@ export default {
         return model.id ? this.update(model) : this.create(model);
     },
     <%_ data.fns.forEach(function(row){ -%>
-    <%= row.fnName %>(model){
-    <%_ if (row.isEnum) { -%>
-        return Promise.resolve({data:<%= row.url%>});
-    <%_ _%><% }else { -%>
-        let params = {};
-        return Ajax.<%= row.isGetReq == true? 'get' : 'post'%>(map.<%= row.mapKey%>, params);
+        <%= row.fnName %>(model){
+        <%_ if (row.isEnum) { -%>
+            return Promise.resolve({data:<%= row.url%>});
+        <%_ _%><% }else { -%>
+            let params = {};
+        <%_ if (row.isGetReq) { -%>
+            return Ajax.get(map.<%= row.mapKey%>, params);
+            <%_ _%><% } -%>
+        <%_ _%><% }else { -%>
+            return Ajax.post(map.<%= row.mapKey%>, params);
         <%_ _%><% } -%>
-    },
+        },
     <%_ _%><% }) -%>
 }
