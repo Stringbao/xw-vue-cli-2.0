@@ -24,7 +24,6 @@ let init = function(){
         console.log("listen in 9876");
 
         app.all('*', function (req, res, next) {
-            debugger
             // res.header("Access-Control-Allow-Origin", "*");
             //将Access-Control-Allow-Credentials设为true  允许携带cookie
             res.header('Access-Control-Allow-Credentials', true); 

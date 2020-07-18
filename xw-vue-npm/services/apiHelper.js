@@ -76,22 +76,21 @@ let APIhelper = {
 
         let maps = [];
         serviceItem.forEach(x=>{
-            console.log(x,7777766665555);
             if(x.url){
-                maps.push({name:x.name, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType == 'post'?false:true});
+                maps.push({name:x.name, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType?x.reqType:"get"});
             }
         })
         storeItems.forEach(x=>{
-            maps.push({name:x.name, url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType == 'post'?false:true});
+            maps.push({name:x.name, url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
         })
-        console.log(maps,"mapsssssssssssss");
+        
         let resJson = {map:[], fns:[]};
         maps.forEach(x=>{
             if(!x.isEnum){
                 resJson.map.push(x);
             }
             if(x.url){
-                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.reqType == 'post'?false:true});
+                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
             }
         })
         

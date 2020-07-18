@@ -4,7 +4,7 @@ const path = require("path");
 const APIhelper = require("./apiHelper.js");
 const ProjectPathTool = require("./projectPath.js");
 const fsTool = require("../tool/fsapi.js");
-// const data = require("../project.js");
+// let data = require("../project.js");
 
 const api = {
     test(req,res){
@@ -15,6 +15,7 @@ const api = {
     },
     create(req,res){
         let data = req.body.Modules;
+        data = data.Modules;
         console.log("body", req.body.Modules);
         const projectPath = ProjectPathTool.get();
         console.log(projectPath,7777777);
@@ -48,7 +49,12 @@ const api = {
         api.writeRouter(projectPath, routers);
 
         //创建project.json到项目root目录
-        fsTool.file.writeFile(projectPath + "/project.json", JSON.stringify(data));
+        let projectJSON = {
+            Modules:data,
+            absoultePath:projectPath
+        }
+        
+        fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
 
         return res.status("200").json({data:null,msg:"success"});
     },
@@ -79,6 +85,6 @@ const api = {
     }   
 }
 
-// api.create();
+api.create();
 
 module.exports = api;
