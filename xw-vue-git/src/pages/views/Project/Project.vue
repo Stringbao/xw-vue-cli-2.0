@@ -12,7 +12,7 @@
                 <template v-if="item.Pages.length">
                     <tr v-for="(childItem,childIndex) in item.Pages" :key="childIndex">
                         <td :rowspan="item.Pages.length" v-if="childIndex == 0">{{item.ModuleName}}</td>
-                        <td>{{childItem.PageName}}</td>
+                        <td>{{childItem.pageName}}</td>
                     </tr>
                 </template>
                 <template v-else>
