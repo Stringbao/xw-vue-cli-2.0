@@ -1,7 +1,6 @@
 <template>
     <div class="le_comps_core_css new_page_width">
-        <h4 class="le_page_name"><%= data.PageTitle %></h4>
-        <%_ _%><%- include(data.includeFormPath,{data:data.model,model: data.ModuleName}) %>
+        <%_ _%><%- include(data.includeFormPath,{data:data.model.modelArray,model: data.model.modelDataName}) %>
         <div class="le_new_page_btn_group">
             <le-button type = "back" value = "返回" @click = "goBack"></le-button>
             <le-button type = "save" value = "保存" @click = "save"></le-button>
@@ -9,26 +8,30 @@
     </div>
 </template>
 <script>
-    import CommonUtil from '@util';
-    import <%= data.ModuleName %>Model from '@model/<%= data.ModuleName %>'
-    import <%= data.ModuleName %>Service from '@service/<%= data.ModuleName %>'
-    import { createNamespacedHelpers } from 'vuex';
-    const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.ModuleName %>Store');
+import util from "@util/util.js";
+<%_ if( data.hasStore){ -%>
+import { createNamespacedHelpers } from 'vuex';
+const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.store.storeName %>');
+<%_ } -%>
+<%_ if(data.hasModel){ -%>
+import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileName %>';
+<%_ } -%>
+import <%= data.service.serviceClassName%> from '@services/<%= data.service.serviceFileName%>';
 export default {
-    name:"<%= data.ModuleName %><%= data.PageName %>",
+    name:"<%= data.componentName %>",
     data(){
         return {
-            <%= data.ModuleName %>: new <%= data.ModuleName %>Model()
+        <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
         }
     },
     computed:{
+        <%_ if( data.hasStore){ -%>
         ...mapState([
-            <%_ data.model.forEach(function(actionName){ -%>
-            <%_ if (actionName.dataSource) { -%>
-            "<%= actionName.dataSource%>",
-            <%_ } -%>
+            <%_ data.store.storeKeys.forEach(function(name){ -%>
+            "<%= name%>",
             <%_ }) -%>
         ]),
+        <%_ } -%>
         isEdit(){
             return this.$route.query.tag == "edit";
         },
@@ -40,23 +43,16 @@ export default {
         },
     },
     methods:{
-        ...mapActions(
-            [
-                <%_ data.model.forEach(function(actionName){ -%>
-                <%_ if (actionName.dataSource) { -%>
-                "get<%= actionName.dataSource%>",
-    <%_ } -%>
-    <%_ }) -%>
-
-            ]
-        ),
-        save(){
+        <%_ if( data.hasStore){ -%>
+        ...mapActions([
+            <%_ data.store.storeActions.forEach(function(name){ -%>
+            "<%= name%>",
+            <%_ }) -%>
+        ]),
+        <%_ } -%>
+        saveBtn(){
             this.$refs.saveForm.validate().then(x => {
-                let data = this.salesModel.get();
-                if (this.isEdit) {
-                    data.id = this.$route.query.id
-                }
-                <%= data.ModuleName %>Service.save(data).then(res=>{
+                <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get()).then(res=>{
                     this.alert.showAlert("success",res.msg);
                     this.goBack();
                 }).catch(err=>{
@@ -64,24 +60,19 @@ export default {
                 })
             })
         },
-        getDetail(){
-            <%= data.ModuleName %>Service.detail({id: this.$route.query.id}).then(data => {
-                this.<%= data.ModuleName %>.set(data.data)
-            })
-        },
         goBack(){
             this.$router.go(-1);
         },
     },
     mounted(){
-    <%_ data.model.forEach(function(actionName){ -%>
-        <%_ if (actionName.dataSource) { -%>
-             this.get<%= actionName.dataSource -%>();
+        <%_ if( data.hasStore){ -%>
+        <%_ data.store.storeActions.forEach(function(name){ -%>
+        this.<%= name%>();
+        <%_ }) -%>
         <%_ } -%>
-    <%_ }) -%>
         this.$refs.saveForm.reset();
         if(this.isEdit || this.isDetail){
-            this.getDetail();
+            this.<%= data.model.modelDataName %>.set(this.$route.query.data);
         }
     }
 }

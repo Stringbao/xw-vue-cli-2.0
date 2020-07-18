@@ -211,7 +211,7 @@ let APIhelper = {
     dataForListView(page, moduleName){
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
-        let pageOpts = page.config?page.config.table:"";
+        let pageOpts = page.config?JSON.stringify(page.config.table):"";
         let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table List";
         let componentName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName),true);
 
