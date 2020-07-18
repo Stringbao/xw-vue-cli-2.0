@@ -111,9 +111,10 @@ let APIhelper = {
         let servicesClassName = this.firstChatUpperLower(moduleName, true) + "Services";
         let servicesPath = this.firstChatUpperLower(moduleName, false) + "Services.js";
         storeItems.forEach(x=>{
+            let upName = this.firstChatUpperLower(x.name ,true);
             stateKeys.push(x.name);
-            mutations.push("set"+x.name);
-            actions.push({fnName:"get"+x.name, stateKey:x.name,commitFnName:"set"+x.name, serviceFnName:'get'+x.name});
+            mutations.push({fnName:"set"+upName, stateKey:x.name});
+            actions.push({fnName:"get"+upName, stateKey:x.name,commitFnName:"set"+upName, serviceFnName:'get'+upName});
         })
         let data = {
             servicesClassName,
@@ -122,7 +123,6 @@ let APIhelper = {
             mutations,
             actions
         }
-        debugger
         //write content to file
         let _data = this.compileByData("../ejstemplates/store/store.module.ejs",{data: data});
         fsTool.file.writeFile(filePath, _data);
@@ -131,14 +131,13 @@ let APIhelper = {
     writeStoreIndex(projectPath, storeKeys){
         let filePath = projectPath + "/src/store/index.js";
 
-        let fileNames = [];
-        let StoreNames = [];
+        let imports = [];
         storeKeys.forEach(x=>{
-            fileNames.push(this.firstChatUpperLower(x, false) + ".js");
-            StoreNames.push(this.firstChatUpperLower(x, true) + "Store");
+            imports.push({className:this.firstChatUpperLower(x, true) + "Store",filePath:this.firstChatUpperLower(x, false) + ".js"});
         })
         
-        fsTool.file.writeFile(filePath, fileNames.join(';') + StoreNames.join(';'));
+        let _data = this.compileByData("../ejstemplates/store/store.ejs",{data:{ imports : imports}});
+        fsTool.file.writeFile(filePath, _data);
     },
     //写入Route Index入口文件
     writeRouter(projectPath, pages){

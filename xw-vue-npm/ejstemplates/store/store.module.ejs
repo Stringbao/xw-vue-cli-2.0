@@ -1,16 +1,18 @@
-import <%= data.servicesClassName %> from "<%= data.servicesPath%>";
+import <%= data.servicesClassName %> from "@services/<%= data.servicesPath%>";
 
 export default {
     namespaced: true,
     state:{
     <%_ data.stateKeys.forEach(function(row){ -%>
-            <%= row %>: [],
+        <%= row %>: [],
     <%_ _%><% }) -%>
     },
     mutations:{
     <%_ data.mutations.forEach(function(row){ -%>
-        set<%= row.fnName %>(state,data){
-            state.<%= row.stateKey %> = data;
+        <%= row.fnName %>(state,data){
+            if(data && data instanceof Array){
+                state.<%= row.stateKey %> = data;
+            }
         },
     <%_ _%><% }) -%>
     },
@@ -20,7 +22,7 @@ export default {
             if(context.state.<%= row.stateKey %>.length >0){
                 return;
             }
-        <%= servicesClassName %>.<%= row.serviceFnName %>().then((res)=>{
+            <%= data.servicesClassName %>.<%= row.serviceFnName %>().then((res)=>{
                 context.commit("<%= row.commitFnName %>",res.data.data);
                 cb && cb(res);
             });
