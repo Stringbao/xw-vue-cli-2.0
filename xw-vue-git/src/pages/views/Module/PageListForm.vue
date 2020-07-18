@@ -2,11 +2,11 @@
     <le-form labelWidth='100' ref="saveForm">
         <div>
             <le-input on required msg="请输入页面名称"
-                label="PageName:" v-model="page.PageName">
+                label="PageName:" v-model="page.pageName">
             </le-input>
             <le-input 
                 on required msg="请输入列表标题"
-                label="PageTitle:" v-model="page.PageTitle">
+                label="PageTitle:" v-model="page.pageTitle">
             </le-input>
             <!-- searchModel的配置 -->
             <div class="configItem">

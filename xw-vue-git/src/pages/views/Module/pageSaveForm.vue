@@ -2,7 +2,7 @@
     <le-form labelWidth='100' ref="saveForm">
         <div>
             <le-input on required msg="请输入页面名称"
-            label="PageName:" v-model="page.PageName"></le-input>
+            label="PageName:" v-model="page.pageName"></le-input>
             <!-- searchModel的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">

@@ -33,7 +33,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item,idx) in module.Pages" :key="idx">
-                                    <td>{{item.PageName}}</td>
+                                    <td>{{item.pageName}}</td>
                                     <td>{{item.PageTitle}}</td>
                                     <td>{{item.type}}</td>
                                     <td>
@@ -121,9 +121,9 @@ export default {
                 idx:null
             },
             pageModel:{
-                PageName:"",
+                pageName:"",
                 type:"list",
-                PageTitle:"",
+                pageTitle:"",
                 config:{
                     searchModel:[
                         
@@ -142,7 +142,7 @@ export default {
                 ]
             },
             pageSaveModel:{
-                PageName:"",
+                pageName:"",
                 type:"save",
                 model:[
 
@@ -213,9 +213,9 @@ export default {
         },
         clearPageModel(){
             this.pageModel = {
-                PageName:"",
+                pageName:"",
                 type:"list",
-                PageTitle:"",
+                pageTitle:"",
                 config:{
                     searchModel:[
                         
@@ -236,7 +236,7 @@ export default {
         },
         clearSavePageModel(){
             this.pageSaveModel = {
-                PageName:"",
+                pageName:"",
                 type:"save",
                 model:[
 
