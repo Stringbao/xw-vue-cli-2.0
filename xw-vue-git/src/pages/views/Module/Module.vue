@@ -34,7 +34,7 @@
                             <tbody>
                                 <tr v-for="(item,idx) in module.Pages" :key="idx">
                                     <td>{{item.pageName}}</td>
-                                    <td>{{item.PageTitle}}</td>
+                                    <td>{{item.pageTitle}}</td>
                                     <td>{{item.type}}</td>
                                     <td>
                                         <le-button type="update" value="modify" @click="modifyPageHandle(item,idx)"></le-button>
