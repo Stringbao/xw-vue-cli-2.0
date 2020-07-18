@@ -1,12 +1,3 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-Vue.use(Router);
-
-<%_ data.forEach(function(row){ -%>
-<%_ row.Pages.forEach(function(rows){ -%>
-import <%= row.ModuleName + rows.PageName %> from "@pages/views/<%= row.ModuleName + rows.PageName %>"
-<%_ _%><% }) -%>
-<%_ _%><% }) -%>
 let routers = [
     {
         path: '/',
@@ -14,17 +5,12 @@ let routers = [
         component:() => import('@pages/login/login.vue')
     },
 <%_ data.forEach(function(row){ -%>
-    <%_ row.Pages.forEach(function(rows){ -%>
     {
-        path:"/<%= row.ModuleName + rows.PageName %>",
-        name:"<%= row.ModuleName + rows.PageName %>",
-        component:<%= row.ModuleName + rows.PageName %>
+        path: "<%= row.path %>",
+        name: "<%= row.name %>",
+        component:() => import('@pages<%= row.componentPath%>')
     },
-    <%_ _%><% }) -%>
 <%_ _%><% }) -%>
 ]
-const _router = new Router({
-    routes: routers
-});
 
-export default _router
+export default routers
