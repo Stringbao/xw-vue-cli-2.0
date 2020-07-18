@@ -25,7 +25,7 @@ module.exports = merge(common,{
         port:9985,
         proxy:{
             '/': {
-                target: 'https://admin.nec.lenovouat.com/',
+                target: 'localhost:9876',
                 secure: false,
                 changeOrigin: true
             }

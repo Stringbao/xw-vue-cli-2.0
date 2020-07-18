@@ -23,16 +23,28 @@
                 </template>
             </tbody>
         </table>
+        <le-button type="create" value="生成代码" @click="publish"></le-button>
     </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+
 export default {
     data() {
         return {};
     },
     computed: {
         ...mapState(["modules", "project"])
+    },
+    methods:{
+        publish(){
+            Ajax.post('',{
+                Project:this.project,
+                Modules:this.modules
+            }).then(res=>{
+                console.log(res)
+            })
+        }
     },
     mounted() {}
 };

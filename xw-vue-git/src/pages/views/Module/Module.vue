@@ -227,11 +227,11 @@ export default {
                             currentPage: ""
                         },
                         map:[],
-                    },
-                    dialog:[
+                    }
+                },
+                model:[
 
-                    ]
-                }
+                ]
             }
         },
         clearSavePageModel(){
