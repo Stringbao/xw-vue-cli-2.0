@@ -34,7 +34,8 @@ import { mapState, mapActions } from "vuex";
 export default {
     props: {
         store: Object,
-        action:String
+        action:String,
+        idx:Number,
     },
     data() {
         return {};
@@ -46,7 +47,7 @@ export default {
                 this.addStore(this.store);
                 return Promise.resolve()
             }else{
-                this.updateStore(this.store);
+                this.updateStore({data:this.store,idx:this.idx});
                 return Promise.resolve();
             }
         }

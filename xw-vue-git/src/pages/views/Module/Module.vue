@@ -8,7 +8,7 @@
                     :index="i"
                     :currentIndex="currentIndex"
                 >
-                    {{module.ModuleName}}
+                    <!-- {{module.ModuleName}} -->
                     <div class="card">
                         <Service :sevices="module.Services"></Service>
                     </div>
@@ -136,10 +136,10 @@ export default {
                         },
                         map:[],
                     },
-                    dialog:[
+                },
+                model:[
 
-                    ]
-                }
+                ]
             },
             pageSaveModel:{
                 PageName:"",
@@ -268,7 +268,7 @@ export default {
             this.$refs.pageDialog[0].save();
         },
         changePageType(){
-            debugger
+            
             if(this.pageType == "list"){
                 this.pageDialog.params = this.pageModel;
                 this.pageDialog.component = "PageListForm";
@@ -276,7 +276,7 @@ export default {
                 this.pageDialog.params = this.pageSaveModel;
                 this.pageDialog.component="PageSaveForm";
             }
-            debugger
+            
             this.pageDialog.type = this.pageType;
         }
     }
@@ -284,7 +284,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pagesCard{
+.card{
     padding: 10px;
     color: #333;
     font-style: normal;

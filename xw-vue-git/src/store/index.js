@@ -43,10 +43,10 @@ export default {
         updatePages(state,data){
             state.currentModule.Pages[data.idx] = data.page
         },
-        updateStore(state,data){
-            let idx = state.currentModule.Pages.findIndex(item=>item.PageName == data.PageName);
-            state.currentModule.Pages[idx] = data
-        },
+        // updateStore(state,data){
+        //     let idx = state.currentModule.Pages.findIndex(item=>item.PageName == data.PageName);
+        //     state.currentModule.Pages[idx] = data
+        // },
         //创建stores
         addStore(state,data){
             let idx = state.currentModule.Store.state.findIndex(item=>item.name == data.name);
@@ -60,10 +60,8 @@ export default {
             state.currentModule.Store.state.splice(data,1)
         },
         updateStore(state,data){
-            let idx = state.currentModule.Store.state.findIndex(item => item.name == data.name);
-            if(idx>=0){
-                state.currentModule.Store.state[idx] = data;
-            }
+            console.log(data.idx);
+            state.currentModule.Store.state[data.idx] = data.data;
         },
         //创建services
         addService(state,data){
@@ -78,10 +76,8 @@ export default {
             state.currentModule.Services.splice(data,1)
         },
         updateService(state,data){
-            let idx = state.currentModule.Services.findIndex(item => item.name == data.name&&item.reqType == data.reqType);
-            if(idx>=0){
-                state.currentModule.Services[idx] = data;
-            }
+            
+            state.currentModule.Services[data.idx] = data.data;
         },
     },
     actions:{
@@ -121,6 +117,7 @@ export default {
             commit("addStore",data)
         },
         updateStore({commit,state},data){
+            
             commit("updateStore",data)
         },
         removeStore({commit,state},data){
