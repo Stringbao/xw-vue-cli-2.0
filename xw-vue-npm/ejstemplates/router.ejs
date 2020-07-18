@@ -2,13 +2,13 @@ let routers = [
     {
         path: '/',
         name: 'login',
-        component:() => import('@pages/login/login.vue')
+        component:() => import('@pages/views/login/login.vue')
     },
 <%_ data.forEach(function(row){ -%>
     {
         path: "<%= row.path %>",
         name: "<%= row.name %>",
-        component:() => import('@pages<%= row.componentPath%>')
+        component:() => import('@pages/views<%= row.componentPath%>')
     },
 <%_ _%><% }) -%>
 ]
