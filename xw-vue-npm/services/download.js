@@ -29,7 +29,7 @@ function gitDownload(projectName){
     })
 }
 
-gitDownload('/aaa');
+gitDownload('/Users/wupeng/Documents/bbb');
 
 
 module.exports = gitDownload;

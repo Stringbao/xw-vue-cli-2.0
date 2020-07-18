@@ -37,31 +37,36 @@
                                     <td>{{item.PageTitle}}</td>
                                     <td>{{item.type}}</td>
                                     <td>
-                                        <le-button type="update" value="modify" @click="modifyPageHandle(item,i)"></le-button>
-                                        <le-button type="remove" value="delete" @click="removePageHandle(item,i)"></le-button>
+                                        <le-button type="update" value="modify" @click="modifyPageHandle(item,idx)"></le-button>
+                                        <le-button type="remove" value="delete" @click="removePageHandle(item,idx)"></le-button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <le-dialog :title="pageDialogTitle" v-model="dialog.showCreatePage" width="900" height="600">
+                        <le-dialog :title="pageDialog.title" v-model="pageDialog.showDialog" width="900" height="600">
                             <div slot="body">
                                 <le-local-select label="页面类型:" class="pagesType"
                                     :data-source="pageTypes" 
                                     display-name="name" display-value="code" 
                                     :readonly="isEditPages"
+                                    @change="changePageType"
                                     v-model="pageType">
                                 </le-local-select>
                                 <div>
-                                    <PageListForm @closePagesDialog="closePagesDialogs" 
-                                        :isEditPages = "isEditPages" ref="PageListForm" 
-                                        :dataSource = "module.Store"
-                                        :Pages = "module.Pages" v-show = "pageType=='list'">
-                                    </PageListForm>
-                                    <PageSaveForm @closePagesDialog="closePagesDialogs" 
-                                        :isEditPages="isEditPages" ref="PageSaveForm" 
-                                        :dataSource = "module.Store"
-                                        :Pages="module.Pages" v-show="pageType=='save'">
-                                    </PageSaveForm>
+                                    <component v-if="pageDialog.showDialog" ref="pageDialog"  :dataSource = "module.Store" 
+                                        :action="pageDialog.action"
+                                        :is="pageDialog.component" 
+                                        :page="pageDialog.params"
+                                        :idx = "pageDialog.idx"
+                                        @closePageDialog="closePagesDialogs"
+                                    >
+                                    </component>
+                                </div>
+                            </div>
+                            <div slot="button">
+                                <div class="le_new_page_btn_group">
+                                    <le-button value="返回" type="back" @click="closePagesDialogs"></le-button>
+                                    <le-button value="确定" type="save" @click="handleSavePages"></le-button>
                                 </div>
                             </div>
                         </le-dialog>
@@ -105,7 +110,43 @@ export default {
         return {
             dialog: {
                 showDialog: false,
-                showCreatePage : false
+            },
+            pageDialog:{
+                showDialog:false,
+                title:"",
+                params:null,
+                component:PageListForm,
+                action:"",
+                type:"",
+                idx:null
+            },
+            pageModel:{
+                PageName:"",
+                type:"list",
+                PageTitle:"",
+                config:{
+                    searchModel:[
+                        
+                    ],
+                    table:{
+                        url:"",
+                        page: {
+                            pageSize: "",
+                            currentPage: ""
+                        },
+                        map:[],
+                    },
+                    dialog:[
+
+                    ]
+                }
+            },
+            pageSaveModel:{
+                PageName:"",
+                type:"save",
+                model:[
+
+                ]
             },
             moduleName: "",
             pageType:"list",
@@ -118,15 +159,6 @@ export default {
     },
     computed: {
         ...mapState(["modules","currentModule"]),
-        pageDialogTitle(){
-            let res = "";
-            if(!this.isEditPages){
-                res = "Create Page"
-            }else{
-                res = "Modify Page"
-            };
-            return res;
-        }
     },
     components: {
         Tab,
@@ -168,31 +200,84 @@ export default {
 
         //添加page的操作
         createPage(){
-            this.dialog.showCreatePage = true;
+            this.clearPage();
+            this.pageDialog.params = this.pageModel;
+            this.pageDialog.showDialog = true;
+            this.pageDialog.action = "create";
+            this.pageDialog.title = "create";
             this.isEditPages = false;
-            this.$refs.PageListForm[0].resetPageModel();
-            console.log(this.modules)
+        },
+        clearPage(){
+            this.pageDialog.params = null;
+            this.pageDialog.showDialog = true;
+        },
+        clearPageModel(){
+            this.pageModel = {
+                PageName:"",
+                type:"list",
+                PageTitle:"",
+                config:{
+                    searchModel:[
+                        
+                    ],
+                    table:{
+                        url:"",
+                        page: {
+                            pageSize: "",
+                            currentPage: ""
+                        },
+                        map:[],
+                    },
+                    dialog:[
+
+                    ]
+                }
+            }
+        },
+        clearSavePageModel(){
+            this.pageSaveModel = {
+                PageName:"",
+                type:"save",
+                model:[
+
+                ]
+            }
         },
         modifyPageHandle(data,idx){
-            debugger
-            this.dialog.showCreatePage = true;
-            this.isEditPages = true;
-            
-            if(data.type == "list"){
-                this.$refs.PageListForm[idx].initPageModel(data);
-            }else{
-                this.$refs.PageSaveForm[idx].initPageModel(data)
-            };
+            this.pageDialog.showDialog = true;
             this.pageType = data.type;
+            this.changePageType();
+            this.pageDialog.params = {...data};
+            this.pageDialog.action = "edit";
+            this.pageDialog.title = "edit";
+            this.pageDialog.idx = idx;
         },  
         removePageHandle(data){
             this.removePages(data);         
         },
         //关闭dialog
         closePagesDialogs(val){
-            this.dialog.showCreatePage = false;
-            this.isEditPages = false;
-            // this.$refs.PageListForm[0].reset();
+            if(this.pageType == "list"){
+                 this.clearPageModel();
+            }else{
+                 this.clearSavePageModel();
+            };
+            this.pageDialog.showDialog = false;
+        },
+        handleSavePages(){
+            this.$refs.pageDialog[0].save();
+        },
+        changePageType(){
+            debugger
+            if(this.pageType == "list"){
+                this.pageDialog.params = this.pageModel;
+                this.pageDialog.component = "PageListForm";
+            }else{
+                this.pageDialog.params = this.pageSaveModel;
+                this.pageDialog.component="PageSaveForm";
+            }
+            debugger
+            this.pageDialog.type = this.pageType;
         }
     }
 };

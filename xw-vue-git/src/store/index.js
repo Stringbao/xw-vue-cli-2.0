@@ -12,7 +12,6 @@ export default {
         },
     },
     mutations:{
-        //创建modules的方法
         addModules(state,data){
             let idx = state.modules.findIndex(item=>item.ModuleName == data.ModuleName);
             if(idx < 0){
@@ -41,9 +40,12 @@ export default {
                 return;
             }
         },
-        removePages(state,data){
+        updatePages(state,data){
+            state.currentModule.Pages[data.idx] = data.page
+        },
+        updateStore(state,data){
             let idx = state.currentModule.Pages.findIndex(item=>item.PageName == data.PageName);
-            state.currentModule.Pages.splice(data,1)
+            state.currentModule.Pages[idx] = data
         },
         //创建stores
         addStore(state,data){
@@ -111,8 +113,8 @@ export default {
         addPages({commit,state},data){
             commit("addPages",data)
         },
-        removePages({commit,state},data){
-            commit("removePages",data)
+        updatePages({commit,state},data){
+            commit("updatePages",data)
         },
 
         addStore({commit,state},data){

@@ -1,9 +1,9 @@
 import Ajax from "@util/http.js";
-import KEYS form "@constant/index.js";
+import KEYS from "@constant/index.js";
 
 const map = {
     <%_ data.map.forEach(function(row){ -%>
-      <%= row.name %>: <%= row.url%>,
+      <%= row.name %>: '<%= row.url%>',
    <%_ _%><% }) -%>
 }
 
@@ -13,11 +13,11 @@ export default {
     },
     <%_ data.fns.forEach(function(row){ -%>
         <%= row.fnName %>(model){
-            let params = {};
         <%_ if (row.isEnum) { -%>
-            return <%= row.url%>
+            return <%= row.url%>;
         <%_ _%><% }else { -%>
-            return Ajax.<%= isGetReq ? 'get' : 'post'%>(map.<%= row.mapKey%>, params)
+            let params = {};
+            return Ajax.<%= row.isGetReq ? 'get' : 'post'%>(map.<%= row.mapKey%>, params);
             <%_ _%><% } -%>
         },
     <%_ _%><% }) -%>

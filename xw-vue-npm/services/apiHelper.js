@@ -1,5 +1,7 @@
 
 const fsTool = require("../tool/fsapi.js");
+const ejs = require("ejs");
+const NPath = require("path");
 
 let APIhelper = {
     //获取文件名(去掉后缀)
@@ -33,6 +35,11 @@ let APIhelper = {
         })
         return tmp;
     },
+    compileByData(ejsPath, data){
+        let path = NPath.resolve(__dirname, ejsPath);
+        let ejsStr = fsTool.file.readFile(path);
+        return ejs.compile(ejsStr)(data);
+    },
     //创建单个Module下的Model文件, 并且写入数据
     createModelFile(projectPath, pages, moduleName){
         //create model file
@@ -45,9 +52,9 @@ let APIhelper = {
                 fsTool.file.createFile(filePath);
                 
                 let res = this.getMoldeDataFromPageItem(item, moduleName);
-                let str = JSON.stringify(res);
-                //write content to file
-                fsTool.file.writeFile(filePath, str);
+                //write content to file by ejs
+                let _data = this.compileByData("../ejstemplates/model.ejs",{data:res});
+                fsTool.file.writeFile(filePath, _data);
             }
         });
     },
@@ -59,76 +66,38 @@ let APIhelper = {
         fsTool.file.createFile(filePath);
 
         let maps = [];
-        
         serviceItem.forEach(x=>{
             if(x.url){
-                maps.push({name:x.name, url:x.url, type:'services',fnName:x.name,reqType:x.reqType});
+                maps.push({name:x.name, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType == 'post'?false:true});
             }
         })
         storeItems.forEach(x=>{
-            maps.push({name:x.name, url:x.url, type:x.type,fnName: "get"+this.firstChatUpperLower(x.name, true), reqType:x.reqType});
+            maps.push({name:x.name, url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType == 'post'?false:true});
         })
 
-        let resJson = {map:{},fns:[]};
+        let resJson = {map:[], fns:[]};
         maps.forEach(x=>{
-            if(x.type != 'enum'){
-                resJson.map[x.name] = x.url;
+            if(!x.isEnum){
+                resJson.map.push(x);
             }
             if(x.url){
-                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, type:x.type, reqType:x.reqType});
+                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.reqType == 'post'?false:true});
             }
         })
         
-        let mapStr = "let map =" + JSON.stringify(resJson.map);
-        let fnStr = "export default {save(model){return model.id?this.update(model):this.create(model);},";
-        
-        resJson.fns.forEach(x=>{
-            let mapKey = x.mapKey;
-            //如果是services
-            if(x.type == "services"){
-                if(x.reqType == "post"){
-                    fnStr += x.fnName + `(model){
-                        let params = {};
-                        return Ajax.post(map.${mapKey}, params);
-                    },`
-                }else{
-                    fnStr += x.fnName + `(model){
-                        let params = {};
-                        return Ajax.get(map.${mapKey}, params);
-                    },`
-                }
-            }else{
-                //如果是store
-                if(x.type == "enum"){
-                    fnStr += x.fnName + `(){
-                        return ${x.url};
-                    },`
-                }else{
-                    if(x.reqType == "post"){
-                        fnStr += x.fnName + `(params){
-                            return Ajax.post(map.${mapKey}, params);
-                        },`
-                    }else{
-                        fnStr += x.fnName + `(params){
-                            return Ajax.get(map.${mapKey}, params);
-                        },`
-                    }
-                }
-            }
-        })
-        fnStr += "}";
-        //write content to file
-        fsTool.file.writeFile(filePath, mapStr + "\n" + fnStr);
+        //write content to file by ejs
+        let _data = this.compileByData("../ejstemplates/service.ejs",{data: resJson});
+        fsTool.file.writeFile(filePath, _data);
     },
-    //创建单个Module下的Helper文件, 并且写入数据
+    //创建单个Module下的Helper文件
     createHelperFile(projectPath, moduleName){
         let path = projectPath + "/src/helper/";
         let filePath = path + this.firstChatUpperLower(moduleName, false) + "Helper.js";
         fsTool.file.createFile(filePath);
 
-        let str = "export default {}";
         //write content to file
-        fsTool.file.writeFile(filePath, str);
+        let _data = this.compileByData("../ejstemplates/helper.ejs",{data: {}});
+        fsTool.file.writeFile(filePath, _data);
     },
     //创建单个Module下的Store文件, 并且写入数据
     createStoreFile(projectPath, storeItems, moduleName){
@@ -139,15 +108,24 @@ let APIhelper = {
         let stateKeys = [];
         let mutations = [];
         let actions = [];
+        let servicesClassName = this.firstChatUpperLower(moduleName, true) + "Services";
+        let servicesPath = this.firstChatUpperLower(moduleName, false) + "Services.js";
         storeItems.forEach(x=>{
             stateKeys.push(x.name);
             mutations.push("set"+x.name);
-            actions.push({fnName:"get"+x.name, stateKey:x.name, type:x.type, url:x.url, serviceName:'get'+x.name});
+            actions.push({fnName:"get"+x.name, stateKey:x.name,commitFnName:"set"+x.name, serviceFnName:'get'+x.name});
         })
-
-        let str = stateKeys.join(';') + mutations.join(';') + JSON.stringify(actions);
+        let data = {
+            servicesClassName,
+            servicesPath,
+            stateKeys,
+            mutations,
+            actions
+        }
+        debugger
         //write content to file
-        fsTool.file.writeFile(filePath, str);
+        let _data = this.compileByData("../ejstemplates/store/store.module.ejs",{data: data});
+        fsTool.file.writeFile(filePath, _data);
     },
     //写入Store Index入口文件
     writeStoreIndex(projectPath, storeKeys){

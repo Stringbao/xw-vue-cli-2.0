@@ -1,8 +1,8 @@
 <template>
     <le-form labelWidth='100' ref="saveForm">
         <div>
-            <le-input :readonly="isEditPages" on required msg="请输入页面名称"
-            label="PageName:" v-model="pageModel.PageName"></le-input>
+            <le-input on required msg="请输入页面名称"
+            label="PageName:" v-model="page.PageName"></le-input>
             <!-- searchModel的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">
@@ -10,7 +10,7 @@
                         <i class="fr addParams iconfont icon-add" type="button" @click="addModel"></i>
                     </h4>
                 </div>
-                <div class="item" v-for="(item, idx) in pageConfigModel" :key="idx">
+                <div class="item" v-for="(item, idx) in page.model" :key="idx">
                     <le-button class="fr" type="remove" value="" 
                         @click="removeCurModelItem(item,idx)">
                     </le-button>
@@ -25,8 +25,9 @@
                     <div v-if="item.type == 'select'">
                         <le-input label="displayName:" v-model="item.displayName"></le-input>
                         <le-input label="displayValue:" v-model="item.displayValue"></le-input>
-                        <le-local-select label="dataSource" :data-source="dataSource.state" 
+                        <le-local-select label="dataSource:" :data-source="dataSource.state" 
                             display-name="name" display-value="name" 
+                            tip="如没有所需数据源,请创建dataSource"
                             v-model="item.dataSource">
                         </le-local-select>
                         <!-- 新建DataSource -->
@@ -66,10 +67,6 @@
                 </div>
             </le-dialog>
         </div>
-        <div class="le_new_page_btn_group">
-            <le-button value="返回" type="back" @click="close"></le-button>
-            <le-button value="确定" type="save" @click="save"></le-button>
-        </div>
     </le-form>
     
 </template>
@@ -84,21 +81,11 @@ export default {
                 {name:"text",code:"text"},
                 {name:"select",code:"select"}
             ],
+           
             dialogValidateType:[
                 {name:"true",code:true},
                 {name:"false",code:false},
             ],
-            //用户添加的数据
-            pageConfigModel:[],
-            pageModel:{
-                PageName:"",
-                type:"save",
-                config:{
-                    model:[
-                        
-                    ],
-                }
-            },
             dataSourceType:[
                 {name:"array",code:"array"},
                 {name:"enum",code:"enum"},
@@ -112,85 +99,66 @@ export default {
         }
     },
     props: {
-        Pages: {
-            type: Array,
+        action:{
+            type: String
         },
-        isEditPages : {
-            type : Boolean
+        page:{
+            type : Object
         },
         dataSource : {
             type : Object
+        },
+        idx : {
+            type : Number
         }
     },
     computed:{
-        ...mapState([]),
+        ...mapState(["modules"]),
         ...mapMutations([]),
     },
     components:{},
     methods:{
-        ...mapActions(["addPages","removePages","addStore"]),
-         //添加搜搜条件
+        ...mapActions(["addPages","updatePages","addStore"]),
+        //添加model
         addModel(){
             let obj = {
                 label: "",
                 type: "text",
                 field: "",
             };
-            this.pageConfigModel.push(obj);
-        },  
-        //删除添加的搜索条件
+            this.page.model.push(obj)
+        }, 
+        //删除model
         removeCurModelItem(item,idx){
-            this.pageConfigModel.splice(idx, 1)
+            this.page.model.splice(idx, 1)
         },
         save(){
-            this.$refs.saveForm.validate()
-            .then(res=>{
-                if(res.success){
-                    this.pageModel.config.model = this.pageConfigModel;
-                    let cloneData = JSON.parse(JSON.stringify( this.pageModel ));
-                    if(this.isEditPages){
-                        //如果是修改配置的话就把store.js中 保存的数据先删除了  然后在添加新修改过的数据
-                        this.removePages(cloneData);
-                    };
-                    this.addPages(cloneData);
-                    this.$emit("closePagesDialog");
-                    this.resetPageModel();  
-                }
-            })
-            .catch( error => {
-                this.alert.showAlert("error", "请填写所有的必填项");
-            })
-        },
-        //修改的时候 用传入的数据 初始化pageModel
-        initPageModel(data){
-            if(!data){
-                return
-            };
-            if(data.PageName !== "" && data.PageName !== undefined && data.PageName !== null){
-                this.pageModel.PageName = data.PageName;
-            };
-            if(data.config !== "" && data.config !== undefined && data.config !== null){
-                if(data.config.model !== "" && data.config.model !== undefined && data.config.model !== null){
-                    this.pageConfigModel = data.config.model;
-                }; 
-            }
-        },
-        resetPageModel(){
-            this.$refs.saveForm.reset();
-            this.pageConfigModel = [],
-            this.pageModel = {
-                PageName:"",
-                type:"save",
-                config:{
-                    model:[
-                        
-                    ],
-                }
-            }
+            let that = this;
+            let res = this.$refs.saveForm.validate()
+                .then(res=>{
+                    that.page.type = "save";
+                    if(that.action == "create"){
+                        that.addPages(that.page);   
+                    }else{
+                        that.updatePages({page:that.page,idx:that.idx})
+                    }
+                    this.$emit("closePageDialog");
+                })
+                .catch(error => {
+                    that.alert.showAlert("error", "请填写所有的必填项");
+                })
         },
         close(){
             this.$emit("closePagesDialog");
-            this.resetPageModel();
+        },
+        //如果storee中的DataSource为空则显示新建DataSource的框
+        addDataSource(){
+            this.newAddDataSource = {
+                name : "",
+                type : "",
+                reqType : "",
+                url : ""
+            };
         },
         showDatasource(){
             this.newAddDataSource = {
@@ -210,10 +178,11 @@ export default {
         }
     },
     mounted(){
-        
+        console.log(this.page)
     }
 }
 </script>
+
 <style lang="scss" scoped>
 .label{
     font-weight: 600;
