@@ -142,19 +142,20 @@ let APIhelper = {
     //写入Route Index入口文件
     writeRouter(projectPath, pages){
         let filePath = projectPath + "/src/route/index.js";
-        let paths = [];
-        let names = [];
-        let componentPath = [];
 
+        let data = [];
         pages.forEach(x=>{
-            let modelName = this.firstChatUpperLower(x.moduleName, false);
-            let _path = modelName + this.firstChatUpperLower(this.getFileName(x.pageName),false);
-            paths.push("/" + _path);
-            names.push(_path);
-            componentPath.push(modelName + "/" + x.pageName);
+            let moduleName = this.firstChatUpperLower(x.moduleName, false);
+            let tmp = {
+                path:"/"+ moduleName + this.firstChatUpperLower(this.getFileName(x.pageName),false),
+                name: moduleName +this.firstChatUpperLower(this.getFileName(x.pageName),false),
+                componentPath: "/" + moduleName + "/" + x.pageName
+            }
+            data.push(tmp);
         })
-
-        fsTool.file.writeFile(filePath, paths.join(';') + componentPath.join(';'));
+        
+        let _data = this.compileByData("../ejstemplates/router.ejs",{data:data});
+        fsTool.file.writeFile(filePath, _data);
     },
     //创建view文件，并且准备数据(维度：Module)
     createView(projectPath, pages, moduleName){
@@ -169,7 +170,16 @@ let APIhelper = {
             fsTool.file.createFile(vuePath);
             
             let pageData = this.dataForListView(x, moduleName);
-            fsTool.file.writeFile(vuePath, JSON.stringify(pageData));
+            let ejsPath = "../ejstemplates/view/list.ejs";
+            if(x.type != "list"){
+                ejsPath = "../ejstemplates/view/save.ejs";
+            }
+            let includeFormPath = NPath.resolve(__dirname, "../ejstemplates/view/form.ejs");
+            pageData.includeFormPath = includeFormPath;
+            
+            let _data = this.compileByData(ejsPath, {data:pageData});
+            
+            fsTool.file.writeFile( modulePath + "/" + x.pageName, _data);
         })
     },
     getStoreInPage(page){
@@ -201,20 +211,24 @@ let APIhelper = {
     dataForListView(page, moduleName){
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
-        let pageOpts = page.config?JSON.stringify(page.config.table):"";
+        let pageOpts = page.config?page.config.table:"";
         let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table List";
         let componentName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName),true);
 
         let storeKeys = this.getStoreInPage(page);
         let hasStore = false;
         let storeName = "";
-        let StoreActions = [];
+        let storeActions = [];
         if(storeKeys.length != 0){
             hasStore = true;
             storeName = this.firstChatUpperLower(moduleName, true) + "Store";
             storeKeys.forEach(x=>{
-                StoreActions.push("get" + this.firstChatUpperLower(x,true));
+                storeActions.push("get" + this.firstChatUpperLower(x,true));
             })
+        }
+        let hasModel = true;
+        if(page.type == "list" && page.model.length  == 0){
+            hasModel = false;
         }
 
         let serviceFileName = this.firstChatUpperLower(moduleName,false) + "Services.js";
@@ -222,7 +236,7 @@ let APIhelper = {
         let modelFileName = this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model.js";
         let modelClassName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model";
         let modelDataName = this.firstChatUpperLower(modelClassName,false);
-        let modelKeys = page.model?page.model:[];
+        let modelArray = page.model?page.model:[];
         let data = {
             pageTitle,
             searchModel,
@@ -230,10 +244,11 @@ let APIhelper = {
             tableTitle,
             componentName,
             hasStore,
+            hasModel,
             store:{
                 storeKeys,
                 storeName,
-                StoreActions
+                storeActions
             },
             service:{
                 serviceFileName,
@@ -243,7 +258,7 @@ let APIhelper = {
                 modelFileName,
                 modelClassName,
                 modelDataName,
-                modelKeys
+                modelArray
             }
         }
         

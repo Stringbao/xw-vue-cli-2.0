@@ -1,7 +1,7 @@
 <template>
     <div class="le_comps_core_css new_page_width">
         <h4 class="le_page_name"><%= data.PageTitle %></h4>
-        <%_ _%><%- include("form.ejs",{data:data.model,model: data.ModuleName}) %>
+        <%_ _%><%- include(data.includeFormPath,{data:data.model,model: data.ModuleName}) %>
         <div class="le_new_page_btn_group">
             <le-button type = "back" value = "返回" @click = "goBack"></le-button>
             <le-button type = "save" value = "保存" @click = "save"></le-button>

@@ -144,7 +144,7 @@
         <%_ if(data.hasModel){ _%>
         <le-dialog v-model = "dialogTag">
             <div slot = "body">
-                <%_ _%><%- include("form.ejs",{data:data.model.modelArray,model: data.model.modelDataName}) %>
+                <%_ _%><%- include(data.includeFormPath, {data:data.model.modelArray, model: data.model.modelDataName}) %>
             </div>
             <div slot="button">
                 <le-button type="cancel" value="取消" @click = "dialogCancel"></le-button>
@@ -163,7 +163,7 @@ const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.
 <%_ if(data.hasModel){ -%>
 import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileName %>';
 <%_ } -%>
-import <%= data.serviceClassName%> from '<%= data.serviceFileName%>'';
+import <%= data.service.serviceClassName%> from '<%= data.service.serviceFileName%>';
 export default {
     name:"<%= data.componentName %>",
     data(){
@@ -179,10 +179,10 @@ export default {
             // dialog v-model的值 控制dialog显示/隐藏
             <%_ if(data.hasModel){ -%>
             dialogTag:false,
-            <%= data.model.modelFileName %>: new <%= data.model.modelFileName %>Model(),
+            <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
             <%_ } -%>
             // 表格的配置
-            list_table_options: <%= data.pageOpts %>
+            list_table_options:  <%= JSON.stringify(data.pageOpts) %>
         }
     },
     computed:{
