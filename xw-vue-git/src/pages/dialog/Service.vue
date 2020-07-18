@@ -30,6 +30,7 @@ export default {
     props:{
         showDialog:Boolean,
         title:String,
+        idx: Number,
         params:{
             type:Object,
         },
@@ -42,9 +43,12 @@ export default {
     },
     methods:{
         confirm(){
+            let that=this;
             if(this.$listeners.confirm){
                 this.$refs.servicesForm.validate().then(()=>{
-                    this.$listeners.confirm();
+                    
+                    console.log(that.idx)
+                    this.$listeners.confirm(that.idx);
                 }).catch(err=>this.alert.showAlert("error", err.info))
             }
         },

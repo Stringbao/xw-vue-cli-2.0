@@ -39,6 +39,7 @@
             :title="dialog.title" 
             :showDialog="dialog.showDialog" 
             :params="dialog.params"
+            :idx="dialog.idx"
             @cancel="this.handleClose"
             @confirm="this.handleSave"
         ></ServiceDialog>
@@ -63,7 +64,8 @@ export default {
                 showDialog: false,
                 title:"",
                 action:"",
-                params:null
+                params:null,
+                idx:null
             },
             service: {
                 name: "",
@@ -90,6 +92,7 @@ export default {
             this.dialog.title = "edit Service";
             this.dialog.action = "update";
             this.dialog.params = this.service;
+            this.dialog.idx = idx;
         },
         //删除
         del(item, idx) {
@@ -98,7 +101,7 @@ export default {
             });
         },
         
-        handleSave() {
+        handleSave(idx) {
             let service = {
                 name:this.dialog.params.name,
                 reqType:this.dialog.params.reqType,
@@ -107,7 +110,7 @@ export default {
             if(this.dialog.action === "create"){
                 this.addService(service);
             }else{
-                this.updateService(service);
+                this.updateService({data:service,idx:idx});
             }
             this.dialog.showDialog = false;
         },

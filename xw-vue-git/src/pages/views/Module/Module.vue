@@ -268,7 +268,7 @@ export default {
             this.$refs.pageDialog[0].save();
         },
         changePageType(){
-            debugger
+            
             if(this.pageType == "list"){
                 this.pageDialog.params = this.pageModel;
                 this.pageDialog.component = "PageListForm";
@@ -276,7 +276,7 @@ export default {
                 this.pageDialog.params = this.pageSaveModel;
                 this.pageDialog.component="PageSaveForm";
             }
-            debugger
+            
             this.pageDialog.type = this.pageType;
         }
     }

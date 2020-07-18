@@ -38,7 +38,7 @@
         </div>
         <le-dialog title="create Store" v-model="dialog.showDialog" width="700" height="600">
             <div slot="body">
-                <StoreDialog :store="store" :action="dialog.action" ref="store" />
+                <StoreDialog :store="store" :action="dialog.action" :idx="dialog.idx" ref="store" />
             </div>
             <div slot="button">
                 <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
@@ -64,7 +64,8 @@ export default {
         return {
             dialog: {
                 showDialog: false,
-                action:""
+                action:"",
+                idx:null
             },
             store: {
                 name: "",
@@ -102,6 +103,7 @@ export default {
             this.store = {...item};
             this.dialog.showDialog = true;
             this.dialog.action = "update";
+            this.dialog.idx = idx;
         },
         handleSave() {
             this.$refs.store.submit().then(()=>{
