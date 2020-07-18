@@ -15,29 +15,37 @@
                         <i class="fr addParams iconfont icon-add" type="button" @click="addSearchModel"></i>
                     </h4>
                 </div>
-                <div class="item" v-for="(item, idx) in page.config.searchModel" :key="idx">
-                    <le-button class="fr" type="remove" 
-                            value="" @click="removeCurSearchModelItem(item,idx)">
-                        </le-button>
-                    <le-radio-list label="type:" :data-source="searchModelTypes" 
-                        display-name="name" display-value="code" 
-                        v-model="item.type">
-                    </le-radio-list>
-                    
-                    <le-input label="label:" v-model="item.label"></le-input>
-                    <le-input label="field:" v-model="item.field"></le-input>
-                    <div class="clearfix" v-if="item.type == 'select'">
-                        <le-input label="displayName:" v-model="item.displayName"></le-input>
-                        <le-input label="displayValue:" v-model="item.displayValue"></le-input>
-                        <le-local-select label="dataSource" :data-source="dataSource.state" 
-                            display-name="name" display-value="name"
-                            v-model="item.dataSource">
-                        </le-local-select>
-                        <!-- 新建DataSource -->
-                        <le-button class="fr" type="create" value="addDatasource" @click="showDatasource"></le-button>
-                    </div>
+                <div class="item" >
+                    <ul>
+                        <li class="clearfix" v-for="(item, idx) in page.config.searchModel" :key="idx">
+                            <div>
+                                <div class="le_form_row_item">
+                                    <le-radio-list label="type:" :data-source="searchModelTypes" 
+                                        display-name="name" display-value="code" 
+                                        v-model="item.type">
+                                    </le-radio-list>
+                                    <le-input label="label:" v-model="item.label"></le-input>
+                                    <le-input label="field:" v-model="item.field"></le-input>
+                                    <le-button type="remove" 
+                                        value=" deleteItems" @click="removeCurSearchModelItem(item,idx)">
+                                    </le-button>
+                                </div>
+                                <div class="clearfix le_form_row_item" v-if="item.type == 'select'">
+                                    <le-input label="displayName:" v-model="item.displayName"></le-input>
+                                    <le-input label="displayValue:" v-model="item.displayValue"></le-input>
+                                    <le-local-select label="dataSource:" :data-source="dataSource.state" 
+                                        display-name="name" display-value="name"
+                                        v-model="item.dataSource">
+                                    </le-local-select>
+                                    <le-button type="create" value="datasource" @click="showDatasource"></le-button>
+
+                                </div>              
+                            </div>           
+                        </li>
+                    </ul>
                 </div>
             </div>
+            
             <!-- table的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix"> 
@@ -56,10 +64,10 @@
                             </h4>
                         </div>
                         <div class="item" v-for="(item,idx) in page.config.table.map" :key="idx">
-                            <div class="le_form_row_item">
+                            <div class="le_form_row_item col3">
                                 <le-input label="field:" v-model="item.field"></le-input>
                                 <le-input label="label:" v-model="item.label"></le-input>
-                                <le-button class="fr" type="remove" value="" @click="removeCurTableMap(item,idx)"></le-button>
+                                <le-button class="fr" type="remove" value="deleteItem" @click="removeCurTableMap(item,idx)"></le-button>
                             </div>
                         </div>
                     </div>
@@ -72,34 +80,43 @@
                         <i class="fr addParams iconfont icon-add" @click="addModelArr"></i>
                     </h4>
                 </div>
-                <div class="item" v-for="(item, idx) in page.model" :key="idx">
-                    <le-button class="fr" type="remove" 
-                        value="" @click="removeCurModelItem(item,idx)">
-                    </le-button>
-                    <le-radio-list label="type:" :data-source="dialogFieldType" 
-                        display-name="name" display-value="code" 
-                        v-model="item.type">
-                    </le-radio-list>
-                    <le-input label="label:" v-model="item.label"></le-input>
-                    <le-input label="field:" v-model="item.field"></le-input>
-                    <div v-if="item.type == 'select'">
-                        <le-input label="displayName:" v-model="item.displayName"></le-input>
-                        <le-input label="displayValue:" v-model="item.displayValue"></le-input>
-                        <le-local-select label="dataSource" :data-source="dataSource.state" 
-                            display-name="name" display-value="name" 
-                            v-model="item.dataSource">
-                        </le-local-select>
-                        <!-- 新建DataSource -->
-                        <le-button class="fr" type="create" value="addDatasource" @click="showDatasource"></le-button>
-                    </div>
-                    <le-radio-list label="on:" :data-source="dialogValidateType" 
-                        display-name="name" display-value="code" 
-                        v-model="item.on">
-                    </le-radio-list>
-                    <le-radio-list label="required:" :data-source="dialogValidateType" 
-                        display-name="name" display-value="code" 
-                        v-model="item.required">
-                    </le-radio-list>
+                <div class="item" >
+                    <ul>
+                        <li class="clearfix" v-for="(item, idx) in page.model" :key="idx">
+                            <div>
+                                <div class="le_form_row_item">
+                                    <le-radio-list label="type:" :data-source="dialogFieldType" 
+                                        display-name="name" display-value="code" 
+                                        v-model="item.type">
+                                    </le-radio-list>
+                                    <le-input label="label:" v-model="item.label"></le-input>
+                                    <le-input label="field:" v-model="item.field"></le-input>
+                                    <le-button class="fr" type="remove" 
+                                        value="deleteItem" @click="removeCurModelItem(item,idx)">
+                                    </le-button>
+                                </div>
+                                <div class="le_form_row_item" v-if="item.type == 'select'">
+                                    <le-input label="displayName:" v-model="item.displayName"></le-input>
+                                    <le-input label="displayValue:" v-model="item.displayValue"></le-input>
+                                    <le-local-select label="dataSource" :data-source="dataSource.state" 
+                                        display-name="name" display-value="name" 
+                                        v-model="item.dataSource">
+                                    </le-local-select>
+                                    <le-button class="fr" type="create" value="datasource" @click="showDatasource"></le-button>
+                                </div>
+                                <div class="col3">
+                                    <le-radio-list label="on:" :data-source="dialogValidateType" 
+                                        display-name="name" display-value="code" 
+                                        v-model="item.on">
+                                    </le-radio-list>
+                                    <le-radio-list label="required:" :data-source="dialogValidateType" 
+                                        display-name="name" display-value="code" 
+                                        v-model="item.required">
+                                    </le-radio-list>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <!-- datasource的配置 -->
@@ -288,12 +305,18 @@ export default {
     .item{
         border-bottom: 1px solid #dcdfe6;
         margin-bottom: 20px;
+        li{
+            overflow-x: auto;
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
     }
     .item:last-child{
         border-bottom: none;
     }
     .asBtn{
-        padding-left: 10px;
+        // padding-left: 10px;
     }
     .addParams{
         width: 40px;

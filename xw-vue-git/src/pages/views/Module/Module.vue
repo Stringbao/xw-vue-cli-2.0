@@ -43,7 +43,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <le-dialog :title="pageDialog.title" v-model="pageDialog.showDialog" width="900" height="600">
+                        <le-dialog :title="pageDialog.title" v-model="pageDialog.showDialog" width="1100" height="600">
                             <div slot="body">
                                 <le-local-select label="页面类型:" class="pagesType"
                                     :data-source="pageTypes" 
