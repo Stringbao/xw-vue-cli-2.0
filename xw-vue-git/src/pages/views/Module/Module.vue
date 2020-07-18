@@ -136,10 +136,10 @@ export default {
                         },
                         map:[],
                     },
-                    dialog:[
+                },
+                model:[
 
-                    ]
-                }
+                ]
             },
             pageSaveModel:{
                 PageName:"",

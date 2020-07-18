@@ -65,16 +65,16 @@
                     </div>
                 </div>
             </div>
-            <!-- dialog的配置 -->
+            <!-- model的配置 -->
             <div class="configItem">
                 <div class="configItem-title">
-                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">dialog
-                        <i class="fr addParams iconfont icon-add" @click="addDialogArr"></i>
+                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">model
+                        <i class="fr addParams iconfont icon-add" @click="addModelArr"></i>
                     </h4>
                 </div>
-                <div class="item" v-for="(item, idx) in page.config.dialog" :key="idx">
+                <div class="item" v-for="(item, idx) in page.model" :key="idx">
                     <le-button class="fr" type="remove" 
-                        value="" @click="removeCurConfigItem(item,idx)">
+                        value="" @click="removeCurModelItem(item,idx)">
                     </le-button>
                     <le-radio-list label="type:" :data-source="dialogFieldType" 
                         display-name="name" display-value="code" 
@@ -205,18 +205,18 @@ export default {
         removeCurTableMap(item,idx){
             this.page.config.table.map.splice(idx, 1)
         },  
-        //添加dialog的参数
-        addDialogArr(){
+        //添加model的参数
+        addModelArr(){
             let obj = {
                 label: "",
                 type: "text",
                 field: "",
             };
-            this.page.config.dialog.push(obj);
+            this.page.model.push(obj);
         },
         //删除用户添加的dialog参数
-        removeCurConfigItem(item,idx){
-            this.page.config.dialog.splice(idx, 1)
+        removeCurModelItem(item,idx){
+            this.page.model.splice(idx, 1)
         },
         save(){
             let that = this;
