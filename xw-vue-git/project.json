@@ -5,9 +5,9 @@
         "ModuleName": "Roles",
         "Pages": [
             {
-                "PageName": "list.vue",
+                "pageName": "list.vue",
                 "type": "list",
-                "PageTitle": "角色管理列表",
+                "pageTitle": "角色管理列表",
                 "config": {
                     "searchModel": [
                         {
@@ -56,7 +56,7 @@
                 ]
             },
             {
-                "PageName": "save.vue",
+                "pageName": "save.vue",
                 "type": "save",
                 "model":[
                     {
