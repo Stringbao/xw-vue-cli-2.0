@@ -2,8 +2,8 @@
     <div class="le_comps_core_css">
         <h4 class="le_page_name"><%= data.PageTitle %></h4>
         <div class='le_list_search_pannel clearfix'>
-            <%_ data.config.searchModel.forEach(function(col){ -%>
-            <div class="<%= 'col' + data.colsCount %>"><%_ %>
+            <%_ data.searchModel.forEach(function(col){ -%>
+            <div class="col3"><%_ %>
                 <%_ if(col.type == "text"){ -%>
                 <le-input<%  _%>
                     <%_ if(col.placeholder && col.placeholder != ''){ -%>
@@ -43,7 +43,7 @@
                                 <%_  %> display-value="<%= col.displayValue %>"<%  -%>
                             <%_ } _%>></le-local-select>
                 <%_ } -%>
-                <%_ if(col.type == "radioList"){ -%>
+                <%_ if(col.type == "radio"){ -%>
                 <le-radio-list<%  _%>
                         <%_ if(col.labelWidth && col.labelWidth != ''){ _%>
                             <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
@@ -64,7 +64,7 @@
                             <%_  %> display-value="<%= col.displayValue %>"<%  -%>
                         <%_ } _%>></le-radio-list>
                 <%_ } -%>
-                <%_ if(col.type == "checkboxList"){ -%>
+                <%_ if(col.type == "checkbox"){ -%>
                 <le-checkbox-list<%  _%>
                     <%_ if(col.labelWidth && col.labelWidth != ''){ _%>
                         <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
@@ -135,17 +135,16 @@
         <%_ _%><% }) -%>
         </div>
         <div class="le_search_btn_group cleatfix">
-        <%_ data.btn.forEach(function(item){ -%>
-            <le-button type="<%= item.btnType %>" value="<%= item.btnName %>" @click="<%= item.btnHandle %>"></le-button>
-        <%_ }) _%>
+            <le-button type="create" value="create" @click="create"></le-button>
+            <le-button type="search" value="search" @click="search"></le-button>
         </div>
         <div class='le_table_container'>
-            <table-list title="<%= data.tableTitle %>" ref='<%= data.PageName %>_ref' :options='<%= data.tableOptionsName %>'></table-list>
+            <table-list title="<%= data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
         </div>
-        <%_ if(data.model){ _%>
+        <%_ if(data.hasModel){ _%>
         <le-dialog v-model = "dialogTag">
             <div slot = "body">
-                <%_ _%><%- include("form.ejs",{data:data.model,model: data.ModuleName}) %>
+                <%_ _%><%- include(data.includeFormPath, {data:data.model.modelArray, model: data.model.modelDataName}) %>
             </div>
             <div slot="button">
                 <le-button type="cancel" value="取消" @click = "dialogCancel"></le-button>
@@ -156,83 +155,72 @@
     </div>
 </template>
 <script>
-import CommonUtil from '@util';
+import util from "@util/util.js";
+<%_ if( data.hasStore){ -%>
 import { createNamespacedHelpers } from 'vuex';
-const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.ModuleName %>Store');
-<%_ if(data.model && data.model != ""){ -%>
-import <%= data.ModuleName %>Model from '@model/<%= data.ModuleName %>'
+const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.store.storeName %>');
 <%_ } -%>
+<%_ if(data.hasModel){ -%>
+import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileName %>';
+<%_ } -%>
+import <%= data.service.serviceClassName%> from '<%= data.service.serviceFileName%>';
 export default {
-    name:"<%= data.ModuleName %><%= data.PageName %>",
+    name:"<%= data.componentName %>",
     data(){
         return {
             // 搜索条件
         searchModel:{
-            <%_ data.config.searchModel.forEach(function(col){ -%>
+            <%_ data.searchModel.forEach(function(col){ -%>
                 <%_ if(col.field && col.field != ""){ -%>
                 <%= col.field %> : "",
                 <%_ } -%>
             <%_ }) -%>
         },
             // dialog v-model的值 控制dialog显示/隐藏
-            <%_ if(data.model){ -%>
+            <%_ if(data.hasModel){ -%>
             dialogTag:false,
-            <%= data.ModuleName %>: new <%= data.ModuleName %>Model(),
+            <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
             <%_ } -%>
             // 表格的配置
-            <%= data.tableOptionsName %>: <%= data.config.table %>
+            list_table_options:  <%= JSON.stringify(data.pageOpts) %>
         }
     },
     computed:{
+        <%_ if( data.hasStore){ -%>
         ...mapState([
-            <%_ data.config.searchModel.forEach(function(actionName){ -%>
-            <%_ if (actionName.dataSource) { -%>
-            "<%= actionName.dataSource%>",
-            <%_ } -%>
+            <%_ data.store.storeKeys.forEach(function(name){ -%>
+            "<%= name%>",
             <%_ }) -%>
         ])
+        <%_ } -%>
     },
     methods:{
+        <%_ if( data.hasStore){ -%>
         ...mapActions([
-            <%_ data.config.searchModel.forEach(function(actionName){ -%>
-            <%_ if (actionName.dataSource) { -%>
-            "get<%= actionName.dataSource%>",
-            <%_ } -%>
+            <%_ data.store.storeActions.forEach(function(name){ -%>
+            "<%= name%>",
             <%_ }) -%>
         ]),
+        <%_ } -%>
         search(){
-            this.$refs["<%= data.PageName %>_ref"].search();
+            this.$refs["tableListRef"].searchCurrentIndex();
         },
-        <%_ data.btn.forEach(function(item){ -%>
-        <%= item.btnHandle%>() {
+        create() {
 
         },
-        <%_ }) _%>
-        <%_ if(data.model){ _%>
+        <%_ if(data.hasModel){ _%>
         dialogConfirm(){},
         dialogCancel(){
             this.dialogTag = false;
         },
-        <%_ } else { -%>
-        createBtn(){
-            this.$router.push({path:'/<%= data.ModuleName + data.PageName %>', query: {tag: 'create'}});
-        },
-        updateBtn(item){
-            this.$router.push({path:'/<%= data.ModuleName + data.PageName %>', query: {tag: 'edit', id: item.id}});
-        },
-        detailInfo(item) {
-            this.$router.push({path:'/<%= data.ModuleName + data.PageName %>', query: {tag: 'detail', id: item.id}});
-        }
-        <%_ } -%>
-        }
-
+        <%_ }  -%>
     },
     mounted(){
-    <%_ data.config.searchModel.forEach(function(actionName){ -%>
-    <%_ if (actionName.dataSource) { -%>
-      this.get<%= actionName.dataSource%>()
-    <%_ } -%>
+    <%_ if( data.hasStore){ -%>
+    <%_ data.store.storeActions.forEach(function(name){ -%>
+      this.<%= name%>()
     <%_ }) -%>
+    <%_ } -%>
     }
 }
 </script>

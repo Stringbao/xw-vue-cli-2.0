@@ -1,5 +1,5 @@
-            <le-form ref="saveForm" labelWidth = "120" class = "formContent">
-        <%_ data.forEach(function(col){ -%>
+       <le-form ref="saveForm" labelWidth = "120" class = "formContent">
+            <%_ data.forEach(function(col){ -%>
                 <%_ if(col.type == "text"){ -%>
                 <le-input<%  _%>
                     <%_ if(col.placeholder && col.placeholder != ''){ -%>
@@ -12,7 +12,7 @@
                         <%_  %> label="<%= col.label %>:"<%_  -%>
                     <%_ } -%>
                     <%_ if(col.field && col.field != ''){ -%>
-                        <%_  %> v-model="<%= col.field %>"<%_  -%>
+                        <%_  %> v-model="<%=model%>.<%= col.field %>"<%_  -%>
                     <%_ } -%>
                     <%_ if(col.on && col.on == '1'){ -%>
                         <%_  %> on<%_  -%>
@@ -66,7 +66,7 @@
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
                         <%_ if(col.field && col.field != ''){ -%>
-                            <%_  %> v-model="<%=col.field%>"<%  -%>
+                            <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.dataSource && col.dataSource != ''){ -%>
                             <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
@@ -93,7 +93,7 @@
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
                         <%_ if(col.field && col.field != ''){ -%>
-                            <%_  %> v-model="<%=col.field%>"<%  -%>
+                            <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.dataSource && col.dataSource != ''){ -%>
                             <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
@@ -123,7 +123,7 @@
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
                         <%_ if(col.field && col.field != ''){ -%>
-                            <%_  %> v-model="<%=col.field%>"<%  -%>
+                            <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.required && col.required == '1'){ -%>
                             <%_  %> on<%_  -%>
@@ -144,7 +144,7 @@
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
                         <%_ if(col.field && col.field != ''){ -%>
-                            <%_  %> v-model="<%=col.field%>"<%  -%>
+                            <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.required && col.required == '1'){ -%>
                             <%_  %> on<%_  -%>
@@ -165,7 +165,7 @@
                             <%_  %> label="<%= col.label %>:"<%  -%>
                         <%_ } _%>
                         <%_ if(col.field && col.field != ''){ -%>
-                            <%_  %> v-model="<%=col.field%>"<%  -%>
+                            <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.required && col.required == '1'){ -%>
                             <%_  %> on<%_  -%>

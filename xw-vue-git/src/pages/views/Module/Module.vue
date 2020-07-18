@@ -8,7 +8,7 @@
                     :index="i"
                     :currentIndex="currentIndex"
                 >
-                    {{module.ModuleName}}
+                    <!-- {{module.ModuleName}} -->
                     <div class="card">
                         <Service :sevices="module.Services"></Service>
                     </div>
@@ -284,7 +284,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pagesCard{
+.card{
     padding: 10px;
     color: #333;
     font-style: normal;
