@@ -190,8 +190,89 @@ let APIhelper = {
             let vuePath = modulePath + "/" + this.firstChatUpperLower(x.pageName, false);
             //创建vue文件
             fsTool.file.createFile(vuePath);
+            
+            let pageData = this.dataForListView(x, moduleName);
+            fsTool.file.writeFile(vuePath, JSON.stringify(pageData));
         })
+    },
+    getStoreInPage(page){
+        let storeKeys = [];
+        if(page.type == "list"){
+            //check searchModel
+            let searchModels = page.config.searchModel;
+            searchModels.forEach(x=>{
+                if(x.dataSource){
+                    storeKeys.push(x.dataSource);
+                }
+            })
+            let models = page.model;
+            models.forEach(x=>{
+                if(x.dataSource){
+                    storeKeys.push(x.dataSource);
+                }
+            })
+        }else{
+            let models = page.model;
+            models.forEach(x=>{
+                if(x.dataSource){
+                    storeKeys.push(x.dataSource);
+                }
+            })
+        }
+        return Array.from(new Set(storeKeys));
+    },
+    dataForListView(page, moduleName){
+        let pageTitle = page.pageTitle?page.pageTitle:"";
+        let searchModel = page.config?page.config.searchModel:[];
+        let pageOpts = page.config?JSON.stringify(page.config.table):"";
+        let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table List";
+        let componentName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName),true);
+
+        let storeKeys = this.getStoreInPage(page);
+        let hasStore = false;
+        let storeName = "";
+        let StoreActions = [];
+        if(storeKeys.length != 0){
+            hasStore = true;
+            storeName = this.firstChatUpperLower(moduleName, true) + "Store";
+            storeKeys.forEach(x=>{
+                StoreActions.push("get" + this.firstChatUpperLower(x,true));
+            })
+        }
+
+        let serviceFileName = this.firstChatUpperLower(moduleName,false) + "Services.js";
+        let serviceClassName = this.firstChatUpperLower(moduleName,true) + "Services";
+        let modelFileName = this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model.js";
+        let modelClassName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model";
+        let modelDataName = this.firstChatUpperLower(modelClassName,false);
+        let modelKeys = page.model?page.model:[];
+        let data = {
+            pageTitle,
+            searchModel,
+            pageOpts,
+            tableTitle,
+            componentName,
+            hasStore,
+            store:{
+                storeKeys,
+                storeName,
+                StoreActions
+            },
+            service:{
+                serviceFileName,
+                serviceClassName
+            },
+            model:{
+                modelFileName,
+                modelClassName,
+                modelDataName,
+                modelKeys
+            }
+        }
+        
+        return data;
     }
+
 }
 
 
