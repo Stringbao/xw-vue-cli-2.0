@@ -6,7 +6,7 @@ const APIhelper = require("./apiHelper.js");
 
 const data = require("../project.js");
 
-const projectPath = '/aaa';
+const projectPath = '/Users/wupeng/Documents/bbb';
 
 const api = {
     test(req,res){
