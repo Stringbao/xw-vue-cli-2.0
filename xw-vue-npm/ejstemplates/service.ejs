@@ -1,50 +1,24 @@
 import Ajax from "@util/http.js";
+import KEYS form "@constant/index.js";
 
 const map = {
-<%= data.ModuleName %>List:"/productAPI/index/queryList/190",
-    create: "<%= data.create.url%>",
-    update:"<%= data.update.url%>",
-    remove:"<%= data.remove.url%>",
-    detail:"<%= data.detail.url%>",
-    list:"<%= data.list.url%>"
+    <%_ data.map.forEach(function(row){ -%>
+      <%= row.name %>: <%= row.url%>,
+   <%_ _%><% }) -%>
 }
 
 export default {
-    get<%= data.ModuleName %>List(){
-        return Ajax.get(map.SalesRoute);
+    save(model) {
+        return model.id ? this.update(model) : this.create(model);
     },
-    save(model){
-        if(model.id){
-            return this.update(model);
-        }else{
-            return this.create(model);
-        }
-    },
-    create(model){
-        let params = {
-            ...model
-        };
-        return Ajax.postFormData(map.create, params);
-    },
-    update(model){
-        let params = {
-            ...model
-        };
-        return Ajax.postFormData(map.update, params);
-    },
-    remove(model){
-        let params = {
-            ...model
-        };
-        return Ajax.postFormData(map.remove, params);
-    },
-    list(){
-        return Ajax.get(map.list);
-    },
-    detail(model){
-        let params = {
-            ...model
-    };
-        return Ajax.get(map.detail,params);
-    }
+    <%_ data.fns.forEach(function(row){ -%>
+        <%= row.fnName %>(model){
+            let params = {};
+        <%_ if (row.isEnum) { -%>
+            return <%= row.url%>
+        <%_ _%><% }else { -%>
+            return Ajax.<%= isGetReq ? 'get' : 'post'%>(map.<%= row.mapKey%>, params)
+            <%_ _%><% } -%>
+        },
+    <%_ _%><% }) -%>
 }
