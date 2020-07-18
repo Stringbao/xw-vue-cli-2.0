@@ -32,7 +32,7 @@ export default {
         },
         //创建page
         addPages(state,data){
-            let idx = state.currentModule.Pages.findIndex(item=>item.PageName == data.PageName);
+            let idx = state.currentModule.Pages.findIndex(item=>item.pageName == data.pageName);
             if(idx < 0){
                 state.currentModule.Pages.push(data)
             }else{
