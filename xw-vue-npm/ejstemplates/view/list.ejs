@@ -1,6 +1,6 @@
 <template>
     <div class="le_comps_core_css">
-        <h4 class="le_page_name"><%= data.PageTitle %></h4>
+        <h4 class="le_page_name"><%= data.pageTitle %></h4>
         <div class='le_list_search_pannel clearfix'>
             <%_ data.searchModel.forEach(function(col){ -%>
             <div class="col3"><%_ %>
@@ -144,7 +144,7 @@
         <%_ if(data.hasModel){ _%>
         <le-dialog v-model = "dialogTag">
             <div slot = "body">
-                <%_ _%><%- include(data.includeFormPath, {data:data.model.modelArray, model: data.model.modelDataName}) %>
+              <%- include(data.includeFormPath, {data: data.model.modelArray, model: data.model.modelDataName}) %>
             </div>
             <div slot="button">
                 <le-button type="cancel" value="取消" @click = "dialogCancel"></le-button>
@@ -163,7 +163,7 @@ const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.
 <%_ if(data.hasModel){ -%>
 import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileName %>';
 <%_ } -%>
-import <%= data.service.serviceClassName%> from '<%= data.service.serviceFileName%>';
+import <%= data.service.serviceClassName%> from '@services/<%= data.service.serviceFileName%>';
 export default {
     name:"<%= data.componentName %>",
     data(){
@@ -182,7 +182,7 @@ export default {
             <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
             <%_ } -%>
             // 表格的配置
-            list_table_options:  <%= JSON.stringify(data.pageOpts) %>
+            list_table_options:  <%- data.pageOpts %>
         }
     },
     computed:{
@@ -191,7 +191,7 @@ export default {
             <%_ data.store.storeKeys.forEach(function(name){ -%>
             "<%= name%>",
             <%_ }) -%>
-        ])
+        ]),
         <%_ } -%>
     },
     methods:{
@@ -218,7 +218,7 @@ export default {
     mounted(){
     <%_ if( data.hasStore){ -%>
     <%_ data.store.storeActions.forEach(function(name){ -%>
-      this.<%= name%>()
+      this.<%= name%>();
     <%_ }) -%>
     <%_ } -%>
     }
