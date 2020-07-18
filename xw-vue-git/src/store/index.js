@@ -60,7 +60,6 @@ export default {
             state.currentModule.Store.state.splice(data,1)
         },
         updateStore(state,data){
-            console.log(data.idx);
             state.currentModule.Store.state[data.idx] = data.data;
         },
         //创建services
