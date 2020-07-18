@@ -182,7 +182,34 @@ export default {
             <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
             <%_ } -%>
             // 表格的配置
-            list_table_options:  <%- data.pageOpts %>
+            list_table_options: {
+                map: <%- data.pageOpts.map %>,
+                getUrl: ()=> {
+                   return '<%= data.pageOpts.url%>'
+                },
+                pageOption: {
+                    sizeKey: "<%= data.pageOpts.sizeKey%>",
+                    indexKey: "<%= data.pageOpts.indexKey%>",
+                    index: 1,
+                    size: 20
+                },
+                actions: [
+
+                ],
+                analysis: data => {
+                if (
+                    data &&
+                    data.data &&
+                    data.data.datas
+                ) {
+                    return {
+                        data: data.data.datas,
+                        count: data.data.totalCount
+                    };
+                } else {
+                    return { data: [], count: 0 };
+                }
+            }
         }
     },
     computed:{
