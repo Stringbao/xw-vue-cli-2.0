@@ -85,7 +85,7 @@ export default {
             this.dialog.params = this.service;
         },
         update(item, idx) {
-            this.service = item;
+            this.service = {...item};
             this.dialog.showDialog = true;
             this.dialog.title = "edit Service";
             this.dialog.action = "update";

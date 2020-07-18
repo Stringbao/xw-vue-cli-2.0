@@ -99,7 +99,7 @@ export default {
         },
         update(item, idx) {
             this.clearStore();
-            this.store = item;
+            this.store = {...item};
             this.dialog.showDialog = true;
             this.dialog.action = "update";
         },
