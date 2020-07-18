@@ -26,8 +26,8 @@
                         <td>{{item.url}}</td>
                         <td>{{item.reqType}}</td>
                         <td>
-                            <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
+                            <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
                         </td>
                     </tr>
                     <tr v-if="!stores.length" style="width:100%;height:60px;line-height:60px;text-align:center;">
