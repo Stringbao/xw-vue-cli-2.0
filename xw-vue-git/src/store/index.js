@@ -12,7 +12,6 @@ export default {
         },
     },
     mutations:{
-        //创建modules的方法
         addModules(state,data){
             let idx = state.modules.findIndex(item=>item.ModuleName == data.ModuleName);
             if(idx < 0){
