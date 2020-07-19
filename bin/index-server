@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const server = require('../gitServer/index.js');
+const webServer = require("../xw-vue-npm/index.js");
 
-server();
+console.log(1);
 
+webServer();

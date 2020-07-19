@@ -15,9 +15,6 @@ require('./route/index.js')(app);
 
 app.set('view options', { pretty: true });
 
-
-
-
 let init = function(){
     console.log(1);
     app.listen(9876,d=>{
@@ -37,6 +34,6 @@ let init = function(){
     })
 }
 
-init();
+// init();
 
 module.exports =  init;
