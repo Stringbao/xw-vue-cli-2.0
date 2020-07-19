@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-
 const webServer = require("../xw-vue-npm/index.js");
 
-console.log("ready to start server");
-
 webServer();
+
