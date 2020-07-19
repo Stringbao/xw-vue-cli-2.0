@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const program = require('commander');
+const ora = require('ora');
 const memFs = require('mem-fs');
 const rootPath = process.cwd();
 const path = require('path');
@@ -38,7 +39,12 @@ async function startServer() {
 
     // install all the packages for git and node
     let _promise = command.installPackages();
+
+    const spinner = ora('Installing package').start();
+    spinner.start();
     Promise.all(_promise).then(x=>{
+        spinner.stop();
+        log.success("git and npm packages install completed!");
         //start web server
         webServer();
         //start npm dev mode

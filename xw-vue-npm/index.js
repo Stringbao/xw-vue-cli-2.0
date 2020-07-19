@@ -16,21 +16,19 @@ require('./route/index.js')(app);
 app.set('view options', { pretty: true });
 
 let init = function(){
-    console.log(1);
     app.listen(9876,d=>{
         console.log("listen in 9876");
-
-        app.all('*', function (req, res, next) {
-            // res.header("Access-Control-Allow-Origin", "*");
-            //将Access-Control-Allow-Credentials设为true  允许携带cookie
-            res.header('Access-Control-Allow-Credentials', true); 
-            res.header("Access-Control-Allow-Headers", "X-Requested-With");
-            res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-            res.header("X-Powered-By", ' 3.2.1');
-            //返回数据格式为json字符串
-            res.header("Content-Type", "application/json;charset=utf-8");
-            next();
-        });
+        // app.all('*', function (req, res, next) {
+        //     // res.header("Access-Control-Allow-Origin", "*");
+        //     //将Access-Control-Allow-Credentials设为true  允许携带cookie
+        //     res.header('Access-Control-Allow-Credentials', true); 
+        //     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        //     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+        //     res.header("X-Powered-By", ' 3.2.1');
+        //     //返回数据格式为json字符串
+        //     res.header("Content-Type", "application/json;charset=utf-8");
+        //     next();
+        // });
     })
 }
 
