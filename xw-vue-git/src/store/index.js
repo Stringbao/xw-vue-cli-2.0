@@ -5,6 +5,7 @@ export default {
         modules:[
 
         ],
+        existedModules:[],
         currentModule:null,
         dataSource:{
             storeType:Enum.storeType,
