@@ -48,16 +48,24 @@ export default {
         return {};
     },
     computed: {
-        ...mapState(["modules", "project","existedModules"])
+        ...mapState(["modules", "project", "existedModules"])
     },
-    methods:{
-        publish(){
-            Ajax.post('/v2API/comp/create',{
-                Project:this.project,
-                Modules:this.modules.filter(item=>item.Pages.length)
-            }).then(res=>{
-                console.log(res)
-            })
+    methods: {
+        publish() {
+            let url = "";
+            if (this.existedModules.length) {
+                url = "/v2API/comp/update";
+            } else {
+                url = "/v2API/comp/create";
+            }
+            Ajax.post(url, {
+                Project: this.project,
+                Modules: this.existedModules.concat(
+                    this.modules.filter(item => item.Pages.length)
+                )
+            }).then(res => {
+                console.log(res);
+            });
         }
     },
     mounted() {}
