@@ -77,20 +77,20 @@ let APIhelper = {
         let maps = [];
         serviceItem.forEach(x=>{
             if(x.url){
-                maps.push({name:x.name, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType == 'post'?false:true});
+                maps.push({name:x.name, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType?x.reqType:"get"});
             }
         })
         storeItems.forEach(x=>{
-            maps.push({name:x.name, url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType == 'post'?false:true});
+            maps.push({name:x.name, url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
         })
-
+        
         let resJson = {map:[], fns:[]};
         maps.forEach(x=>{
             if(!x.isEnum){
                 resJson.map.push(x);
             }
             if(x.url){
-                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.reqType == 'post'?false:true});
+                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
             }
         })
         
@@ -173,10 +173,13 @@ let APIhelper = {
         //创建Module文件夹
         fsTool.folder.createFolder(modulePath);
 
+        console.log("ready to create vue file");
         pages.forEach(x=>{
             let vuePath = modulePath + "/" + this.firstChatUpperLower(x.pageName, false);
             //创建vue文件
+            console.log(vuePath,99999);
             fsTool.file.createFile(vuePath);
+            console.log("create vue completed;")
             
             let pageData = this.dataForListView(x, moduleName);
             let ejsPath = "../ejstemplates/view/list.ejs";

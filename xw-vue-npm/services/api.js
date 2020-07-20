@@ -2,21 +2,20 @@
 
 const path = require("path");
 const APIhelper = require("./apiHelper.js");
-const ProjectPathTool = require("./projectPath.js");
-const data = require("../project.js");
+const ProjectPathTool = require("./pathStore.js");
+const fsTool = require("../tool/fsapi.js");
+// let data = require("../project.js");
 
 const api = {
     test(req,res){
-        debugger
         const projectPath = ProjectPathTool.get();
         console.log(projectPath,7777777);
 
         return res.status(200).json({data:"options.data"});
     },
     create(req,res){
-        debugger
-        
         let data = req.body.Modules;
+        data = data.Modules;
         console.log("body", req.body.Modules);
         const projectPath = ProjectPathTool.get();
         console.log(projectPath,7777777);
@@ -29,11 +28,15 @@ const api = {
             let services = item.Services;
             let stores = item.Store;
 
-            this.createModel(projectPath, pages, moduleName);
-            this.createServices(projectPath, services, stores, moduleName);
-            this.createHelper(projectPath, moduleName);
-            this.createStore(projectPath, stores.state, moduleName);
-            this.createView(projectPath, pages, moduleName);
+            api.createModel(projectPath, pages, moduleName);
+            console.log('model completed;');
+            api.createServices(projectPath, services, stores, moduleName);
+            console.log('services completed;');
+            api.createHelper(projectPath, moduleName);
+            console.log('helper completed;');
+            api.createStore(projectPath, stores.state, moduleName);
+            console.log('store completed;');
+            api.createView(projectPath, pages, moduleName);
 
             storeKeys.push(moduleName);
             pages.forEach(x=>{
@@ -42,8 +45,18 @@ const api = {
             Array.prototype.push.apply(routers,pages);
         });
         
-        this.writeStoreIndex(projectPath, storeKeys);
-        this.writeRouter(projectPath, routers);
+        api.writeStoreIndex(projectPath, storeKeys);
+        api.writeRouter(projectPath, routers);
+
+        //创建project.json到项目root目录
+        let projectJSON = {
+            Modules:data,
+            absoultePath:projectPath
+        }
+        
+        fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
+
+        return res.status("200").json({data:null,msg:"success"});
     },
     createModel(projectPath, pages, moduleName){
         //create file and write data for model
