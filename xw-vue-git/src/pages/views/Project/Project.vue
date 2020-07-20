@@ -8,6 +8,20 @@
                     <th>页面</th>
                 </tr>
             </thead>
+            <tbody v-for="(item,index) in existedModules" :key="index">
+                <template v-if="item.Pages.length">
+                    <tr v-for="(childItem,childIndex) in item.Pages" :key="childIndex">
+                        <td :rowspan="item.Pages.length" v-if="childIndex == 0">{{item.ModuleName}}</td>
+                        <td>{{childItem.pageName}}</td>
+                    </tr>
+                </template>
+                <template v-else>
+                    <tr>
+                        <td>{{item.ModuleName}}</td>
+                        <td>暂无页面，请配置页面，否则该模块无效</td>
+                    </tr>
+                </template>
+            </tbody>
             <tbody v-for="(item,index) in modules" :key="index">
                 <template v-if="item.Pages.length">
                     <tr v-for="(childItem,childIndex) in item.Pages" :key="childIndex">
@@ -34,16 +48,24 @@ export default {
         return {};
     },
     computed: {
-        ...mapState(["modules", "project"])
+        ...mapState(["modules", "project", "existedModules"])
     },
-    methods:{
-        publish(){
-            Ajax.post('/v2API/comp/create',{
-                Project:this.project,
-                Modules:this.modules
-            }).then(res=>{
-                console.log(res)
-            })
+    methods: {
+        publish() {
+            let url = "";
+            if (this.existedModules.length) {
+                url = "/v2API/comp/update";
+            } else {
+                url = "/v2API/comp/create";
+            }
+            Ajax.post(url, {
+                Project: this.project,
+                Modules: this.existedModules.concat(
+                    this.modules.filter(item => item.Pages.length)
+                )
+            }).then(res => {
+                console.log(res);
+            });
         }
     },
     mounted() {}

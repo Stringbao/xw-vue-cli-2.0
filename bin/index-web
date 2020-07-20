@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const webServer = require("../xw-vue-npm/index.js");
 const command = require("../xw-vue-npm/services/command.js");
 const ora = require('ora');
 const log = require('../xw-vue-npm/tool/log.js');
@@ -11,8 +10,6 @@ spinner.start();
 Promise.all(_promise).then(x=>{
     spinner.stop();
     log.success("git and npm packages install completed!");
-    //start web server
-    webServer();
     //start npm dev mode
     command.startGitServer();
 })    

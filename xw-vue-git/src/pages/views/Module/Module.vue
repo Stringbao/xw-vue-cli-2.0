@@ -1,6 +1,12 @@
 <template>
     <div>
-        <Tab  :modules="modules" @add="add" @del="del" @change="change">
+        <div class="extrac">
+            <span class="asBtn import">
+                <i class="fa fa-cloud-download"></i>添加已存在模块
+                <input type="file" accept=".json" @change="uploadModules">
+            </span>
+        </div>
+        <Tab :modules="modules" @add="add" @del="del" @change="change">
             <template #pane="{currentIndex}">
                 <TabPane
                     v-for="(module,i) in modules"
@@ -21,7 +27,7 @@
                                 </span>
                             </button>
                         </div>
-                        
+
                         <table class="le_table_container">
                             <thead>
                                 <tr>
@@ -37,30 +43,48 @@
                                     <td>{{item.pageTitle}}</td>
                                     <td>{{item.type}}</td>
                                     <td>
-                                        <le-button type="update" value="modify" @click="modifyPageHandle(item,idx)"></le-button>
-                                        <le-button type="remove" value="delete" @click="removePageHandle(item,idx)"></le-button>
+                                        <le-button
+                                            type="update"
+                                            value="modify"
+                                            @click="modifyPageHandle(item,idx)"
+                                        ></le-button>
+                                        <le-button
+                                            type="remove"
+                                            value="delete"
+                                            @click="removePageHandle(item,idx)"
+                                        ></le-button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <le-dialog :title="pageDialog.title" v-model="pageDialog.showDialog" width="1100" height="600">
+                        <le-dialog
+                            :title="pageDialog.title"
+                            v-model="pageDialog.showDialog"
+                            width="1100"
+                            height="600"
+                        >
                             <div slot="body">
-                                <le-local-select label="页面类型:" class="pagesType"
-                                    :data-source="pageTypes" 
-                                    display-name="name" display-value="code" 
+                                <le-local-select
+                                    label="页面类型:"
+                                    class="pagesType"
+                                    :data-source="pageTypes"
+                                    display-name="name"
+                                    display-value="code"
                                     :readonly="isEditPages"
                                     @change="changePageType"
-                                    v-model="pageType">
-                                </le-local-select>
+                                    v-model="pageType"
+                                ></le-local-select>
                                 <div>
-                                    <component v-if="pageDialog.showDialog" ref="pageDialog"  :dataSource = "module.Store" 
+                                    <component
+                                        v-if="pageDialog.showDialog"
+                                        ref="pageDialog"
+                                        :dataSource="module.Store"
                                         :action="pageDialog.action"
-                                        :is="pageDialog.component" 
+                                        :is="pageDialog.component"
                                         :page="pageDialog.params"
-                                        :idx = "pageDialog.idx"
+                                        :idx="pageDialog.idx"
                                         @closePageDialog="closePagesDialogs"
-                                    >
-                                    </component>
+                                    ></component>
                                 </div>
                             </div>
                             <div slot="button">
@@ -109,56 +133,50 @@ export default {
     data() {
         return {
             dialog: {
+                showDialog: false
+            },
+            pageDialog: {
                 showDialog: false,
+                title: "",
+                params: null,
+                component: PageListForm,
+                action: "",
+                type: "",
+                idx: null
             },
-            pageDialog:{
-                showDialog:false,
-                title:"",
-                params:null,
-                component:PageListForm,
-                action:"",
-                type:"",
-                idx:null
-            },
-            pageModel:{
-                pageName:"",
-                type:"list",
-                pageTitle:"",
-                config:{
-                    searchModel:[
-                        
-                    ],
-                    table:{
-                        url:"",
+            pageModel: {
+                pageName: "",
+                type: "list",
+                pageTitle: "",
+                config: {
+                    searchModel: [],
+                    table: {
+                        url: "",
                         page: {
                             pageSize: "",
                             currentPage: ""
                         },
-                        map:[],
-                    },
+                        map: []
+                    }
                 },
-                model:[
-
-                ]
+                model: []
             },
-            pageSaveModel:{
-                pageName:"",
-                type:"save",
-                model:[
-
-                ]
+            pageSaveModel: {
+                pageName: "",
+                type: "save",
+                model: []
             },
             moduleName: "",
-            pageType:"list",
-            pageTypes:[
-                {name:"list",code:"list"},
-                {name:"save",code:"save"}
+            pageType: "list",
+            pageTypes: [
+                { name: "list", code: "list" },
+                { name: "save", code: "save" }
             ],
-            isEditPages:false,
+            isEditPages: false
         };
     },
     computed: {
-        ...mapState(["modules","currentModule"]),
+        ...mapState(["modules", "currentModule","existedModules"])
     },
     components: {
         Tab,
@@ -169,15 +187,34 @@ export default {
         Service
     },
     methods: {
-        ...mapActions(["addModules", "removeModules","changeModules","removePages"]),
+        ...mapActions([
+            "addModules",
+            "removeModules",
+            "changeModules",
+            "removePages",
+            "addExistedModules"
+        ]),
         del(item) {
             this.removeModules(item.ModuleName);
         },
         add() {
             this.dialog.showDialog = true;
         },
-        change(module,idx){
+        change(module, idx) {
             this.changeModules(module);
+        },
+        uploadModules(el) {
+            let file = el.target.files[0];
+            if(file.type === "application/json"){
+                Ajax.upload('/v2API/comp/upload',{"file":file}).then(res=>{
+                    this.addExistedModules(res.data);
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }else{
+                alert("请选择项目根目录的 project.json 文件 添加已经存在的 modules")
+            }
+            el.target.value = "";
         },
         handleSave() {
             this.$refs.module
@@ -199,7 +236,7 @@ export default {
         },
 
         //添加page的操作
-        createPage(){
+        createPage() {
             this.clearPage();
             this.pageDialog.params = this.pageModel;
             this.pageDialog.showDialog = true;
@@ -207,76 +244,69 @@ export default {
             this.pageDialog.title = "create";
             this.isEditPages = false;
         },
-        clearPage(){
+        clearPage() {
             this.pageDialog.params = null;
             this.pageDialog.showDialog = true;
         },
-        clearPageModel(){
+        clearPageModel() {
             this.pageModel = {
-                pageName:"",
-                type:"list",
-                pageTitle:"",
-                config:{
-                    searchModel:[
-                        
-                    ],
-                    table:{
-                        url:"",
+                pageName: "",
+                type: "list",
+                pageTitle: "",
+                config: {
+                    searchModel: [],
+                    table: {
+                        url: "",
                         page: {
                             pageSize: "",
                             currentPage: ""
                         },
-                        map:[],
+                        map: []
                     }
                 },
-                model:[
-
-                ]
-            }
+                model: []
+            };
         },
-        clearSavePageModel(){
+        clearSavePageModel() {
             this.pageSaveModel = {
-                pageName:"",
-                type:"save",
-                model:[
-
-                ]
-            }
+                pageName: "",
+                type: "save",
+                model: []
+            };
         },
-        modifyPageHandle(data,idx){
+        modifyPageHandle(data, idx) {
             this.pageDialog.showDialog = true;
             this.pageType = data.type;
             this.changePageType();
-            this.pageDialog.params = {...data};
+            this.pageDialog.params = { ...data };
             this.pageDialog.action = "edit";
             this.pageDialog.title = "edit";
             this.pageDialog.idx = idx;
-        },  
-        removePageHandle(data){
-            this.removePages(data);         
+        },
+        removePageHandle(data) {
+            this.removePages(data);
         },
         //关闭dialog
-        closePagesDialogs(val){
-            if(this.pageType == "list"){
-                 this.clearPageModel();
-            }else{
-                 this.clearSavePageModel();
-            };
+        closePagesDialogs(val) {
+            if (this.pageType == "list") {
+                this.clearPageModel();
+            } else {
+                this.clearSavePageModel();
+            }
             this.pageDialog.showDialog = false;
         },
-        handleSavePages(){
+        handleSavePages() {
             this.$refs.pageDialog[0].save();
         },
-        changePageType(){
-            
-            if(this.pageType == "list"){
+        changePageType() {
+            if (this.pageType == "list") {
                 this.pageDialog.params = this.pageModel;
                 this.pageDialog.component = "PageListForm";
-            }else{
+            } else {
                 this.pageDialog.params = this.pageSaveModel;
-                this.pageDialog.component="PageSaveForm";
+                this.pageDialog.component = "PageSaveForm";
             }
-            
+
             this.pageDialog.type = this.pageType;
         }
     }
@@ -284,35 +314,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card{
+.extrac {
+    display: flex;
+    flex-direction: row-reverse;
+    &>span{
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        outline: none;
+        border-radius: 3px;
+        border: 1px solid #dcdfe6;
+        color: #fff;
+        font-size: 12px !important;
+        cursor: pointer;
+        padding: 0 13px 0 22px;
+        position: relative;
+        margin: 3px;
+        .fa{
+            position: absolute;
+            top: 8px;
+            left: 5px;
+        }
+    }
+    &>.import{
+        background-color: #a2d469;
+        border-color: #a2d469;
+        input[type="file"]{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+    }
+}
+.card {
     padding: 10px;
     color: #333;
     font-style: normal;
     .le_table_container {
+        width: 100%;
+        thead {
             width: 100%;
-            thead {
+            th {
+                height: 32px;
+                line-height: 32px;
+                text-align: center;
+                border-right: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+            }
+        }
+        tbody {
+            width: 100%;
+            tr {
                 width: 100%;
-                th {
-                    height: 32px;
-                    line-height: 32px;
+                border-bottom: 1px solid #ccc;
+                td {
                     text-align: center;
                     border-right: 1px solid #ccc;
                     border-left: 1px solid #ccc;
-                    border-bottom: 1px solid #ccc;
                 }
             }
-            tbody {
-                width: 100%;
-                tr {
-                    width: 100%;
-                    border-bottom: 1px solid #ccc;
-                    td {
-                        text-align: center;
-                        border-right: 1px solid #ccc;
-                        border-left: 1px solid #ccc;
-                    }
-                }
-            }
+        }
     }
     .head {
         position: relative;

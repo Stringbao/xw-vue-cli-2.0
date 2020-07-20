@@ -2,6 +2,7 @@
     <le-form labelWidth='100' ref="saveForm">
         <div>
             <le-input on required msg="请输入页面名称"
+                tip="提示: 页面名称必须以.vue结尾"
                 label="PageName:" v-model="page.pageName">
             </le-input>
             <le-input 
@@ -20,10 +21,10 @@
                         <li class="clearfix" v-for="(item, idx) in page.config.searchModel" :key="idx">
                             <div>
                                 <div class="le_form_row_item">
-                                    <le-radio-list label="type:" :data-source="searchModelTypes" 
-                                        display-name="name" display-value="code" 
+                                    <le-local-select label="type:" :data-source="searchModelTypes" 
+                                        display-name="name" display-value="name"
                                         v-model="item.type">
-                                    </le-radio-list>
+                                    </le-local-select>
                                     <le-input label="label:" v-model="item.label"></le-input>
                                     <le-input label="field:" v-model="item.field"></le-input>
                                     <le-button type="remove" 
@@ -38,7 +39,6 @@
                                         v-model="item.dataSource">
                                     </le-local-select>
                                     <le-button type="create" value="datasource" @click="showDatasource"></le-button>
-
                                 </div>              
                             </div>           
                         </li>
@@ -76,7 +76,7 @@
             <!-- model的配置 -->
             <div class="configItem">
                 <div class="configItem-title">
-                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">model
+                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">dialog
                         <i class="fr addParams iconfont icon-add" @click="addModelArr"></i>
                     </h4>
                 </div>
@@ -85,10 +85,10 @@
                         <li class="clearfix" v-for="(item, idx) in page.model" :key="idx">
                             <div>
                                 <div class="le_form_row_item">
-                                    <le-radio-list label="type:" :data-source="dialogFieldType" 
-                                        display-name="name" display-value="code" 
+                                    <le-local-select label="type:" :data-source="dialogFieldType" 
+                                        display-name="name" display-value="name"
                                         v-model="item.type">
-                                    </le-radio-list>
+                                    </le-local-select>
                                     <le-input label="label:" v-model="item.label"></le-input>
                                     <le-input label="field:" v-model="item.field"></le-input>
                                     <le-button class="fr" type="remove" 
@@ -154,10 +154,12 @@ export default {
             datasourceDialog:false,
             searchModelTypes:[
                 {name:"text",code:"text"},
+                {name:"dataTime",code:"dataTime"},
                 {name:"select",code:"select"}
             ],
             dialogFieldType:[
                 {name:"text",code:"text"},
+                {name:"dataTime",code:"dataTime"},
                 {name:"select",code:"select"},
             ],
             dialogValidateType:[
@@ -240,12 +242,17 @@ export default {
             let res = this.$refs.saveForm.validate()
                 .then(res=>{
                     that.page.type = "list";
-                    if(that.action == "create"){
-                        that.addPages(that.page);  
+                    let reg = /^.*\.vue$/; 
+                    if(reg.test(that.page.pageName)){
+                        if(that.action == "create"){ 
+                            that.addPages(that.page);  
+                        }else{
+                            that.updatePages({page:that.page,idx:that.idx});
+                        }
+                        this.$emit("closePageDialog");
                     }else{
-                        that.updatePages({page:that.page,idx:that.idx})
-                    }
-                    this.$emit("closePageDialog");
+                        that.alert.showAlert("error","页面名称必须以.vue结尾");
+                    };
                 })
                 .catch(error => {
                     that.alert.showAlert("error", "请填写所有的必填项");

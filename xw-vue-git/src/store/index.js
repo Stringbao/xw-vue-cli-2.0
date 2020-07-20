@@ -5,6 +5,7 @@ export default {
         modules:[
 
         ],
+        existedModules:[],
         currentModule:null,
         dataSource:{
             storeType:Enum.storeType,
@@ -20,6 +21,9 @@ export default {
                 alert("the module name is unique,this module is exist");
                 return;
             }
+        },
+        addExistedModules(state,data){
+            state.existedModules = data;
         },
         removeModules(state,data){
             let idx = state.modules.findIndex(item=>item.ModuleName == data); 
@@ -80,6 +84,9 @@ export default {
         },
     },
     actions:{
+        addExistedModules({commit,state},data){
+            commit("addExistedModules",data);
+        },
         addModules({commit,state},ModuleName){
             commit("addModules",{
                 ModuleName:ModuleName,

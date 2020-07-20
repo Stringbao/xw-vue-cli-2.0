@@ -11,7 +11,7 @@ const log = require('../tool/log.js');
 function gitDownload(projectName){
     let projectUrl = "Stringbao/xw-vue-seed-2.0";
     //loading进度圈
-    const spinner = ora(`Download`).start();
+    const spinner = ora('Download').start();
     return new Promise((resolve, reject) => {
         // 下载 git 模板
         spinner.start();

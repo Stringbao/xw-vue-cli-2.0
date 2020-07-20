@@ -22,7 +22,7 @@ module.exports = merge(common,{
         hot:true,
         watchContentBase: true,
         openPage:"./index.html",
-        port:9985,
+        port:9987,
         proxy:{
             '/v2API': {
                 target: 'http://localhost:9876',
