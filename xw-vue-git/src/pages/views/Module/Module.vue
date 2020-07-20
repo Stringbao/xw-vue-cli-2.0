@@ -176,7 +176,7 @@ export default {
         };
     },
     computed: {
-        ...mapState(["modules", "currentModule"])
+        ...mapState(["modules", "currentModule","existedModules"])
     },
     components: {
         Tab,
@@ -191,7 +191,8 @@ export default {
             "addModules",
             "removeModules",
             "changeModules",
-            "removePages"
+            "removePages",
+            "addExistedModules"
         ]),
         del(item) {
             this.removeModules(item.ModuleName);
@@ -206,7 +207,7 @@ export default {
             let file = el.target.files[0];
             if(file.type === "application/json"){
                 Ajax.upload('/v2API/comp/upload',{"file":file}).then(res=>{
-                    console.log(res);
+                    this.addExistedModules(res.data);
                 }).catch(err=>{
                     console.log(err)
                 })

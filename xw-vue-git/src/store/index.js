@@ -22,6 +22,9 @@ export default {
                 return;
             }
         },
+        addExistedModules(state,data){
+            state.existedModules = data;
+        },
         removeModules(state,data){
             let idx = state.modules.findIndex(item=>item.ModuleName == data); 
             if(idx >= 0){
@@ -81,6 +84,9 @@ export default {
         },
     },
     actions:{
+        addExistedModules({commit,state},data){
+            commit("addExistedModules",data);
+        },
         addModules({commit,state},ModuleName){
             commit("addModules",{
                 ModuleName:ModuleName,
