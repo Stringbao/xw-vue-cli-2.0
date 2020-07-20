@@ -1,6 +1,6 @@
 {
   "name": "lev2-vue",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
   "bin": {
     "lev2": "bin/index",
     "lev2-init": "bin/index-init",
-    "lev2-server": "bin/index-server"
+    "lev2-server": "bin/index-server",
+    "lev2-web": "bin/index-web"
   },
   "keywords": [],
   "author": "string_bao <string_bao@163.com>",
