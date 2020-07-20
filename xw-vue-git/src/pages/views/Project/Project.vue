@@ -40,7 +40,7 @@ export default {
         publish(){
             Ajax.post('/v2API/comp/create',{
                 Project:this.project,
-                Modules:this.modules
+                Modules:this.modules.filter(item=>item.Pages.length)
             }).then(res=>{
                 console.log(res)
             })
