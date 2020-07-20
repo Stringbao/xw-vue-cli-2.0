@@ -19,6 +19,21 @@
                         <%_  %> v-model="searchModel.<%= col.field %>"<%_  -%>
                     <%_ } -%>></le-input>
                 <%_ } -%>
+                <%_ if(col.type == "textarea"){ -%>
+                    <le-textarea<%  _%>
+                            <%_ if(col.placeholder && col.placeholder != ''){ -%>
+                            <%_  %> placeholder = "<%= col.placeholder %>" <%_  -%>
+                            <%_ } -%>
+                            <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
+                            <%_  %> labelWidth="<% col.labelWidth %>"<%_  -%>
+                            <%_ } -%>
+                            <%_ if(col.label && col.label != ''){ -%>
+                            <%_  %> label="<%= col.label %>:"<%_  -%>
+                            <%_ } -%>
+                            <%_ if(col.field && col.field != ''){ -%>
+                            <%_  %> v-model="searchModel.<%= col.field %>"<%_  -%>
+                            <%_ } -%>></le-textarea>
+                <%_ } -%>
                 <%_ if(col.type == "select"){ -%>
                 <le-local-select<%  _%>
                             <%_ if(col.placeholder && col.placeholder != ''){ _%>
