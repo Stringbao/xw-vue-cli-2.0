@@ -7,6 +7,15 @@ const fsTool = require("../tool/fsapi.js");
 // let data = require("../project.js");
 
 const api = {
+    upload(req,res){
+        debugger
+        let NPath =  path.resolve(__dirname, "../temp/project.json");
+        let _res = fsTool.file.readFile(NPath);
+        _res = eval("("+_res+")");
+        ProjectPathTool.set(_res.absoultePath);
+
+        return res.status(200).json({data:_res.Modules, status:200,msg:"success"});
+    },
     test(req,res){
         const projectPath = ProjectPathTool.get();
         console.log(projectPath,7777777);
@@ -15,7 +24,6 @@ const api = {
     },
     create(req,res){
         let data = req.body.Modules;
-        data = data.Modules;
         console.log("body", req.body.Modules);
         const projectPath = ProjectPathTool.get();
         console.log(projectPath,7777777);
@@ -56,7 +64,7 @@ const api = {
         
         fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
 
-        return res.status("200").json({data:null,msg:"success"});
+        return res.status("200").json({status:200, data:null,msg:"success"});
     },
     createModel(projectPath, pages, moduleName){
         //create file and write data for model
@@ -85,6 +93,6 @@ const api = {
     }   
 }
 
-// api.create();
+// api.upload();
 
 module.exports = api;

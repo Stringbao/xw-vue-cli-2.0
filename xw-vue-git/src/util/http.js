@@ -98,7 +98,7 @@ class Ajax {
             body: formData,
             method: 'POST',
             headers: {
-                'content-type': 'multipart/form-data'
+                // 'content-type': 'multipart/form-data'
             }
         }
         return fetch(url, options)

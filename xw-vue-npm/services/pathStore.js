@@ -6,7 +6,7 @@ module.exports = {
     },
     get(){
         if(!this.projectPath){
-            return "/Users/wupeng/Documents/www";
+            return "/Users/wupeng/Documents/aaa";
         }
         return this.projectPath;
     }
