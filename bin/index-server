@@ -15,5 +15,5 @@ Promise.all(_promise).then(x=>{
     webServer();
     //start npm dev mode
     command.startGitServer();
-})    
+})
 

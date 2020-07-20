@@ -290,8 +290,19 @@ let APIhelper = {
         }
         
         return data;
+    },
+    updateStoreIndex(projectPath, storeKeys){
+        let filePath = projectPath + "/src/store/index.js";
+        let targetPath = projectPath + "/src/store/index_copy.js";
+        fsTool.file.copy(filePath, targetPath);
+        this.writeStoreIndex(projectPath, storeKeys);
+    },
+    updateRouter(projectPath, pages){
+        let filePath = projectPath + "/src/route/index.js";
+        let targetPath = projectPath + "/src/route/index_copy.js";
+        fsTool.file.copy(filePath, targetPath);
+        this.writeRouter(projectPath, pages);
     }
-
 }
 
 

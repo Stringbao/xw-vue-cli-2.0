@@ -1,26 +1,67 @@
 
-
 const path = require("path");
 const APIhelper = require("./apiHelper.js");
 const ProjectPathTool = require("./pathStore.js");
 const fsTool = require("../tool/fsapi.js");
-// let data = require("../project.js");
+let _test_data = require("../project.js");
 
 const api = {
-    upload(req,res){
-        debugger
+    test(req,res){
+        api.update(
+            {body:{
+                Modules:_test_data.Modules
+            }}
+        );
+        
+        return res.status(200).json({data:"options.data"});
+    },
+    update(req, res){
+        let data = req.body.Modules;
+        const projectPath = ProjectPathTool.get();
+        let routers = [];
+        let storeKeys = [];
+        data.forEach(item => {
+            let moduleName = item.ModuleName;
+            let folerPath = projectPath + "/src/pages/views/" + APIhelper.firstChatUpperLower(moduleName, false);
+            
+            let pages = item.Pages;
+            let services = item.Services;
+            let stores = item.Store;
+            storeKeys.push(moduleName);
+            pages.forEach(x=>{
+                x.moduleName = moduleName;
+            })
+            Array.prototype.push.apply(routers, pages);
+
+            if(!fsTool.exists(folerPath)){
+                api.createModel(projectPath, pages, moduleName);
+                api.createServices(projectPath, services, stores, moduleName);
+                api.createHelper(projectPath, moduleName);
+                api.createStore(projectPath, stores.state, moduleName);
+                api.createView(projectPath, pages, moduleName);
+            }
+        });
+        
+        api.updateStoreIndex(projectPath, storeKeys);
+        api.updateRouter(projectPath, routers);
+
+        //创建project.json到项目root目录
+        let projectJSON = {
+            Modules:data,
+            absoultePath:projectPath
+        }
+        
+        fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
+
+        return res.status("200").json({status:200, data:null,msg:"update success"});
+    },
+    upload(req, res){
         let NPath =  path.resolve(__dirname, "../temp/project.json");
         let _res = fsTool.file.readFile(NPath);
         _res = eval("("+_res+")");
         ProjectPathTool.set(_res.absoultePath);
 
         return res.status(200).json({data:_res.Modules, status:200,msg:"success"});
-    },
-    test(req,res){
-        const projectPath = ProjectPathTool.get();
-        console.log(projectPath,7777777);
-
-        return res.status(200).json({data:"options.data"});
     },
     create(req,res){
         let data = req.body.Modules;
@@ -64,7 +105,7 @@ const api = {
         
         fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
 
-        return res.status("200").json({status:200, data:null,msg:"success"});
+        return res.status("200").json({status:200, data:null,msg:"create success"});
     },
     createModel(projectPath, pages, moduleName){
         //create file and write data for model
@@ -90,9 +131,15 @@ const api = {
     },
     createView(projectPath, pages, moduleName){
         APIhelper.createView(projectPath, pages, moduleName);
-    }   
+    },
+    updateStoreIndex(projectPath, storeKeys){
+        APIhelper.updateStoreIndex(projectPath, storeKeys);
+    },
+    updateRouter(projectPath, pages){
+        APIhelper.updateRouter(projectPath, pages);
+    }, 
 }
 
-// api.upload();
+api.test();
 
 module.exports = api;

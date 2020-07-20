@@ -4,7 +4,7 @@ import KEYS from "@constant/index.js";
 const map = {
     <%_ data.map.forEach(function(row){ -%>
       <%= row.name %>: '<%= row.url%>',
-   <%_ _%><% }) -%>
+    <%_ _%><% }) -%>
 }
 
 export default {
@@ -12,13 +12,13 @@ export default {
         return model.id ? this.update(model) : this.create(model);
     },
     <%_ data.fns.forEach(function(row){ -%>
-        <%= row.fnName %>(model){
-        <%_ if (row.isEnum) { -%>
-            return Promise.resolve({data:<%= row.url%>});
-        <%_ _%><% }else { -%>
-            let params = {};
-            return Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map.<%= row.mapKey%>, params);
-            <%_ _%><% } -%>
-        },
+    <%= row.fnName %>(model){
+    <%_ if (row.isEnum) { -%>
+        return Promise.resolve({data:<%= row.url%>});
+    <%_ _%><% }else { -%>
+        let params = {};
+        return Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map.<%= row.mapKey%>, params);
+        <%_ _%><% } -%>
+    },
     <%_ _%><% }) -%>
 }
