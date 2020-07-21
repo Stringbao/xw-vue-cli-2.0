@@ -1,1 +1,56 @@
-{"Modules":[{"ModuleName":"aaa","Pages":[{"pageName":"lit.vue","type":"list","pageTitle":"1223","config":{"searchModel":[{"label":"name","type":"text","field":"name"}],"table":{"url":"/api/get","page":{"pageSize":"index","currentPage":"size"},"map":[{"key":"name","val":"name"}]}},"model":[],"moduleName":"aaa"}],"Services":[{"name":"create","reqType":"post","url":"/api/get"},{"name":"update","reqType":"post","url":""},{"name":"remove","reqType":"post","url":""},{"name":"detail","reqType":"get","url":""},{"name":"list","reqType":"get","url":""}],"Store":{"state":[]}}],"absoultePath":"/Users/wupeng/Documents/bbb"}
+{
+    "Modules": [
+        {
+        "ModuleName": "aaa",
+        "Pages": [{
+            "pageName": "lit.vue",
+            "type": "list",
+            "pageTitle": "1223",
+            "config": {
+                "searchModel": [{
+                    "label": "name",
+                    "type": "text",
+                    "field": "name"
+                }],
+                "table": {
+                    "url": "/api/get",
+                    "page": {
+                        "pageSize": "index",
+                        "currentPage": "size"
+                    },
+                    "map": [{
+                        "key": "name",
+                        "val": "name"
+                    }]
+                }
+            },
+            "model": [],
+            "moduleName": "aaa"
+        }],
+        "Services": [{
+            "name": "create",
+            "reqType": "post",
+            "url": "/api/get"
+        }, {
+            "name": "update",
+            "reqType": "post",
+            "url": ""
+        }, {
+            "name": "remove",
+            "reqType": "post",
+            "url": ""
+        }, {
+            "name": "detail",
+            "reqType": "get",
+            "url": ""
+        }, {
+            "name": "list",
+            "reqType": "get",
+            "url": ""
+        }],
+        "Store": {
+            "state": []
+        }
+    }],
+    "absoultePath": "/Users/wupeng/Documents/bbb"
+}
