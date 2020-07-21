@@ -154,13 +154,23 @@ export default {
             datasourceDialog:false,
             searchModelTypes:[
                 {name:"text",code:"text"},
-                {name:"dataTime",code:"dataTime"},
-                {name:"select",code:"select"}
+                {name:"select",code:"select"},
+                {name:"datepicker",code:"datepicker"},
+                {name:"timepicker",code:"timepicker"},
+                {name:"dateTimepicker",code:"dateTimepicker"},
+                {name:"checkboxList ",code:"checkboxList "},
+                {name:"radioList",code:"radioList"},
+                {name:"textarea",code:"textarea"}
             ],
             dialogFieldType:[
                 {name:"text",code:"text"},
-                {name:"dataTime",code:"dataTime"},
                 {name:"select",code:"select"},
+                {name:"datepicker",code:"datepicker"},
+                {name:"timepicker",code:"timepicker"},
+                {name:"dateTimepicker",code:"dateTimepicker"},
+                {name:"checkboxList ",code:"checkboxList "},
+                {name:"radioList",code:"radioList"},
+                {name:"textarea",code:"textarea"}
             ],
             dialogValidateType:[
                 {name:"true",code:true},
@@ -317,6 +327,7 @@ export default {
             display: flex;
             border-bottom: 1px solid #ccc;
             margin-bottom: 20px;
+            overflow: visible;
         }
     }
     .item:last-child{
