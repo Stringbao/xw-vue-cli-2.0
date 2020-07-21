@@ -420,5 +420,8 @@ export default {
             }
         }
     }
+    .pagesType{
+        line-height: 40px;
+    }
 }
 </style>
