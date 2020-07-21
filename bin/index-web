@@ -12,5 +12,5 @@ Promise.all(_promise).then(x=>{
     log.success("git and npm packages install completed!");
     //start npm dev mode
     command.startGitServer();
-})    
+})
 

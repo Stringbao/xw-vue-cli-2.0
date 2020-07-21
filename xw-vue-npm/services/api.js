@@ -140,6 +140,6 @@ const api = {
     }, 
 }
 
-api.test();
+// api.test();
 
 module.exports = api;
