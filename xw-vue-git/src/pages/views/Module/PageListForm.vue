@@ -22,7 +22,7 @@
                             <div>
                                 <div class="le_form_row_item">
                                     <le-local-select label="type:" :data-source="searchModelTypes" 
-                                        display-name="name" display-value="name"
+                                        display-name="name" display-value="code"
                                         v-model="item.type">
                                     </le-local-select>
                                     <le-input label="label:" v-model="item.label"></le-input>
@@ -31,7 +31,7 @@
                                         value=" deleteItems" @click="removeCurSearchModelItem(item,idx)">
                                     </le-button>
                                 </div>
-                                <div class="clearfix le_form_row_item" v-if="item.type == 'select'">
+                                <div class="clearfix le_form_row_item" v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'">
                                     <le-input label="displayName:" v-model="item.displayName"></le-input>
                                     <le-input label="displayValue:" v-model="item.displayValue"></le-input>
                                     <le-local-select label="dataSource:" :data-source="dataSource.state" 
@@ -95,7 +95,8 @@
                                         value="deleteItem" @click="removeCurModelItem(item,idx)">
                                     </le-button>
                                 </div>
-                                <div class="le_form_row_item" v-if="item.type == 'select'">
+                                <div class="le_form_row_item" 
+                                    v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'">
                                     <le-input label="displayName:" v-model="item.displayName"></le-input>
                                     <le-input label="displayValue:" v-model="item.displayValue"></le-input>
                                     <le-local-select label="dataSource" :data-source="dataSource.state" 
@@ -158,7 +159,7 @@ export default {
                 {name:"datepicker",code:"datepicker"},
                 {name:"timepicker",code:"timepicker"},
                 {name:"dateTimepicker",code:"dateTimepicker"},
-                {name:"checkboxList ",code:"checkboxList "},
+                {name:"checkboxList",code:"checkboxList"},
                 {name:"radioList",code:"radioList"},
                 {name:"textarea",code:"textarea"}
             ],
@@ -168,7 +169,7 @@ export default {
                 {name:"datepicker",code:"datepicker"},
                 {name:"timepicker",code:"timepicker"},
                 {name:"dateTimepicker",code:"dateTimepicker"},
-                {name:"checkboxList ",code:"checkboxList "},
+                {name:"checkboxList",code:"checkboxList"},
                 {name:"radioList",code:"radioList"},
                 {name:"textarea",code:"textarea"}
             ],
