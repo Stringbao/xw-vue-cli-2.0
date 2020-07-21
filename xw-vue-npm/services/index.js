@@ -19,12 +19,13 @@ var storage = multer.diskStorage({
     filename: function (req, file, cb) {
         cb(null, file.originalname);
     }
-});  
+});
 var upload = multer({
     storage:storage
 });
 
 router.post("/create", controller.create);
+router.post("/update", controller.update);
 router.get("/test", controller.test);
 router.post("/upload", upload.single('file'), controller.upload);
 
