@@ -34,6 +34,16 @@ let APIhelper = {
         }
         
     },
+    //获取固化的服务
+    getDefaultService(services){
+        let res =[];
+        services.forEach(x=>{
+            if(x.url && x.stype == 1){
+                res.push({key:x.name,value:x.name,actionName:x.name});
+            }
+        })
+        return res;
+    },
     //为单个model.js准备数据
     getMoldeDataFromPageItem(item, moduleName){
         let tmp = {className:"",data:[]};
@@ -167,7 +177,7 @@ let APIhelper = {
         fsTool.file.writeFile(filePath, _data);
     },
     //创建view文件，并且准备数据(维度：Module)
-    createView(projectPath, pages, moduleName){
+    createView(projectPath, pages, moduleName, services){
         let filePath = projectPath + "/src/pages/views";
         let modulePath = filePath + "/" + this.firstChatUpperLower(moduleName, false);
         //创建Module文件夹
@@ -181,7 +191,7 @@ let APIhelper = {
             fsTool.file.createFile(vuePath);
             console.log("create vue completed;")
             
-            let pageData = this.dataForListView(x, moduleName);
+            let pageData = this.dataForListView(x, moduleName, services);
             let ejsPath = "../ejstemplates/view/list.ejs";
             if(x.type != "list"){
                 ejsPath = "../ejstemplates/view/save.ejs";
@@ -220,7 +230,7 @@ let APIhelper = {
         }
         return Array.from(new Set(storeKeys));
     },
-    dataForListView(page, moduleName){
+    dataForListView(page, moduleName, services){
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
         let pageOpts = {
@@ -239,7 +249,7 @@ let APIhelper = {
                 indexKey:t.page.currentPage
             }
         }
-        let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table List";
+        let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table";
         let componentName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName),true);
 
         let storeKeys = this.getStoreInPage(page);
@@ -265,6 +275,7 @@ let APIhelper = {
         let modelDataName = this.firstChatUpperLower(modelClassName,false);
         let modelArray = page.model?page.model:[];
         let data = {
+            actionServices:this.getDefaultService(services),
             pageTitle,
             searchModel,
             pageOpts,

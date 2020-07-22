@@ -18,13 +18,15 @@ export default {
     },
     actions:{
     <%_ data.actions.forEach(function(row){ -%>
-        <%= row.fnName %>(context,cb){
-            if(context.state.<%= row.stateKey %>.length >0){
-                return;
+        <%= row.fnName %>({state,commit,dispatch}, data){
+            if(state.<%= row.stateKey %>.length >0){
+                return Promise.resolve(state.<%= row.stateKey %>);
             }
-            <%= data.servicesClassName %>.<%= row.serviceFnName %>().then((res)=>{
-                context.commit("<%= row.commitFnName %>",res.data);
-                cb && cb(res);
+            <%= data.servicesClassName %>.<%= row.serviceFnName %>(data).then((res)=>{
+                commit("<%= row.commitFnName %>",res.data);
+                return Promise.resolve(res); 
+            }).catch(error=>{
+                return Promise.reject(error);
             });
         },
     <%_ _%><% }) -%>

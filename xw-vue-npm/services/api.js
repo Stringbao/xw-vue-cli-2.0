@@ -87,7 +87,7 @@ const api = {
             console.log('helper completed;');
             api.createStore(projectPath, stores.state, moduleName);
             console.log('store completed;');
-            api.createView(projectPath, pages, moduleName);
+            api.createView(projectPath, pages, moduleName, services);
 
             storeKeys.push(moduleName);
             pages.forEach(x=>{

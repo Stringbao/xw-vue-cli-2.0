@@ -10,7 +10,7 @@
                 </table>
             </div>
 
-            <paging-section :options="state.pageOption" :go-index="gIndex" :go-prev="prev" :go-next="next"></paging-section>
+            <paging-section :changeKey="changeKey" :options="state.pageOption" :go-index="gIndex" :go-prev="prev" :go-next="next"></paging-section>
 
             <div v-show='isLoading' class="tableMask">
                 <img class="tableLoadingImg" src="//p2-nec.static.pub/fes/cms/2020/04/19/t960paupk2x9wzsw1y79dcmpeho847108450.gif"/>
@@ -32,6 +32,7 @@
         name: "TableList",
         data(){
             return {
+                changeKey:tool._idSeed.newId(),
                 state:{
                     data:[],
                     cols:this.options.map,
@@ -263,7 +264,7 @@
         mounted () {
             this.getData(this.state.pageOption.index);
 
-            tool._form_event_publisher.on("changeSize",(data)=>{
+            tool._form_event_publisher.on(this.changeKey,(data)=>{
                 this.state.pageOption.size = data.size;
                 this.search();
             });
