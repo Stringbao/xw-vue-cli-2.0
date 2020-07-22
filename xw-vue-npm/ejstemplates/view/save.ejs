@@ -50,7 +50,7 @@ export default {
             <%_ }) -%>
         ]),
         <%_ } -%>
-        saveBtn(){
+        save(){
             this.$refs.saveForm.validate().then(x => {
                 <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get()).then(res=>{
                     this.alert.showAlert("success",res.msg);

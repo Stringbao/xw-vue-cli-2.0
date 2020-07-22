@@ -4,21 +4,20 @@
             <le-input on required msg="请输入页面名称"
                 tip="提示: 页面名称必须以.vue结尾"
                 label="PageName:" v-model="page.pageName"></le-input>
-            <!-- searchModel的配置 -->
+            <!-- Model的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">
                     <h4 class="label">Model
                         <i class="fr addParams iconfont icon-add" type="button" @click="addModel"></i>
                     </h4>
                 </div>
-                <!-- <div class="item" v-for="(item, idx) in page.model" :key="idx"> -->
-                    <div class="item" >
+                <div class="item" >
                         <ul>
                             <li class="clearfix" v-for="(item, idx) in page.model" :key="idx">
                                 <div>
                                     <div class="le_form_row_item">
                                         <le-local-select label="type:" :data-source="searchModelTypes" 
-                                            display-name="name" display-value="name"
+                                            display-name="name" display-value="code"
                                             v-model="item.type">
                                         </le-local-select>
                                         <le-input label="label:" v-model="item.label"></le-input>
@@ -27,7 +26,7 @@
                                             @click="removeCurModelItem(item,idx)">
                                         </le-button>
                                     </div>
-                                    <div class="le_form_row_item" v-if="item.type == 'select'">
+                                    <div class="le_form_row_item" v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'">
                                         <le-input label="displayName:" v-model="item.displayName"></le-input>
                                         <le-input label="displayValue:" v-model="item.displayValue"></le-input>
                                         <le-local-select label="dataSource:" :data-source="dataSource.state" 
@@ -92,7 +91,7 @@ export default {
                 {name:"datepicker",code:"datepicker"},
                 {name:"timepicker",code:"timepicker"},
                 {name:"dateTimepicker",code:"dateTimepicker"},
-                {name:"checkboxList ",code:"checkboxList "},
+                {name:"checkboxList",code:"checkboxList"},
                 {name:"radioList",code:"radioList"},
                 {name:"textarea",code:"textarea"}
             ],

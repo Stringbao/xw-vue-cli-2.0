@@ -56,7 +56,9 @@ const api = {
         return res.status("200").json({status:200, data:null,msg:"update success"});
     },
     upload(req, res){
+        console.log(fsTool.exists(path.resolve(__dirname, "../temp")),5555);
         let NPath =  path.resolve(__dirname, "../temp/project.json");
+        console.log(fsTool.exists(NPath),666);
         let _res = fsTool.file.readFile(NPath);
         _res = eval("("+_res+")");
         ProjectPathTool.set(_res.absoultePath);
