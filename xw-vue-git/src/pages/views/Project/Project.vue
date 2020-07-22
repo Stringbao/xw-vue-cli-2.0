@@ -64,7 +64,7 @@ export default {
                     this.modules.filter(item => item.Pages.length)
                 )
             }).then(res => {
-                console.log(res);
+                alert(res.msg);
             });
         }
     },
