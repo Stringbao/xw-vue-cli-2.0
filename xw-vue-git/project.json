@@ -81,32 +81,44 @@
             {
                 "name":"create",
                 "reqType":"post",
-                "url": "/api/getRoleTypes"
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
             },
             {
                 "name":"update",
                 "reqType":"post",
-                "url": ""
+                "url": "",
+                "stype":"1",
+                "pageName":"list.vue"
             },
             {
                 "name":"remove",
                 "reqType":"post",
-                "url": "/api/getRoleTypes"
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
             },
             {
                 "name":"detail",
                 "reqType":"get",
-                "url": "/api/getRoleTypes"
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
             },
             {
                 "name":"list",
                 "reqType":"post",
-                "url": "/api/getRoleTypes"
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
             },
             {
                 "name":"querySubItems",
                 "reqType":"post",
-                "url": "/api/getSubItems"
+                "url": "/api/getSubItems",
+                "stype":"1",
+                "pageName":"list.vue"
             }
         ],
         "Store": {
