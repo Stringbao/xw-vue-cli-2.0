@@ -66,7 +66,7 @@
                                         v-model="item.type">
                                     </le-local-select>
                                     <le-input label="value:" v-model="item.value"></le-input>
-                                    <le-input label="fnName:" v-model="item.fnName"></le-input>
+                                    <le-input label="fnName:" tip="提示:请勿输入关键字" v-model="item.fnName"></le-input>
                                     <le-button type="remove" 
                                         value=" deleteItems" @click="removeToolbarItem(item,idx)">
                                     </le-button>
