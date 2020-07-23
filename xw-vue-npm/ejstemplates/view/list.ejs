@@ -269,8 +269,9 @@ export default {
             this.dialogTag = true;    
             <%_ }else {  -%>
             // this.$router.push({path: 'this is path'})
-            <%_ }  -%> 
-        <%_ }  -%>    
+            <%_ }  -%>
+        },
+        <%_ }  -%>
         <%_ if(item.key == 'update'){  -%>
         <%= item.actionName%>(row) {
             <%_ if(data.hasModel){ _%>
@@ -280,6 +281,7 @@ export default {
             <%_ }else {  -%>
             this.$router.push({path: 'this is path', query: {tag: 'update', id: row.id}});
             <%_ }  -%>
+        },
         <%_ }  -%>
         <%_ if(item.key == 'detail'){  -%>
         <%= item.actionName%>(row) {
@@ -290,11 +292,12 @@ export default {
             <%_ }else {  -%>
                 this.$router.push({path: 'this is path', query: {tag: 'detail', id: row.id}});
             <%_ }  -%>
+        },
         <%_ }  -%>
         <%_ if(item.key == 'remove'){  -%>
         <%= item.actionName%>(row) {
             this.alert.showConfirm('Remove this item?',(d)=>{
-                this.<%= data.model.modelDataName %>.set(row);  
+                this.<%= data.model.modelDataName %>.set(row);
                 <%= data.service.serviceClassName%>.remove(model).then(x=>{
                     this.alert.showAlert("success",'Remove success!');
                     this.search();
@@ -302,6 +305,7 @@ export default {
                     this.alert.showAlert("error",err.data);
                 });
             })
+        },
         <%_ }  -%>
         <%_ }) -%>
         <%_ data.toolbar.forEach(function(col){ -%>
