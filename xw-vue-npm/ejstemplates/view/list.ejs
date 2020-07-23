@@ -152,6 +152,9 @@
         <div class="le_search_btn_group cleatfix">
             <le-button type="create" value="create" @click="create"></le-button>
             <le-button type="search" value="search" @click="search"></le-button>
+            <%_ data.toolbar.forEach(function(col){ -%>
+            <le-button type="<%= col.type%>" value="<%= col.value%>" @click="<%= col.fnName%>"></le-button>
+            <%_ }) -%>
         </div>
         <div class='le_table_container'>
             <table-list title="<%= data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
@@ -192,6 +195,7 @@ export default {
                     <%_ } -%>
                 <%_ }) -%>
             },
+
             // dialog v-model的值 控制dialog显示/隐藏
             <%_ if(data.hasModel){ -%>
             dialogTag:false,
@@ -199,12 +203,18 @@ export default {
             <%_ } -%>
             // 表格的配置
             list_table_options: {
+                <%_ if( data.pageOpts.isCheckbox){ -%>
+                showCk: true,
+                <%_ } -%>
+                <%_ if( data.pageOpts.isRadio){ -%>
+                showCk: true,
+                singleSelected: true,
+                <%_ } -%>
                 map: [
                     <%_ data.pageOpts.map.forEach(function(item){ -%>
                     {key:'<%- item.key %>',val:'<%- item.val%>'},
                     <%_ }) -%>
                 ],
-
                 getUrl: ()=> {
                    return <%- data.pageOpts.url%>;
                 },
@@ -265,6 +275,11 @@ export default {
                 <%= data.service.serviceClassName%>.<%= item.actionName%>(this.<%= data.model.modelDataName %>);
             <%_ }  -%>
             //to do
+        },
+        <%_ }) -%>
+        <%_ data.toolbar.forEach(function(col){ -%>
+        <%= col.fnName%>() {
+
         },
         <%_ }) -%>
         <%_ if(data.hasModel){ _%>
