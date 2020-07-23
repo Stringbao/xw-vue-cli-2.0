@@ -43,9 +43,9 @@
                         }
                     },
                     "toolbar":{
-                        "type":"",
-                        "value":"",
-                        "fnName":""
+                        "type":"publish",
+                        "value":"发布",
+                        "fnName":"publish"
                     }
                 },
                 "model":[
