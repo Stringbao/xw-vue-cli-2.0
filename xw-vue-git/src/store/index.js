@@ -9,7 +9,8 @@ export default {
         currentModule:null,
         dataSource:{
             storeType:Enum.storeType,
-            requestType:Enum.requestType
+            requestType:Enum.requestType,
+            moduleName:Enum.moduleName,
         },
     },
     mutations:{
@@ -92,16 +93,16 @@ export default {
                 ModuleName:ModuleName,
                 Pages:[],
                 Services:[
-                    { name:"create",reqType:"post",url:""},
-                    { name:"update",reqType:"post",url:""},
-                    { name:"remove",reqType:"post",url:""},
-                    { name:"detail",reqType:"get",url:""},
-                    { name:"list",reqType:"get",url:""}
+                    { name:"create",reqType:"post",url:"",moduleName:"",stype:1},
+                    { name:"update",reqType:"post",url:"",moduleName:"",stype:1},
+                    { name:"remove",reqType:"post",url:"",moduleName:"",stype:1},
+                    { name:"detail",reqType:"get",url:"",moduleName:"",stype:1},
+                    { name:"list",reqType:"get",url:"",moduleName:"",stype:1}
                 ],
                 Store:{
                   state:[
                     
-                  ]  
+                  ]
                 }
             });
         },
@@ -131,6 +132,7 @@ export default {
         },
         
         addService({commit,state},data){
+            data.stype = 2;
             commit("addService",data);
         },
         removeService({commit,state},data){

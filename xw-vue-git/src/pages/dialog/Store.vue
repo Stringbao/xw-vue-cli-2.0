@@ -4,13 +4,16 @@
         <le-radio-list
             on
             required
+            ref="radioSelect"
             label="type:"
             :data-source="dataSource.storeType"
             display-name="name"
             display-value="code"
             v-model="store.type"
+            @change="changeType"
         ></le-radio-list>
         <le-radio-list
+            v-show="showType"
             on
             required
             msg="please select Request Type"
@@ -38,7 +41,9 @@ export default {
         idx:Number,
     },
     data() {
-        return {};
+        return {
+            showType:false
+        };
     },
     methods:{
         ...mapActions(["addStore","updateStore"]),
@@ -50,6 +55,11 @@ export default {
                 this.updateStore({data:this.store,idx:this.idx});
                 return Promise.resolve();
             }
+        },
+        changeType(){
+            // if(this.$refs.radioSelect.text == "enum"){
+            //     this.showType = true;
+            // }
         }
     },
     computed: {

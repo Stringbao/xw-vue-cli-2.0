@@ -15,9 +15,6 @@
                     :currentIndex="currentIndex"
                 >
                     <!-- {{module.ModuleName}} -->
-                    <div class="card">
-                        <Service :sevices="module.Services"></Service>
-                    </div>
                     <div class="card pagesCard">
                         <div class="head">
                             <h4 class="le_page_name" style="text-align:center;">Pages Management</h4>
@@ -96,6 +93,9 @@
                         </le-dialog>
                     </div>
                     <div class="card">
+                        <Service :sevices="module.Services"></Service>
+                    </div>
+                    <div class="card">
                         <storeForm :stores="module.Store.state"></storeForm>
                     </div>
                 </TabPane>
@@ -127,7 +127,7 @@ import TabPane from "@pages/components/tab/TabPane.vue";
 import PageListForm from "@pages/views/Module/PageListForm.vue";
 import PageSaveForm from "@pages/views/Module/PageSaveForm.vue";
 import StoreForm from "./StoreForm.vue";
-import Service from "./service.vue";
+import Service from "./Service.vue";
 import { mapState, mapActions } from "vuex";
 export default {
     data() {

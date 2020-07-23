@@ -2,7 +2,7 @@
     <le-dialog class="service" :title="title" @closeCallback="cancel" v-model="showDialog" width="700" height="400">
         <div slot="body">
             <le-form ref="servicesForm" v-if="params">
-                <le-input on required label="name:" v-model="params.name"></le-input>
+                <le-input on required :readonly="params.stype == 1" label="name:" v-model="params.name"></le-input>
                 <div class="form-item">
                     <le-radio-list
                         on
@@ -13,6 +13,18 @@
                         display-name="name"
                         display-value="code"
                         v-model="params.reqType"
+                    ></le-radio-list>
+                </div>
+                <div class="form-item">
+                    <le-radio-list
+                        on
+                        required
+                        msg="please select module"
+                        label="moduleName:"
+                        :data-source="dataSource.moduleName"
+                        display-name="name"
+                        display-value="code"
+                        v-model="params.moduleName"
                     ></le-radio-list>
                 </div>
                 <le-input on required label="url:" v-model="params.url"></le-input>
@@ -57,12 +69,9 @@ export default {
                 this.$listeners.cancel();
             }
         }
-    }
+    },
 };
 </script>
 <style >
-
->>>.service .le_dialog_closeIcon{
-    display: none;
-}
+    
 </style>

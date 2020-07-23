@@ -6,5 +6,8 @@ export default {
     requestType:[
         {name:"GET",code:"get"},
         {name:"POST",code:"post"}
+    ],
+    moduleName:[
+        
     ]
 }
