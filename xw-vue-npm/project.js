@@ -1,221 +1,164 @@
  let temp = {
     "Modules": [
         {
-            "ModuleName": "rrr",
-            "Pages": [{
-                "pageName": "rrr.vue",
+        "ModuleName": "Roles",
+        "Pages": [
+            {
+                "pageName": "list.vue",
                 "type": "list",
-                "pageTitle": "4rr",
+                "pageTitle": "角色管理列表",
                 "config": {
-                    "searchModel": [{
-                        "label": "gg",
-                        "type": "text",
-                        "field": "gg"
-                    }],
-                    "table": {
-                        "url": "ggxv",
-                        "page": {
-                            "pageSize": "sds",
-                            "currentPage": "dsd"
+                    "searchModel": [
+                        {
+                            "label": "角色名称",
+                            "type": "text",
+                            "field": "roleName"
                         },
-                        "map": [{
-                            "key": "sd",
-                            "val": "sdsd"
-                        }]
-                    }
-                },
-                "model": [],
-                "moduleName": "rrr"
-            }],
-            "Services": [{
-                "name": "create",
-                "reqType": "post",
-                "url": "rrr"
-            }, {
-                "name": "update",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "remove",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "detail",
-                "reqType": "get",
-                "url": ""
-            }, {
-                "name": "list",
-                "reqType": "get",
-                "url": "rrr"
-            }],
-            "Store": {
-                "state": []
-            }
-        },
-        {
-            "ModuleName": "qqq",
-            "Pages": [{
-                "pageName": "eeee.vue",
-                "type": "list",
-                "pageTitle": "4rr",
-                "config": {
-                    "searchModel": [{
-                        "label": "gg",
-                        "type": "text",
-                        "field": "gg"
-                    }],
+                        {
+                            "label": "角色类型",
+                            "type": "select",
+                            "field": "roleType",
+                            "displayName": "name",
+                            "displayValue": "value",
+                            "dataSource": "salesRoute"
+                        }
+                    ],
                     "table": {
-                        "url": "ggxv",
+                        "url": "/api/getRoleTypes",
+                        "showCk":"",
+                        "map": [
+                            {
+                                "field": "channelCode",
+                                "label": "Sale Channel"
+                            },
+                            {
+                                "field": "materialNumber",
+                                "label": "Material"
+                            }
+                        ],
                         "page": {
-                            "pageSize": "sds",
-                            "currentPage": "dsd"
-                        },
-                        "map": [{
-                            "key": "sd",
-                            "val": "sdsd"
-                        }]
-                    }
-                },
-                "model": [],
-                "moduleName": "rrr"
-            }],
-            "Services": [{
-                "name": "create",
-                "reqType": "post",
-                "url": "rrr"
-            }, {
-                "name": "update",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "remove",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "detail",
-                "reqType": "get",
-                "url": ""
-            }, {
-                "name": "list",
-                "reqType": "get",
-                "url": "rrr"
-            }],
-            "Store": {
-                "state": []
-            }
-        },
-        {
-            "ModuleName": "www",
-            "Pages": [{
-                "pageName": "rrr.vue",
-                "type": "list",
-                "pageTitle": "4rr",
-                "config": {
-                    "searchModel": [{
-                        "label": "gg",
-                        "type": "text",
-                        "field": "gg"
-                    }],
-                    "table": {
-                        "url": "ggxv",
-                        "page": {
-                            "pageSize": "sds",
-                            "currentPage": "dsd"
-                        },
-                        "map": [{
-                            "key": "sd",
-                            "val": "sdsd"
-                        }]
-                    }
-                },
-                "model": [],
-                "moduleName": "rrr"
-            }],
-            "Services": [{
-                "name": "create",
-                "reqType": "post",
-                "url": "rrr"
-            }, {
-                "name": "update",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "remove",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "detail",
-                "reqType": "get",
-                "url": ""
-            }, {
-                "name": "list",
-                "reqType": "get",
-                "url": "rrr"
-            }],
-            "Store": {
-                "state": []
-            }
-        },
-        {
-            "ModuleName": "ttt",
-            "Pages": [{
-                "pageName": "rrr.vue",
-                "type": "list",
-                "pageTitle": "4rr",
-                "config": {
-                    "searchModel": [{
-                        "label": "gg",
-                        "type": "text",
-                        "field": "gg"
-                    }],
-                    "table": {
-                        "url": "ggxv",
-                        "page": {
-                            "pageSize": "sds",
-                            "currentPage": "dsd"
-                        },
-                        "map": [{
-                            "key": "sd",
-                            "val": "sdsd"
-                        }]
+                            "pageSize": "pageSize",
+                            "currentPage": "currentPage"
+                        }
                     },
                     "toolbar":[
-                        {"type":"","value":"","fnName":""},
-                        {"type":"","value":"","fnName":""},
-                        {"type":"","value":"","fnName":""}
+                        {
+                            "type":"publish",
+                            "value":"发布",
+                            "fnName":"publish"
+                        },
+                        {
+                            "type":"import",
+                            "value":"导入",
+                            "fnName":"import"
+                        }
                     ]
                 },
-                "model": [],
-                "moduleName": "rrr"
-            }],
-            "Services": [
+                "model":[
+                    {
+                        "label": "角色类型",
+                        "type": "select",
+                        "field": "roleType",
+                        "displayName": "name",
+                        "displayValue": "value",
+                        "dataSource": "salesRouteA",
+                        "on": true,
+                        "required": true,
+                        "msg":"必填",
+                        "tip":"请输入角色类型"
+                    }
+                ]
+            },
             {
-                "name": "create",
-                "reqType": "post",
-                "url": "rrr",
-                "model":"list.vue"
-            }, {
-                "name": "update",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "remove",
-                "reqType": "post",
-                "url": ""
-            }, {
-                "name": "detail",
-                "reqType": "get",
-                "url": ""
-            }, {
-                "name": "list",
-                "reqType": "get",
-                "url": "rrr"
-            }],
-            "Store": {
-                "state": []
+                "pageName": "save.vue",
+                "type": "save",
+                "model":[
+                    {
+                        "label": "角色类型",
+                        "type": "select",
+                        "field": "roleType",
+                        "displayName": "name",
+                        "displayValue": "value",
+                        "dataSource": "salesRouteA",
+                        "on": true,
+                        "required": true
+                    },
+                    {
+                        "label": "角色名称",
+                        "type": "text",
+                        "field": "roleName",
+                        "on": true,
+                        "required": true,
+                        "msg":"必填",
+                        "tip":"请输入角色类型",
+                        "Vtype":""
+                    }
+                ]
             }
+        ],
+        "Services": [
+            {
+                "name":"create",
+                "reqType":"post",
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
+            },
+            {
+                "name":"update",
+                "reqType":"post",
+                "url": "",
+                "stype":"1",
+                "pageName":"list.vue"
+            },
+            {
+                "name":"remove",
+                "reqType":"post",
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
+            },
+            {
+                "name":"detail",
+                "reqType":"get",
+                "url": "/api/getRoleTypes",
+                "stype":"1",
+                "pageName":"list.vue"
+            },
+            {
+                "name":"querySubItems",
+                "reqType":"post",
+                "url": "/api/getSubItems",
+                "stype":"2",
+                "pageName":"list.vue"
+            }
+        ],
+        "Store": {
+            "state": [
+                {
+                    "name": "salesRoute",
+                    "type": "array",
+                    "url": "/api/getRoleTypes"
+                },
+                {
+                    "name": "salesRoute_A",
+                    "type": "array",
+                    "reqType":"post",
+                    "url": "/api/getRoleTypes"
+                },
+                {
+                    "name": "salesRoute_B",
+                    "type": "enum",
+                    "url": "KEYS.SALES.ACTION_LIST"
+                },
+                {
+                    "name": "salesRoute_C",
+                    "type": "enum",
+                    "url": "KEYS.SALES.ACTION_List_C"
+                }
+            ]
         }
-    ],
+    }],
     "absoultePath": "/Users/wupeng/Documents/aaa"
  }
 

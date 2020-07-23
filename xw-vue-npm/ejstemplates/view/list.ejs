@@ -150,7 +150,7 @@
         <%_ _%><% }) -%>
         </div>
         <div class="le_search_btn_group cleatfix">
-            <le-button type="create" value="create" @click="create"></le-button>
+            <!-- <le-button type="create" value="create" @click="create"></le-button> -->
             <le-button type="search" value="search" @click="search"></le-button>
             <%_ data.toolbar.forEach(function(col){ -%>
             <le-button type="<%= col.type%>" value="<%= col.value%>" @click="<%= col.fnName%>"></le-button>
@@ -189,14 +189,13 @@ export default {
         return {
             // 搜索条件
             searchModel:{
-                <%_ data.searchModel.forEach(function(col){ -%>
-                    <%_ if(col.field && col.field != ""){ -%>
-                    <%= col.field %> : "",
-                    <%_ } -%>
-                <%_ }) -%>
+            <%_ data.searchModel.forEach(function(col){ -%>
+                <%_ if(col.field && col.field != ""){ -%>
+                <%= col.field %> : "",
+                <%_ } -%>
+            <%_ }) -%>
             },
 
-            // dialog v-model的值 控制dialog显示/隐藏
             <%_ if(data.hasModel){ -%>
             dialogTag:false,
             <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
@@ -226,7 +225,7 @@ export default {
                 },
                 actions: [
                     <%_ data.pageOpts.actionServices.forEach(function(item){ -%>
-                    {key:'<%- item.key %>',val:'<%- item.val%>',action:'<%- item.actionName%>'},
+                    {key:'<%- item.key %>',val:'<%- item.value%>',action:this.<%- item.actionName%>},
                     <%_ }) -%>
                 ],
                 analysis: data => {
@@ -262,20 +261,52 @@ export default {
         search(){
             this.$refs["tableListRef"].searchCurrentIndex();
         },
-        create() {
-            <%_ if(data.hasModel){ _%>
-                this.dialogTag = true;
-            <%_ }  -%>
-            //this.$router.push({path:"/xxxx",query:{tag:"",id:""}});
-        },
         <%_ data.pageOpts.actionServices.forEach(function(item){ -%>
+        <%_ if(item.key == 'create') { %>
         <%= item.actionName%>(row) {
             <%_ if(data.hasModel){ _%>
-                this.<%= data.model.modelDataName %>.set(row);
-                <%= data.service.serviceClassName%>.<%= item.actionName%>(this.<%= data.model.modelDataName %>);
+            this.$refs['saveForm'].reset();
+            this.dialogTag = true;    
+            <%_ }else {  -%>
+            // this.$router.push({path: 'this is path'})
             <%_ }  -%>
-            //to do
         },
+        <%_ }  -%>
+        <%_ if(item.key == 'update'){  -%>
+        <%= item.actionName%>(row) {
+            <%_ if(data.hasModel){ _%>
+            this.$refs['saveForm'].reset();
+            this.dialogTag = true; 
+            this.<%= data.model.modelDataName %>.set(row);   
+            <%_ }else {  -%>
+            this.$router.push({path: 'this is path', query: {tag: 'update', id: row.id}});
+            <%_ }  -%>
+        },
+        <%_ }  -%>
+        <%_ if(item.key == 'detail'){  -%>
+        <%= item.actionName%>(row) {
+            <%_ if(data.hasModel){ _%>
+            this.$refs['saveForm'].reset();
+            this.dialogTag = true; 
+            this.<%= data.model.modelDataName %>.set(row);  
+            <%_ }else {  -%>
+                this.$router.push({path: 'this is path', query: {tag: 'detail', id: row.id}});
+            <%_ }  -%>
+        },
+        <%_ }  -%>
+        <%_ if(item.key == 'remove'){  -%>
+        <%= item.actionName%>(row) {
+            this.alert.showConfirm('Remove this item?',(d)=>{
+                this.<%= data.model.modelDataName %>.set(row);
+                <%= data.service.serviceClassName%>.remove(model).then(x=>{
+                    this.alert.showAlert("success",'Remove success!');
+                    this.search();
+                }).catch(err=>{
+                    this.alert.showAlert("error",err.data);
+                });
+            })
+        },
+        <%_ }  -%>
         <%_ }) -%>
         <%_ data.toolbar.forEach(function(col){ -%>
         <%= col.fnName%>() {
@@ -302,11 +333,7 @@ export default {
     mounted(){
     <%_ if( data.hasStore){ -%>
     <%_ data.store.storeActions.forEach(function(name){ -%>
-      this.<%= name%>().then(x=>{
-
-      }).catch(err=>{
-          
-      });
+      this.<%= name%>().then(x=>{}).catch(err=>{});
     <%_ }) -%>
     <%_ } -%>
     }

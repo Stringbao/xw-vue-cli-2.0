@@ -5,6 +5,16 @@ const NPath = require("path");
 const { isArray } = require("util");
 
 let APIhelper = {
+    //根据页面名称获取当前页面的Model
+    getModelByPageName(pages, pageName){
+        let res = [];
+        pages.forEach(x=>{
+            if(x.pageName == pageName){
+                res = x.model; 
+            }
+        })
+        return res;
+    },
     //处理SearchModel
     convertSearchModel(models){
         let str = [];
@@ -78,7 +88,7 @@ let APIhelper = {
         });
     },
     //创建单个Module下的Service文件, 并且写入数据
-    createServiceFile(projectPath, serviceItem, storeItems, moduleName){
+    createServiceFile(projectPath, serviceItem, storeItems, moduleName, pages){
         //create model file
         let path = projectPath + "/src/services/";
         let filePath = path + this.firstChatUpperLower(moduleName,false) + "Services.js";
@@ -87,11 +97,12 @@ let APIhelper = {
         let maps = [];
         serviceItem.forEach(x=>{
             if(x.url){
-                maps.push({name:x.name, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType?x.reqType:"get"});
+                let model = this.getModelByPageName(pages, x.pageName);
+                maps.push({name:x.name, model:model, url:x.url, isEnum:false, fnName:x.name,isGetReq:x.reqType?x.reqType:"get"});
             }
         })
         storeItems.forEach(x=>{
-            maps.push({name:x.name, url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
+            maps.push({name:x.name, model:[], url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
         })
         
         let resJson = {map:[], fns:[]};
@@ -100,10 +111,9 @@ let APIhelper = {
                 resJson.map.push(x);
             }
             if(x.url){
-                resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
+                resJson.fns.push({fnName:x.fnName, model:x.model, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
             }
         })
-        
         //write content to file by ejs
         let _data = this.compileByData("../ejstemplates/service.ejs",{data: resJson});
         fsTool.file.writeFile(filePath, _data);
@@ -163,12 +173,17 @@ let APIhelper = {
         let filePath = projectPath + "/src/route/index.js";
 
         let data = [];
-        pages.forEach(x=>{
+        pages.forEach((x,index)=>{
             let moduleName = this.firstChatUpperLower(x.moduleName, false);
             let tmp = {
                 path:"/"+ moduleName + this.firstChatUpperLower(this.getFileName(x.pageName),false),
                 name: moduleName +this.firstChatUpperLower(this.getFileName(x.pageName),false),
                 componentPath: "/" + moduleName + "/" + x.pageName
+            }
+            //登录完毕后默认跳转到第一个路由页面
+            if(index == 0){
+                let loginStr = this.compileByData("../ejstemplates/login.ejs",{path:tmp.path});
+                fsTool.file.writeFile(projectPath + "/src/pages/views/login/login.vue", loginStr);
             }
             data.push(tmp);
         })
@@ -233,7 +248,10 @@ let APIhelper = {
     dataForListView(page, moduleName, services){
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
+        let toolbar = page.config?page.config.toolbar:[];
         let pageOpts = {
+            isCheckbox:false,
+            isRadio:false,
             url:"",
             map:"",
             sizeKey:"",
@@ -243,10 +261,13 @@ let APIhelper = {
             let t = page.config.table;
             let urlSuff = t.url.indexOf('?') == -1?'?':"&";
             pageOpts = {
+                isCheckbox:t.showCK == 'checkbox'?true:false,
+                isRadio:t.showCK =="radio"?true:false,
                 url:"`"+ t.url + urlSuff + this.convertSearchModel(page.config.searchModel)+"`",
                 map:t.map,
                 sizeKey:t.page.pageSize,
-                indexKey:t.page.currentPage
+                indexKey:t.page.currentPage,
+                actionServices:this.getDefaultService(services)
             }
         }
         let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table";
@@ -274,12 +295,13 @@ let APIhelper = {
         let modelClassName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model";
         let modelDataName = this.firstChatUpperLower(modelClassName,false);
         let modelArray = page.model?page.model:[];
+        
         let data = {
-            actionServices:this.getDefaultService(services),
             pageTitle,
             searchModel,
             pageOpts,
             tableTitle,
+            toolbar,
             componentName,
             hasStore,
             hasModel,
