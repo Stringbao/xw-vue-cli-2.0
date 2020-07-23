@@ -374,6 +374,7 @@ export default {
                     that.page.type = "list";
                     let reg = /^.*\.vue$/; 
                     if(reg.test(that.page.pageName)){
+                        that.page.pageName.replace(/\s/, "");
                         if(that.action == "create"){ 
                             that.addPages(that.page);  
                         }else{
