@@ -42,11 +42,11 @@
                             "currentPage": "currentPage"
                         }
                     },
-                    "toolbar":{
+                    "toolbar":[{
                         "type":"publish",
                         "value":"发布",
                         "fnName":"publish"
-                    }
+                    }]
                 },
                 "model":[
                     {
