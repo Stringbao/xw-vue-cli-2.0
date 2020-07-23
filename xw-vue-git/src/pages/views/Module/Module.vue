@@ -208,6 +208,7 @@ export default {
             if(file.type === "application/json"){
                 Ajax.upload('/v2API/comp/upload',{"file":file}).then(res=>{
                     this.addExistedModules(res.data);
+                    alert("添加成功，可以在project中查看");
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -221,7 +222,7 @@ export default {
                 .validate()
                 .then(res => {
                     if (res.success) {
-                        this.addModules(this.moduleName);
+                        this.addModules(this.moduleName.replace(/\s/,""));
                         this.dialog.showDialog = false;
                         this.moduleName = "";
                     }
