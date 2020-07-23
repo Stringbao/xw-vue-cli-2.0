@@ -23,6 +23,12 @@ Vue.use(LeComponents);
 const store = new Vuex.Store(stores)
 const router = new Router({routes});
 
+Vue.directive('highlight', function (el) {
+   let blocks = el.querySelectorAll('pre code');
+       blocks.forEach((block) => {
+           hljs.highlightBlock(block)
+          })
+})
 
 
 

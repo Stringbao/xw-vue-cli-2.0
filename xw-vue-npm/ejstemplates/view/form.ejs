@@ -14,14 +14,14 @@
                     <%_ if(col.field && col.field != ''){ -%>
                         <%_  %> v-model="<%=model%>.<%= col.field %>"<%_  -%>
                     <%_ } -%>
-                    <%_ if(col.on && col.on == '1'){ -%>
+                    <%_ if(col.on){ -%>
                         <%_  %> on<%_  -%>
                     <%_ } -%>
-                    <%_ if(col.required && col.required == '1'){ -%>
+                    <%_ if(col.required){ -%>
                         <%_  %> required<%_  -%>
                     <%_ } -%>
-                    <%_ if(col.valifyType && col.valifyType != ''){ -%>
-                        <%_  %> Vtype="<%= col.valifyType %>"<%_  -%>
+                    <%_ if(col.Vtype && col.Vtype != ''){ -%>
+                        <%_  %> Vtype="<%= col.Vtype %>"<%_  -%>
                     <%_ } -%>
                     <%_ if(col.msg && col.msg != ''){ -%>
                         <%_  %> msg="<%= col.msg %>"<%_  -%>
@@ -37,6 +37,12 @@
                        <%_ } -%>
                        <%_ if(col.label && col.label != ''){ -%>
                        <%_  %> label="<%- col.label %>:"<%_  -%>
+                       <%_ } -%>
+                       <%_ if(col.on){ -%>
+                       <%_  %> on<%_  -%>
+                       <%_ } -%>
+                       <%_ if(col.msg && col.msg != ''){ -%>
+                       <%_  %> msg="<%= col.msg %>"<%_  -%>
                        <%_ } -%>
                        <%_ if(col.field && col.field != ''){ -%>
                        <%_  %> v-model="searchModel.<%= col.field %>"<%_  -%>
@@ -65,7 +71,7 @@
                             <%_ if(col.displayValue && col.displayValue != ''){ -%>
                                 <%_  %> display-value="<%= col.displayValue %>"<%  -%>
                             <%_ } _%>
-                            <%_ if(col.required && col.required == '1'){ -%>
+                            <%_ if(col.on){ -%>
                                 <%_  %> on<%_  -%>
                             <%_ } -%>
                             <%_ if(col.msg && col.msg != ''){ -%>
@@ -92,7 +98,7 @@
                         <%_ if(col.displayValue && col.displayValue != ''){ -%>
                             <%_  %> display-value="<%= col.displayValue %>"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.required && col.required == '1'){ -%>
+                        <%_ if(col.on){ -%>
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
@@ -119,7 +125,7 @@
                         <%_ if(col.displayValue && col.displayValue != ''){ -%>
                             <%_  %> display-value="<%= col.displayValue %>"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.required && col.required == '1'){ -%>
+                        <%_ if(col.on){ -%>
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
@@ -140,7 +146,7 @@
                         <%_ if(col.field && col.field != ''){ -%>
                             <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.required && col.required == '1'){ -%>
+                        <%_ if(col.on){ -%>
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
@@ -161,7 +167,7 @@
                         <%_ if(col.field && col.field != ''){ -%>
                             <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.required && col.required == '1'){ -%>
+                        <%_ if(col.on){ -%>
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
@@ -182,12 +188,13 @@
                         <%_ if(col.field && col.field != ''){ -%>
                             <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
-                        <%_ if(col.required && col.required == '1'){ -%>
+                        <%_ if(col.on){ -%>
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
                             <%_  %> msg="<%= col.msg %>"<%_  -%>
                         <%_ } -%>></le-date-time-picker>
                     <%_ } _%>
+<!--               <le-upload :options="" v-model=""></le-upload>-->
         <%_ }) -%>
             </le-form>

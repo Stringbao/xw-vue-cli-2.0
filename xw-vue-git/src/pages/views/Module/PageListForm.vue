@@ -45,6 +45,38 @@
                     </ul>
                 </div>
             </div>
+
+
+
+
+            <!-- toolbar的配置 -->
+            <div class="configItem">
+                <div class="configItem-title clearfix">
+                    <h4 class="label">toolbar
+                        <i class="fr addParams iconfont icon-add" type="button" @click="addToolbar"></i>
+                    </h4>
+                </div>
+                <div class="item" >
+                    <ul>
+                        <li class="clearfix" v-for="(item, idx) in page.config.toolbar" :key="idx">
+                            <div>
+                                <div class="le_form_row_item">
+                                    <le-local-select label="type:" :data-source="toolbarType" 
+                                        display-name="name" display-value="code"
+                                        v-model="item.type">
+                                    </le-local-select>
+                                    <le-input label="value:" v-model="item.value"></le-input>
+                                    <le-input label="fnName:" v-model="item.fnName"></le-input>
+                                    <le-button type="remove" 
+                                        value=" deleteItems" @click="removeToolbarItem(item,idx)">
+                                    </le-button>
+                                </div>           
+                            </div>           
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             
             <!-- table的配置 -->
             <div class="configItem">
@@ -53,9 +85,13 @@
                 </div>
                 <div class="item">
                     <le-input label="url:" v-model="page.config.table.url"></le-input>
+                    <le-radio-list label="showCK:" :data-source="tableShowCK" 
+                        display-name="name" display-value="code" 
+                        v-model="page.config.table.showCK">
+                    </le-radio-list>
                     <div>
-                        <le-input label="pageSize:" v-model="page.config.table.page.pageSize"></le-input>
-                        <le-input label="currentPage:" v-model="page.config.table.page.currentPage"></le-input>
+                        <le-input label="sizeKey:" v-model="page.config.table.page.pageSize"></le-input>
+                        <le-input label="pageKey:" v-model="page.config.table.page.currentPage"></le-input>
                     </div>
                     <div>
                         <div class="configItem-title">
@@ -68,7 +104,9 @@
                                 <le-input label="key:" v-model="item.key"></le-input>
                                 <le-input label="val:" v-model="item.val"></le-input>
                                 <le-button class="fr" type="remove" value="deleteItem" @click="removeCurTableMap(item,idx)"></le-button>
+                                
                             </div>
+                            <i v-if="idx=='page.config.table.map.length-1'" class="fr addParams iconfont icon-add" @click="addTableModelMap"></i>
                         </div>
                     </div>
                 </div>
@@ -105,7 +143,7 @@
                                     </le-local-select>
                                     <le-button class="fr" type="create" value="datasource" @click="showDatasource"></le-button>
                                 </div>
-                                <div class="col3">
+                                <div class="col4">
                                     <le-radio-list label="on:" :data-source="dialogValidateType" 
                                         display-name="name" display-value="code" 
                                         v-model="item.on">
@@ -114,6 +152,16 @@
                                         display-name="name" display-value="code" 
                                         v-model="item.required">
                                     </le-radio-list>
+                                    <le-input label="msg:" v-model="item.msg"></le-input>
+                                </div>
+                                <div class="clearfix le_form_row_item co2">
+                                    <le-input label="tip:" v-model="item.tip"></le-input>
+                                    <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
+                                    <le-local-select label="Vtype" v-if="item.type == 'text'"
+                                        :data-source="vtypeList" 
+                                        display-name="name" display-value="code" 
+                                        v-model="item.Vtype">
+                                    </le-local-select>
                                 </div>
                             </div>
                         </li>
@@ -163,6 +211,41 @@ export default {
                 {name:"radioList",code:"radioList"},
                 {name:"textarea",code:"textarea"}
             ],
+            toolbarType:[
+                {name:"搜索",code:"search"},
+                {name:"新建",code:"create"},
+                {name:"下载",code:"download"},
+                {name:"更新",code:"update"},
+                {name:"删除",code:"remove"},
+                {name:"审核",code:"approve"},
+                {name:"拒绝",code:"reject"},
+                {name:"启用",code:"start"},
+                {name:"停用",code:"stop"},
+                {name:"详情",code:"info"},
+                {name:"重置",code:"reset"},
+                {name:"上架",code:"up"},
+                {name:"下架",code:"down"},
+                {name:"发布",code:"publish"},
+                {name:"取消发布",code:"cancelPublish"},
+                {name:"导入",code:"import"},
+                {name:"导出",code:"export"},
+                {name:"批量操作",code:"review"},
+                {name:"复制",code:"copy"},
+                {name:"设置",code:"setting"},
+                {name:"装修",code:"decorate"},
+                {name:"上一页",code:"prevPage"},
+                {name:"下一页",code:"nextPage"},
+                {name:"确定",code:"confirm"},
+                {name:"保存",code:"save"},
+                {name:"返回",code:"back"},
+                {name:"取消",code:"cancel"},
+                {name:"请选择XXX",code:"choose"},
+                {name:"暂存",code:"holdSave"},
+                {name:"上一步",code:"prev"},
+                {name:"下一步",code:"next"},
+                {name:"默认",code:"default"},
+                {name:"警告",code:"warning"},
+            ],
             dialogFieldType:[
                 {name:"text",code:"text"},
                 {name:"select",code:"select"},
@@ -172,6 +255,29 @@ export default {
                 {name:"checkboxList",code:"checkboxList"},
                 {name:"radioList",code:"radioList"},
                 {name:"textarea",code:"textarea"}
+            ],
+            tableShowCK:[
+                {name:"none",code:""},
+                {name:"radio",code:"isRadio"},
+                {name:"checkbox",code:"isCheckbox"},
+            ],
+            vtypeList:[
+                {name:"自然数,包含0和正整数",code:"natureNum"},
+                {name:"正数,负数,小数,整数",code:"decimals"},
+                {name:"正数,负数,整数",code:"number"},
+                {name:"正整数",code:"positive"},
+                {name:"正小数",code:"positiveDecimals"},
+                {name:"正数",code:"positiveNumber"},
+                {name:"负数",code:"negativeNumber"},
+                {name:"负小数",code:"negativeDecimals"},
+                {name:"负整数",code:"negative"},
+                {name:"邮箱",code:"email"},
+                {name:"url",code:"url"},
+                {name:"https",code:"https"},
+                {name:"http",code:"http"},
+                {name:"身份证",code:"id"},
+                {name:"手机号(不包含固话)",code:"phone"},
+                {name:"电话号(包含固话,手机)",code:"tel"},
             ],
             dialogValidateType:[
                 {name:"true",code:true},
@@ -222,6 +328,19 @@ export default {
         //删除添加的搜索条件
         removeCurSearchModelItem(item,idx){
             this.page.config.searchModel.splice(idx, 1)
+        },
+        //添加按钮
+        addToolbar(){
+            let obj = {
+                type: "",
+                value: "",
+                fnName: "",
+            };
+            this.page.config.toolbar.push(obj)
+        },
+        //删除添加的搜索条件
+        removeToolbarItem(item,idx){
+            this.page.config.toolbar.splice(idx, 1)
         },
         //添加table的map
         addTableModelMap(){

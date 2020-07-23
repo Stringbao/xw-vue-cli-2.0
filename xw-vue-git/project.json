@@ -26,6 +26,7 @@
                     ],
                     "table": {
                         "url": "/api/getRoleTypes",
+                        "showCk":"",
                         "map": [
                             {
                                 "field": "channelCode",
@@ -40,6 +41,11 @@
                             "pageSize": "pageSize",
                             "currentPage": "currentPage"
                         }
+                    },
+                    "toolbar":{
+                        "type":"",
+                        "value":"",
+                        "fnName":""
                     }
                 },
                 "model":[
@@ -51,7 +57,9 @@
                         "displayValue": "value",
                         "dataSource": "salesRouteA",
                         "on": true,
-                        "required": true
+                        "required": true,
+                        "msg":"必填",
+                        "tip":"请输入角色类型"
                     }
                 ]
             },
@@ -72,7 +80,12 @@
                     {
                         "label": "角色名称",
                         "type": "text",
-                        "field": "roleName"
+                        "field": "roleName",
+                        "on": true,
+                        "required": true,
+                        "msg":"必填",
+                        "tip":"请输入角色类型",
+                        "Vtype":""
                     }
                 ]
             }
