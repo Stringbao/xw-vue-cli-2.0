@@ -19,8 +19,8 @@
                     <le-local-select
                         on
                         required
-                        msg="please select module"
-                        label="moduleName:"
+                        msg="please select pageName"
+                        label="pageName:"
                         :data-source="currentModule.Pages"
                         display-name="pageName"
                         display-value="pageName"

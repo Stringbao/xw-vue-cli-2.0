@@ -92,7 +92,6 @@
                             </div>
                         </le-dialog>
                     </div>
-                    {{module.Services}}
                     <div class="card">
                         <Service :sevices="module.Services"></Service>
                     </div>
