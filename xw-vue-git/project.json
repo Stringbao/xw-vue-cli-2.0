@@ -42,11 +42,18 @@
                             "currentPage": "currentPage"
                         }
                     },
-                    "toolbar":[{
-                        "type":"publish",
-                        "value":"发布",
-                        "fnName":"publish"
-                    }]
+                    "toolbar":[
+                        {
+                            "type":"publish",
+                            "value":"发布",
+                            "fnName":"publish"
+                        },
+                        {
+                            "type":"import",
+                            "value":"导入",
+                            "fnName":"import"
+                        }
+                    ]
                 },
                 "model":[
                     {
