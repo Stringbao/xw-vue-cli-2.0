@@ -130,7 +130,7 @@
                 "name":"querySubItems",
                 "reqType":"post",
                 "url": "/api/getSubItems",
-                "stype":"1",
+                "stype":"2",
                 "pageName":"list.vue"
             }
         ],
