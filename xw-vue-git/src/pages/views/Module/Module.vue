@@ -271,9 +271,7 @@ export default {
                         },
                         map: [],
                     },
-                    toolbar:{
-                        
-                    }
+                    toolbar:[]
                 },
                 model: [],
             };

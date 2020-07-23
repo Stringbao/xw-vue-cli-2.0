@@ -179,7 +179,10 @@ export default {
                 .then(res=>{
                     that.page.type = "save";
                     let reg = /^.*\.vue$/; 
+                    debugger
                     if(reg.test(that.page.pageName)){
+                        debugger
+                        that.page.pageName.replace(/\s/, "");
                         if(that.action == "create"){ 
                             that.addPages(that.page);  
                         }else{
@@ -216,6 +219,7 @@ export default {
             this.datasourceDialog = true; 
         },
         saveDatasourceDialog(){
+            this.pageName.replace(/\s/, "")
             this.addStore(this.newAddDataSource);
             this.closeDatasourceDialog(); 
         },
