@@ -152,12 +152,14 @@ export default {
                     searchModel: [],
                     table: {
                         url: "",
+                        showCK:"",
                         page: {
                             pageSize: "",
                             currentPage: "",
                         },
                         map: [],
                     },
+                    toolbar:[]
                 },
                 model: [],
             },
@@ -262,12 +264,16 @@ export default {
                     searchModel: [],
                     table: {
                         url: "",
+                        showCK:"",
                         page: {
                             pageSize: "",
                             currentPage: "",
                         },
                         map: [],
                     },
+                    toolbar:{
+                        
+                    }
                 },
                 model: [],
             };
@@ -302,6 +308,8 @@ export default {
         },
         handleSavePages() {
             this.$refs.pageDialog[0].save();
+            console.log(this.pageModel)
+            console.log(this.pageSaveModel)
         },
         changePageType() {
             if (this.pageType == "list") {

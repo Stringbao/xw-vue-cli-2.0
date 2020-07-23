@@ -45,6 +45,16 @@
                                             display-name="name" display-value="code" 
                                             v-model="item.required">
                                         </le-radio-list>
+                                         <le-input label="msg:" v-model="item.msg"></le-input>
+                                    </div>
+                                    <div class="clearfix le_form_row_item col3">
+                                        <le-input label="tip:" v-model="item.tip"></le-input>
+                                        <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
+                                        <le-local-select label="Vtype" v-if="item.type == 'text'"
+                                            :data-source="vtypeList" 
+                                            display-name="name" display-value="code" 
+                                            v-model="item.Vtype">
+                                        </le-local-select>
                                     </div>
                                 </div>
                             </li>
@@ -95,7 +105,24 @@ export default {
                 {name:"radioList",code:"radioList"},
                 {name:"textarea",code:"textarea"}
             ],
-           
+            vtypeList:[
+                {name:"自然数,包含0和正整数",code:"natureNum"},
+                {name:"正数,负数,小数,整数",code:"decimals"},
+                {name:"正数,负数,整数",code:"number"},
+                {name:"正整数",code:"positive"},
+                {name:"正小数",code:"positiveDecimals"},
+                {name:"正数",code:"positiveNumber"},
+                {name:"负数",code:"negativeNumber"},
+                {name:"负小数",code:"negativeDecimals"},
+                {name:"负整数",code:"negative"},
+                {name:"邮箱",code:"email"},
+                {name:"url",code:"url"},
+                {name:"https",code:"https"},
+                {name:"http",code:"http"},
+                {name:"身份证",code:"id"},
+                {name:"手机号(不包含固话)",code:"phone"},
+                {name:"电话号(包含固话,手机)",code:"tel"},
+            ],
             dialogValidateType:[
                 {name:"true",code:true},
                 {name:"false",code:false},
