@@ -17,8 +17,6 @@
                 </div>
                 <div class="form-item">
                     <le-local-select
-                        on
-                        required
                         msg="please select pageName"
                         label="pageName:"
                         :data-source="currentModule.Pages"
