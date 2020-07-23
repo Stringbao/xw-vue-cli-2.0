@@ -215,7 +215,9 @@ export default {
                     size: 20
                 },
                 actions: [
-                    
+                    <%_ data.pageOpts.actionServices.forEach(function(item){ -%>
+                    {key:'<%- item.key %>',val:'<%- item.val%>',action:'<%- item.actionName%>'},
+                    <%_ }) -%>
                 ],
                 analysis: data => {
                     if (data &&data.data &&data.data.datas) {
@@ -254,7 +256,17 @@ export default {
             <%_ if(data.hasModel){ _%>
                 this.dialogTag = true;
             <%_ }  -%>
+            //this.$router.push({path:"/xxxx",query:{tag:"",id:""}});
         },
+        <%_ data.pageOpts.actionServices.forEach(function(item){ -%>
+        <%= item.actionName%>(row) {
+            <%_ if(data.hasModel){ _%>
+                this.<%= data.model.modelDataName %>.set(row);
+                <%= data.service.serviceClassName%>.<%= item.actionName%>(this.<%= data.model.modelDataName %>);
+            <%_ }  -%>
+            //to do
+        },
+        <%_ }) -%>
         <%_ if(data.hasModel){ _%>
         dialogConfirm(){
             this.$refs.saveForm.validate().then(x => {
@@ -275,7 +287,11 @@ export default {
     mounted(){
     <%_ if( data.hasStore){ -%>
     <%_ data.store.storeActions.forEach(function(name){ -%>
-      this.<%= name%>();
+      this.<%= name%>().then(x=>{
+
+      }).catch(err=>{
+          
+      });
     <%_ }) -%>
     <%_ } -%>
     }

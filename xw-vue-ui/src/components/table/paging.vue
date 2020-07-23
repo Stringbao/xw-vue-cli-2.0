@@ -28,7 +28,7 @@
 <script>
     import tool from "../leCompsTool.js";
     export default {
-        props:["options","goNext","goPrev","goIndex"],
+        props:["options","goNext","goPrev","goIndex","changeKey"],
         name: "PagingSection",
         data(){
             return {
@@ -49,7 +49,7 @@
         },
         methods:{
             changeSize(){
-                tool._form_event_publisher.broadcast("changeSize",{size:this.currentSize});
+                tool._form_event_publisher.broadcast(this.changeKey, {size:this.currentSize});
             },
             next:function () {
                 if(this.index >= this.total){

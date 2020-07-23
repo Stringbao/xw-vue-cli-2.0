@@ -9,6 +9,7 @@
 </template>
 <script>
 import util from "@util/util.js";
+import KEYS from "@constant/index.js";
 <%_ if( data.hasStore){ -%>
 import { createNamespacedHelpers } from 'vuex';
 const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.store.storeName %>');
