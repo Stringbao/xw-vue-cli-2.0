@@ -179,7 +179,9 @@ export default {
                 .then(res=>{
                     that.page.type = "save";
                     let reg = /^.*\.vue$/; 
+                    debugger
                     if(reg.test(that.page.pageName)){
+                        debugger
                         that.page.pageName.replace(/\s/, "");
                         if(that.action == "create"){ 
                             that.addPages(that.page);  
