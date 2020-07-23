@@ -12,22 +12,24 @@ export default {
         return model.id ? this.update(model) : this.create(model);
     },
     <%_ data.fns.forEach(function(row){ -%>
-    async <%= row.fnName %>(model){
+    
     <%_ if (row.isEnum) { -%>
+    <%= row.fnName %>(){
         return Promise.resolve({data:<%= row.url%>});
     <%_ _%><% }else { -%>
+    async <%= row.fnName %>(model){
         let params = {
-        <%_ data.model.forEach(function(row){ -%>
-           <%= row.field%>: model.<%= row.field%>,
+        <%_ row.model.forEach(function(subrow){ -%>
+           <%= subrow.field%>: model.<%= subrow.field%>,
         <%_ _%><% }) -%>
         };
         try{
-            let res = await Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map.<%= row.mapKey%>, params);
+            let res = await Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map['<%= row.mapKey%>'], params);
             //deal res
             return res;
-        }catch(err=>{
+        }catch(err){
             return Promise.reject(err);
-        })
+        }
         <%_ _%><% } -%>
     },
     <%_ _%><% }) -%>
