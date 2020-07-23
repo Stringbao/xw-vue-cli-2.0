@@ -178,15 +178,22 @@
                             "key": "sd",
                             "val": "sdsd"
                         }]
-                    }
+                    },
+                    "toolbar":[
+                        {"type":"","value":"","fnName":""},
+                        {"type":"","value":"","fnName":""},
+                        {"type":"","value":"","fnName":""}
+                    ]
                 },
                 "model": [],
                 "moduleName": "rrr"
             }],
-            "Services": [{
+            "Services": [
+            {
                 "name": "create",
                 "reqType": "post",
-                "url": "rrr"
+                "url": "rrr",
+                "model":"list.vue"
             }, {
                 "name": "update",
                 "reqType": "post",

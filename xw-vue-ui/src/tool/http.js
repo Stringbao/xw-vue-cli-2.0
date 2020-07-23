@@ -52,7 +52,7 @@ let ajaxTool = {
     },
     checkCode(response) {
         let { status,data,msg } = response;
-        switch (status) {
+        switch (status/1) {
             case 701:
                 // window.location.href = "";
                 return Promise.reject(response);

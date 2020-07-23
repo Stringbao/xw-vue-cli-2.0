@@ -3,7 +3,7 @@
         <div class="extrac">
             <span class="asBtn import">
                 <i class="fa fa-cloud-download"></i>添加已存在模块
-                <input type="file" accept=".json" @change="uploadModules">
+                <input type="file" accept=".json" @change="uploadModules" />
             </span>
         </div>
         <Tab :modules="modules" @add="add" @del="del" @change="change">
@@ -133,7 +133,7 @@ export default {
     data() {
         return {
             dialog: {
-                showDialog: false
+                showDialog: false,
             },
             pageDialog: {
                 showDialog: false,
@@ -142,7 +142,7 @@ export default {
                 component: PageListForm,
                 action: "",
                 type: "",
-                idx: null
+                idx: null,
             },
             pageModel: {
                 pageName: "",
@@ -154,29 +154,29 @@ export default {
                         url: "",
                         page: {
                             pageSize: "",
-                            currentPage: ""
+                            currentPage: "",
                         },
-                        map: []
-                    }
+                        map: [],
+                    },
                 },
-                model: []
+                model: [],
             },
             pageSaveModel: {
                 pageName: "",
                 type: "save",
-                model: []
+                model: [],
             },
             moduleName: "",
             pageType: "list",
             pageTypes: [
                 { name: "list", code: "list" },
-                { name: "save", code: "save" }
+                { name: "save", code: "save" },
             ],
-            isEditPages: false
+            isEditPages: false,
         };
     },
     computed: {
-        ...mapState(["modules", "currentModule","existedModules"])
+        ...mapState(["modules", "currentModule", "existedModules"]),
     },
     components: {
         Tab,
@@ -184,7 +184,7 @@ export default {
         PageListForm,
         PageSaveForm,
         StoreForm,
-        Service
+        Service,
     },
     methods: {
         ...mapActions([
@@ -192,7 +192,7 @@ export default {
             "removeModules",
             "changeModules",
             "removePages",
-            "addExistedModules"
+            "addExistedModules",
         ]),
         del(item) {
             this.removeModules(item.ModuleName);
@@ -205,28 +205,33 @@ export default {
         },
         uploadModules(el) {
             let file = el.target.files[0];
-            if(file.type === "application/json"){
-                Ajax.upload('/v2API/comp/upload',{"file":file}).then(res=>{
-                    this.addExistedModules(res.data);
-                }).catch(err=>{
-                    console.log(err)
-                })
-            }else{
-                alert("请选择项目根目录的 project.json 文件 添加已经存在的 modules")
+            if (file.type === "application/json") {
+                Ajax.upload("/v2API/comp/upload", { file: file })
+                    .then((res) => {
+                        this.addExistedModules(res.data);
+                        alert("添加成功，可以在project中查看");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                alert(
+                    "请选择项目根目录的 project.json 文件 添加已经存在的 modules"
+                );
             }
             el.target.value = "";
         },
         handleSave() {
             this.$refs.module
                 .validate()
-                .then(res => {
+                .then((res) => {
                     if (res.success) {
-                        this.addModules(this.moduleName);
+                        this.addModules(this.moduleName.replace(/\s/, ""));
                         this.dialog.showDialog = false;
                         this.moduleName = "";
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     this.alert.showAlert("error", err.info[0]);
                 });
         },
@@ -259,19 +264,19 @@ export default {
                         url: "",
                         page: {
                             pageSize: "",
-                            currentPage: ""
+                            currentPage: "",
                         },
-                        map: []
-                    }
+                        map: [],
+                    },
                 },
-                model: []
+                model: [],
             };
         },
         clearSavePageModel() {
             this.pageSaveModel = {
                 pageName: "",
                 type: "save",
-                model: []
+                model: [],
             };
         },
         modifyPageHandle(data, idx) {
@@ -308,8 +313,8 @@ export default {
             }
 
             this.pageDialog.type = this.pageType;
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -317,7 +322,7 @@ export default {
 .extrac {
     display: flex;
     flex-direction: row-reverse;
-    &>span{
+    & > span {
         height: 30px;
         line-height: 30px;
         display: inline-block;
@@ -330,16 +335,16 @@ export default {
         padding: 0 13px 0 22px;
         position: relative;
         margin: 3px;
-        .fa{
+        .fa {
             position: absolute;
             top: 8px;
             left: 5px;
         }
     }
-    &>.import{
+    & > .import {
         background-color: #a2d469;
         border-color: #a2d469;
-        input[type="file"]{
+        input[type="file"] {
             position: absolute;
             left: 0;
             top: 0;
@@ -420,7 +425,7 @@ export default {
             }
         }
     }
-    .pagesType{
+    .pagesType {
         line-height: 40px;
     }
 }
