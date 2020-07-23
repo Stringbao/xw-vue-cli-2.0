@@ -15,6 +15,7 @@
                         <th>URL Name</th>
                         <th>RequestType</th>
                         <th>URL</th>
+                        <th>PageName</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -23,6 +24,7 @@
                         <td>{{item.name}}</td>
                         <td>{{item.reqType}}</td>
                         <td>{{item.url}}</td>
+                        <td>{{item.pageName}}</td>
                         <td>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
                             <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
@@ -65,12 +67,13 @@ export default {
                 title:"",
                 action:"",
                 params:null,
-                idx:null
+                idx:null,
             },
             service: {
                 name: "",
                 url: "",
-                reqType: "get"
+                reqType: "get",
+                pageName:"",
             },
         };
     },
@@ -105,7 +108,8 @@ export default {
             let service = {
                 name:this.dialog.params.name,
                 reqType:this.dialog.params.reqType,
-                url:this.dialog.params.url
+                url:this.dialog.params.url,
+                pageName:this.dialog.params.pageName
             };
             if(this.dialog.action === "create"){
                 this.addService(service);
@@ -121,7 +125,8 @@ export default {
             this.service = {
                 name: "",
                 url: "",
-                reqType: "get"
+                reqType: "get",
+                pageName:"",
             }
         }
     },

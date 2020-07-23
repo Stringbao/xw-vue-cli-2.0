@@ -16,16 +16,16 @@
                     ></le-radio-list>
                 </div>
                 <div class="form-item">
-                    <le-radio-list
+                    <le-local-select
                         on
                         required
                         msg="please select module"
                         label="moduleName:"
-                        :data-source="dataSource.moduleName"
-                        display-name="name"
-                        display-value="code"
-                        v-model="params.moduleName"
-                    ></le-radio-list>
+                        :data-source="currentModule.Pages"
+                        display-name="pageName"
+                        display-value="pageName"
+                        v-model="params.pageName"
+                    ></le-local-select>
                 </div>
                 <le-input on required label="url:" v-model="params.url"></le-input>
             </le-form>
@@ -51,15 +51,13 @@ export default {
         return {};
     },
     computed:{
-        ...mapState(["dataSource"])
+        ...mapState(["dataSource","currentModule"])
     },
     methods:{
         confirm(){
             let that=this;
             if(this.$listeners.confirm){
                 this.$refs.servicesForm.validate().then(()=>{
-                    
-                    console.log(that.idx)
                     this.$listeners.confirm(that.idx);
                 }).catch(err=>this.alert.showAlert("error", err.info))
             }

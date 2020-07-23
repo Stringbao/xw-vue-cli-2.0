@@ -7,7 +7,4 @@ export default {
         {name:"GET",code:"get"},
         {name:"POST",code:"post"}
     ],
-    moduleName:[
-        
-    ]
 }

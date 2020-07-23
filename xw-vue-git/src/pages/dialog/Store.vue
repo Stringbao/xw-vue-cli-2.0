@@ -4,7 +4,6 @@
         <le-radio-list
             on
             required
-            ref="radioSelect"
             label="type:"
             :data-source="dataSource.storeType"
             display-name="name"
@@ -57,9 +56,9 @@ export default {
             }
         },
         changeType(){
-            // if(this.$refs.radioSelect.text == "enum"){
-            //     this.showType = true;
-            // }
+            if(this.store.type == "enum"){
+                this.showType = true;
+            }
         }
     },
     computed: {

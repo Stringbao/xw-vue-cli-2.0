@@ -9,8 +9,7 @@ export default {
         currentModule:null,
         dataSource:{
             storeType:Enum.storeType,
-            requestType:Enum.requestType,
-            moduleName:Enum.moduleName,
+            requestType:Enum.requestType
         },
     },
     mutations:{
@@ -48,10 +47,6 @@ export default {
         updatePages(state,data){
             state.currentModule.Pages[data.idx] = data.page
         },
-        // updateStore(state,data){
-        //     let idx = state.currentModule.Pages.findIndex(item=>item.PageName == data.PageName);
-        //     state.currentModule.Pages[idx] = data
-        // },
         //创建stores
         addStore(state,data){
             let idx = state.currentModule.Store.state.findIndex(item=>item.name == data.name);
@@ -93,11 +88,11 @@ export default {
                 ModuleName:ModuleName,
                 Pages:[],
                 Services:[
-                    { name:"create",reqType:"post",url:"",moduleName:"",stype:1},
-                    { name:"update",reqType:"post",url:"",moduleName:"",stype:1},
-                    { name:"remove",reqType:"post",url:"",moduleName:"",stype:1},
-                    { name:"detail",reqType:"get",url:"",moduleName:"",stype:1},
-                    { name:"list",reqType:"get",url:"",moduleName:"",stype:1}
+                    { name:"create",reqType:"post",url:"",pageName:"",stype:1},
+                    { name:"update",reqType:"post",url:"",pageName:"",stype:1},
+                    { name:"remove",reqType:"post",url:"",pageName:"",stype:1},
+                    { name:"detail",reqType:"get",url:"",pageName:"",stype:1},
+                    { name:"list",reqType:"get",url:"",pageName:"",stype:1}
                 ],
                 Store:{
                   state:[
