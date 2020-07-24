@@ -19,6 +19,7 @@
                     <le-local-select
                         msg="please select pageName"
                         label="pageName:"
+                        multiple
                         :data-source="currentModule.Pages"
                         display-name="pageName"
                         display-value="pageName"
@@ -53,6 +54,7 @@ export default {
     },
     methods:{
         confirm(){
+            console.log(this.params)
             let that=this;
             if(this.$listeners.confirm){
                 this.$refs.servicesForm.validate().then(()=>{
