@@ -1,5 +1,5 @@
 <template>
-    <le-dialog class="service" :title="title" @closeCallback="cancel" v-model="showDialog" width="700" height="400">
+    <le-dialog class="service" :title="title" @closeCallback="cancel" v-model="showDialog" width="700" height="500">
         <div slot="body">
             <le-form ref="servicesForm" v-if="params">
                 <le-input on required :readonly="params.stype == 1" label="name:" v-model="params.name"></le-input>
