@@ -34,13 +34,13 @@ export default {
         ]),
         <%_ } -%>
         isEdit(){
-            return this.$route.query.tag == "edit";
+            return this.$route.query.tag == KEYS.GOLBAL.ACTION.EDIT;
         },
         isCreate(){
-            return this.$route.query.tag == "create";
+            return this.$route.query.tag == KEYS.GOLBAL.ACTION.ADD;
         },
         isDetail(){
-            return this.$route.query.tag == "detail";
+            return this.$route.query.tag == KEYS.GOLBAL.ACTION.DETAIL;
         }
     },
     methods:{
@@ -73,7 +73,11 @@ export default {
         <%_ } -%>
         this.$refs.saveForm.reset();
         if(this.isEdit || this.isDetail){
-            this.<%= data.model.modelDataName %>.set(this.$route.query.data);
+            this.<%= data.model.modelDataName %>.set({id:this.$route.query.id});
+            this.<%= data.service.serviceClassName%>.detail().then(x=>{
+                this.<%= data.model.modelDataName %>.set(x.data);
+            })
+            // 
         }
     }
 }

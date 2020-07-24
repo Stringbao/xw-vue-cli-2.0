@@ -159,7 +159,7 @@
         <div class='le_table_container'>
             <table-list title="<%- data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
         </div>
-        <%_ if(data.hasModel){ _%>
+        <%_ if(data.hasDialog){ _%>
         <le-dialog v-model = "dialogTag">
             <div slot = "body">
               <%- include(data.includeFormPath, {data: data.model.modelArray, model: data.model.modelDataName}) %>
@@ -225,7 +225,9 @@ export default {
                 },
                 actions: [
                     <%_ data.pageOpts.actionServices.forEach(function(item){ -%>
+                    <%_ if(item.key != "create"){ -%>
                     {key:'<%- item.key %>',val:'<%- item.value%>',action:this.<%- item.actionName%>},
+                    <%_ } -%>
                     <%_ }) -%>
                 ],
                 analysis: data => {
@@ -264,33 +266,33 @@ export default {
         <%_ data.pageOpts.actionServices.forEach(function(item){ -%>
         <%_ if(item.key == 'create') { %>
         <%= item.actionName%>(row) {
-            <%_ if(data.hasModel){ _%>
+            <%_ if(data.hasDialog){ _%>
             this.$refs['saveForm'].reset();
             this.dialogTag = true;    
             <%_ }else {  -%>
-            // this.$router.push({path: 'this is path'})
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.ADD, id: -1}});
             <%_ }  -%>
         },
         <%_ }  -%>
         <%_ if(item.key == 'update'){  -%>
         <%= item.actionName%>(row) {
-            <%_ if(data.hasModel){ _%>
+            <%_ if(data.hasDialog){ _%>
             this.$refs['saveForm'].reset();
             this.dialogTag = true; 
             this.<%= data.model.modelDataName %>.set(row);   
             <%_ }else {  -%>
-            this.$router.push({path: 'this is path', query: {tag: 'update', id: row.id}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.EDIT, id: row.id}});
             <%_ }  -%>
         },
         <%_ }  -%>
         <%_ if(item.key == 'detail'){  -%>
         <%= item.actionName%>(row) {
-            <%_ if(data.hasModel){ _%>
+            <%_ if(data.hasDialog){ _%>
             this.$refs['saveForm'].reset();
             this.dialogTag = true; 
             this.<%= data.model.modelDataName %>.set(row);  
             <%_ }else {  -%>
-                this.$router.push({path: 'this is path', query: {tag: 'detail', id: row.id}});
+                this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.DETAIL, id: row.id}});
             <%_ }  -%>
         },
         <%_ }  -%>
@@ -313,7 +315,7 @@ export default {
 
         },
         <%_ }) -%>
-        <%_ if(data.hasModel){ _%>
+        <%_ if(data.hasDialog){ _%>
         dialogConfirm(){
             this.$refs.saveForm.validate().then(x => {
                 <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get()).then(res=>{

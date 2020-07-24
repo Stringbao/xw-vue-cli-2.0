@@ -22,14 +22,13 @@ function gitDownload(projectName){
                     reject(err)
                 } else {
                     spinner.stop();
-                    log.success("Download Success");
                     resolve(projectName);
                 }
             })
     })
 }
 
-// gitDownload('/Users/wupeng/Documents/www');
+// gitDownload('/Users/wupeng/Documents/aaa');
 
 
 module.exports = gitDownload;

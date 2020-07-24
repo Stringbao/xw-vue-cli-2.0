@@ -2,16 +2,69 @@
 const fsTool = require("../tool/fsapi.js");
 const ejs = require("ejs");
 const NPath = require("path");
-const { isArray } = require("util");
+const ProjectPathTool = require("./pathStore.js");
 
 let APIhelper = {
+    //处理View文件的更新和修改
+    viewDeal(data, tag){
+        const projectPath = ProjectPathTool.get();
+        let routers = [];
+        let storeKeys = [];
+        data.forEach(item => {
+            let pages = item.Pages;
+            let moduleName = item.ModuleName;
+            let services = item.Services;
+            let stores = item.Store;
+            let folerPath = projectPath + "/src/pages/views/" + APIhelper.firstChatUpperLower(moduleName, false);
+            storeKeys.push(moduleName);
+            pages.forEach(x=>{
+                x.moduleName = moduleName;
+            })
+            Array.prototype.push.apply(routers, pages);
+
+            if(tag == "update"){
+                if(!fsTool.exists(folerPath)){
+                    this.createModelFile(projectPath, pages, moduleName, services);
+                    this.createServiceFile(projectPath, services, stores.state, moduleName, pages);
+                    this.createHelperFile(projectPath, moduleName);
+                    this.createStoreFile(projectPath, stores.state, moduleName);
+                    this.createView(projectPath, pages, moduleName, services);
+                }
+            }else{
+                this.createModelFile(projectPath, pages, moduleName, services);
+                this.createServiceFile(projectPath, services, stores.state, moduleName, pages);
+                this.createHelperFile(projectPath, moduleName);
+                this.createStoreFile(projectPath, stores.state, moduleName);
+                this.createView(projectPath, pages, moduleName, services);
+            }
+        });
+        
+        if(tag == "update"){
+            this.updateStoreIndex(projectPath, storeKeys);
+            this.updateRouter(projectPath, routers);
+        }else{
+            this.writeStoreIndex(projectPath, storeKeys);
+            this.writeRouter(projectPath, routers);
+        }
+        
+        //创建project.json到项目root目录
+        let projectJSON = {
+            Modules:data,
+            absoultePath:projectPath
+        }
+        
+        fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
+    },
     //根据页面名称获取当前页面的Model
     getModelByPageName(pages, pageName){
+        let pageNames = pageName.split(',');
         let res = [];
-        pages.forEach(x=>{
-            if(x.pageName == pageName){
-                res = x.model; 
-            }
+        pageNames.forEach(page=>{
+            pages.forEach(x=>{
+                if(x.pageName == page && x.model.length != 0){
+                    Array.prototype.push.apply(res,x.model);
+                }
+            })
         })
         return res;
     },
@@ -46,7 +99,7 @@ let APIhelper = {
     },
     //获取固化的服务
     getDefaultService(services){
-        let res =[];
+        let res = [];
         services.forEach(x=>{
             if(x.url && x.stype == 1){
                 res.push({key:x.name,value:x.name,actionName:x.name});
@@ -55,13 +108,17 @@ let APIhelper = {
         return res;
     },
     //为单个model.js准备数据
-    getMoldeDataFromPageItem(item, moduleName){
+    getMoldeDataFromPageItem(item, moduleName, actionDefaultServices){
         let tmp = {className:"",data:[]};
         let pageName = item.pageName;
         tmp.className = this.firstChatUpperLower(moduleName, true) + this.firstChatUpperLower(this.getFileName(pageName),true) + "Model";
-        item.model.forEach(x=>{
-            tmp.data.push(x.field);
-        })
+        if(actionDefaultServices){
+            tmp.data = ["id"];
+        }else{
+            item.model.forEach(x=>{
+                tmp.data.push(x.field);
+            })
+        }
         return tmp;
     },
     compileByData(ejsPath, data){
@@ -70,25 +127,31 @@ let APIhelper = {
         return ejs.compile(ejsStr)(data);
     },
     //创建单个Module下的Model文件, 并且写入数据
-    createModelFile(projectPath, pages, moduleName){
+    createModelFile(projectPath, pages, moduleName, services){
         //create model file
         let path = projectPath + "/src/model/";
         pages.forEach( item => {
-            if(item.model && isArray(item.model) && item.model.length >0){
-                let pageName = item.pageName;
-                
-                let filePath = path + this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(pageName), true) + "Model.js";
+            let pageName = item.pageName;
+            let filePath = path + this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(pageName), true) + "Model.js";
+            if(item.model && item.model.length >0){
                 fsTool.file.createFile(filePath);
-                
                 let res = this.getMoldeDataFromPageItem(item, moduleName);
-                //write content to file by ejs
                 let _data = this.compileByData("../ejstemplates/model.ejs",{data:res});
                 fsTool.file.writeFile(filePath, _data);
+            }else{
+                let actionDefaultServices = this.getDefaultService(services);
+                if(actionDefaultServices.length > 0){
+                    fsTool.file.createFile(filePath);
+                    let res = this.getMoldeDataFromPageItem(item, moduleName, actionDefaultServices);
+                    let _data = this.compileByData("../ejstemplates/model.ejs",{data:res});
+                    fsTool.file.writeFile(filePath, _data);
+                }
             }
         });
     },
     //创建单个Module下的Service文件, 并且写入数据
     createServiceFile(projectPath, serviceItem, storeItems, moduleName, pages){
+        debugger
         //create model file
         let path = projectPath + "/src/services/";
         let filePath = path + this.firstChatUpperLower(moduleName,false) + "Services.js";
@@ -249,6 +312,7 @@ let APIhelper = {
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
         let toolbar = page.config?page.config.toolbar:[];
+        let actionDefaultServices = this.getDefaultService(services);
         let pageOpts = {
             isCheckbox:false,
             isRadio:false,
@@ -267,7 +331,7 @@ let APIhelper = {
                 map:t.map,
                 sizeKey:t.page.pageSize,
                 indexKey:t.page.currentPage,
-                actionServices:this.getDefaultService(services)
+                actionServices:actionDefaultServices
             }
         }
         let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table";
@@ -285,8 +349,12 @@ let APIhelper = {
             })
         }
         let hasModel = true;
-        if(page.type == "list" && page.model &&page.model.length  == 0){
+        let hasDialog = true;
+        if(page.type == "list" && page.model && page.model.length  == 0 && actionDefaultServices.length ==0){
             hasModel = false;
+        }
+        if(page.type == "list" && page.model && page.model.length  == 0){
+            hasDialog = false;
         }
 
         let serviceFileName = this.firstChatUpperLower(moduleName,false) + "Services.js";
@@ -294,7 +362,13 @@ let APIhelper = {
         let modelFileName = this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model.js";
         let modelClassName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model";
         let modelDataName = this.firstChatUpperLower(modelClassName,false);
-        let modelArray = page.model?page.model:[];
+        let modelArray = [];
+        if(page.type == "save" || hasDialog){
+            modelArray = page.model;
+        }
+        if(!hasDialog && hasModel){
+            modelArray = ["id"];
+        }
         
         let data = {
             pageTitle,
@@ -305,6 +379,7 @@ let APIhelper = {
             componentName,
             hasStore,
             hasModel,
+            hasDialog,
             store:{
                 storeKeys,
                 storeName,
