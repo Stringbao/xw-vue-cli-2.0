@@ -151,7 +151,6 @@ let APIhelper = {
     },
     //创建单个Module下的Service文件, 并且写入数据
     createServiceFile(projectPath, serviceItem, storeItems, moduleName, pages){
-        debugger
         //create model file
         let path = projectPath + "/src/services/";
         let filePath = path + this.firstChatUpperLower(moduleName,false) + "Services.js";

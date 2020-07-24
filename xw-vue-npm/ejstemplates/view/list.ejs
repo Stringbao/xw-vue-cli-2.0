@@ -292,7 +292,7 @@ export default {
             this.dialogTag = true; 
             this.<%= data.model.modelDataName %>.set(row);  
             <%_ }else {  -%>
-                this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.DETAIL, id: row.id}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.DETAIL, id: row.id}});
             <%_ }  -%>
         },
         <%_ }  -%>
@@ -335,7 +335,7 @@ export default {
     mounted(){
     <%_ if( data.hasStore){ -%>
     <%_ data.store.storeActions.forEach(function(name){ -%>
-      this.<%= name%>().then(x=>{}).catch(err=>{});
+        this.<%= name%>();
     <%_ }) -%>
     <%_ } -%>
     }
