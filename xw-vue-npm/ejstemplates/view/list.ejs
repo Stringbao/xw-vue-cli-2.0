@@ -1,6 +1,6 @@
 <template>
     <div class="le_comps_core_css">
-        <h4 class="le_page_name"><%= data.pageTitle %></h4>
+        <h4 class="le_page_name"><%- data.pageTitle %></h4>
         <div class='le_list_search_pannel clearfix'>
             <%_ data.searchModel.forEach(function(col){ -%>
             <div class="col3"><%_ %>
@@ -153,11 +153,11 @@
             <!-- <le-button type="create" value="create" @click="create"></le-button> -->
             <le-button type="search" value="search" @click="search"></le-button>
             <%_ data.toolbar.forEach(function(col){ -%>
-            <le-button type="<%= col.type%>" value="<%= col.value%>" @click="<%= col.fnName%>"></le-button>
+            <le-button type="<%= col.type%>" value="<%- col.value%>" @click="<%= col.fnName%>"></le-button>
             <%_ }) -%>
         </div>
         <div class='le_table_container'>
-            <table-list title="<%= data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
+            <table-list title="<%- data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
         </div>
         <%_ if(data.hasModel){ _%>
         <le-dialog v-model = "dialogTag">

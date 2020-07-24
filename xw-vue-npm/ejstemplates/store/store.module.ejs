@@ -10,7 +10,7 @@ export default {
     mutations:{
     <%_ data.mutations.forEach(function(row){ -%>
         <%= row.fnName %>(state,data){
-            if(data && isArray(data)){
+            if(data && Array.isArray(data)){
                 state.<%= row.stateKey %> = data;
             }
         },

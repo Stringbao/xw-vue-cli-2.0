@@ -3,7 +3,7 @@
                 <%_ if(col.type == "text"){ -%>
                 <le-input<%  _%>
                     <%_ if(col.placeholder && col.placeholder != ''){ -%>
-                        <%_  %> placeholder = "<%= col.placeholder %>" <%_  -%>
+                        <%_  %> placeholder = "<%- col.placeholder %>" <%_  -%>
                     <%_ } -%>
                     <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
                         <%_  %> labelWidth="<% col.labelWidth %>"<%_  -%>
@@ -24,13 +24,13 @@
                         <%_  %> Vtype="<%= col.Vtype %>"<%_  -%>
                     <%_ } -%>
                     <%_ if(col.msg && col.msg != ''){ -%>
-                        <%_  %> msg="<%= col.msg %>"<%_  -%>
+                        <%_  %> msg="<%- col.msg %>"<%_  -%>
                     <%_ } -%>></le-input>
                 <%_ } -%>
                <%_ if(col.type == "textarea"){ -%>
                <le-textarea<%  _%>
                        <%_ if(col.placeholder && col.placeholder != ''){ -%>
-                       <%_  %> placeholder = "<%= col.placeholder %>" <%_  -%>
+                       <%_  %> placeholder = "<%- col.placeholder %>" <%_  -%>
                        <%_ } -%>
                        <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
                        <%_  %> labelWidth="<% col.labelWidth %>"<%_  -%>
@@ -42,7 +42,7 @@
                        <%_  %> on<%_  -%>
                        <%_ } -%>
                        <%_ if(col.msg && col.msg != ''){ -%>
-                       <%_  %> msg="<%= col.msg %>"<%_  -%>
+                       <%_  %> msg="<%- col.msg %>"<%_  -%>
                        <%_ } -%>
                        <%_ if(col.field && col.field != ''){ -%>
                        <%_  %> v-model="searchModel.<%= col.field %>"<%_  -%>
@@ -51,7 +51,7 @@
                <%_ if(col.type == "select"){ -%>
                 <le-local-select<%  _%>
                             <%_ if(col.placeholder && col.placeholder != ''){ _%>
-                                <%_  %> placeholder = "<%= col.placeholder %>"<%  -%>
+                                <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                             <%_ } _%>
                             <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
                                 <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
@@ -75,7 +75,7 @@
                                 <%_  %> on<%_  -%>
                             <%_ } -%>
                             <%_ if(col.msg && col.msg != ''){ -%>
-                                <%_  %> msg="<%= col.msg %>"<%_  -%>
+                                <%_  %> msg="<%- col.msg %>"<%_  -%>
                             <%_ } -%>></le-local-select>
                     <%_ } -%>
                     <%_ if(col.type == "radioList"){ -%>
@@ -129,13 +129,13 @@
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
-                            <%_  %> msg="<%= col.msg %>"<%_  -%>
+                            <%_  %> msg="<%- col.msg %>"<%_  -%>
                         <%_ } -%>></le-checkbox-list>
                     <%_ } -%>
                     <%_ if(col.type == "datepicker"){ -%>
                 <le-date-picker<%  _%>
                         <%_ if(col.placeholder && col.placeholder != ''){ _%>
-                            <%_  %> placeholder = "<%= col.placeholder %>"<%  -%>
+                            <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
                             <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
@@ -150,13 +150,13 @@
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
-                            <%_  %> msg="<%= col.msg %>"<%_  -%>
+                            <%_  %> msg="<%- col.msg %>"<%_  -%>
                         <%_ } -%>></le-date-picker>
                     <%_ } -%>
                     <%_ if(col.type == "timepicker"){ -%>
                 <le-time-picker<%  _%>
                         <%_ if(col.placeholder && col.placeholder != ''){ _%>
-                            <%_  %> placeholder = "<%= col.placeholder %>"<%  -%>
+                            <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
                             <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
@@ -171,13 +171,13 @@
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
-                            <%_  %> msg="<%= col.msg %>"<%_  -%>
+                            <%_  %> msg="<%- col.msg %>"<%_  -%>
                         <%_ } -%>></le-time-picker>
                     <%_ } _%>
                     <%_ if(col.type == "dateTimepicker"){ -%>
                 <le-date-time-picker<%  _%>
                         <%_ if(col.placeholder && col.placeholder != ''){ _%>
-                            <%_  %> placeholder = "<%= col.placeholder %>"<%  -%>
+                            <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.labelWidth && col.labelWidth != ''){ -%>
                             <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
@@ -192,7 +192,7 @@
                             <%_  %> on<%_  -%>
                         <%_ } -%>
                         <%_ if(col.msg && col.msg != ''){ -%>
-                            <%_  %> msg="<%= col.msg %>"<%_  -%>
+                            <%_  %> msg="<%- col.msg %>"<%_  -%>
                         <%_ } -%>></le-date-time-picker>
                     <%_ } _%>
 <!--               <le-upload :options="" v-model=""></le-upload>-->
