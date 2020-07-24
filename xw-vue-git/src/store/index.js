@@ -91,8 +91,7 @@ export default {
                     { name:"create",reqType:"post",url:"",pageName:"",stype:1},
                     { name:"update",reqType:"post",url:"",pageName:"",stype:1},
                     { name:"remove",reqType:"post",url:"",pageName:"",stype:1},
-                    { name:"detail",reqType:"get",url:"",pageName:"",stype:1},
-                    { name:"list",reqType:"get",url:"",pageName:"",stype:1}
+                    { name:"detail",reqType:"get",url:"",pageName:"",stype:1}
                 ],
                 Store:{
                   state:[
