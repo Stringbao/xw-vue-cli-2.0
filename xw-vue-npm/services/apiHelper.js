@@ -97,12 +97,19 @@ let APIhelper = {
         }
         
     },
+    //检测当前页面是否在服务页面里面
+    checkPageName(page, pages){
+        let res = pages.split(',').filter(x=>{
+            return x == page;
+        })
+        return res.length>0?true:false;
+    },
     //获取固化的服务
-    getDefaultService(services){
+    getDefaultService(page, services){
         let res = [];
         services.forEach(x=>{
-            if(x.url && x.stype == 1){
-                res.push({key:x.name,value:x.name,actionName:x.name});
+            if(x.url && x.stype == 1 && this.checkPageName(page.pageName, x.pageName)){
+                res.push({key:x.name,value:x.name,actionName:x.name,item:x});
             }
         })
         return res;
@@ -139,7 +146,7 @@ let APIhelper = {
                 let _data = this.compileByData("../ejstemplates/model.ejs",{data:res});
                 fsTool.file.writeFile(filePath, _data);
             }else{
-                let actionDefaultServices = this.getDefaultService(services);
+                let actionDefaultServices = this.getDefaultService(item, services);
                 if(actionDefaultServices.length > 0){
                     fsTool.file.createFile(filePath);
                     let res = this.getMoldeDataFromPageItem(item, moduleName, actionDefaultServices);
@@ -311,7 +318,7 @@ let APIhelper = {
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let searchModel = page.config?page.config.searchModel:[];
         let toolbar = page.config?page.config.toolbar:[];
-        let actionDefaultServices = this.getDefaultService(services);
+        let actionDefaultServices = this.getDefaultService(page,services);
         let pageOpts = {
             isCheckbox:false,
             isRadio:false,
