@@ -76,25 +76,25 @@
             "name": "create",
             "reqType": "post",
             "url": "/api/list1",
-            "pageName": "list.vue",
+            "pageName": "list.vue,list2.vue",
             "stype": 1
         }, {
             "name": "update",
             "reqType": "post",
             "url": "/api/list/up",
-            "pageName": "list.vue",
+            "pageName": "list.vue,list2.vue",
             "stype": 1
         }, {
             "name": "remove",
             "reqType": "post",
-            "url": "",
-            "pageName": "",
+            "url": "/api/list/remove",
+            "pageName": "list.vue",
             "stype": 1
         }, {
             "name": "detail",
             "reqType": "get",
-            "url": "",
-            "pageName": "",
+            "url": "/api/lis/detail",
+            "pageName": "list2.vue",
             "stype": 1
         }, {
             "name": "list2Create",
