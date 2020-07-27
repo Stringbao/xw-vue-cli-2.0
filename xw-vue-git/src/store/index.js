@@ -11,6 +11,16 @@ export default {
             storeType:Enum.storeType,
             requestType:Enum.requestType
         },
+        pagesDatasource:{
+            searchModelTypes:Enum.searchModelTypes,
+            toolbarType:Enum.toolbarType,
+            dialogFieldType:Enum.dialogFieldType,
+            tableShowCK:Enum.tableShowCK,
+            vtypeList:Enum.vtypeList,
+            dialogValidateType:Enum.dialogValidateType,
+            dataSourceType:Enum.dataSourceType,
+            dataSourceReqType:Enum.dataSourceReqType,
+        }
     },
     mutations:{
         addModules(state,data){

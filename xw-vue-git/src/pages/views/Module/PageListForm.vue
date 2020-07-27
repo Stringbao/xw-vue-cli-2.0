@@ -19,7 +19,7 @@
                         <li class="clearfix" v-for="(item, idx) in page.config.searchModel" :key="idx">
                             <div>
                                 <div class="le_form_row_item">
-                                    <le-local-select label="type:" :data-source="searchModelTypes" 
+                                    <le-local-select label="type:" :data-source="pagesDatasource.searchModelTypes" 
                                         display-name="name" display-value="code"
                                         v-model="item.type">
                                     </le-local-select>
@@ -57,7 +57,7 @@
                         <li class="clearfix" v-for="(item, idx) in page.config.toolbar" :key="idx">
                             <div>
                                 <div class="le_form_row_item">
-                                    <le-local-select label="type:" :data-source="toolbarType" 
+                                    <le-local-select label="type:" :data-source="pagesDatasource.toolbarType" 
                                         display-name="name" display-value="code"
                                         v-model="item.type">
                                     </le-local-select>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="item">
                     <le-input label="url:" v-model="page.config.table.url"></le-input>
-                    <le-radio-list label="showCK:" :data-source="tableShowCK" 
+                    <le-radio-list label="showCK:" :data-source="pagesDatasource.tableShowCK" 
                         display-name="name" display-value="code" 
                         v-model="page.config.table.showCK">
                     </le-radio-list>
@@ -120,7 +120,7 @@
                         <li class="clearfix" v-for="(item, idx) in page.model" :key="idx">
                             <div>
                                 <div class="le_form_row_item">
-                                    <le-local-select label="type:" :data-source="dialogFieldType" 
+                                    <le-local-select label="type:" :data-source="pagesDatasource.dialogFieldType" 
                                         display-name="name" display-value="name"
                                         v-model="item.type">
                                     </le-local-select>
@@ -141,11 +141,11 @@
                                     <le-button class="fr" type="create" value="datasource" @click="showDatasource"></le-button>
                                 </div>
                                 <div class="col4">
-                                    <le-radio-list label="on:" :data-source="dialogValidateType" 
+                                    <le-radio-list label="on:" :data-source="pagesDatasource.dialogValidateType" 
                                         display-name="name" display-value="code" 
                                         v-model="item.on">
                                     </le-radio-list>
-                                    <le-radio-list label="required:" :data-source="dialogValidateType" 
+                                    <le-radio-list label="required:" :data-source="pagesDatasource.dialogValidateType" 
                                         display-name="name" display-value="code" 
                                         v-model="item.required">
                                     </le-radio-list>
@@ -155,7 +155,7 @@
                                     <le-input label="tip:" v-model="item.tip"></le-input>
                                     <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
                                     <le-local-select label="Vtype" v-if="item.type == 'text'"
-                                        :data-source="vtypeList" 
+                                        :data-source="pagesDatasource.vtypeList" 
                                         display-name="name" display-value="code" 
                                         v-model="item.Vtype">
                                     </le-local-select>
@@ -175,11 +175,11 @@
                     <le-form labelWidth='180' ref="dataSourceSaveForm">
                         <div class="clearfix">
                             <le-input on required msg="name必填" label="name:" v-model="newAddDataSource.name"></le-input>
-                            <le-radio-list label="type:" :data-source="dataSourceType" 
+                            <le-radio-list label="type:" :data-source="pagesDatasource.dataSourceType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.type">
                             </le-radio-list>
-                            <le-radio-list label="reqType:" :data-source="dataSourceReqType" 
+                            <le-radio-list label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.reqType">
                             </le-radio-list>
@@ -202,91 +202,6 @@ export default {
     data(){
         return {
             datasourceDialog:false,
-            searchModelTypes:[
-                {name:"text",code:"text"},
-                {name:"select",code:"select"},
-                {name:"datepicker",code:"datepicker"},
-                {name:"timepicker",code:"timepicker"},
-                {name:"dateTimepicker",code:"dateTimepicker"},
-                {name:"checkboxList",code:"checkboxList"},
-                {name:"radioList",code:"radioList"},
-                {name:"textarea",code:"textarea"}
-            ],
-            toolbarType:[
-                {name:"下载",code:"download"},
-                {name:"审核",code:"approve"},
-                {name:"拒绝",code:"reject"},
-                {name:"启用",code:"start"},
-                {name:"停用",code:"stop"},
-                {name:"重置",code:"reset"},
-                {name:"上架",code:"up"},
-                {name:"下架",code:"down"},
-                {name:"发布",code:"publish"},
-                {name:"取消发布",code:"cancelPublish"},
-                {name:"导入",code:"import"},
-                {name:"导出",code:"export"},
-                {name:"批量操作",code:"review"},
-                {name:"复制",code:"copy"},
-                {name:"设置",code:"setting"},
-                {name:"装修",code:"decorate"},
-                {name:"上一页",code:"prevPage"},
-                {name:"下一页",code:"nextPage"},
-                {name:"确定",code:"confirm"},
-                {name:"保存",code:"save"},
-                {name:"返回",code:"back"},
-                {name:"取消",code:"cancel"},
-                {name:"请选择XXX",code:"choose"},
-                {name:"暂存",code:"holdSave"},
-                {name:"上一步",code:"prev"},
-                {name:"下一步",code:"next"},
-                {name:"默认",code:"default"},
-                {name:"警告",code:"warning"},
-            ],
-            dialogFieldType:[
-                {name:"text",code:"text"},
-                {name:"select",code:"select"},
-                {name:"datepicker",code:"datepicker"},
-                {name:"timepicker",code:"timepicker"},
-                {name:"dateTimepicker",code:"dateTimepicker"},
-                {name:"checkboxList",code:"checkboxList"},
-                {name:"radioList",code:"radioList"},
-                {name:"textarea",code:"textarea"}
-            ],
-            tableShowCK:[
-                {name:"none",code:""},
-                {name:"radio",code:"isRadio"},
-                {name:"checkbox",code:"isCheckbox"},
-            ],
-            vtypeList:[
-                {name:"自然数,包含0和正整数",code:"natureNum"},
-                {name:"正数,负数,小数,整数",code:"decimals"},
-                {name:"正数,负数,整数",code:"number"},
-                {name:"正整数",code:"positive"},
-                {name:"正小数",code:"positiveDecimals"},
-                {name:"正数",code:"positiveNumber"},
-                {name:"负数",code:"negativeNumber"},
-                {name:"负小数",code:"negativeDecimals"},
-                {name:"负整数",code:"negative"},
-                {name:"邮箱",code:"email"},
-                {name:"url",code:"url"},
-                {name:"https",code:"https"},
-                {name:"http",code:"http"},
-                {name:"身份证",code:"id"},
-                {name:"手机号(不包含固话)",code:"phone"},
-                {name:"电话号(包含固话,手机)",code:"tel"},
-            ],
-            dialogValidateType:[
-                {name:"true",code:true},
-                {name:"false",code:false},
-            ],
-            dataSourceType:[
-                {name:"array",code:"array"},
-                {name:"enum",code:"enum"},
-            ],
-            dataSourceReqType:[
-                {name:"get",code:"get"},
-                {name:"post",code:"post"},
-            ],
             //用户配置的dataSource的数据
             newAddDataSource:{}
         }
@@ -306,7 +221,7 @@ export default {
         }
     },
     computed:{
-        ...mapState([]),
+        ...mapState(["pagesDatasource"]),
         ...mapMutations([]),
     },
     components:{},

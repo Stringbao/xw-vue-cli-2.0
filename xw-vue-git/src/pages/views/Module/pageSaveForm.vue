@@ -14,7 +14,7 @@
                         <li class="clearfix" v-for="(item, idx) in page.model" :key="idx">
                             <div>
                                 <div class="le_form_row_item">
-                                    <le-local-select label="type:" :data-source="searchModelTypes" 
+                                    <le-local-select label="type:" :data-source="pagesDatasource.searchModelTypes" 
                                         display-name="name" display-value="code"
                                         v-model="item.type">
                                     </le-local-select>
@@ -35,11 +35,11 @@
                                     <le-button class="fr" type="create" value="datasource" @click="showDatasource"></le-button>
                                 </div>
                                 <div class="le_form_row_item col3">
-                                    <le-radio-list label="on:" :data-source="dialogValidateType" 
+                                    <le-radio-list label="on:" :data-source="pagesDatasource.dialogValidateType" 
                                         display-name="name" display-value="code" 
                                         v-model="item.on">
                                     </le-radio-list>
-                                    <le-radio-list label="required:" :data-source="dialogValidateType" 
+                                    <le-radio-list label="required:" :data-source="pagesDatasource.dialogValidateType" 
                                         display-name="name" display-value="code" 
                                         v-model="item.required">
                                     </le-radio-list>
@@ -49,7 +49,7 @@
                                     <le-input label="tip:" v-model="item.tip"></le-input>
                                     <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
                                     <le-local-select label="Vtype" v-if="item.type == 'text'"
-                                        :data-source="vtypeList" 
+                                        :data-source="pagesDatasource.vtypeList" 
                                         display-name="name" display-value="code" 
                                         v-model="item.Vtype">
                                     </le-local-select>
@@ -68,11 +68,11 @@
                     <le-form labelWidth='180' ref="dataSourceSaveForm">
                         <div class="clearfix">
                             <le-input on required msg="name必填" label="name:" v-model="newAddDataSource.name"></le-input>
-                            <le-radio-list label="type:" :data-source="dataSourceType" 
+                            <le-radio-list label="type:" :data-source="pagesDatasource.dataSourceType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.type">
                             </le-radio-list>
-                            <le-radio-list label="reqType:" :data-source="dataSourceReqType" 
+                            <le-radio-list label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.reqType">
                             </le-radio-list>
@@ -96,46 +96,6 @@ export default {
     data(){
         return {
             datasourceDialog:false,
-            searchModelTypes:[
-                {name:"text",code:"text"},
-                {name:"select",code:"select"},
-                {name:"datepicker",code:"datepicker"},
-                {name:"timepicker",code:"timepicker"},
-                {name:"dateTimepicker",code:"dateTimepicker"},
-                {name:"checkboxList",code:"checkboxList"},
-                {name:"radioList",code:"radioList"},
-                {name:"textarea",code:"textarea"}
-            ],
-            vtypeList:[
-                {name:"自然数,包含0和正整数",code:"natureNum"},
-                {name:"正数,负数,小数,整数",code:"decimals"},
-                {name:"正数,负数,整数",code:"number"},
-                {name:"正整数",code:"positive"},
-                {name:"正小数",code:"positiveDecimals"},
-                {name:"正数",code:"positiveNumber"},
-                {name:"负数",code:"negativeNumber"},
-                {name:"负小数",code:"negativeDecimals"},
-                {name:"负整数",code:"negative"},
-                {name:"邮箱",code:"email"},
-                {name:"url",code:"url"},
-                {name:"https",code:"https"},
-                {name:"http",code:"http"},
-                {name:"身份证",code:"id"},
-                {name:"手机号(不包含固话)",code:"phone"},
-                {name:"电话号(包含固话,手机)",code:"tel"},
-            ],
-            dialogValidateType:[
-                {name:"true",code:true},
-                {name:"false",code:false},
-            ],
-            dataSourceType:[
-                {name:"array",code:"array"},
-                {name:"enum",code:"enum"},
-            ],
-            dataSourceReqType:[
-                {name:"get",code:"get"},
-                {name:"post",code:"post"},
-            ],
             //用户配置的dataSource的数据
             newAddDataSource:{}
         }
@@ -155,7 +115,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(["modules"]),
+        ...mapState(["modules","pagesDatasource"]),
         ...mapMutations([]),
     },
     components:{},
