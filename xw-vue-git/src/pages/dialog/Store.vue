@@ -22,13 +22,7 @@
             display-value="code"
             v-model="store.reqType"
         ></le-radio-list>
-        <le-input
-            label="url:"
-            msg="请输入获取值的途径"
-            v-model="store.url"
-            on
-            required
-        ></le-input>
+        <le-input label="url:" msg="请输入获取值的途径" v-model="store.url" on required></le-input>
     </le-form>
 </template>
 <script>
@@ -36,34 +30,36 @@ import { mapState, mapActions } from "vuex";
 export default {
     props: {
         store: Object,
-        action:String,
-        idx:Number,
+        action: String,
+        idx: Number,
     },
     data() {
         return {
-            showType:false
+            showType: false,
         };
     },
-    methods:{
-        ...mapActions(["addStore","updateStore"]),
-        submit(){
-            if(this.action == "create"){
-                this.addStore(this.store);
-                return Promise.resolve()
-            }else{
-                this.updateStore({data:this.store,idx:this.idx});
-                return Promise.resolve();
-            }
+    methods: {
+        ...mapActions(["addStore", "updateStore"]),
+        submit() {
+            this.$refs.store.validate().then(() => {
+                if (this.action == "create") {
+                    this.addStore(this.store);
+                    return Promise.resolve();
+                } else {
+                    this.updateStore({ data: this.store, idx: this.idx });
+                    return Promise.resolve();
+                }
+            }).catch(err=>console.log(err))
         },
-        changeType(){
-            if(this.store.type == "enum"){
+        changeType() {
+            if (this.store.type == "enum") {
                 this.showType = true;
             }
-        }
+        },
     },
     computed: {
-        ...mapState(["dataSource"])
-    }
+        ...mapState(["dataSource"]),
+    },
 };
 </script>
 <style lang="scss" scoped>
