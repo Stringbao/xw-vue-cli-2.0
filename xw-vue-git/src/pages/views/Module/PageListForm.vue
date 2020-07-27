@@ -212,7 +212,6 @@ export default {
                 {name:"textarea",code:"textarea"}
             ],
             toolbarType:[
-                {name:"搜索",code:"search"},
                 {name:"下载",code:"download"},
                 {name:"审核",code:"approve"},
                 {name:"拒绝",code:"reject"},
