@@ -1,24 +1,21 @@
 <template>
     <div>
         概览
-        <div v-html="myMdDescCode">
-            
-        </div>
     </div>
 </template>
 <script>
-import myMdDesc from "./desc.md"
-import marked from "marked";
+// import myMdDesc from "./desc.md"
+// import marked from "marked";
 
 export default {
-    components: {myMdDesc},
+    // components: {myMdDesc},
     data(){
         return {
-            myMdDescCode: myMdDesc
+            // myMdDescCode: myMdDesc
         }
     },
     mounted() {
-        this.myMdDescCode = marked(this.myMdDescCode);
+        // this.myMdDescCode = marked(this.myMdDescCode);
     }
 }
 </script>
