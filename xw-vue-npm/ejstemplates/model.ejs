@@ -5,13 +5,7 @@ export default class <%= data.className %>{
     }   
 
     get(){
-        return {
-<%_ if (data.data.length){ -%>
-<%_ data.data.forEach(function(item){ -%>
-           <%= item %>: this.<%= item %>,
-           <%_ _%><% }) -%>
-<%_ _%><% } -%>
-        }
+        return this;
     }
 
     set(data){

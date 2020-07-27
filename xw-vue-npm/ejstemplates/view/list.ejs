@@ -2,8 +2,9 @@
     <div class="le_comps_core_css">
         <h4 class="le_page_name"><%- data.pageTitle %></h4>
         <div class='le_list_search_pannel clearfix'>
-            <%_ data.searchModel.forEach(function(col){ -%>
-            <div class="col3"><%_ %>
+            <%_ data.searchModel.forEach(function(row){ -%>
+            <div class="col<%= row.length %>"><%_ %>
+                <%_ row.forEach(function(col){ -%>
                 <%_ if(col.type == "text"){ -%>
                 <le-input<%  _%>
                     <%_ if(col.placeholder && col.placeholder != ''){ -%>
@@ -146,6 +147,7 @@
                     <%_ } _%>
                 ></le-date-time-picker>
                 <%_ } _%>
+                <%_ _%><% }) -%>
             </div>
         <%_ _%><% }) -%>
         </div>

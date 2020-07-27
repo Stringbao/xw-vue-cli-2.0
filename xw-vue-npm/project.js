@@ -1,119 +1,138 @@
  let temp = {
-    "Modules": [{
-        "ModuleName": "price",
-        "Pages": [{
-            "pageName": "list.vue",
-            "type": "list",
-            "pageTitle": "list",
-            "config": {
-                "searchModel": [{
-                    "label": "name",
+     "Modules": [{
+         "ModuleName": "test",
+         "Pages": [{
+             "pageName": "list.vue",
+             "type": "list",
+             "pageTitle": "test list",
+             "config": {
+                 "searchModel": [
+                {
+                     "label": "name",
+                     "type": "text",
+                     "field": "name"
+                 }, {
+                     "label": "code",
+                     "type": "text",
+                     "field": "code"
+                 }, {
+                     "label": "stype",
+                     "type": "select",
+                     "field": "stype",
+                     "displayName": "name",
+                     "displayValue": "code",
+                     "dataSource": "stypes"
+                 },
+                 {
+                    "label": "name1",
                     "type": "text",
-                    "field": "name"
-                }],
-                "table": {
-                    "url": "/api/get/1",
-                    "showCK": "isRadio",
-                    "page": {
-                        "pageSize": "size",
-                        "currentPage": "index"
-                    },
-                    "map": [{
-                        "key": "name",
-                        "val": "name"
-                    }, {
-                        "key": "code",
-                        "val": "code"
-                    }]
-                },
-                "toolbar": [{
-                    "type": "download",
-                    "value": "download",
-                    "fnName": "downloadFn"
-                }]
-            },
-            "model": [],
-            "moduleName": "price"
-        }, {
-            "pageName": "list2.vue",
-            "type": "list",
-            "pageTitle": "list",
-            "config": {
-                "searchModel": [{
-                    "label": "ddd",
-                    "type": "text",
-                    "field": "sss"
+                    "field": "name1"
                 }, {
-                    "label": "aaa",
+                    "label": "code2",
                     "type": "text",
-                    "field": "ddd"
-                }],
-                "table": {
-                    "url": "2price",
-                    "showCK": "isRadio",
-                    "page": {
-                        "pageSize": "size",
-                        "currentPage": "index"
-                    },
-                    "map": [{
-                        "key": "name",
-                        "val": "name"
-                    }, {
-                        "key": "code",
-                        "val": "code"
-                    }]
-                },
-                "toolbar": [{
-                    "type": "reject",
-                    "value": "reject",
-                    "fnName": "rejectFn"
-                }]
-            },
-            "model": [],
-            "moduleName": "price"
-        }],
-        "Services": [{
-            "name": "create",
-            "reqType": "post",
-            "url": "/api/list1",
-            "pageName": "list.vue,list2.vue",
-            "stype": 1
-        }, {
-            "name": "update",
-            "reqType": "post",
-            "url": "/api/list/up",
-            "pageName": "list.vue,list2.vue",
-            "stype": 1
-        }, {
-            "name": "remove",
-            "reqType": "post",
-            "url": "/api/list/remove",
-            "pageName": "list.vue",
-            "stype": 1
-        }, {
-            "name": "detail",
-            "reqType": "get",
-            "url": "/api/lis/detail",
-            "pageName": "list2.vue",
-            "stype": 1
-        }, {
-            "name": "list2Create",
-            "reqType": "get",
-            "url": "/api/ds2",
-            "pageName": "list2.vue",
-            "stype": 2
-        }, {
-            "name": "up2",
-            "reqType": "post",
-            "url": "/api/up2",
-            "pageName": "list2.vue",
-            "stype": 2
-        }],
-        "Store": {
-            "state": []
-        }
-    }],
-    "absoultePath": "/Users/wupeng/Documents/aaa"
- }
-
+                    "field": "code2"
+                }
+                ],
+                 "table": {
+                     "url": "/api/get/list",
+                     "showCK": "isRadio",
+                     "page": {
+                         "pageSize": "size",
+                         "currentPage": "index"
+                     },
+                     "map": [{
+                         "key": "name",
+                         "val": "name"
+                     }, {
+                         "key": "code",
+                         "val": "code"
+                     }, {
+                         "key": "stype",
+                         "val": "stype"
+                     }]
+                 },
+                 "toolbar": [{
+                     "type": "download",
+                     "value": "download",
+                     "fnName": "downloadFn"
+                 }]
+             },
+             "model": []
+         }, {
+             "pageName": "save.vue",
+             "type": "save",
+             "model": [{
+                 "label": "name",
+                 "type": "text",
+                 "field": "name",
+                 "on": true,
+                 "required": true,
+                 "msg": "sss"
+             }, {
+                 "label": "code",
+                 "type": "text",
+                 "field": "code",
+                 "on": false,
+                 "required": false
+             }, {
+                 "label": "stype",
+                 "type": "select",
+                 "field": "stype",
+                 "displayName": "name",
+                 "displayValue": "code",
+                 "dataSource": "stypes",
+                 "msg": "displayValue"
+             }, {
+                 "label": "picker",
+                 "type": "dateTimepicker",
+                 "field": "picker",
+                 "on": true,
+                 "required": true,
+                 "msg": "picker"
+             }]
+         }],
+         "Services": [{
+             "name": "create",
+             "reqType": "get",
+             "url": "/api/create",
+             "pageName": "list.vue,save.vue",
+             "stype": 1
+         }, {
+             "name": "update",
+             "reqType": "post",
+             "url": "/api/create",
+             "pageName": "list.vue,save.vue",
+             "stype": 1
+         }, {
+             "name": "remove",
+             "reqType": "get",
+             "url": "/api/remove",
+             "pageName": "list.vue,save.vue",
+             "stype": 1
+         }, {
+             "name": "detail",
+             "reqType": "get",
+             "url": "/api/detail",
+             "pageName": "list.vue,save.vue",
+             "stype": 1
+         }],
+         "Store": {
+             "state": [
+                 {
+                 "name": "stypes",
+                 "type": "array",
+                 "reqType": "get",
+                 "url": "/api/stypes"
+             },
+             {
+                "name": "domains",
+                "type": "enum",
+                "reqType": "get",
+                "url": "KEYS.DOMAINS.DOMAINAPP"
+            }
+            ]
+         }
+     }],
+     "absoultePath": "/Users/wupeng/Documents/aaa"
+ };
  module.exports = temp;

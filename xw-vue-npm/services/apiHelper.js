@@ -3,6 +3,7 @@ const fsTool = require("../tool/fsapi.js");
 const ejs = require("ejs");
 const NPath = require("path");
 const ProjectPathTool = require("./pathStore.js");
+const _ = require("loadsh");
 
 let APIhelper = {
     //处理View文件的更新和修改
@@ -171,7 +172,9 @@ let APIhelper = {
             }
         })
         storeItems.forEach(x=>{
-            maps.push({name:x.name, model:[], url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
+            if(x.url){
+                maps.push({name:x.name, model:[], url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
+            }
         })
         
         let resJson = {map:[], fns:[]};
@@ -179,9 +182,7 @@ let APIhelper = {
             if(!x.isEnum){
                 resJson.map.push(x);
             }
-            if(x.url){
-                resJson.fns.push({fnName:x.fnName, model:x.model, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
-            }
+            resJson.fns.push({fnName:x.fnName, model:x.model, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
         })
         //write content to file by ejs
         let _data = this.compileByData("../ejstemplates/service.ejs",{data: resJson});
@@ -316,7 +317,7 @@ let APIhelper = {
     },
     dataForListView(page, moduleName, services){
         let pageTitle = page.pageTitle?page.pageTitle:"";
-        let searchModel = page.config?page.config.searchModel:[];
+        let searchModel = page.config && page.config.searchModel?_.chunk(page.config.searchModel, 3):[];
         let toolbar = page.config?page.config.toolbar:[];
         let actionDefaultServices = this.getDefaultService(page,services);
         let pageOpts = {
