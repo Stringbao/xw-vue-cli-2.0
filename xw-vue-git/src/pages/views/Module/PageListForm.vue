@@ -45,10 +45,7 @@
                     </ul>
                 </div>
             </div>
-
-
-
-
+            
             <!-- toolbar的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">
@@ -76,8 +73,7 @@
                     </ul>
                 </div>
             </div>
-
-            
+   
             <!-- table的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix"> 
@@ -111,6 +107,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- model的配置 -->
             <div class="configItem">
                 <div class="configItem-title">
@@ -168,6 +165,7 @@
                     </ul>
                 </div>
             </div>
+            
             <!-- datasource的配置 -->
             <le-dialog title="新建dataSource" height="505" width="1000" v-model="datasourceDialog">
                 <div slot="body">

@@ -219,7 +219,7 @@ export default {
             this.datasourceDialog = true; 
         },
         saveDatasourceDialog(){
-            this.pageName.replace(/\s/, "")
+            this.page.pageName.replace(/\s/, "")
             this.addStore(this.newAddDataSource);
             this.closeDatasourceDialog(); 
         },
