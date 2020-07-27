@@ -37,6 +37,4 @@ const api = {
     },
 }
 
-api.create();
-
 module.exports = api;
