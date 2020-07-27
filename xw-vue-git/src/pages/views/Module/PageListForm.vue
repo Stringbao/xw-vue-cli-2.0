@@ -12,9 +12,7 @@
             <!-- searchModel的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">
-                    <h4 class="label">searchModel
-                        <i class="fr addParams iconfont icon-add" type="button" @click="addSearchModel"></i>
-                    </h4>
+                    <h4 class="label">searchModel</h4>
                 </div>
                 <div class="item" >
                     <ul>
@@ -42,6 +40,9 @@
                                 </div>              
                             </div>           
                         </li>
+                        <li class="createBtn">
+                            <i class="fr addParams iconfont icon-add" type="button" @click="addSearchModel"></i>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -49,9 +50,7 @@
             <!-- toolbar的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">
-                    <h4 class="label">toolbar
-                        <i class="fr addParams iconfont icon-add" type="button" @click="addToolbar"></i>
-                    </h4>
+                    <h4 class="label">toolbar</h4>
                 </div>
                 <div class="item" >
                     <ul>
@@ -69,6 +68,9 @@
                                     </le-button>
                                 </div>           
                             </div>           
+                        </li>
+                        <li class="createBtn">
+                            <i class="fr addParams iconfont icon-add" type="button" @click="addToolbar"></i>
                         </li>
                     </ul>
                 </div>
@@ -91,18 +93,18 @@
                     </div>
                     <div>
                         <div class="configItem-title">
-                            <h4 data-v-12db787f="" data-v-17f97166="" class="label">map
-                                <i class="fr addParams iconfont icon-add" @click="addTableModelMap"></i>
-                            </h4>
+                            <h4 data-v-12db787f="" data-v-17f97166="" class="label">map</h4>
                         </div>
-                        <div class="item" v-for="(item,idx) in page.config.table.map" :key="idx">
+                        <div class="item mapItem" v-for="(item,idx) in page.config.table.map" :key="idx">
                             <div class="le_form_row_item col3">
                                 <le-input label="key:" v-model="item.key"></le-input>
                                 <le-input label="val:" v-model="item.val"></le-input>
                                 <le-button class="fr" type="remove" value="deleteItem" @click="removeCurTableMap(item,idx)"></le-button>
-                                
                             </div>
                             <i v-if="idx=='page.config.table.map.length-1'" class="fr addParams iconfont icon-add" @click="addTableModelMap"></i>
+                        </div>
+                        <div class="createBtn iconfont icon-add" @click="addTableModelMap">
+                            <!-- <i ></i> -->
                         </div>
                     </div>
                 </div>
@@ -111,9 +113,7 @@
             <!-- model的配置 -->
             <div class="configItem">
                 <div class="configItem-title">
-                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">dialog
-                        <i class="fr addParams iconfont icon-add" @click="addModelArr"></i>
-                    </h4>
+                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">dialog</h4>
                 </div>
                 <div class="item" >
                     <ul>
@@ -161,6 +161,9 @@
                                     </le-local-select>
                                 </div>
                             </div>
+                        </li>
+                        <li class="createBtn">
+                            <i class="addParams iconfont icon-add" @click="addModelArr"></i>
                         </li>
                     </ul>
                 </div>
@@ -441,7 +444,7 @@ export default {
     }
     .item{
         border-bottom: 1px solid #dcdfe6;
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
         li{
             overflow-x: auto;
             display: flex;
@@ -449,12 +452,27 @@ export default {
             margin-bottom: 20px;
             overflow: visible;
         }
+        .createBtn{
+            text-align: center;
+            border: none;
+            line-height: 30px;
+            background-color: #e0e0e0;
+            margin-bottom: 0;
+            font-weight: 900;
+            background-color: #a2d469;
+            color: #fff;
+            font-size: 16px;
+
+                i{
+                    width: 100%;
+                }
+        }
+    }
+    .mapItem{
+        margin-bottom: 20px;
     }
     .item:last-child{
         border-bottom: none;
-    }
-    .asBtn{
-        // padding-left: 10px;
     }
     .addParams{
         width: 40px;

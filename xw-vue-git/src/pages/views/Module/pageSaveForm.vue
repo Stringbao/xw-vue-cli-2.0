@@ -7,9 +7,7 @@
             <!-- Model的配置 -->
             <div class="configItem">
                 <div class="configItem-title clearfix">
-                    <h4 class="label">Model
-                        <i class="fr addParams iconfont icon-add" type="button" @click="addModel"></i>
-                    </h4>
+                    <h4 class="label">Model</h4>
                 </div>
                 <div class="item">
                     <ul>
@@ -58,10 +56,10 @@
                                 </div>
                             </div>
                         </li>
+                        <li class="createBtn">
+                            <i class="fr addParams iconfont icon-add" type="button" @click="addModel"></i>
+                        </li>
                     </ul>
-                    <!-- <div class="createBtn">
-                        <le-button value="添加" type="create" @click="addModel"></le-button>
-                    </div> -->
                 </div>
             </div>
             <!-- datasource的配置 -->
@@ -259,13 +257,26 @@ export default {
     }
     .item{
         border-bottom: 1px solid #dcdfe6;
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
         li{
             overflow-x: auto;
             display: flex;
             border-bottom: 1px solid #ccc;
             margin-bottom: 20px;
             overflow: visible;
+        }
+        .createBtn{
+            text-align: center;
+            border: none;
+            line-height: 30px;
+            margin-bottom: 0;
+            font-weight: 900;
+            background-color: #a2d469;
+            color:#fff;
+
+            i{
+                width: 100%;
+            }
         }
     }
     .item:last-child{
