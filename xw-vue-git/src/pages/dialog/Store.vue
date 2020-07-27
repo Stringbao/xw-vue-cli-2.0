@@ -41,7 +41,7 @@ export default {
     methods: {
         ...mapActions(["addStore", "updateStore"]),
         submit() {
-            this.$refs.store.validate().then(() => {
+            return this.$refs.store.validate().then(() => {
                 if (this.action == "create") {
                     this.addStore(this.store);
                     return Promise.resolve();
@@ -49,7 +49,7 @@ export default {
                     this.updateStore({ data: this.store, idx: this.idx });
                     return Promise.resolve();
                 }
-            }).catch(err=>console.log(err))
+            }).catch(err=>Promise.reject(err))
         },
         changeType() {
             if (this.store.type == "enum") {
