@@ -1,3 +1,5 @@
+import {cloneDeep, isEqual, isEmpty, filter, dropWhile, uniqWith, unionWith,findIndex,orderBy,groupBy, chunk} from "lodash-es";
+
 const EventPublisher = function(){
 
     this.eventCallbackDictionary = {};
@@ -16,7 +18,7 @@ const EventPublisher = function(){
     }
 }
 
-const cookie = {
+const $cookie = {
     removeCookie(name){
         this.setCookie(name,"",new Date(0));
     },
@@ -52,7 +54,7 @@ const $idSeed = {
     }
 }
 
-const date = {
+const $date = {
     date:function(val){
         if(!val){return "";}
         if(new Date(val) == "Invalid Date"){
@@ -87,20 +89,94 @@ const date = {
     },
     compareData(one,two){
         if(new Date(one) == "Invalid Date" || new Date(two) == "Invalid Date"){
-            throw new Error("非法的时间格式");
+            throw new Error("<#非法的时间格式#>");
         }else{
             return new Date(one).getTime() > new Date(two).getTime()?true:false;
         }
     }
 }
 
-//object操作, 对比对象是否相等，克隆对象，addPrimaryAndCk，getCheckedItems
-//Array操作   removeItems，uniq，sort
+const $obj = {
+    clone(source){
+        if(!source){
+            return null;
+        }
+        return cloneDeep(source);
+    },
+    isEqual(source, target){
+        return isEqual(source, target);
+    },
+    assign(source, target){
+        let cloneSource = this.clone(source);
+        return cloneSource && Object.assign(cloneSource, target);
+    },
+    isEmpty(obj){
+        return isEmpty(obj);
+    }
+}
+
+const $array = {
+    filter(arr, condition){
+        return filter(arr, condition);
+    },
+    removeItem(arr, condition){
+        return dropWhile(arr, condition);
+    },
+    uniq(arr1){
+        return uniqWith(arr1, isEqual);
+    },
+    union(arr1, arr2){
+        return unionWith(arr1, arr2, isEqual);
+    },
+    findIndex(arr, condition){
+        return findIndex(arr, condition);
+    },
+    sort(arr, field, desc = true){
+        let descStr = desc?'asc':'desc';
+        if(isEmpty(arr)){
+            return [];
+        }
+        let temp = arr[0][field];
+        let tmpSortKey = "__sort__"+field;
+        
+        arr.forEach(x => {
+            if(!isNaN(temp)){
+                x[tmpSortKey] = x[field]/1;
+            }
+            else if(new Date(temp) != 'Invalid Date'){
+                x[tmpSortKey] = new Date(x[field]).getTime();
+            }else{
+                x[tmpSortKey] = x[field];
+            }
+        });
+        
+        
+        return orderBy(arr, [tmpSortKey], [descStr]);
+    },
+    groupByField(arr, field){
+        return groupBy(arr, field);
+    },
+    groupBySize(arr, size){
+        return chunk(arr, size);
+    }
+}
 
 const $event_publisher = new EventPublisher();
 
 export {
-    cookie,
+    $cookie,
     $idSeed,
-    $event_publisher
+    $event_publisher,
+    $obj,
+    $array,
+    $date
+}
+
+export default {
+    $cookie,
+    $idSeed,
+    $event_publisher,
+    $obj,
+    $array,
+    $date
 }

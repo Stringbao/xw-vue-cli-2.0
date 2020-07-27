@@ -128,3 +128,11 @@ export{
     all,
     postFormData
 }
+
+export default{
+    get,
+    post,
+    upload,
+    all,
+    postFormData
+}
