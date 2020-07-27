@@ -1,44 +1,44 @@
 {
-  "name": "lev2-vue",
-  "version": "1.2.9",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "release": "npm publish . --registry http://registry.npmjs.org"
-  },
-  "bin": {
-    "lev2": "bin/index",
-    "lev2-init": "bin/index-init",
-    "lev2-server": "bin/index-server",
-    "lev2-web": "bin/index-web"
-  },
-  "keywords": [],
-  "author": "string_bao <string_bao@163.com>",
-  "license": "ISC",
-  "engines": {
-    "node": ">=8.0.0",
-    "npm": ">=6.0.0"
-  },
-  "dependencies": {
-    "chalk": "^2.4.1",
-    "commander": "^2.16.0",
-    "docsify": "^4.7.1",
-    "download-git-repo": "^1.0.2",
-    "fs-extra": "^7.0.0",
-    "handlebars": "^4.0.11",
-    "log-symbols": "^2.2.0",
-    "mem-fs": "^1.1.3",
-    "mem-fs-editor": "^5.1.0",
-    "ora": "^3.0.0",
-    "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "fs": "^0.0.1-security",
-    "mysql": "^2.17.1",
-    "consolidate": "^0.15.1",
-    "express-mysql-session": "^2.1.0",
-    "express-session": "^1.17.0",
-    "multer": "^1.4.2",
-    "loadsh": "^0.0.4"
-  }
+    "name": "lev2-vue",
+    "version": "1.3.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "release": "npm publish . --registry http://registry.npmjs.org"
+    },
+    "bin": {
+        "lev2": "bin/index",
+        "lev2-init": "bin/index-init",
+        "lev2-server": "bin/index-server",
+        "lev2-web": "bin/index-web"
+    },
+    "keywords": [],
+    "author": "string_bao <string_bao@163.com>",
+    "license": "ISC",
+    "engines": {
+        "node": ">=8.0.0",
+        "npm": ">=6.0.0"
+    },
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "commander": "^2.16.0",
+        "docsify": "^4.7.1",
+        "download-git-repo": "^1.0.2",
+        "fs-extra": "^7.0.0",
+        "handlebars": "^4.0.11",
+        "log-symbols": "^2.2.0",
+        "mem-fs": "^1.1.3",
+        "mem-fs-editor": "^5.1.0",
+        "ora": "^3.0.0",
+        "body-parser": "^1.18.3",
+        "ejs": "^2.6.1",
+        "express": "^4.16.4",
+        "fs": "^0.0.1-security",
+        "mysql": "^2.17.1",
+        "consolidate": "^0.15.1",
+        "express-mysql-session": "^2.1.0",
+        "express-session": "^1.17.0",
+        "multer": "^1.4.2",
+        "loadsh": "^0.0.4"
+    }
 }

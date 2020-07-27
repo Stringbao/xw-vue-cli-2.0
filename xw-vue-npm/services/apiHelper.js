@@ -317,7 +317,8 @@ let APIhelper = {
     },
     dataForListView(page, moduleName, services){
         let pageTitle = page.pageTitle?page.pageTitle:"";
-        let searchModel = page.config && page.config.searchModel?_.chunk(page.config.searchModel, 3):[];
+        let templateSearchModel = page.config && page.config.searchModel?_.chunk(page.config.searchModel, 3):[];
+        let searchModel = page.config && page.config.searchModel;
         let toolbar = page.config?page.config.toolbar:[];
         let actionDefaultServices = this.getDefaultService(page,services);
         let pageOpts = {
@@ -334,7 +335,7 @@ let APIhelper = {
             pageOpts = {
                 isCheckbox:t.showCK == 'checkbox'?true:false,
                 isRadio:t.showCK =="radio"?true:false,
-                url:"`"+ t.url + urlSuff + this.convertSearchModel(page.config.searchModel)+"`",
+                url:"`"+ t.url + urlSuff + this.convertSearchModel(searchModel)+"`",
                 map:t.map,
                 sizeKey:t.page.pageSize,
                 indexKey:t.page.currentPage,
@@ -379,6 +380,7 @@ let APIhelper = {
         
         let data = {
             pageTitle,
+            templateSearchModel,
             searchModel,
             pageOpts,
             tableTitle,

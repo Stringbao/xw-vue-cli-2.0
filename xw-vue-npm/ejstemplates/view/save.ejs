@@ -74,7 +74,7 @@ export default {
         this.$refs.saveForm.reset();
         if(this.isEdit || this.isDetail){
             this.<%= data.model.modelDataName %>.set({id:this.$route.query.id});
-            this.<%= data.service.serviceClassName%>.detail(this.<%= data.model.modelDataName %>.get()).then(x=>{
+            <%= data.service.serviceClassName%>.detail(this.<%= data.model.modelDataName %>.get()).then(x=>{
                 this.<%= data.model.modelDataName %>.set(x.data);
             })
         }

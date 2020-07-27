@@ -2,7 +2,7 @@
     <div class="le_comps_core_css">
         <h4 class="le_page_name"><%- data.pageTitle %></h4>
         <div class='le_list_search_pannel clearfix'>
-            <%_ data.searchModel.forEach(function(row){ -%>
+            <%_ data.templateSearchModel.forEach(function(row){ -%>
             <div class="col<%= row.length %>"><%_ %>
                 <%_ row.forEach(function(col){ -%>
                 <%_ if(col.type == "text"){ -%>
@@ -302,7 +302,7 @@ export default {
         <%= item.actionName%>(row) {
             this.alert.showConfirm('Remove this item?',(d)=>{
                 this.<%= data.model.modelDataName %>.set(row);
-                <%= data.service.serviceClassName%>.remove(model).then(x=>{
+                <%= data.service.serviceClassName%>.remove(this.<%= data.model.modelDataName %>.get()).then(x=>{
                     this.alert.showAlert("success",'Remove success!');
                     this.search();
                 }).catch(err=>{

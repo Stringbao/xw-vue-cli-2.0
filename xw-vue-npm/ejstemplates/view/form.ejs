@@ -45,7 +45,7 @@
                        <%_  %> msg="<%- col.msg %>"<%_  -%>
                        <%_ } -%>
                        <%_ if(col.field && col.field != ''){ -%>
-                       <%_  %> v-model="searchModel.<%= col.field %>"<%_  -%>
+                       <%_  %> v-model="<%=model%>.<%= col.field %>"<%_  -%>
                        <%_ } -%>></le-textarea>
                <%_ } -%>
                <%_ if(col.type == "select"){ -%>
