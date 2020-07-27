@@ -61,8 +61,8 @@ export default {
     ],
     tableShowCK:[
         {name:"none",code:""},
-        {name:"radio",code:"isRadio"},
-        {name:"checkbox",code:"isCheckbox"},
+        {name:"radio",code:"radio"},
+        {name:"checkbox",code:"checkbox"},
     ],
     vtypeList:[
         {name:"自然数,包含0和正整数",code:"natureNum"},
