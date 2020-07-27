@@ -169,9 +169,9 @@
             <!-- datasource的配置 -->
             <le-dialog title="新建dataSource" height="505" width="1000" v-model="datasourceDialog">
                 <div slot="body">
-                    <div class="">
+                    <le-form labelWidth='180' ref="dataSourceSaveForm">
                         <div class="clearfix">
-                            <le-input label="name:" v-model="newAddDataSource.name"></le-input>
+                            <le-input on required msg="name必填" label="name:" v-model="newAddDataSource.name"></le-input>
                             <le-radio-list label="type:" :data-source="dataSourceType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.type">
@@ -180,9 +180,9 @@
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.reqType">
                             </le-radio-list>
-                            <le-input label="url:" v-model="newAddDataSource.url"></le-input>
+                            <le-input on required msg="url必填" label="url:" v-model="newAddDataSource.url"></le-input>
                         </div>
-                    </div>
+                    </le-form>
                 </div>
                 <div slot="button">
                     <le-button type="cancel" value="<#取消#>" @click="closeDatasourceDialog"></le-button>
@@ -402,8 +402,14 @@ export default {
             this.datasourceDialog = true; 
         },
         saveDatasourceDialog(){
-            this.addStore(this.newAddDataSource);
-            this.closeDatasourceDialog(); 
+            this.$refs.dataSourceSaveForm.validate()
+            .then(res=>{
+                this.addStore(this.newAddDataSource);
+                this.closeDatasourceDialog(); 
+            })
+            .catch(error=>{
+                this.alert.showAlert("error","请填写所有必填项")
+            })
         },
         closeDatasourceDialog(){
             this.datasourceDialog = false; 
