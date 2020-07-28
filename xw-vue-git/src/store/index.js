@@ -59,12 +59,7 @@ export default {
         },
         //创建stores
         addStore(state,data){
-            let idx = state.currentModule.Store.state.findIndex(item=>item.name == data.name);
-            if(idx<0){
-                state.currentModule.Store.state.push(data)
-            }else{
-                alert("there had been exited a same store")
-            }
+            state.currentModule.Store.state.push(data);
         },
         removeStore(state,data){
             state.currentModule.Store.state.splice(data,1)
@@ -123,13 +118,18 @@ export default {
         updatePages({commit,state},data){
             commit("updatePages",data)
         },
-
         addStore({commit,state},data){
-            commit("addStore",data)
+            let idx = state.currentModule.Store.state.findIndex(item=>item.name == data.name);
+            if(idx<0){
+                commit("addStore",data);
+                return Promise.resolve();
+            }else{
+                return Promise.reject({msg:"there had been exited a same store"});
+            }
         },
         updateStore({commit,state},data){
-            
-            commit("updateStore",data)
+            commit("updateStore",data);
+            return Promise.resolve();
         },
         removeStore({commit,state},data){
             commit("removeStore",data);

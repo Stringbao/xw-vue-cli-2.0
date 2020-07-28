@@ -12,7 +12,7 @@
             @change="changeType"
         ></le-radio-list>
         <le-radio-list
-            v-show="showType"
+            v-if="showType"
             on
             required
             msg="please select Request Type"
@@ -41,18 +41,28 @@ export default {
     methods: {
         ...mapActions(["addStore", "updateStore"]),
         submit() {
-            return this.$refs.store.validate().then(() => {
-                if (this.action == "create") {
-                    this.addStore(this.store);
-                    return Promise.resolve();
-                } else {
-                    this.updateStore({ data: this.store, idx: this.idx });
-                    return Promise.resolve();
-                }
-            }).catch(err=>Promise.reject(err))
+            return new Promise((resolve,reject)=>{
+                this.$refs.store.validate().then(() => {
+                    if (this.action == "create") {
+                        this.addStore(this.store).then(()=>{
+                            resolve();
+                        }).catch(err=>{
+                            alert(err.msg);
+                            reject(err);
+                        })
+                    } else {
+                        this.updateStore({ data: this.store, idx: this.idx });
+                        resolve();
+                    }
+                }).catch(err=>{
+                    reject(err);
+                })
+            })
         },
         changeType() {
             if (this.store.type == "enum") {
+                this.showType = false;
+            }else{
                 this.showType = true;
             }
         },
@@ -60,6 +70,9 @@ export default {
     computed: {
         ...mapState(["dataSource"]),
     },
+    mounted(){
+        // this.$refs.store.reset();
+    }
 };
 </script>
 <style lang="scss" scoped>
