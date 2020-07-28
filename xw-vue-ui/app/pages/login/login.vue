@@ -10,7 +10,7 @@
 
 <script>
 import Ajax from "@util/http.js";
-import { cookie } from "@util/util.js";
+import { $cookie } from "@util/util.js";
 export default {
     name: "Login",
     data() {
@@ -30,10 +30,10 @@ export default {
                 code: ""
             })
                 .then(res => {
-                    cookie.setCookie("jid", res.data.jid);
-                    cookie.setCookie("tid", res.data.tid);
-                    cookie.setCookie("userName", res.data.uname);
-                    cookie.setCookie("userid", this.user.username);
+                    $cookie.setCookie("jid", res.data.jid);
+                    $cookie.setCookie("tid", res.data.tid);
+                    $cookie.setCookie("userName", res.data.uname);
+                    $cookie.setCookie("userid", this.user.username);
                     this.$router.push({ path: "/demo" });
                 })
                 .catch(err => {

@@ -3,7 +3,7 @@
         <form>
             <fieldset>
                 <legend>button:</legend>
-                <le-button type="create" value="create"></le-button>
+                <le-button type="create" value="create" @click="create"></le-button>
                 <le-button type="update" value="update"></le-button>
                 <le-button type="remove" value="delete" @click="del"></le-button>
             </fieldset>
@@ -18,7 +18,10 @@ export default {
     methods:{
         del(){
             this.alert.showAlert('message',"library里面没有jquery")
-        }
+        },
+        create(){
+            this.alert.showAlert('error',"library里面没有jquery")
+        },
     }
 };
 </script>

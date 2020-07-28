@@ -4,8 +4,8 @@ import App from './App.vue';
 import Router from "vue-router";
 import routes from '@route/index.js';
 
-// import LeComponent from "@/index.js";
-import LeComponent from "@root/dist/leComponent.min.js";
+import LeComponent from "@/index.js";
+// import LeComponent from "@root/dist/leComponent.min.js";
 
 Vue.use(LeComponent);
 Vue.use(Router);
