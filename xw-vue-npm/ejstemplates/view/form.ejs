@@ -90,7 +90,7 @@
                             <%_  %> v-model="<%=model%>.<%=col.field%>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.dataSource && col.dataSource != ''){ -%>
-                            <%_  %> :data-source="dataSource.<%= col.dataSource %>"<%  -%>
+                            <%_  %> :data-source="<%= col.dataSource %>"<%  -%>
                         <%_ } _%>
                         <%_ if(col.displayName && col.displayName != ''){ -%>
                             <%_  %> display-name="<%= col.displayName %>"<%  -%>
