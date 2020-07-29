@@ -19,37 +19,49 @@ import LeTimePicker from "@components/datepicker/time.vue";
 import LeDateTimePicker from "@components/datepicker/datetime.vue";
 import LeDialog from "@components/dialog/dialog.vue";
 import LeLoading from "@components/loading/loading.vue";
-import LeAlert from "@components/alert/alert.js";
+import Message from "@components/message";
+import MessageBox from "@components/messageBox";
 
 
 import ValidataHOC from "@components/validataHOC.js";
 import bodyClickDirective from "@components/leDirective.js";
 import lang18n from "@components/i18n.js";
 
+const LeAlert = {
+    showAlert(type, msg) {
+        Message({ type, msg, showClose: true });
+    },
+    showConfirm(message, cb) {
+        MessageBox({ message },cb)
+    },
+    showNotify() {
+
+    }
+}
 
 export default {
-    install(Vue){
-        Vue.component('LeButton',LeButton);
-        Vue.component('LeCheckboxList',ValidataHOC(LeCheckboxList));
-        Vue.component('LeRadioList',ValidataHOC(LeRadioList));
-        Vue.component('LeInput',ValidataHOC(LeInput));
-        Vue.component('LeTextarea',ValidataHOC(LeTextarea));
-        Vue.component('LeLocalSelect',ValidataHOC(LeLocalSelect));
-        Vue.component('TableList',TableList);
-        Vue.component('LocalTableList',LocalTableList);
-        Vue.component('LeUpload',ValidataHOC(LeUpload));
-        Vue.component('LeLocalUpload',ValidataHOC(LeLocalUpload));
-        Vue.component('LeAsynTree',LeAsynTree);
-        Vue.component('LeLocalTree',LeLocalTree);
-        Vue.component('LeDatePicker',ValidataHOC(LeDatePicker));
-        Vue.component('LeTimePicker',ValidataHOC(LeTimePicker));
-        Vue.component('LeDateTimePicker',ValidataHOC(LeDateTimePicker));
-        Vue.component('LeDialog',LeDialog);
-        Vue.component('LeForm',LeForm);
-        Vue.component("LeLoading",LeLoading);
-        
+    install(Vue) {
+        Vue.component('LeButton', LeButton);
+        Vue.component('LeCheckboxList', ValidataHOC(LeCheckboxList));
+        Vue.component('LeRadioList', ValidataHOC(LeRadioList));
+        Vue.component('LeInput', ValidataHOC(LeInput));
+        Vue.component('LeTextarea', ValidataHOC(LeTextarea));
+        Vue.component('LeLocalSelect', ValidataHOC(LeLocalSelect));
+        Vue.component('TableList', TableList);
+        Vue.component('LocalTableList', LocalTableList);
+        Vue.component('LeUpload', ValidataHOC(LeUpload));
+        Vue.component('LeLocalUpload', ValidataHOC(LeLocalUpload));
+        Vue.component('LeAsynTree', LeAsynTree);
+        Vue.component('LeLocalTree', LeLocalTree);
+        Vue.component('LeDatePicker', ValidataHOC(LeDatePicker));
+        Vue.component('LeTimePicker', ValidataHOC(LeTimePicker));
+        Vue.component('LeDateTimePicker', ValidataHOC(LeDateTimePicker));
+        Vue.component('LeDialog', LeDialog);
+        Vue.component('LeForm', LeForm);
+        Vue.component("LeLoading", LeLoading);
+
         Vue.prototype.lang18n = lang18n;
-        Vue.use(LeAlert);
+        Vue.prototype.alert = LeAlert;
         Vue.directive('bodyClick', bodyClickDirective);
     }
 }
