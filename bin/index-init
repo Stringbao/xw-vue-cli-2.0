@@ -10,6 +10,7 @@ const command = require("../xw-vue-npm/services/command.js");
 const webServer = require("../xw-vue-npm/index.js");
 const fsTool = require("../xw-vue-npm/tool/fsapi.js");
 const ProjectPathStore = require("../xw-vue-npm/services/pathStore.js");
+const Util = require("../xw-vue-npm/tool/util.js");
 
 console.log(process.argv);
 program.usage('<project-name>').parse(process.argv);
@@ -35,6 +36,11 @@ async function startServer() {
     await gitDownload(projectName);
 
     log.success("项目download Success, path:" + projectPath);
+
+
+    if(!Util.getConfigPath()){
+        return log.error(`参数路径没有配置, 请先运行lev2-config命令`);
+    }
 
     ProjectPathStore.set(projectPath);
 

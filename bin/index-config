@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+const command = require("../xw-vue-npm/services/command.js");
+const ora = require('ora');
+const log = require('../xw-vue-npm/tool/log.js');
+const Util = require("../xw-vue-npm/tool/util.js");
+
+const pathName = program.args[0];
+console.log(66666, pathName);
+
+Util.setConfigPath(pathName);
