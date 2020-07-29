@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 const command = require("../xw-vue-npm/services/command.js");
+const program = require('commander');
 const ora = require('ora');
 const log = require('../xw-vue-npm/tool/log.js');
 const Util = require("../xw-vue-npm/tool/util.js");
 
+program.usage('<参数必填-配置路径>').parse(process.argv);
 const pathName = program.args[0];
-console.log(66666, pathName);
+
+log.success("系统参数配置成功:", pathName);
 
 Util.setConfigPath(pathName);
 

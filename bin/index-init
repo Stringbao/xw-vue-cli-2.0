@@ -33,14 +33,16 @@ if (fsTool.exists(projectPath)) {
 
 // 下载, 启动服务
 async function startServer() {
+    if(!Util.getConfigPath()){
+        return log.error(`参数路径没有配置, 请先运行lev2-config命令`);
+    }
+
     await gitDownload(projectName);
 
     log.success("项目download Success, path:" + projectPath);
 
 
-    if(!Util.getConfigPath()){
-        return log.error(`参数路径没有配置, 请先运行lev2-config命令`);
-    }
+    
 
     ProjectPathStore.set(projectPath);
 
