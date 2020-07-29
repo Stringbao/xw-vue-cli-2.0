@@ -8,3 +8,4 @@ const pathName = program.args[0];
 console.log(66666, pathName);
 
 Util.setConfigPath(pathName);
+
