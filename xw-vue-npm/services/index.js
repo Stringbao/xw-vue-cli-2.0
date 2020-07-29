@@ -26,7 +26,8 @@ var upload = multer({
 
 router.post("/create", controller.create);
 router.post("/update", controller.update);
-router.get("/test", controller.test);
+router.get("/getConfigPath", controller.getConfigPath);
+router.post("/setConfigPath", controller.setConfigPath);
 router.post("/upload", upload.single('file'), controller.upload);
 
 module.exports = router;

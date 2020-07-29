@@ -8,6 +8,7 @@
     },
     "bin": {
         "lev2": "bin/index",
+        "lev2-config": "bin/index-config",
         "lev2-init": "bin/index-init",
         "lev2-server": "bin/index-server",
         "lev2-web": "bin/index-web"

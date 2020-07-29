@@ -1,4 +1,7 @@
 
+
+const Util = require("../tool/util.js");
+
 module.exports = {
     projectPath:"",
     set(path){
@@ -6,6 +9,9 @@ module.exports = {
     },
     get(){
         if(!this.projectPath){
+            if(Util.isWindows()){
+                return "d:/aaa";
+            }
             return "/Users/wupeng/Documents/aaa";
         }
         return this.projectPath;

@@ -4,8 +4,16 @@ const ejs = require("ejs");
 const NPath = require("path");
 const ProjectPathTool = require("./pathStore.js");
 const _ = require("loadsh");
+const Util = require("../tool/util.js");
 
 let APIhelper = {
+    //检测当前页面是否在服务页面里面
+    checkPageName(page, pages){
+        let res = pages.split(',').filter(x=>{
+            return x == page;
+        })
+        return res.length>0?true:false;
+    },
     //处理View文件的更新和修改
     viewDeal(data, tag){
         const projectPath = ProjectPathTool.get();
@@ -16,7 +24,7 @@ let APIhelper = {
             let moduleName = item.ModuleName;
             let services = item.Services;
             let stores = item.Store;
-            let folerPath = projectPath + "/src/pages/views/" + APIhelper.firstChatUpperLower(moduleName, false);
+            let folerPath = projectPath + "/src/pages/views/" + Util.firstChatUpperLower(moduleName, false);
             storeKeys.push(moduleName);
             pages.forEach(x=>{
                 x.moduleName = moduleName;
@@ -77,34 +85,7 @@ let APIhelper = {
         })
         return str.join('&');
     },
-    //获取文件名(去掉后缀)
-    getFileName(str){
-        if(!str){
-            return "";
-        }
-        return str.substring(0,str.indexOf('.'));
-    },
-    //首字母大写
-    firstChatUpperLower(str,flag){
-        if(!str){
-            return "";
-        }
-        let first  = str.substring(0,1);
-        let other = str.substring(1);
-        if(flag){
-            return first.toUpperCase() + other;
-        }else{
-            return first.toLowerCase() + other;
-        }
-        
-    },
-    //检测当前页面是否在服务页面里面
-    checkPageName(page, pages){
-        let res = pages.split(',').filter(x=>{
-            return x == page;
-        })
-        return res.length>0?true:false;
-    },
+    
     //获取固化的服务
     getDefaultService(page, services){
         let res = [];
@@ -119,7 +100,7 @@ let APIhelper = {
     getMoldeDataFromPageItem(item, moduleName, actionDefaultServices){
         let tmp = {className:"",data:[]};
         let pageName = item.pageName;
-        tmp.className = this.firstChatUpperLower(moduleName, true) + this.firstChatUpperLower(this.getFileName(pageName),true) + "Model";
+        tmp.className = Util.firstChatUpperLower(moduleName, true) + Util.firstChatUpperLower(Util.getFileName(pageName),true) + "Model";
         if(actionDefaultServices){
             tmp.data = ["id"];
         }else{
@@ -129,6 +110,7 @@ let APIhelper = {
         }
         return tmp;
     },
+    //ejs编译模板
     compileByData(ejsPath, data){
         let path = NPath.resolve(__dirname, ejsPath);
         let ejsStr = fsTool.file.readFile(path);
@@ -140,7 +122,7 @@ let APIhelper = {
         let path = projectPath + "/src/model/";
         pages.forEach( item => {
             let pageName = item.pageName;
-            let filePath = path + this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(pageName), true) + "Model.js";
+            let filePath = path + Util.firstChatUpperLower(moduleName,false) + Util.firstChatUpperLower(Util.getFileName(pageName), true) + "Model.js";
             if(item.model && item.model.length >0){
                 fsTool.file.createFile(filePath);
                 let res = this.getMoldeDataFromPageItem(item, moduleName);
@@ -161,7 +143,7 @@ let APIhelper = {
     createServiceFile(projectPath, serviceItem, storeItems, moduleName, pages){
         //create model file
         let path = projectPath + "/src/services/";
-        let filePath = path + this.firstChatUpperLower(moduleName,false) + "Services.js";
+        let filePath = path + Util.firstChatUpperLower(moduleName,false) + "Services.js";
         fsTool.file.createFile(filePath);
 
         let maps = [];
@@ -173,7 +155,7 @@ let APIhelper = {
         })
         storeItems.forEach(x=>{
             if(x.url){
-                maps.push({name:x.name, model:[], url:x.url, isEnum: x.type =='enum',fnName: "get"+this.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
+                maps.push({name:x.name, model:[], url:x.url, isEnum: x.type =='enum',fnName: "get"+Util.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
             }
         })
         
@@ -191,7 +173,7 @@ let APIhelper = {
     //创建单个Module下的Helper文件
     createHelperFile(projectPath, moduleName){
         let path = projectPath + "/src/helper/";
-        let filePath = path + this.firstChatUpperLower(moduleName, false) + "Helper.js";
+        let filePath = path + Util.firstChatUpperLower(moduleName, false) + "Helper.js";
         fsTool.file.createFile(filePath);
 
         //write content to file
@@ -201,16 +183,16 @@ let APIhelper = {
     //创建单个Module下的Store文件, 并且写入数据
     createStoreFile(projectPath, storeItems, moduleName){
         let path = projectPath + "/src/store/modules/";
-        let filePath = path + this.firstChatUpperLower(moduleName, false) + ".js"; 
+        let filePath = path + Util.firstChatUpperLower(moduleName, false) + ".js"; 
         fsTool.file.createFile(filePath);
 
         let stateKeys = [];
         let mutations = [];
         let actions = [];
-        let servicesClassName = this.firstChatUpperLower(moduleName, true) + "Services";
-        let servicesPath = this.firstChatUpperLower(moduleName, false) + "Services.js";
+        let servicesClassName = Util.firstChatUpperLower(moduleName, true) + "Services";
+        let servicesPath = Util.firstChatUpperLower(moduleName, false) + "Services.js";
         storeItems.forEach(x=>{
-            let upName = this.firstChatUpperLower(x.name ,true);
+            let upName = Util.firstChatUpperLower(x.name ,true);
             stateKeys.push(x.name);
             mutations.push({fnName:"set"+upName, stateKey:x.name});
             actions.push({fnName:"get"+upName, stateKey:x.name,commitFnName:"set"+upName, serviceFnName:'get'+upName});
@@ -232,7 +214,7 @@ let APIhelper = {
 
         let imports = [];
         storeKeys.forEach(x=>{
-            imports.push({className:this.firstChatUpperLower(x, true) + "Store",filePath:this.firstChatUpperLower(x, false) + ".js"});
+            imports.push({className:Util.firstChatUpperLower(x, true) + "Store",filePath:Util.firstChatUpperLower(x, false) + ".js"});
         })
         
         let _data = this.compileByData("../ejstemplates/store/store.ejs",{data:{ imports : imports}});
@@ -244,10 +226,10 @@ let APIhelper = {
 
         let data = [];
         pages.forEach((x,index)=>{
-            let moduleName = this.firstChatUpperLower(x.moduleName, false);
+            let moduleName = Util.firstChatUpperLower(x.moduleName, false);
             let tmp = {
-                path:"/"+ moduleName + this.firstChatUpperLower(this.getFileName(x.pageName),false),
-                name: moduleName +this.firstChatUpperLower(this.getFileName(x.pageName),false),
+                path:"/"+ moduleName + Util.firstChatUpperLower(Util.getFileName(x.pageName),false),
+                name: moduleName +Util.firstChatUpperLower(Util.getFileName(x.pageName),false),
                 componentPath: "/" + moduleName + "/" + x.pageName
             }
             //登录完毕后默认跳转到第一个路由页面
@@ -264,13 +246,13 @@ let APIhelper = {
     //创建view文件，并且准备数据(维度：Module)
     createView(projectPath, pages, moduleName, services){
         let filePath = projectPath + "/src/pages/views";
-        let modulePath = filePath + "/" + this.firstChatUpperLower(moduleName, false);
+        let modulePath = filePath + "/" + Util.firstChatUpperLower(moduleName, false);
         //创建Module文件夹
         fsTool.folder.createFolder(modulePath);
 
         console.log("ready to create vue file");
         pages.forEach(x=>{
-            let vuePath = modulePath + "/" + this.firstChatUpperLower(x.pageName, false);
+            let vuePath = modulePath + "/" + Util.firstChatUpperLower(x.pageName, false);
             //创建vue文件
             console.log(vuePath,99999);
             fsTool.file.createFile(vuePath);
@@ -342,8 +324,8 @@ let APIhelper = {
                 actionServices:actionDefaultServices
             }
         }
-        let tableTitle = this.firstChatUpperLower(moduleName, true)+ " " + this.firstChatUpperLower(this.getFileName(page.pageName),true) + " Table";
-        let componentName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName),true);
+        let tableTitle = Util.firstChatUpperLower(moduleName, true)+ " " + Util.firstChatUpperLower(Util.getFileName(page.pageName),true) + " Table";
+        let componentName = Util.firstChatUpperLower(moduleName,true) + Util.firstChatUpperLower(Util.getFileName(page.pageName),true);
 
         let storeKeys = this.getStoreInPage(page);
         let hasStore = false;
@@ -351,9 +333,9 @@ let APIhelper = {
         let storeActions = [];
         if(storeKeys.length != 0){
             hasStore = true;
-            storeName = this.firstChatUpperLower(moduleName, true) + "Store";
+            storeName = Util.firstChatUpperLower(moduleName, true) + "Store";
             storeKeys.forEach(x=>{
-                storeActions.push("get" + this.firstChatUpperLower(x,true));
+                storeActions.push("get" + Util.firstChatUpperLower(x,true));
             })
         }
         let hasModel = true;
@@ -365,11 +347,11 @@ let APIhelper = {
             hasDialog = false;
         }
 
-        let serviceFileName = this.firstChatUpperLower(moduleName,false) + "Services.js";
-        let serviceClassName = this.firstChatUpperLower(moduleName,true) + "Services";
-        let modelFileName = this.firstChatUpperLower(moduleName,false) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model.js";
-        let modelClassName = this.firstChatUpperLower(moduleName,true) + this.firstChatUpperLower(this.getFileName(page.pageName), true) + "Model";
-        let modelDataName = this.firstChatUpperLower(modelClassName,false);
+        let serviceFileName = Util.firstChatUpperLower(moduleName,false) + "Services.js";
+        let serviceClassName = Util.firstChatUpperLower(moduleName,true) + "Services";
+        let modelFileName = Util.firstChatUpperLower(moduleName,false) + Util.firstChatUpperLower(Util.getFileName(page.pageName), true) + "Model.js";
+        let modelClassName = Util.firstChatUpperLower(moduleName,true) + Util.firstChatUpperLower(Util.getFileName(page.pageName), true) + "Model";
+        let modelDataName = Util.firstChatUpperLower(modelClassName,false);
         let modelArray = [];
         if(page.type == "save" || hasDialog){
             modelArray = page.model;

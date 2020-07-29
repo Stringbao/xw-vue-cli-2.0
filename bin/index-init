@@ -11,6 +11,7 @@ const webServer = require("../xw-vue-npm/index.js");
 const fsTool = require("../xw-vue-npm/tool/fsapi.js");
 const ProjectPathStore = require("../xw-vue-npm/services/pathStore.js");
 
+console.log(process.argv);
 program.usage('<project-name>').parse(process.argv);
 
 // 根据输入，获取项目名称

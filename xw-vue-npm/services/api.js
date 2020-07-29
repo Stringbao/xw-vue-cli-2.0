@@ -4,17 +4,9 @@ const APIhelper = require("./apiHelper.js");
 const ProjectPathTool = require("./pathStore.js");
 const fsTool = require("../tool/fsapi.js");
 let _test_data = require("../project.js");
+const Util = require("../tool/util.js");
 
 const api = {
-    test(req,res){
-        api.update(
-            {body:{
-                Modules:_test_data.Modules
-            }}
-        );
-        
-        return res.status(200).json({data:"options.data"});
-    },
     upload(req, res){
         console.log(fsTool.exists(path.resolve(__dirname, "../temp")),5555);
         let NPath =  path.resolve(__dirname, "../temp/project.json");
@@ -35,8 +27,18 @@ const api = {
         APIhelper.viewDeal(data,"create");
         return res && res.status("200").json({status:200, data:null,msg:"create success"});
     },
+    getConfigPath(){
+        let _path = Util.getConfigPath();
+        return res && res.status("200").json({status:200, data:_path,msg:"get path success"});
+    },
+    setConfigPath(){
+        let _path = "C:/Users/wupeng5/AppData/Roaming/npm/node_modules/lev2-vue";
+        Util.setConfigPath(_path);
+        return res && res.status("200").json({status:200, data:null,msg:"set path success"});
+    }
 }
 
 // api.create();
+// api.setConfigPath();
 
 module.exports = api;
