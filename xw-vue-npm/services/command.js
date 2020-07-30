@@ -6,7 +6,7 @@ let Command = {
     gitPath(){
         return Util.getConfigPath() + "/xw-vue-git";
         // if(Util.isWindows()){
-        //     return "C:/Users/wupeng5/AppData/Roaming/npm/node_modules/lev2-vue/xw-vue-git";
+        //     return "C:/Users/wupeng5/AppData/Roaming/npm/node_modules/lev2-vue";
         // }else{
         //     return "/usr/local/lib/node_modules/lev2-vue/xw-vue-git";
         // }

@@ -8,6 +8,11 @@ const Util = require("../xw-vue-npm/tool/util.js");
 program.usage('<参数必填-配置路径>').parse(process.argv);
 const pathName = program.args[0];
 
+if(!pathName){
+    log.warning("系统全局Node_modules安装位置:Windows系统为,C:/Users/你的用户名/AppData/Roaming/npm/node_modules/lev2-vue, mac系统默认为:/usr/local/lib/node_modules/lev2-vue/xw-vue-git");
+    return;
+}
+
 log.success("系统参数配置成功:", pathName);
 
 Util.setConfigPath(pathName);
