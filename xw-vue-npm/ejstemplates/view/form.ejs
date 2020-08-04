@@ -1,7 +1,7 @@
        <le-form ref="saveForm" labelWidth = "120" class = "formContent">
             <%_ data.forEach(function(col){ -%>
                 <%_ if(col.type == "text"){ -%>
-                <le-input<%  _%>
+            <le-input<%  _%>
                     <%_ if(col.placeholder && col.placeholder != ''){ -%>
                         <%_  %> placeholder = "<%- col.placeholder %>" <%_  -%>
                     <%_ } -%>
@@ -28,7 +28,7 @@
                     <%_ } -%>></le-input>
                 <%_ } -%>
                <%_ if(col.type == "textarea"){ -%>
-               <le-textarea<%  _%>
+            <le-textarea<%  _%>
                        <%_ if(col.placeholder && col.placeholder != ''){ -%>
                        <%_  %> placeholder = "<%- col.placeholder %>" <%_  -%>
                        <%_ } -%>
@@ -49,7 +49,7 @@
                        <%_ } -%>></le-textarea>
                <%_ } -%>
                <%_ if(col.type == "select"){ -%>
-                <le-local-select<%  _%>
+            <le-local-select<%  _%>
                             <%_ if(col.placeholder && col.placeholder != ''){ _%>
                                 <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                             <%_ } _%>
@@ -79,7 +79,7 @@
                             <%_ } -%>></le-local-select>
                     <%_ } -%>
                     <%_ if(col.type == "radioList"){ -%>
-                <le-radio-list<%  _%>
+            <le-radio-list<%  _%>
                         <%_ if(col.labelWidth && col.labelWidth != ''){ _%>
                             <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
                         <%_ } _%>
@@ -106,7 +106,7 @@
                         <%_ } -%>></le-radio-list>
                 <%_ } -%>
                     <%_ if(col.type == "checkboxList"){ -%>
-                    <le-checkbox-list<%  _%>
+            <le-checkbox-list<%  _%>
                         <%_ if(col.labelWidth && col.labelWidth != ''){ _%>
                             <%_  %> labelWidth="<%= col.labelWidth %>"<%  -%>
                         <%_ } _%>
@@ -133,7 +133,7 @@
                         <%_ } -%>></le-checkbox-list>
                     <%_ } -%>
                     <%_ if(col.type == "datepicker"){ -%>
-                <le-date-picker<%  _%>
+            <le-date-picker<%  _%>
                         <%_ if(col.placeholder && col.placeholder != ''){ _%>
                             <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                         <%_ } _%>
@@ -154,7 +154,7 @@
                         <%_ } -%>></le-date-picker>
                     <%_ } -%>
                     <%_ if(col.type == "timepicker"){ -%>
-                <le-time-picker<%  _%>
+            <le-time-picker<%  _%>
                         <%_ if(col.placeholder && col.placeholder != ''){ _%>
                             <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                         <%_ } _%>
@@ -175,7 +175,7 @@
                         <%_ } -%>></le-time-picker>
                     <%_ } _%>
                     <%_ if(col.type == "dateTimepicker"){ -%>
-                <le-date-time-picker<%  _%>
+            <le-date-time-picker<%  _%>
                         <%_ if(col.placeholder && col.placeholder != ''){ _%>
                             <%_  %> placeholder = "<%- col.placeholder %>"<%  -%>
                         <%_ } _%>
@@ -197,4 +197,4 @@
                     <%_ } _%>
         <%_ }) -%>
             <!--<le-upload :options="" v-model=""></le-upload>-->
-            </le-form>
+        </le-form>

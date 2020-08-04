@@ -1,11 +1,13 @@
 
 const path = require("path");
 const fsTool = require("../tool/fsapi.js");
+const os = require('os');
 
 let Util = {
     //是否是windows
     isWindows(){
-        return process.platform.indexOf('win') == -1?false:true;
+        console.log(os.type());
+        return os.type() == "Darwin"?false:true;
     },
     //首字母大写
     firstChatUpperLower(str,flag){

@@ -6,33 +6,32 @@
              "type": "list",
              "pageTitle": "test list",
              "config": {
-                 "searchModel": [
-                {
-                     "label": "name",
-                     "type": "text",
-                     "field": "name"
-                 }, {
-                     "label": "code",
-                     "type": "text",
-                     "field": "code"
-                 }, {
-                     "label": "stype",
-                     "type": "select",
-                     "field": "stype",
-                     "displayName": "name",
-                     "displayValue": "code",
-                     "dataSource": "stypes"
-                 },
-                 {
-                    "label": "name1",
-                    "type": "text",
-                    "field": "name1"
-                }, {
-                    "label": "code2",
-                    "type": "text",
-                    "field": "code2"
-                }
-                ],
+                 "searchModel": [{
+                         "label": "name",
+                         "type": "text",
+                         "field": "name"
+                     }, {
+                         "label": "code",
+                         "type": "text",
+                         "field": "code"
+                     }, {
+                         "label": "stype",
+                         "type": "select",
+                         "field": "stype",
+                         "displayName": "name",
+                         "displayValue": "code",
+                         "dataSource": "stypes"
+                     },
+                     {
+                         "label": "name1",
+                         "type": "text",
+                         "field": "name1"
+                     }, {
+                         "label": "code2",
+                         "type": "text",
+                         "field": "code2"
+                     }
+                 ],
                  "table": {
                      "url": "/api/get/list",
                      "showCK": "isRadio",
@@ -91,13 +90,15 @@
                  "msg": "picker"
              }]
          }],
-         "Services": [{
+         "Services": [
+             {
              "name": "create",
              "reqType": "get",
              "url": "/api/create",
              "pageName": "list.vue,save.vue",
              "stype": 1
-         }, {
+         }, 
+         {
              "name": "update",
              "reqType": "post",
              "url": "/api/create",
@@ -117,20 +118,19 @@
              "stype": 1
          }],
          "Store": {
-             "state": [
+             "state": [{
+                     "name": "stypes",
+                     "type": "array",
+                     "reqType": "get",
+                     "url": "/api/stypes"
+                 },
                  {
-                 "name": "stypes",
-                 "type": "array",
-                 "reqType": "get",
-                 "url": "/api/stypes"
-             },
-             {
-                "name": "domains",
-                "type": "enum",
-                "reqType": "get",
-                "url": "KEYS.DOMAINS.DOMAINAPP"
-            }
-            ]
+                     "name": "domains",
+                     "type": "enum",
+                     "reqType": "get",
+                     "url": "KEYS.DOMAINS.DOMAINAPP"
+                 }
+             ]
          }
      }],
      "absoultePath": "/Users/wupeng/Documents/aaa"

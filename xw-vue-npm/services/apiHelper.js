@@ -303,6 +303,9 @@ let APIhelper = {
         let searchModel = page.config && page.config.searchModel;
         let toolbar = page.config?page.config.toolbar:[];
         let actionDefaultServices = this.getDefaultService(page,services);
+        let hasCreateArray = actionDefaultServices.filter(x=>{
+            return x.key == "create";
+        })
         let pageOpts = {
             isCheckbox:false,
             isRadio:false,
@@ -362,6 +365,7 @@ let APIhelper = {
         
         let data = {
             pageTitle,
+            hasCreate:hasCreateArray.length == 1?true:false,
             templateSearchModel,
             searchModel,
             pageOpts,

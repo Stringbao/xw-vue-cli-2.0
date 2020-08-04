@@ -152,7 +152,9 @@
         <%_ _%><% }) -%>
         </div>
         <div class="le_search_btn_group cleatfix">
-            <!-- <le-button type="create" value="create" @click="create"></le-button> -->
+            <%_ if(data.hasCreate){ _%>
+            <le-button type="create" value="create" @click="create"></le-button>
+            <%_ } -%>
             <le-button type="search" value="search" @click="search"></le-button>
             <%_ data.toolbar.forEach(function(col){ -%>
             <le-button type="<%= col.type%>" value="<%- col.value%>" @click="<%= col.fnName%>"></le-button>
