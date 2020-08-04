@@ -10,16 +10,28 @@
                 <p class="promptMsg" v-show="state.showError">{{msg}}</p>
                 <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
             </div>
-            <div class="timePicker" @click.stop :name="KEYS.timePanelDomKey">
+            <div class="timePicker" v-show="isShowTimePicker"  @click.stop :name="KEYS.timePanelDomKey" :id="KEYS.timePanelDomKey">
                 <div class="timePanel">
                     <div class="hour">
-                        <ul :name="KEYS.hourDomKey"></ul>
+                        <ul :name="KEYS.hourDomKey" :id="KEYS.hourDomKey">
+                            <li :class="item.cls?'active':''" @click.stop="clickHandler(item,'hourDomKey')" v-for="(item,index) in hourDomKey" :key="index">
+                                {{item.name}}
+                            </li>
+                        </ul>
                     </div>
                     <div class="minute">
-                        <ul :name="KEYS.minDomKey"></ul>
+                        <ul :name="KEYS.minDomKey" :id="KEYS.minDomKey">
+                            <li :class="item.cls?'active':''" @click.stop="clickHandler(item,'minDomKey')" v-for="(item,index) in minDomKey" :key="index">
+                                {{item.name}}
+                            </li>
+                        </ul>
                     </div>
                     <div class="seconds">
-                        <ul :name="KEYS.secDomKey"></ul>
+                        <ul :name="KEYS.secDomKey" :id="KEYS.secDomKey">
+                            <li :class="item.cls?'active':''" @click.stop="clickHandler(item,'secDomKey')" v-for="(item,index) in secDomKey" :key="index">
+                                {{item.name}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="timeBtnGroup">
@@ -32,11 +44,40 @@
 </template>
 
 <script>
-
-import $ from "jquery";
 import define from "../define.js";
 import tool from "../leCompsTool.js";
-
+const _tool = {
+    on:(function(){
+        if (document.addEventListener) {
+            return function(element, event, handler) {
+                if (element && event && handler) {
+                    element.addEventListener(event, handler, false);
+                }
+            };
+        } else {
+            return function(element, event, handler) {
+                if (element && event && handler) {
+                    element.attachEvent('on' + event, handler);
+                }
+            };
+        }
+    })(),
+    off:(function(){
+        if (document.removeEventListener) {
+            return function(element, event, handler) {
+                if (element && event) {
+                    element.removeEventListener(event, handler, false);
+                }
+            };
+        } else {
+            return function(element, event, handler) {
+                if (element && event) {
+                    element.detachEvent('on' + event, handler);
+                }
+            };
+        }
+    })(),
+}
 export default {
     name:"LeTimePicker",
     props:["msg","value","readonly","isDatetimePicker","DatetimePickerKey"],
@@ -45,11 +86,13 @@ export default {
         return {
             //validataHOC组件属性
             validataComponentType:"TimePicker",
+            define:define,
             //验证组件需要的错误信息提示
             state:{
                 showError:false,
                 successIcon:""
             },
+            isShowTimePicker:false,
             //每次组件初始化都会赋上唯一的key
             KEYS:{
                 ROOTDOM:tool._idSeed.newId(),
@@ -61,6 +104,9 @@ export default {
                 timePanelDomKey:tool._idSeed.newId(),
                 clearTimeDomKey:tool._idSeed.newId()
             },
+            hourDomKey:[],
+            minDomKey:[],
+            secDomKey:[],
             //计算滚动时候的下个位置的li的索引
             nextSelect:0,
             timeStr:"",
@@ -123,11 +169,23 @@ export default {
         //确定
         ok(){
             let res = [];
-            this.getJQDom(this.KEYS.timePanelDomKey).find("li.active").each((idx,el) => {
-                res.push(el.innerText);
-            });
+            this.hourDomKey.forEach(item => {
+                if(item.cls){
+                    res.push(item.name)
+                }
+            })
+            this.minDomKey.forEach(item => {
+                if(item.cls){
+                    res.push(item.name)
+                }
+            })
+            this.secDomKey.forEach(item => {
+                if(item.cls){
+                    res.push(item.name)
+                }
+            })
             let result = res.join(':');
-            this.getJQDom(this.KEYS.timePanelDomKey).hide();
+            this.isShowTimePicker = false
             this.$emit("input",result);
             this.$emit("change",result);
             this.timeStr = result;
@@ -135,24 +193,40 @@ export default {
                 this.$attrs.setVerifyCompState();
             }
         },
+        clickHandler(el,key){
+            let index = el.name
+            this.toggleClass(key,el.name)
+            let scrollTop = index*30
+            document.getElementById(this.KEYS[key]).scrollTop = scrollTop;
+        },
         //关闭
         closePicker(){
-            this.getJQDom(this.KEYS.timePanelDomKey).hide();
+            this.isShowTimePicker = false
         },
         //显示选择层,并且滚动
         open(){
             if(this.readonlyFlag){
                 return;
             }
-            this.getJQDom(this.KEYS.timePanelDomKey).show();
-            let index = this.getCurrentHMSIndex();
-            this.getJQDom(this.KEYS.hourDomKey).scrollTop(index[0]*30);
-            this.getJQDom(this.KEYS.minDomKey).scrollTop(index[1]*30);
-            this.getJQDom(this.KEYS.secDomKey).scrollTop(index[2]*30);
+            this.isShowTimePicker = true
+            setTimeout(()=>{
+                let index = this.getCurrentHMSIndex();
+                document.getElementById(this.KEYS.hourDomKey).scrollTop = index[0]*30
+                document.getElementById(this.KEYS.minDomKey).scrollTop = index[1]*30
+                document.getElementById(this.KEYS.secDomKey).scrollTop = index[2]*30
+            },0)
+        },
+        toggleClass(tag,currentValue){
+            this[tag] && this[tag].forEach(item => {
+                item.cls = ""
+                if(item.name == currentValue){
+                    item.cls = 'active'
+                }
+            })
         },
         //3个ul的滚动事件
         scrollFun(dom){
-            let sHeight = $(dom).scrollTop();
+            let sHeight = dom.scrollTop;
             let curSelectLi =Math.floor(sHeight / 30) ;
             let yu = sHeight % 30;
             if(curSelectLi == 0){
@@ -170,19 +244,19 @@ export default {
             }else{
                 this.nextSelect = 0;
             };
-            let nextDom = $(dom).children('li')[this.nextSelect];
-            $(nextDom).addClass('active').siblings().removeClass('active');
+            if(dom.getAttribute('id') == this.KEYS.hourDomKey){
+                this.toggleClass('hourDomKey',this.nextSelect)
+            }
+            if(dom.getAttribute('id') == this.KEYS.minDomKey){
+                this.toggleClass('minDomKey',this.nextSelect)
+            }
+            if(dom.getAttribute('id') == this.KEYS.secDomKey){
+                this.toggleClass('secDomKey',this.nextSelect)
+            }
         },
         //设置值
         setValue(str){
-            //给dom赋值
-            // str?this.getJQDom(this.KEYS.timeInputDomKey).val(str):this.getJQDom(this.KEYS.timeInputDomKey).val("");
             str?this.timeStr = str:this.timeStr="";
-
-            let hourDom = $("div [name="+this.KEYS.hourDomKey+"]");
-            let minDom = $("div [name="+this.KEYS.minDomKey+"]");
-            let secDom = $("div [name="+this.KEYS.secDomKey+"]");
-
             if(!str){
                 let h = new Date().getHours()>=10?new Date().getHours():"0"+new Date().getHours();
                 let m = new Date().getMinutes()>=10?new Date().getMinutes():"0"+new Date().getMinutes();
@@ -192,44 +266,19 @@ export default {
             let currentHour = str.split(':')[0];
             let currentMin = str.split(':')[1];
             let currentSec = str.split(':')[2];
-            //小时
-            let hourHtml = "";
-            for(let i =0;i<24;i++){
-                let tmp = i<10?"0"+i:i;
-                if(i == currentHour){
-                    hourHtml += "<li class='active'>"+ tmp +"</li>";
-                }else{
-                    hourHtml += "<li>"+ tmp +"</li>";
-                }
-            }
-            //分钟
-            let minHtml = "";
-            for(let i =0;i<60;i++){
-                let tmp = i<10?"0"+i:i;
-                if( i == currentMin){
-                    minHtml += "<li class='active'>"+tmp+"</li>";
-                }else{
-                    minHtml += "<li>"+ tmp +"</li>";
-                }
-            }
-            //秒
-            let secHtml = "";
-            for(let i =0;i<60;i++){
-                let tmp = i<10?"0"+i:i;
-                if( i == currentSec){
-                    secHtml += "<li class='active'>"+ tmp +"</li>";
-                }else{
-                    secHtml += "<li>"+ tmp +"</li>";
-                }
-            }
-            $(hourDom).html($(hourHtml));
-            $(minDom).html($(minHtml));
-            $(secDom).html($(secHtml));
+
+            this.hourDomKey = tool.object.cloneObj(define.DATE_TIME_PICKER_CONFIG.HOUR)
+            this.minDomKey = tool.object.cloneObj(define.DATE_TIME_PICKER_CONFIG.MINUTE)
+            this.secDomKey = tool.object.cloneObj(define.DATE_TIME_PICKER_CONFIG.SECOND)
+
+            this.toggleClass('hourDomKey',currentHour)
+            this.toggleClass('minDomKey',currentMin)
+            this.toggleClass('secDomKey',currentSec)
+            
         },
         //获取值
         getValue(){
             return this.timeStr;
-            // return this.getJQDom(this.KEYS.timeInputDomKey).val();
         },
         //获取当前的时分秒索引
         getCurrentHMSIndex(){
@@ -241,10 +290,6 @@ export default {
                 return [parseInt(h),parseInt(m),parseInt(s)];
             }
             return [parseInt(res.split(':')[0]),parseInt(res.split(':')[1]),parseInt(res.split(':')[2])];
-        },
-        //获取jq对象
-        getJQDom(key){
-            return $("div [name="+key+"]");
         },
         clear(){
             if(this.readonlyFlag){
@@ -258,15 +303,9 @@ export default {
                 }
             },0)
         },
-        //时间点击选中
-        clickSelectTiem(dom){
-            $(dom).on("click","li",function(e){
-                let houtTop = $(this)[0].offsetTop;
-                let scrollTop = (houtTop - 80) / 30 * 30;
-                $(dom).scrollTop(scrollTop);
-                e.stopPropagation();
-            });
-        }
+        scrollDocumentHandler(e){
+            this.scrollFun(e.target);
+        },
     },
     created(){
         let that = this;
@@ -279,31 +318,21 @@ export default {
             this.setValue(this.value);
         }
         //为3个ul添加滚动事件
-        $(this.getJQDom(this.KEYS.hourDomKey)).off("scroll").on("scroll",e=>{
-            this.scrollFun(e.target);
-        })
-        $(this.getJQDom(this.KEYS.minDomKey)).off("scroll").on("scroll",e=>{
-            this.scrollFun(e.target);
-        })
-        $(this.getJQDom(this.KEYS.secDomKey)).off("scroll").on("scroll",e=>{
-            this.scrollFun(e.target);
-        })
+        _tool.off(document.getElementById(this.KEYS.hourDomKey), 'scroll', this.scrollDocumentHandler);
+        _tool.off(document.getElementById(this.KEYS.hourDomKey), 'scroll', this.scrollDocumentHandler);
+        _tool.off(document.getElementById(this.KEYS.hourDomKey), 'scroll', this.scrollDocumentHandler);
 
-        let hourDom = $("div [name="+this.KEYS.hourDomKey+"]");
-        let minDom = $("div [name="+this.KEYS.minDomKey+"]");
-        let secDom = $("div [name="+this.KEYS.secDomKey+"]");
-        this.clickSelectTiem(hourDom);
-        this.clickSelectTiem(minDom);
-        this.clickSelectTiem(secDom);
+
+        _tool.on(document.getElementById(this.KEYS.hourDomKey), 'scroll', this.scrollDocumentHandler);
+        _tool.on(document.getElementById(this.KEYS.minDomKey), 'scroll', this.scrollDocumentHandler);
+        _tool.on(document.getElementById(this.KEYS.secDomKey), 'scroll', this.scrollDocumentHandler);
     },
+    
     beforeDestroy(){
-        $(this.getJQDom(this.KEYS.hourDomKey)).off("scroll");
-        $(this.getJQDom(this.KEYS.minDomKey)).off("scroll");
-        $(this.getJQDom(this.KEYS.secDomKey)).off("scroll");
-
-        $(this.getJQDom(this.KEYS.hourDomKey)).off("click");
-        $(this.getJQDom(this.KEYS.minDomKey)).off("click");
-        $(this.getJQDom(this.KEYS.secDomKey)).off("click");
+        // // 取消绑定事件
+        _tool.off(document.getElementById(this.KEYS.hourDomKey), 'scroll', this.scrollDocumentHandler);
+        _tool.off(document.getElementById(this.KEYS.minDomKey), 'scroll', this.scrollDocumentHandler);
+        _tool.off(document.getElementById(this.KEYS.secDomKey), 'scroll', this.scrollDocumentHandler);
     }
 }
 </script>
@@ -339,7 +368,6 @@ li{height: 32px; line-height: 32px}
 }
 
 .timeContent .timePicker{ 
-    display: none;
     width: 199px;
     height: auto;
     margin: 0 auto;
