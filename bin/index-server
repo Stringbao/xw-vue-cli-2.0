@@ -5,11 +5,11 @@ const ora = require('ora');
 const log = require('../xw-vue-npm/tool/log.js');
 const ProjectPathStore = require("../xw-vue-npm/services/pathStore.js");
 
-console.log(process.argv);
 program.usage('<project-path>').parse(process.argv);
 
 //project local path
 const projectPath = program.args[0];
+console.log(projectPath);
 if(!projectPath){
     log.error("请输入项目的本地路径!!");
     return;
