@@ -3,6 +3,18 @@ const webServer = require("../xw-vue-npm/index.js");
 const command = require("../xw-vue-npm/services/command.js");
 const ora = require('ora');
 const log = require('../xw-vue-npm/tool/log.js');
+const ProjectPathStore = require("../xw-vue-npm/services/pathStore.js");
+
+console.log(process.argv);
+program.usage('<project-path>').parse(process.argv);
+
+//project local path
+const projectPath = program.args[0];
+if(!projectPath){
+    log.error("请输入项目的本地路径!!");
+    return;
+}
+ProjectPathStore.set(projectPath);
 
 let _promise = command.installPackages();
 

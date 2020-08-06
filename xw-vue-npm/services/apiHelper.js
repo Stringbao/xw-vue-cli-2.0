@@ -3,7 +3,7 @@ const fsTool = require("../tool/fsapi.js");
 const ejs = require("ejs");
 const NPath = require("path");
 const ProjectPathTool = require("./pathStore.js");
-const _ = require("loadsh");
+const _ = require("lodash");
 const Util = require("../tool/util.js");
 
 let APIhelper = {
