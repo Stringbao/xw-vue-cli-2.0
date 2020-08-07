@@ -73,10 +73,12 @@
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.type">
                             </le-radio-list>
-                            <le-radio-list v-if="newAddDataSource.type == 'array'" label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
+
+                            <le-radio-list labelWidth='180' v-if="newAddDataSource.type == 'array'" label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.reqType">
                             </le-radio-list>
+
                             <le-input on required msg="url必填" label="url:" v-model="newAddDataSource.url"></le-input>
                         </div>
                     </le-form>
