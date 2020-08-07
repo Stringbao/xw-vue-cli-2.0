@@ -14,6 +14,9 @@
                     :index="i"
                     :currentIndex="currentIndex"
                 >
+                    <div class="card">
+                        create model
+                    </div>
                     <!-- {{module.ModuleName}} -->
                     <div class="card pagesCard">
                         <div class="head">
