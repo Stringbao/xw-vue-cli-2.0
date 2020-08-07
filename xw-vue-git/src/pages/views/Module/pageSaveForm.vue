@@ -67,12 +67,13 @@
                 <div slot="body">
                     <le-form labelWidth='180' ref="dataSourceSaveForm">
                         <div class="clearfix">
+                            
                             <le-input on required msg="name必填" label="name:" v-model="newAddDataSource.name"></le-input>
                             <le-radio-list label="type:" :data-source="pagesDatasource.dataSourceType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.type">
                             </le-radio-list>
-                            <le-radio-list label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
+                            <le-radio-list v-if="newAddDataSource.type == 'array'" label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
                                 display-name="name" display-value="code" 
                                 v-model="newAddDataSource.reqType">
                             </le-radio-list>
@@ -97,7 +98,7 @@ export default {
         return {
             datasourceDialog:false,
             //用户配置的dataSource的数据
-            newAddDataSource:{}
+            newAddDataSource:{},
         }
     },
     props: {
@@ -189,7 +190,7 @@ export default {
         },
         closeDatasourceDialog(){
             this.datasourceDialog = false; 
-        }
+        },
     },
     mounted(){
         console.log(this.page)
