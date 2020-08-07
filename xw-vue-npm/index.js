@@ -30,6 +30,6 @@ let init = function(){
     })
 }
 
-// init();
+init();
 
 module.exports =  init;

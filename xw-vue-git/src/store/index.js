@@ -1,4 +1,5 @@
 import Enum from "./enum.js";
+import { unionBy } from "lodash-es"
 export default {
     state:{
         project:"",
@@ -33,7 +34,8 @@ export default {
             }
         },
         addExistedModules(state,data){
-            state.existedModules = data;
+            let arr = unionBy(state.existedModules,data,'ModuleName');
+            state.existedModules = arr;
         },
         removeModules(state,data){
             let idx = state.modules.findIndex(item=>item.ModuleName == data); 

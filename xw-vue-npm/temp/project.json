@@ -1,1 +1,479 @@
-{"Modules":[{"ModuleName":"test","Pages":[{"pageName":"list.vue","type":"list","pageTitle":"test list","config":{"searchModel":[{"label":"name","type":"text","field":"name"},{"label":"code","type":"text","field":"code"},{"label":"stype","type":"select","field":"stype","displayName":"name","displayValue":"code","dataSource":"stypes"},{"label":"name1","type":"text","field":"name1"},{"label":"code2","type":"text","field":"code2"}],"table":{"url":"/api/get/list","showCK":"isRadio","page":{"pageSize":"size","currentPage":"index"},"map":[{"key":"name","val":"name"},{"key":"code","val":"code"},{"key":"stype","val":"stype"}]},"toolbar":[{"type":"download","value":"download","fnName":"downloadFn"}]},"model":[],"moduleName":"test"},{"pageName":"save.vue","type":"save","model":[{"label":"name","type":"text","field":"name","on":true,"required":true,"msg":"sss"},{"label":"code","type":"text","field":"code","on":false,"required":false},{"label":"stype","type":"select","field":"stype","displayName":"name","displayValue":"code","dataSource":"stypes","msg":"displayValue"},{"label":"picker","type":"dateTimepicker","field":"picker","on":true,"required":true,"msg":"picker"}],"moduleName":"test"}],"Services":[{"name":"create","reqType":"get","url":"/api/create","pageName":"list.vue,save.vue","stype":1},{"name":"update","reqType":"post","url":"/api/create","pageName":"list.vue,save.vue","stype":1},{"name":"remove","reqType":"get","url":"/api/remove","pageName":"list.vue,save.vue","stype":1},{"name":"detail","reqType":"get","url":"/api/detail","pageName":"list.vue,save.vue","stype":1}],"Store":{"state":[{"name":"stypes","type":"array","reqType":"get","url":"/api/stypes"},{"name":"domains","type":"enum","reqType":"get","url":"KEYS.DOMAINS.DOMAINAPP"}]}},{"ModuleName":"bbb","Pages":[{"pageName":"save.vue","type":"save","model":[{"label":"name","type":"text","field":"name","on":true,"required":true},{"label":"code","type":"text","field":"code"}],"moduleName":"bbb"}],"Services":[{"name":"create","reqType":"post","url":"/api/aaa","pageName":"save.vue","stype":1},{"name":"update","reqType":"post","url":"/api/aaa1","pageName":"save.vue","stype":1},{"name":"remove","reqType":"post","url":"/api/aaa12","pageName":"save.vue","stype":1},{"name":"detail","reqType":"get","url":"/api/aaa23","pageName":"save.vue","stype":1}],"Store":{"state":[]}}],"absoultePath":"/Users/wupeng/Documents/aaa"}
+{
+  "Modules": [
+    {
+      "ModuleName": "rectifyWords",
+      "Pages": [
+        {
+          "pageName": "list.vue",
+          "type": "list",
+          "pageTitle": "Rectify Words",
+          "config": {
+            "searchModel": [
+              {
+                "label": "纠错词名称",
+                "type": "text",
+                "field": "keyword"
+              },
+              {
+                "label": "语种",
+                "type": "select",
+                "field": "language",
+                "displayName": "code",
+                "displayValue": "code",
+                "dataSource": "languages"
+              },
+              {
+                "label": "状态",
+                "type": "select",
+                "field": "dataStatus",
+                "displayValue": "status",
+                "displayName": "status",
+                "dataSource": "status"
+              },
+              {
+                "label": "系统APP",
+                "type": "select",
+                "field": "appId",
+                "displayName": "name",
+                "displayValue": "id",
+                "dataSource": "apps"
+              },
+              {
+                "label": "业务场景",
+                "type": "select",
+                "field": "scenarioId",
+                "displayName": "name",
+                "displayValue": "id",
+                "dataSource": "scenarios"
+              }
+            ],
+            "table": {
+              "url": "/rectifyWords/list",
+              "showCK": "",
+              "page": {
+                "pageSize": "pageSize",
+                "currentPage": "page"
+              },
+              "map": [
+                {
+                  "key": "id",
+                  "val": "id"
+                },
+                {
+                  "key": "keyword",
+                  "val": "关键词"
+                },
+                {
+                  "key": "rectifyWords",
+                  "val": "纠错词"
+                },
+                {
+                  "key": "appName",
+                  "val": "系统APP"
+                },
+                {
+                  "key": "scenarioName",
+                  "val": "业务场景"
+                },
+                {
+                  "key": "language",
+                  "val": "语种"
+                },
+                {
+                  "key": "creater",
+                  "val": "创建人"
+                },
+                {
+                  "key": "createTime",
+                  "val": "创建时间"
+                },
+                {
+                  "key": "status",
+                  "val": "状态"
+                }
+              ]
+            },
+            "toolbar": []
+          },
+          "model": [
+            {
+              "label": "系统APP",
+              "type": "select",
+              "field": "appId",
+              "on": true,
+              "required": true,
+              "msg": "required",
+              "dataSource": "apps",
+              "displayName": "name",
+              "displayValue": "id"
+            },
+            {
+              "label": "业务场景",
+              "type": "select",
+              "field": "scenarioId",
+              "displayName": "name",
+              "displayValue": "id",
+              "dataSource": "scenarios",
+              "on": true,
+              "required": true,
+              "msg": "required"
+            },
+            {
+              "label": "语种",
+              "type": "select",
+              "field": "language",
+              "on": true,
+              "required": true,
+              "tip": "",
+              "displayName": "code",
+              "displayValue": "code",
+              "dataSource": "languages"
+            },
+            {
+              "label": "关键词",
+              "type": "text",
+              "field": "keyword",
+              "on": true,
+              "required": true,
+              "msg": "required"
+            },
+            {
+              "label": "纠错词",
+              "type": "textarea",
+              "field": "rectifyWords",
+              "on": true,
+              "required": true,
+              "msg": "required"
+            }
+          ],
+          "moduleName": "rectifyWords"
+        }
+      ],
+      "Services": [
+        {
+          "name": "create",
+          "reqType": "post",
+          "url": "/rectifyWords/add",
+          "pageName": "list.vue",
+          "stype": 1
+        },
+        {
+          "name": "update",
+          "reqType": "post",
+          "url": "/rectifyWords/update",
+          "pageName": "list.vue",
+          "stype": 1
+        },
+        {
+          "name": "remove",
+          "reqType": "post",
+          "url": "/rectifyWords/delete",
+          "pageName": "list.vue",
+          "stype": 1
+        },
+        {
+          "name": "detail",
+          "reqType": "post",
+          "url": "/rectifyWords/details",
+          "pageName": "list.vue",
+          "stype": 1
+        }
+      ],
+      "Store": {
+        "state": [
+          {
+            "name": "languages",
+            "type": "array",
+            "reqType": "get",
+            "url": "/common/lang/list"
+          },
+          {
+            "name": "status",
+            "type": "enum",
+            "reqType": "",
+            "url": "KEYS.RECTIFYWORDS.STATUS"
+          },
+          {
+            "name": "apps",
+            "type": "array",
+            "reqType": "get",
+            "url": "/common/app/list"
+          },
+          {
+            "name": "scenarios",
+            "type": "array",
+            "reqType": "get",
+            "url": "/common/scenario/list"
+          }
+        ]
+      }
+    },
+    {
+      "ModuleName": "recommendWord",
+      "Pages": [
+        {
+          "pageName": "recommendWord.vue",
+          "type": "list",
+          "pageTitle": "Recommend Word",
+          "config": {
+            "searchModel": [
+              {
+                "label": "推荐词名称",
+                "type": "text",
+                "field": "text"
+              },
+              {
+                "label": "语种",
+                "type": "select",
+                "field": "language",
+                "displayName": "code",
+                "displayValue": "code",
+                "dataSource": "languages"
+              },
+              {
+                "label": "realm",
+                "type": "text",
+                "field": "realm"
+              },
+              {
+                "label": "系统APP",
+                "type": "select",
+                "field": "appId",
+                "displayName": "name",
+                "displayValue": "id",
+                "dataSource": "apps"
+              },
+              {
+                "label": "业务场景",
+                "type": "select",
+                "field": "scenarioId",
+                "displayName": "name",
+                "displayValue": "id",
+                "dataSource": "scenarios"
+              },
+              {
+                "label": "状态",
+                "type": "select",
+                "field": "status",
+                "displayName": "name",
+                "displayValue": "id"
+              }
+            ],
+            "table": {
+              "url": "/recommendWord/list",
+              "showCK": "",
+              "page": {
+                "pageSize": "pageSize",
+                "currentPage": "page"
+              },
+              "map": [
+                {
+                  "key": "id",
+                  "val": "id"
+                },
+                {
+                  "key": "text",
+                  "val": "推荐词"
+                },
+                {
+                  "key": "appName",
+                  "val": "系统APP"
+                },
+                {
+                  "key": "scenarioName",
+                  "val": "业务场景"
+                },
+                {
+                  "key": "realm",
+                  "val": "realm"
+                },
+                {
+                  "key": "language",
+                  "val": "语言"
+                },
+                {
+                  "key": "type",
+                  "val": "类型"
+                },
+                {
+                  "key": "source",
+                  "val": "来源"
+                },
+                {
+                  "key": "weight",
+                  "val": "权重"
+                },
+                {
+                  "key": "createBy",
+                  "val": "创建人"
+                },
+                {
+                  "key": "createDate",
+                  "val": "创建时间"
+                },
+                {
+                  "key": "status",
+                  "val": "状态"
+                }
+              ]
+            },
+            "toolbar": []
+          },
+          "model": [
+            {
+              "label": "id",
+              "type": "text",
+              "field": "id",
+              "on": true,
+              "required": true
+            },
+            {
+              "label": "系统APP",
+              "type": "select",
+              "field": "appId",
+              "dataSource": "apps",
+              "displayName": "name",
+              "displayValue": "id",
+              "on": true,
+              "required": true
+            },
+            {
+              "label": "业务场景",
+              "type": "select",
+              "field": "scenarioId",
+              "on": true,
+              "dataSource": "scenarios",
+              "displayName": "name",
+              "displayValue": "id"
+            },
+            {
+              "label": "语言",
+              "type": "select",
+              "field": "language",
+              "on": true,
+              "required": true,
+              "msg": "required",
+              "dataSource": "languages",
+              "displayName": "code",
+              "displayValue": "code"
+            },
+            {
+              "label": "realm",
+              "type": "text",
+              "field": "realm",
+              "on": true,
+              "required": true,
+              "msg": "required"
+            },
+            {
+              "label": "类型",
+              "type": "radioList",
+              "field": "type",
+              "on": true,
+              "required": true,
+              "msg": "required",
+              "displayName": "name",
+              "displayValue": "id",
+              "dataSource": "types"
+            },
+            {
+              "label": "文本内容",
+              "type": "text",
+              "field": "text",
+              "on": false,
+              "required": false
+            },
+            {
+              "label": "链接名称",
+              "type": "text",
+              "field": "linkName",
+              "on": false,
+              "required": false
+            },
+            {
+              "label": "链接地址",
+              "type": "text",
+              "field": "linkUrl",
+              "on": false,
+              "required": false
+            },
+            {
+              "label": "权重",
+              "type": "text",
+              "field": "weight",
+              "on": true,
+              "required": true,
+              "msg": "required"
+            }
+          ],
+          "moduleName": "recommendWord"
+        }
+      ],
+      "Services": [
+        {
+          "name": "create",
+          "reqType": "post",
+          "url": "/recommendWord/add",
+          "pageName": "recommendWord.vue",
+          "stype": 1
+        },
+        {
+          "name": "update",
+          "reqType": "post",
+          "url": "/recommendWord/update",
+          "pageName": "recommendWord.vue",
+          "stype": 1
+        },
+        {
+          "name": "remove",
+          "reqType": "get",
+          "url": "/recommendWord/delete",
+          "pageName": "recommendWord.vue",
+          "stype": 1
+        },
+        {
+          "name": "detail",
+          "reqType": "get",
+          "url": "/recommendWord/detail",
+          "pageName": "recommendWord.vue",
+          "stype": 1
+        }
+      ],
+      "Store": {
+        "state": [
+          {
+            "name": "languages",
+            "type": "array",
+            "reqType": "get",
+            "url": "/common/lang/list"
+          },
+          {
+            "name": "apps",
+            "type": "array",
+            "reqType": "get",
+            "url": "/common/app/list"
+          },
+          {
+            "name": "scenarios",
+            "type": "array",
+            "reqType": "get",
+            "url": "/common/scenario/list"
+          },
+          {
+            "name": "status",
+            "type": "enum",
+            "reqType": "",
+            "url": "KEYS.RECOMMENDWORD.STATUS"
+          },
+          {
+            "name": "types",
+            "type": "enum",
+            "reqType": "",
+            "url": "KEYS.RECOMMENDWORD.TYPES"
+          }
+        ]
+      }
+    }
+  ],
+  "absoultePath": "D:\\workspace\\ofpSearch"
+}
