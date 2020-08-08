@@ -21,12 +21,12 @@
                     v-model="params.isCommon"
                 ></le-radio-list>
                 <le-local-select
-                    msg="please select pageName"
-                    label="pageName:"
-                    :data-source="currentModule.Pages"
-                    display-name="pageName"
-                    display-value="pageName"
-                    v-model="params.pageName"
+                    msg="please select model"
+                    label="model:"
+                    :data-source="currentModule.modelList"
+                    display-name="name"
+                    display-value="name"
+                    v-model="params.mode"
                 ></le-local-select>
                 <le-input on required label="url:" v-model="params.url"></le-input>
             </le-form>

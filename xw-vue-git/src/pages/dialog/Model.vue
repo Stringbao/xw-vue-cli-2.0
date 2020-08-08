@@ -29,7 +29,7 @@
                             <le-input on required label="displayValue:" v-model="item.displayValue"></le-input>
                             <le-local-select
                                 label="dataSource"
-                                :data-source="currentModule.Store"
+                                :data-source="currentModule.Store.concat(commonStore)"
                                 display-name="name"
                                 display-value="name"
                                 on required
@@ -117,7 +117,7 @@ export default {
         };
     },
     computed: {
-        ...mapState(["dataSource", "pagesDatasource", "currentModule"]),
+        ...mapState(["dataSource", "pagesDatasource", "currentModule",'commonStore']),
         model() {
             return {
                 name:this.params.name,

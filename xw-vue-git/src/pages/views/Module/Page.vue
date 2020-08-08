@@ -62,7 +62,7 @@
                     <component
                         v-if="pageDialog.showDialog"
                         ref="pageDialog"
-                        :dataSource="currentModule.Store"
+                        :dataSource="currentModule.Store.concat(commonStore)"
                         :action="pageDialog.action"
                         :is="pageDialog.component"
                         :page="pageDialog.params"
@@ -138,7 +138,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(["currentModule"])
+        ...mapState(["currentModule","commonStore"])
     },
     components: {
         PageListForm,

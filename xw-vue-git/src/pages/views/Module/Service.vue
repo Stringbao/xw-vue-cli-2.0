@@ -16,7 +16,7 @@
                         <th>RequestType</th>
                         <th>isCommon</th>
                         <th>URL</th>
-                        <th>PageName</th>
+                        <th>model</th>
                         <th>stype</th>
                         <th>操作</th>
                     </tr>
@@ -27,7 +27,7 @@
                         <td>{{item.reqType}}</td>
                         <td>{{item.isCommon}}</td>
                         <td>{{item.url}}</td>
-                        <td>{{item.pageName}}</td>
+                        <td>{{item.model}}</td>
                         <td>{{item.stype}}</td>
                         <td>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
@@ -78,7 +78,7 @@ export default {
                 url: "",
                 reqType: "get",
                 isCommon:false,
-                pageName:"",
+                model:"",
                 stype:"",
             },
         };
@@ -116,7 +116,7 @@ export default {
                 reqType:this.dialog.params.reqType,
                 isCommon:this.dialog.params.isCommon,
                 url:this.dialog.params.url,
-                pageName:this.dialog.params.pageName,
+                model:this.dialog.params.model,
                 stype:this.dialog.params.stype
             };
             if(this.dialog.action === "create"){
@@ -135,7 +135,7 @@ export default {
                 url: "",
                 reqType: "get",
                 isCommon: false,
-                pageName:"",
+                model:"",
                 stype:"",
             }
         }

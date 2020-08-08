@@ -125,10 +125,10 @@ export default {
                 ModuleName: ModuleName,
                 Pages: [],
                 Services: [
-                    { name: "create", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
-                    { name: "update", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
-                    { name: "remove", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
-                    { name: "detail", reqType: "get", isCommon:false, url: "", pageName: "", stype: 1 }
+                    { name: "create", reqType: "post", isCommon:false, url: "", model: "", stype: 1 },
+                    { name: "update", reqType: "post", isCommon:false, url: "", model: "", stype: 1 },
+                    { name: "remove", reqType: "post", isCommon:false, url: "", model: "", stype: 1 },
+                    { name: "detail", reqType: "get", isCommon:false, url: "", model: "", stype: 1 }
                 ],
                 Store: [],
                 modelList:[]
