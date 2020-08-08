@@ -22,6 +22,13 @@
             display-value="code"
             v-model="store.reqType"
         ></le-radio-list>
+        <le-radio-list
+            label="isCommon:"
+            :data-source="dataSource.isCommon"
+            display-name="name"
+            display-value="code"
+            v-model="store.isCommon"
+        ></le-radio-list>
         <le-input label="url:" msg="请输入获取值的途径" v-model="store.url" on required></le-input>
     </le-form>
 </template>

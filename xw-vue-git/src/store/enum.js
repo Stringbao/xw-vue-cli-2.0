@@ -7,7 +7,10 @@ export default {
         {name:"GET",code:"get"},
         {name:"POST",code:"post"}
     ],
-
+    isCommon:[
+        {name:"No",code:false},
+        {name:"Yes",code:true}
+    ],
 
     searchModelTypes:[
         {name:"text",code:"text"},

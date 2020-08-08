@@ -13,7 +13,8 @@ export default {
         currentModule:null,
         dataSource:{
             storeType:Enum.storeType,
-            requestType:Enum.requestType
+            requestType:Enum.requestType,
+            isCommon:Enum.isCommon
         },
         pagesDatasource:{
             searchModelTypes:Enum.searchModelTypes,
