@@ -89,6 +89,16 @@ export default {
         updateStore(state, data) {
             state.currentModule.Store[data.idx] = data.data;
         },
+
+        addModel(state, data) {
+            state.modelList.push(data);
+        },
+        removeModel(state, data) {
+            state.modelList.splice(data, 1)
+        },
+        updateModel(state, data) {
+            state.modelList[data.idx] = data.data;
+        },
         //创建services
         addService(state, data) {
             let idx = state.currentModule.Services.findIndex(item => item.name == data.name && item.reqType == data.reqType);
@@ -139,6 +149,24 @@ export default {
         updatePages({ commit, state }, data) {
             commit("updatePages", data)
         },
+
+        addModel({ commit, state }, data) {
+            let idx = state.modelList.findIndex(item => item.name == data.name);
+            if (idx < 0) {
+                commit("addModel", data);
+                return Promise.resolve();
+            } else {
+                return Promise.reject({ msg: "there had been exited a same model" });
+            }
+        },
+        updateModel({ commit, state }, data) {
+            commit("updateModel", data);
+            return Promise.resolve();
+        },
+        removeModel({ commit, state }, data) {
+            commit("removeModel", data);
+        },
+
         addStore({ commit, state }, data) {
             let idx = state.currentModule.Store.findIndex(item => item.name == data.name);
             if (idx < 0) {

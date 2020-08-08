@@ -15,7 +15,7 @@
                     :currentIndex="currentIndex"
                 >
                     <div class="card">
-                        <Model/>
+                        <Model :models="module.modelList"/>
                     </div>
                     <!-- {{module.ModuleName}} -->
                     <div class="card pagesCard">

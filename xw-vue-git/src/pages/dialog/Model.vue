@@ -120,6 +120,7 @@ export default {
         StoreDialog
     },
     methods: {
+        ...mapActions(['addModel','updateModel']),
         clearStore(){
             this.store = {
                 name: "",
@@ -153,6 +154,25 @@ export default {
         },
         handleClose() {
             this.dialog.showDialog = false;
+        },
+        submit(){
+            return new Promise((resolve,reject)=>{
+                this.$refs.model.validate().then(() => {
+                    if (this.action == "create") {
+                        this.addModel(this.model).then(()=>{
+                            resolve();
+                        }).catch(err=>{
+                            alert(err.msg);
+                            reject(err);
+                        })
+                    } else {
+                        this.updateModel({ data: this.model, idx: this.idx });
+                        resolve();
+                    }
+                }).catch(err=>{
+                    reject(err);
+                })
+            })
         }
     },
 };
