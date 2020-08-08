@@ -6,6 +6,9 @@ export default {
         modules:[
 
         ],
+        modelList:[
+            
+        ],
         existedModules:[],
         currentModule:null,
         dataSource:{
