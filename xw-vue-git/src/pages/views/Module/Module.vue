@@ -25,7 +25,7 @@
                         <Service :sevices="module.Services"></Service>
                     </div>
                     <div class="card">
-                        <storeForm :stores="module.Store.state"></storeForm>
+                        <storeForm :stores="module.Store"></storeForm>
                     </div>
                 </TabPane>
             </template>

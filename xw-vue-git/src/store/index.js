@@ -81,13 +81,13 @@ export default {
         },
         //创建stores
         addStore(state, data) {
-            state.currentModule.Store.state.push(data);
+            state.currentModule.Store.push(data);
         },
         removeStore(state, data) {
-            state.currentModule.Store.state.splice(data, 1)
+            state.currentModule.Store.splice(data, 1)
         },
         updateStore(state, data) {
-            state.currentModule.Store.state[data.idx] = data.data;
+            state.currentModule.Store[data.idx] = data.data;
         },
         //创建services
         addService(state, data) {
@@ -120,11 +120,7 @@ export default {
                     { name: "remove", reqType: "post", url: "", pageName: "", stype: 1 },
                     { name: "detail", reqType: "get", url: "", pageName: "", stype: 1 }
                 ],
-                Store: {
-                    state: [
-
-                    ]
-                }
+                Store: []
             });
         },
         removeModules({ commit, state }, ModuleName) {
@@ -144,7 +140,7 @@ export default {
             commit("updatePages", data)
         },
         addStore({ commit, state }, data) {
-            let idx = state.currentModule.Store.state.findIndex(item => item.name == data.name);
+            let idx = state.currentModule.Store.findIndex(item => item.name == data.name);
             if (idx < 0) {
                 commit("addStore", data);
                 return Promise.resolve();
