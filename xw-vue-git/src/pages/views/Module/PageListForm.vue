@@ -1,6 +1,21 @@
 <template>
     <le-form labelWidth='100' ref="saveForm">
         <div>
+            <le-radio-list 
+                label="hasDialog" 
+                :data-source="hasDialog" display-name="name" display-value="code" 
+                v-model="page.hasDialog">
+            </le-radio-list>
+            <le-local-select
+                    on required msg="必选"
+                    label="modelName:"
+                    class="pagesType"
+                    :data-source="modelList"
+                    display-name="name"
+                    display-value="name"
+                    @change="changeModelName"
+                    v-model="page.modelName"
+            ></le-local-select>
             <le-input on required msg="请输入页面名称"
                 tip="提示: 页面名称必须以.vue结尾"
                 label="PageName:" v-model="page.pageName">
@@ -203,7 +218,11 @@ export default {
         return {
             datasourceDialog:false,
             //用户配置的dataSource的数据
-            newAddDataSource:{}
+            newAddDataSource:{},
+            hasDialog:[
+                { name: "Yes", code: true },
+                { name: "No", code: false },
+            ],
         }
     },
     props: {
@@ -221,7 +240,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(["pagesDatasource"]),
+        ...mapState(["pagesDatasource","modelList"]),
         ...mapMutations([]),
     },
     components:{},
@@ -331,6 +350,10 @@ export default {
         },
         closeDatasourceDialog(){
             this.datasourceDialog = false; 
+        },
+        changeModelName(name){
+            let model = this.modelList.find(item => item.name==name);
+            this.page.model = model.props;
         }
     },
     mounted(){

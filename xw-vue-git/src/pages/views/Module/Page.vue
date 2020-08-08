@@ -120,19 +120,25 @@ export default {
                     toolbar:[]
                 },
                 model: [],
+                hasDialog:""
             },
             pageSaveModel: {
                 pageName: "",
                 type: "save",
                 model: [],
+                hasDialog:""
             },
             pageType: "list",
+            modelName:"",
             pageTypes: [
                 { name: "list", code: "list" },
                 { name: "save", code: "save" },
             ],
             isEditPages: false,
         }
+    },
+    computed:{
+        ...mapState([])
     },
     components: {
         PageListForm,
@@ -174,6 +180,8 @@ export default {
                     toolbar:[]
                 },
                 model: [],
+                hasDialog:"",
+                modelName:""
             };
         },
         clearSavePageModel() {
@@ -181,7 +189,9 @@ export default {
                 pageName: "",
                 type: "save",
                 model: [],
+                hasDialog:""
             };
+            this.modelName = ""
         },
         modifyPageHandle(data, idx) {
             this.pageDialog.showDialog = true;
@@ -192,7 +202,7 @@ export default {
             this.pageDialog.title = "edit";
             this.pageDialog.idx = idx;
         },
-        removePageHandle(data) {
+        removePageHandle(data,idx) {
             this.removePages(data);
         },
         //关闭dialog
@@ -205,7 +215,7 @@ export default {
             this.pageDialog.showDialog = false;
         },
         handleSavePages() {
-            this.$refs.pageDialog[0].save();
+            this.$refs.pageDialog.save();
             console.log(this.pageModel)
             console.log(this.pageSaveModel)
         },
@@ -219,7 +229,7 @@ export default {
             }
 
             this.pageDialog.type = this.pageType;
-        }
+        },
     }
 }
 </script>
@@ -291,5 +301,8 @@ export default {
             }
         }
     }
+}
+.le_new_page_btn_group{
+    padding-top: 0;
 }
 </style>
