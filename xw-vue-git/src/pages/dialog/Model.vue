@@ -2,9 +2,7 @@
     <le-form ref="model">
         <le-input label="name:" msg="请输入model的name" v-model="model.name" on required></le-input>
         <ul class="propsList">
-            <li class="item">
-               
-            </li>
+            <!-- <li class="item"></li> -->
             <li class="item createBtn">
                 <i class="fr addParams iconfont icon-add" type="button" @click="add">添加属性</i>
             </li>
@@ -17,6 +15,7 @@ export default {
         return {
             model: {
                 name: "",
+                props: [],
             },
         };
     },
@@ -32,6 +31,7 @@ export default {
         display: flex;
         margin-bottom: 20px;
         overflow: visible;
+        border-bottom: 1px solid #ccc;
     }
     .createBtn {
         text-align: center;
