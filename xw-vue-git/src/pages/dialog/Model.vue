@@ -1,84 +1,96 @@
 <template>
-    <le-form ref="model">
-        <le-input label="name:" msg="请输入model的name" v-model="model.name" on required></le-input>
-        <ul class="propsList">
-            <li class="clearfix" v-for="(item, idx) in model.props" :key="idx">
-                <div>
-                    <div class="le_form_row_item">
-                        <le-local-select
-                            label="type:"
-                            :data-source="pagesDatasource.dialogFieldType"
-                            display-name="name"
-                            display-value="name"
-                            v-model="item.type"
-                        ></le-local-select>
-                        <le-input label="label:" v-model="item.label"></le-input>
-                        <le-input label="field:" v-model="item.field"></le-input>
-                        <le-button
-                            class="fr"
-                            type="remove"
-                            value="deleteItem"
-                            @click="remove(idx)"
-                        ></le-button>
+    <div>
+        <le-form ref="model">
+            <le-input label="name:" msg="请输入model的name" v-model="model.name" on required></le-input>
+            <ul class="propsList">
+                <li class="clearfix" v-for="(item, idx) in model.props" :key="idx">
+                    <div>
+                        <div class="le_form_row_item">
+                            <le-local-select
+                                label="type:"
+                                :data-source="pagesDatasource.dialogFieldType"
+                                display-name="name"
+                                display-value="name"
+                                v-model="item.type"
+                            ></le-local-select>
+                            <le-input label="label:" v-model="item.label"></le-input>
+                            <le-input label="field:" v-model="item.field"></le-input>
+                            <le-button
+                                class="fr"
+                                type="remove"
+                                value="deleteItem"
+                                @click="remove(idx)"
+                            ></le-button>
+                        </div>
+                        <div
+                            class="le_form_row_item"
+                            v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'"
+                        >
+                            <le-input label="displayName:" v-model="item.displayName"></le-input>
+                            <le-input label="displayValue:" v-model="item.displayValue"></le-input>
+                            <le-local-select
+                                label="dataSource"
+                                :data-source="dataSource.state"
+                                display-name="name"
+                                display-value="name"
+                                v-model="item.dataSource"
+                            ></le-local-select>
+                            <le-button
+                                class="fr"
+                                type="create"
+                                value="datasource"
+                                @click="showDatasource"
+                            ></le-button>
+                        </div>
+                        <div class="col4">
+                            <le-radio-list
+                                label="on:"
+                                :data-source="pagesDatasource.dialogValidateType"
+                                display-name="name"
+                                display-value="code"
+                                v-model="item.on"
+                            ></le-radio-list>
+                            <le-radio-list
+                                label="required:"
+                                :data-source="pagesDatasource.dialogValidateType"
+                                display-name="name"
+                                display-value="code"
+                                v-model="item.required"
+                            ></le-radio-list>
+                            <le-input label="msg:" v-model="item.msg"></le-input>
+                        </div>
+                        <div class="clearfix le_form_row_item co2">
+                            <le-input label="tip:" v-model="item.tip"></le-input>
+                            <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
+                            <le-local-select
+                                label="Vtype"
+                                v-if="item.type == 'text'"
+                                :data-source="pagesDatasource.vtypeList"
+                                display-name="name"
+                                display-value="code"
+                                v-model="item.Vtype"
+                            ></le-local-select>
+                        </div>
                     </div>
-                    <div
-                        class="le_form_row_item"
-                        v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'"
-                    >
-                        <le-input label="displayName:" v-model="item.displayName"></le-input>
-                        <le-input label="displayValue:" v-model="item.displayValue"></le-input>
-                        <le-local-select
-                            label="dataSource"
-                            :data-source="dataSource.state"
-                            display-name="name"
-                            display-value="name"
-                            v-model="item.dataSource"
-                        ></le-local-select>
-                        <le-button
-                            class="fr"
-                            type="create"
-                            value="datasource"
-                            @click="showDatasource"
-                        ></le-button>
-                    </div>
-                    <div class="col4">
-                        <le-radio-list
-                            label="on:"
-                            :data-source="pagesDatasource.dialogValidateType"
-                            display-name="name"
-                            display-value="code"
-                            v-model="item.on"
-                        ></le-radio-list>
-                        <le-radio-list
-                            label="required:"
-                            :data-source="pagesDatasource.dialogValidateType"
-                            display-name="name"
-                            display-value="code"
-                            v-model="item.required"
-                        ></le-radio-list>
-                        <le-input label="msg:" v-model="item.msg"></le-input>
-                    </div>
-                    <div class="clearfix le_form_row_item co2">
-                        <le-input label="tip:" v-model="item.tip"></le-input>
-                        <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
-                        <le-local-select
-                            label="Vtype"
-                            v-if="item.type == 'text'"
-                            :data-source="pagesDatasource.vtypeList"
-                            display-name="name"
-                            display-value="code"
-                            v-model="item.Vtype"
-                        ></le-local-select>
-                    </div>
-                </div>
-            </li>
-            <li class="item createBtn">
-                <i class="fr addParams iconfont icon-add" type="button" @click="add">添加属性</i>
-            </li>
-        </ul>
-    </le-form>
+                </li>
+                <li class="item createBtn">
+                    <i class="fr addParams iconfont icon-add" type="button" @click="add">添加属性</i>
+                </li>
+            </ul>
+        </le-form>
+        <le-dialog title="create Store" v-model="dialog.showDialog" width="700" height="600">
+            <div slot="body">
+                <StoreDialog v-if="dialog.showDialog" :store="store" :action="dialog.action" :idx="dialog.idx" ref="store" />
+            </div>
+            <div slot="button">
+                <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
+                <le-button type="save" value="<#保存#>" @click="handleSave"></le-button>
+            </div>
+        </le-dialog>
+    </div>
 </template>
 <script>
+import StoreDialog from "@pages/dialog/Store.vue";
 import { mapState,mapActions,mapMutations } from "vuex";
 export default {
     data() {
@@ -87,12 +99,36 @@ export default {
                 name: "",
                 props: [],
             },
+            dialog: {
+                showDialog: false,
+                action:"create",
+                idx:null
+            },
+            store: {
+                name: "",
+                type: "array",
+                url: "",
+                reqType: "get",
+                isCommon:false,
+            },
         };
     },
     computed:{
         ...mapState(['dataSource','pagesDatasource'])
     },
+    components:{
+        StoreDialog
+    },
     methods: {
+        clearStore(){
+            this.store = {
+                name: "",
+                type: "array",
+                url: "",
+                reqType: "get",
+                isCommon: false,
+            }
+        },
         add() {
             this.model.props.push({
                 type:"text",
@@ -104,7 +140,19 @@ export default {
             this.model.props.splice(i,1)
         },
         showDatasource(){
-            
+            this.clearStore();
+            this.dialog.showDialog = true;
+        },
+        handleSave() {
+            this.$refs.store.submit().then((res)=>{
+                this.dialog.showDialog = false;
+            }).catch(err=>{
+                console.log(err)
+                // this.dialog.showDialog = true;
+            })
+        },
+        handleClose() {
+            this.dialog.showDialog = false;
         }
     },
 };
