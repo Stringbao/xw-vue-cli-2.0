@@ -9,11 +9,10 @@
             <le-local-select
                 label="modelName:"
                 class="pagesType"
-                :data-source="modelList"
+                :data-source="page.modelList"
                 display-name="name"
                 display-value="name"
-                @change="changeModelName"
-                v-model="page.modelName"
+                v-model="page.model"
         ></le-local-select>
             <le-input on required msg="请输入页面名称"
                 tip="提示: 页面名称必须以.vue结尾"

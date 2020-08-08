@@ -9,11 +9,10 @@
             <le-local-select
                     label="modelName:"
                     class="pagesType"
-                    :data-source="modelList"
+                    :data-source="currentModule.modelList"
                     display-name="name"
                     display-value="name"
-                    @change="changeModelName"
-                    v-model="page.modelName"
+                    v-model="page.model"
             ></le-local-select>
             <le-input on required msg="请输入页面名称"
                 tip="提示: 页面名称必须以.vue结尾"
@@ -238,7 +237,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(["pagesDatasource","modelList"]),
+        ...mapState(["pagesDatasource","currentModule"]),
         ...mapMutations([]),
     },
     components:{StoreDialog},
@@ -316,10 +315,6 @@ export default {
                 .catch(error => {
                     that.alert.showAlert("error", "请填写所有的必填项");
                 })
-        },
-        changeModelName(name){
-            let model = this.modelList.find(item => item.name==name);
-            this.page.model = model.props;
         },
         clearStore(){
             this.store = {
