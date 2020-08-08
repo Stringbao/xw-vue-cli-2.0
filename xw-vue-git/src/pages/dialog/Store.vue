@@ -42,7 +42,7 @@ export default {
     },
     data() {
         return {
-            showType: false,
+            showType: true,
         };
     },
     methods: {
