@@ -23,7 +23,6 @@
                 <le-local-select
                     msg="please select pageName"
                     label="pageName:"
-                    multiple
                     :data-source="currentModule.Pages"
                     display-name="pageName"
                     display-value="pageName"
