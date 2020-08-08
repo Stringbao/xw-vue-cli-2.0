@@ -37,14 +37,14 @@ let APIhelper = {
                     this.createServiceFile(projectPath, services, stores, moduleName, pages);
                     this.createHelperFile(projectPath, moduleName);
                     this.createStoreFile(projectPath, stores, moduleName);
-                    this.createView(projectPath, pages, moduleName, services, commonStore);
+                    this.createView(projectPath, pages, moduleName, services, commonStore, stores);
                 }
             }else{
                 this.createModelFile(projectPath, pages, moduleName, services);
                 this.createServiceFile(projectPath, services, stores, moduleName, pages);
                 this.createHelperFile(projectPath, moduleName);
                 this.createStoreFile(projectPath, stores, moduleName);
-                this.createView(projectPath, pages, moduleName, services, commonStore);
+                this.createView(projectPath, pages, moduleName, services, commonStore, stores);
             }
         });
         
@@ -235,7 +235,7 @@ let APIhelper = {
         fsTool.file.writeFile(filePath, _data);
     },
     //创建view文件，并且准备数据(维度：Module)
-    createView(projectPath, pages, moduleName, services, commonStore){
+    createView(projectPath, pages, moduleName, services, commonStore, stores){
         let filePath = projectPath + "/src/pages/views";
         
         let modulePath = filePath + "/" + Util.firstChatUpperLower(moduleName, false);
@@ -250,7 +250,7 @@ let APIhelper = {
             fsTool.file.createFile(vuePath);
             console.log("create vue completed;")
             
-            let pageData = this.dataForListView(x, moduleName, services, commonStore);
+            let pageData = this.dataForListView(x, moduleName, services, commonStore, stores);
             let ejsPath = "../ejstemplates/view/list.ejs";
             if(x.type != "list"){
                 ejsPath = "../ejstemplates/view/save.ejs";
@@ -315,7 +315,7 @@ let APIhelper = {
         let _data = this.compileByData("../ejstemplates/common/store.ejs",{data: data});
         fsTool.file.writeFile(filePath, _data);
     },
-    getStoreInPage(page){
+    getStoreInPage(page, stores){
         let storeKeys = [];
         if(page.type == "list"){
             //check searchModel
@@ -325,15 +325,13 @@ let APIhelper = {
                     storeKeys.push(x.dataSource);
                 }
             })
-            let models = page.model ? page.model : [];
-            models.forEach(x=>{
+            page.model.forEach(x=>{
                 if(x.dataSource){
                     storeKeys.push(x.dataSource);
                 }
             })
         }else{
-            let models = page.model;
-            models.forEach(x=>{
+            page.model.forEach(x=>{
                 if(x.dataSource){
                     storeKeys.push(x.dataSource);
                 }
@@ -341,7 +339,19 @@ let APIhelper = {
         }
         return Array.from(new Set(storeKeys));
     },
-    dataForListView(page, moduleName, services, commonStore){
+    getStoreKeysInSelfStore(keys, stores){
+        let res = [];
+        keys.forEach(x=>{
+            stores.forEach(xx =>{
+                if(xx.name == x){
+                    res.push(x);
+                }
+            })
+        })
+        return res;
+    },
+    dataForListView(page, moduleName, services, commonStore, stores){
+        
         let hasCommonStore = commonStore.length == 0?false:true;
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let templateSearchModel = page.config && page.config.searchModel?_.chunk(page.config.searchModel, 3):[];
@@ -375,11 +385,13 @@ let APIhelper = {
         let tableTitle = Util.firstChatUpperLower(moduleName, true)+ " " + Util.firstChatUpperLower(Util.getFileName(page.pageName),true) + " Table";
         let componentName = Util.firstChatUpperLower(moduleName,true) + Util.firstChatUpperLower(Util.getFileName(page.pageName),true);
 
-        let storeKeys = this.getStoreInPage(page);
+        let storeKeys = this.getStoreInPage(page, stores);
         let hasStore = false;
         let storeName = "";
         let storeActions = [];
-        if(storeKeys.length != 0){
+        debugger
+        storeKeys = this.getStoreKeysInSelfStore(storeKeys, stores);
+        if(storeKeys.length > 0){
             hasStore = true;
             storeName = Util.firstChatUpperLower(moduleName, true) + "Store";
             storeKeys.forEach(x=>{

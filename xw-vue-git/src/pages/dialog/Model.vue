@@ -30,7 +30,7 @@
                             <le-input label="displayValue:" v-model="item.displayValue"></le-input>
                             <le-local-select
                                 label="dataSource"
-                                :data-source="dataSource.state"
+                                :data-source="currentModule.Store"
                                 display-name="name"
                                 display-value="name"
                                 v-model="item.dataSource"
@@ -114,7 +114,7 @@ export default {
         };
     },
     computed:{
-        ...mapState(['dataSource','pagesDatasource'])
+        ...mapState(['dataSource','pagesDatasource','currentModule'])
     },
     components:{
         StoreDialog
