@@ -279,7 +279,7 @@ let temp = {
                             },
                         ],
                     },
-                    model: null,
+                    model: "bbb",
                     hasDialog: false,
                     moduleName: "test",
                 },
