@@ -15,7 +15,7 @@
                     :currentIndex="currentIndex"
                 >
                     <div class="card">
-                        create model
+                        <Model/>
                     </div>
                     <!-- {{module.ModuleName}} -->
                     <div class="card pagesCard">
@@ -51,10 +51,11 @@
     </div>
 </template>
 <script>
+import Model from "@pages/views/Module/Model.vue";
 import Tab from "@pages/components/tab/Tab.vue";
 import TabPane from "@pages/components/tab/TabPane.vue";
 import Page from "./Page.vue"
-import StoreForm from "./StoreForm.vue";
+import StoreForm from "./Store.vue";
 import Service from "./Service.vue";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -77,6 +78,7 @@ export default {
         Page,
         StoreForm,
         Service,
+        Model
     },
     methods: {
         ...mapActions([
