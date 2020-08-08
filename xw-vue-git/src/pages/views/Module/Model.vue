@@ -33,7 +33,7 @@
                 </tbody>
             </table>
         </div>
-        <le-dialog title="Model" v-model="dialog.showDialog" width="700" height="600">
+        <le-dialog title="Model" v-model="dialog.showDialog" width="1100" height="600">
             <div slot="body">
                 <ModelDialog v-if="dialog.showDialog" :action="dialog.action"  ref="model" />
             </div>
