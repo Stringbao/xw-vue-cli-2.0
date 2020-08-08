@@ -106,6 +106,7 @@ export default {
             state.currentModule.Services[data.idx] = data.data;
         },
     },
+<<<<<<< HEAD
     actions: {
         addExistedModules({ commit, state }, data) {
             commit("addExistedModules", data);
@@ -119,6 +120,21 @@ export default {
                     { name: "update", reqType: "post", url: "", pageName: "", stype: 1 },
                     { name: "remove", reqType: "post", url: "", pageName: "", stype: 1 },
                     { name: "detail", reqType: "get", url: "", pageName: "", stype: 1 }
+=======
+    actions:{
+        addExistedModules({commit,state},data){
+            commit("addExistedModules",data);
+        },
+        addModules({commit,state},ModuleName){
+            commit("addModules",{
+                ModuleName:ModuleName,
+                Pages:[],
+                Services:[
+                    { name:"create",reqType:"post",isCommon:false,url:"",pageName:"",stype:1},
+                    { name:"update",reqType:"post",isCommon:false,url:"",pageName:"",stype:1},
+                    { name:"remove",reqType:"post",isCommon:false,url:"",pageName:"",stype:1},
+                    { name:"detail",reqType:"get",isCommon:false,url:"",pageName:"",stype:1}
+>>>>>>> 93b7eebbfc579e8ea323084c88d6da30c1875a35
                 ],
                 Store: {
                     state: [

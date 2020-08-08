@@ -29,12 +29,14 @@ export default {
             <%= subrow.field%>: model.<%= subrow.field%>,
         <%_ _%><% }) -%>
         };
-        <%_ _%><% } else{ -%>
+        <%_ _%><% } else if(row.fnName == "create"){ -%>
         let params = {
         <%_ row.model.forEach(function(subrow){ -%>
             <%= subrow.field%>: model.<%= subrow.field%>,
         <%_ _%><% }) -%>
         };
+        <%_ _%><% }else{ -%>
+        let params = {};
         <%_ _%><% } -%>
         
         try{
