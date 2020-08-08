@@ -1,0 +1,34 @@
+import CommonServices from "@services/commonServices.js";
+
+export default {
+    namespaced: true,
+    state:{
+    <%_ data.stateKeys.forEach(function(row){ -%>
+        <%= row %>: [],
+    <%_ _%><% }) -%>
+    },
+    mutations:{
+    <%_ data.mutations.forEach(function(row){ -%>
+        <%= row.fnName %>(state,data){
+            if(data && Array.isArray(data)){
+                state.<%= row.stateKey %> = data;
+            }
+        },
+    <%_ _%><% }) -%>
+    },
+    actions:{
+    <%_ data.actions.forEach(function(row){ -%>
+        <%= row.fnName %>({state,commit,dispatch}, data){
+            if(state.<%= row.stateKey %>.length >0){
+                return Promise.resolve(state.<%= row.stateKey %>);
+            }
+            CommonServices.<%= row.serviceFnName %>(data).then((res)=>{
+                commit("<%= row.commitFnName %>",res.data);
+                return Promise.resolve(res); 
+            }).catch(error=>{
+                return Promise.reject(error);
+            });
+        },
+    <%_ _%><% }) -%>
+    }
+}

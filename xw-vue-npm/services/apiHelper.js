@@ -15,7 +15,7 @@ let APIhelper = {
         return res.length>0?true:false;
     },
     //处理View文件的更新和修改
-    viewDeal(data, tag){
+    viewDeal(data, tag, commonStore){
         const projectPath = ProjectPathTool.get();
         let routers = [];
         let storeKeys = [];
@@ -34,34 +34,36 @@ let APIhelper = {
             if(tag == "update"){
                 if(!fsTool.exists(folerPath)){
                     this.createModelFile(projectPath, pages, moduleName, services);
-                    this.createServiceFile(projectPath, services, stores.state, moduleName, pages);
+                    this.createServiceFile(projectPath, services, stores, moduleName, pages);
                     this.createHelperFile(projectPath, moduleName);
-                    this.createStoreFile(projectPath, stores.state, moduleName);
-                    this.createView(projectPath, pages, moduleName, services);
+                    this.createStoreFile(projectPath, stores, moduleName);
+                    this.createView(projectPath, pages, moduleName, services, commonStore);
                 }
             }else{
                 this.createModelFile(projectPath, pages, moduleName, services);
-                this.createServiceFile(projectPath, services, stores.state, moduleName, pages);
+                this.createServiceFile(projectPath, services, stores, moduleName, pages);
                 this.createHelperFile(projectPath, moduleName);
-                this.createStoreFile(projectPath, stores.state, moduleName);
-                this.createView(projectPath, pages, moduleName, services);
+                this.createStoreFile(projectPath, stores, moduleName);
+                this.createView(projectPath, pages, moduleName, services, commonStore);
             }
         });
         
         if(tag == "update"){
-            this.updateStoreIndex(projectPath, storeKeys);
+            this.updateStoreIndex(projectPath, storeKeys, commonStore);
             this.updateRouter(projectPath, routers);
         }else{
-            this.writeStoreIndex(projectPath, storeKeys);
+            this.writeStoreIndex(projectPath, storeKeys, commonStore);
             this.writeRouter(projectPath, routers);
         }
-        
-        //创建project.json到项目root目录
+    },
+    //创建project.json到项目root目录
+    writeProjectJson(modules,commonStore){
         let projectJSON = {
-            Modules:data,
-            absoultePath:projectPath
+            Modules:modules,
+            commonStore:commonStore,
+            absoultePath:ProjectPathTool.get()
         }
-        
+
         fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
     },
     //根据页面名称获取当前页面的Model
@@ -85,7 +87,6 @@ let APIhelper = {
         })
         return str.join('&');
     },
-    
     //获取固化的服务
     getDefaultService(page, services){
         let res = [];
@@ -97,17 +98,14 @@ let APIhelper = {
         return res;
     },
     //为单个model.js准备数据
-    getMoldeDataFromPageItem(item, moduleName, actionDefaultServices){
+    getMoldeDataFromPageItem(item, moduleName){
         let tmp = {className:"",data:[]};
         let pageName = item.pageName;
         tmp.className = Util.firstChatUpperLower(moduleName, true) + Util.firstChatUpperLower(Util.getFileName(pageName),true) + "Model";
-        if(actionDefaultServices){
-            tmp.data = ["id"];
-        }else{
-            item.model.forEach(x=>{
-                tmp.data.push(x.field);
-            })
-        }
+        
+        item.model.forEach(x=>{
+            tmp.data.push(x.field);
+        })
         return tmp;
     },
     //ejs编译模板
@@ -128,14 +126,6 @@ let APIhelper = {
                 let res = this.getMoldeDataFromPageItem(item, moduleName);
                 let _data = this.compileByData("../ejstemplates/model.ejs",{data:res});
                 fsTool.file.writeFile(filePath, _data);
-            }else{
-                let actionDefaultServices = this.getDefaultService(item, services);
-                if(actionDefaultServices.length > 0){
-                    fsTool.file.createFile(filePath);
-                    let res = this.getMoldeDataFromPageItem(item, moduleName, actionDefaultServices);
-                    let _data = this.compileByData("../ejstemplates/model.ejs",{data:res});
-                    fsTool.file.writeFile(filePath, _data);
-                }
             }
         });
     },
@@ -209,15 +199,16 @@ let APIhelper = {
         fsTool.file.writeFile(filePath, _data);
     },
     //写入Store Index入口文件
-    writeStoreIndex(projectPath, storeKeys){
+    writeStoreIndex(projectPath, storeKeys, commonStore){
         let filePath = projectPath + "/src/store/index.js";
 
         let imports = [];
         storeKeys.forEach(x=>{
             imports.push({className:Util.firstChatUpperLower(x, true) + "Store",filePath:Util.firstChatUpperLower(x, false) + ".js"});
         })
-        
-        let _data = this.compileByData("../ejstemplates/store/store.ejs",{data:{ imports : imports}});
+        let hasCommonStore = commonStore.length == 0?false:true;
+
+        let _data = this.compileByData("../ejstemplates/store/store.ejs",{data:{ imports : imports,hasCommonStore:hasCommonStore}});
         fsTool.file.writeFile(filePath, _data);
     },
     //写入Route Index入口文件
@@ -244,8 +235,9 @@ let APIhelper = {
         fsTool.file.writeFile(filePath, _data);
     },
     //创建view文件，并且准备数据(维度：Module)
-    createView(projectPath, pages, moduleName, services){
+    createView(projectPath, pages, moduleName, services, commonStore){
         let filePath = projectPath + "/src/pages/views";
+        
         let modulePath = filePath + "/" + Util.firstChatUpperLower(moduleName, false);
         //创建Module文件夹
         fsTool.folder.createFolder(modulePath);
@@ -258,7 +250,7 @@ let APIhelper = {
             fsTool.file.createFile(vuePath);
             console.log("create vue completed;")
             
-            let pageData = this.dataForListView(x, moduleName, services);
+            let pageData = this.dataForListView(x, moduleName, services, commonStore);
             let ejsPath = "../ejstemplates/view/list.ejs";
             if(x.type != "list"){
                 ejsPath = "../ejstemplates/view/save.ejs";
@@ -270,6 +262,58 @@ let APIhelper = {
             
             fsTool.file.writeFile( modulePath + "/" + x.pageName, _data);
         })
+    },
+    //创建Core services
+    createCommonServices(data){
+        const projectPath = ProjectPathTool.get();
+        let filePath = projectPath + "/src/services/commonServices.js";
+        fsTool.file.createFile(filePath);
+
+        let maps = [];
+        data.forEach(x=>{
+            if(x.url){
+                maps.push({name:x.name, model:[], url:x.url, isEnum: x.type =='enum',fnName: "get"+Util.firstChatUpperLower(x.name, true), isGetReq:x.reqType?x.reqType:"get"});
+            }
+        })
+        
+        let resJson = {map:[], fns:[]};
+        maps.forEach(x=>{
+            if(!x.isEnum){
+                resJson.map.push(x);
+            }
+            resJson.fns.push({fnName:x.fnName, url:x.url,mapKey:x.name, isEnum: x.isEnum, isGetReq:x.isGetReq});
+        })
+        //write content to file by ejs
+        let _data = this.compileByData("../ejstemplates/common/service.ejs",{data: resJson});
+        fsTool.file.writeFile(filePath, _data);
+    },
+    //创建Core store
+    createCommonStore(storeItems){
+        const projectPath = ProjectPathTool.get();
+        let filePath = projectPath + "/src/store/modules/commonStore.js";
+        fsTool.file.createFile(filePath);
+
+        let stateKeys = [];
+        let mutations = [];
+        let actions = [];
+        let servicesClassName = "CommonServices";
+        let servicesPath =  "commonServices.js";
+        storeItems.forEach(x=>{
+            let upName = Util.firstChatUpperLower(x.name ,true);
+            stateKeys.push(x.name);
+            mutations.push({fnName:"set"+upName, stateKey:x.name});
+            actions.push({fnName:"get"+upName, stateKey:x.name,commitFnName:"set"+upName, serviceFnName:'get'+upName});
+        })
+        let data = {
+            servicesClassName,
+            servicesPath,
+            stateKeys,
+            mutations,
+            actions
+        }
+        //write content to file
+        let _data = this.compileByData("../ejstemplates/common/store.ejs",{data: data});
+        fsTool.file.writeFile(filePath, _data);
     },
     getStoreInPage(page){
         let storeKeys = [];
@@ -297,7 +341,8 @@ let APIhelper = {
         }
         return Array.from(new Set(storeKeys));
     },
-    dataForListView(page, moduleName, services){
+    dataForListView(page, moduleName, services, commonStore){
+        let hasCommonStore = commonStore.length == 0?false:true;
         let pageTitle = page.pageTitle?page.pageTitle:"";
         let templateSearchModel = page.config && page.config.searchModel?_.chunk(page.config.searchModel, 3):[];
         let searchModel = page.config && page.config.searchModel;
@@ -342,14 +387,18 @@ let APIhelper = {
             })
         }
         let hasModel = true;
-        let hasDialog = true;
-        if(page.type == "list" && page.model && page.model.length  == 0 && actionDefaultServices.length ==0){
+        let hasDialog = page.hasDialog;
+        if(page.type == "list" && page.model && page.model.length == 0){
             hasModel = false;
         }
-        if(page.type == "list" && page.model && page.model.length  == 0){
-            hasDialog = false;
-        }
 
+        let commonStores = [];
+        if(hasCommonStore){
+            commonStore.forEach(x=>{
+                let tmp = {name:x.name, fnName:"get" + Util.firstChatUpperLower(x.name,true)};
+                commonStores.push(tmp);
+            })
+        }
         let serviceFileName = Util.firstChatUpperLower(moduleName,false) + "Services.js";
         let serviceClassName = Util.firstChatUpperLower(moduleName,true) + "Services";
         let modelFileName = Util.firstChatUpperLower(moduleName,false) + Util.firstChatUpperLower(Util.getFileName(page.pageName), true) + "Model.js";
@@ -358,9 +407,6 @@ let APIhelper = {
         let modelArray = [];
         if(page.type == "save" || hasDialog){
             modelArray = page.model;
-        }
-        if(!hasDialog && hasModel){
-            modelArray = ["id"];
         }
         
         let data = {
@@ -372,9 +418,10 @@ let APIhelper = {
             tableTitle,
             toolbar,
             componentName,
-            hasStore,
-            hasModel,
             hasDialog,
+            hasCommonStore,
+            commonStores,
+            hasStore,
             store:{
                 storeKeys,
                 storeName,
@@ -384,6 +431,7 @@ let APIhelper = {
                 serviceFileName,
                 serviceClassName
             },
+            hasModel,
             model:{
                 modelFileName,
                 modelClassName,
@@ -394,11 +442,11 @@ let APIhelper = {
         
         return data;
     },
-    updateStoreIndex(projectPath, storeKeys){
+    updateStoreIndex(projectPath, storeKeys, commonStore){
         let filePath = projectPath + "/src/store/index.js";
         let targetPath = projectPath + "/src/store/index_copy.js";
         fsTool.file.copy(filePath, targetPath);
-        this.writeStoreIndex(projectPath, storeKeys);
+        this.writeStoreIndex(projectPath, storeKeys, commonStore);
     },
     updateRouter(projectPath, pages){
         let filePath = projectPath + "/src/route/index.js";

@@ -10,10 +10,15 @@
 <script>
 import util from "@util/util.js";
 import KEYS from "@constant/index.js";
-<%_ if( data.hasStore){ -%>
+
 import { createNamespacedHelpers } from 'vuex';
-const { mapState, mapActions,mapMutations } = createNamespacedHelpers('<%= data.store.storeName %>');
+<%_ if( data.hasCommonStore){ -%>
+const CommonStore = createNamespacedHelpers('CommonStore');
 <%_ } -%>
+<%_ if( data.hasStore){ -%>
+const <%= data.store.storeName %> = createNamespacedHelpers('<%= data.store.storeName %>');
+<%_ } -%>
+
 <%_ if(data.hasModel){ -%>
 import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileName %>';
 <%_ } -%>
@@ -27,9 +32,16 @@ export default {
     },
     computed:{
         <%_ if( data.hasStore){ -%>
-        ...mapState([
+        ...<%= data.store.storeName %>.mapState([
             <%_ data.store.storeKeys.forEach(function(name){ -%>
             "<%= name%>",
+            <%_ }) -%>
+        ]),
+        <%_ } -%>
+        <%_ if( data.hasCommonStore){ -%>
+        ...CommonStore.mapState([
+            <%_ data.commonStores.forEach(function(item){ -%>
+            "<%= item.name%>",
             <%_ }) -%>
         ]),
         <%_ } -%>
@@ -45,9 +57,16 @@ export default {
     },
     methods:{
         <%_ if( data.hasStore){ -%>
-        ...mapActions([
+        ...<%= data.store.storeName %>.mapActions([
             <%_ data.store.storeActions.forEach(function(name){ -%>
             "<%= name%>",
+            <%_ }) -%>
+        ]),
+        <%_ } -%>
+        <%_ if( data.hasCommonStore){ -%>
+        ...CommonStore.mapActions([
+            <%_ data.commonStores.forEach(function(item){ -%>
+            "<%= item.fnName%>",
             <%_ }) -%>
         ]),
         <%_ } -%>

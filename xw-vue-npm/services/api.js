@@ -18,13 +18,21 @@ const api = {
         return res.status(200).json({data:_res.Modules, status:200,msg:"success"});
     },
     update(req, res){
-        let data = req?req.body.Modules:_test_data.Modules;
-        APIhelper.viewDeal(data,"update");
+        let modules = req?req.body.Modules:_test_data.Modules;
+        let commonStore = req?req.body.commonStore:_test_data.commonStore;
+        APIhelper.viewDeal(modules,"update",commonStore);
+        APIhelper.createCommonServices(commonStore);
+        APIhelper.createCommonStore(commonStore);
+        APIhelper.writeProjectJson(modules,commonStore);
         return res && res.status("200").json({status:200, data:null,msg:"update success"});
     },
     create(req,res){
-        let data = req?req.body.Modules:_test_data.Modules;
-        APIhelper.viewDeal(data,"create");
+        let modules = req?req.body.Modules:_test_data.Modules;
+        let commonStore = req?req.body.commonStore:_test_data.commonStore;
+        APIhelper.viewDeal(modules,"create",commonStore);
+        APIhelper.createCommonServices(commonStore);
+        APIhelper.createCommonStore(commonStore);
+        APIhelper.writeProjectJson(modules,commonStore);
         return res && res.status("200").json({status:200, data:null,msg:"create success"});
     },
     getConfigPath(){
@@ -38,7 +46,7 @@ const api = {
     }
 }
 
-// api.create();
+api.create();
 // api.setConfigPath();
 
 module.exports = api;

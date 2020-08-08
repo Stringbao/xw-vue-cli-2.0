@@ -22,7 +22,14 @@ export default {
         let params = {
             id:model.id
         }
-        <%_ _%><% }else { -%>
+        <%_ _%><% }else if(row.fnName == "update"){ -%>
+        let params = {
+            id:model.id,
+        <%_ row.model.forEach(function(subrow){ -%>
+            <%= subrow.field%>: model.<%= subrow.field%>,
+        <%_ _%><% }) -%>
+        };
+        <%_ _%><% } else{ -%>
         let params = {
         <%_ row.model.forEach(function(subrow){ -%>
             <%= subrow.field%>: model.<%= subrow.field%>,
