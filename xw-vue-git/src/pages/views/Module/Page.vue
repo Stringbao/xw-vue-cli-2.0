@@ -130,7 +130,6 @@ export default {
                 hasDialog:""
             },
             pageType: "list",
-            modelName:"",
             pageTypes: [
                 { name: "list", code: "list" },
                 { name: "save", code: "save" },
@@ -182,7 +181,6 @@ export default {
                 },
                 model: [],
                 hasDialog:"",
-                modelName:""
             };
         },
         clearSavePageModel() {
@@ -192,7 +190,6 @@ export default {
                 model: [],
                 hasDialog:""
             };
-            this.modelName = ""
         },
         modifyPageHandle(data, idx) {
             this.pageDialog.showDialog = true;
