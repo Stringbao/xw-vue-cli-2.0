@@ -1,0 +1,27 @@
+import Ajax from "@util/http.js";
+import KEYS from "@constant/index.js";
+
+const map = {
+    <%_ data.map.forEach(function(row){ -%>
+    <%= row.name %>: '<%= row.url%>',
+    <%_ _%><% }) -%>
+}
+
+export default {
+    <%_ data.fns.forEach(function(row){ -%>
+    <%_ if (row.isEnum) { -%>
+    <%= row.fnName %>(){
+        return Promise.resolve({data:<%= row.url%>});
+    <%_ _%><% }else { -%>
+    async <%= row.fnName %>(){
+        try{
+            let res = await Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map['<%= row.mapKey%>'], params);
+            //deal res
+            return res;
+        }catch(err){
+            return Promise.reject(err);
+        }
+        <%_ _%><% } -%>
+    },
+    <%_ _%><% }) -%>
+}

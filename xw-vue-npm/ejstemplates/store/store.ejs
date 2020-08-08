@@ -1,10 +1,15 @@
 <%_ data.imports.forEach(function(row){ -%>
 import <%= row.className %> from "./modules/<%= row.filePath %>";
 <%_ _%><% }) -%>
-
+<%_ if( data.hasCommonStore){ -%>
+import CommonStore from "./modules/commonStore.js";
+<%_ } -%>
 
 export default {
 <%_ data.imports.forEach(function(row){ -%>
     <%= row.className %>,
 <%_ _%><% }) -%>
+<%_ if( data.hasCommonStore){ -%>
+    CommonStore
+<%_ } -%>
 }
