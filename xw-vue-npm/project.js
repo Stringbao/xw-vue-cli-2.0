@@ -251,6 +251,15 @@ let temp = {
                             msg: "displayValue",
                         },
                         {
+                            label: "malls",
+                            type: "select",
+                            field: "malls",
+                            displayName: "name",
+                            displayValue: "code",
+                            dataSource: "malls",
+                            msg: "displayValue",
+                        },
+                        {
                             label: "picker",
                             type: "dateTimepicker",
                             field: "picker",
@@ -288,6 +297,15 @@ let temp = {
                             displayName: "name",
                             displayValue: "code",
                             dataSource: "stypes",
+                            msg: "displayValue",
+                        },
+                        {
+                            label: "malls",
+                            type: "select",
+                            field: "malls",
+                            displayName: "name",
+                            displayValue: "code",
+                            dataSource: "malls",
                             msg: "displayValue",
                         },
                         {
@@ -345,7 +363,15 @@ let temp = {
                     isCommon: false,
                 },
             ],
-            Store: [],
+            Store: [
+                {
+                    name: "malls",
+                    type: "enum",
+                    reqType: "get",
+                    url: "KEYS.COMMON.MALLS",
+                    isCommon: true,
+                },
+            ],
         },
     ],
     commonStore: [
