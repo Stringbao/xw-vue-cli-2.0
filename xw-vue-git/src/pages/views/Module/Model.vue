@@ -54,7 +54,8 @@ export default {
             dialog:{
                 showDialog:false,
                 action:"create"
-            }
+            },
+            
         };
     },
     components:{
