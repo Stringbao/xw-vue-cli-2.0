@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item,idx) in module.Pages" :key="idx">
+                    <tr v-for="(item,idx) in module" :key="idx">
                         <td>{{item.pageName}}</td>
                         <td>{{item.pageTitle}}</td>
                         <td>{{item.type}}</td>
@@ -62,7 +62,7 @@
                     <component
                         v-if="pageDialog.showDialog"
                         ref="pageDialog"
-                        :dataSource="module.Store"
+                        :dataSource="currentModule.Store"
                         :action="pageDialog.action"
                         :is="pageDialog.component"
                         :page="pageDialog.params"
@@ -84,11 +84,12 @@
 <script>
 import PageListForm from "@pages/views/Module/PageListForm.vue";
 import PageSaveForm from "@pages/views/Module/PageSaveForm.vue";
+
 import { mapState, mapActions } from "vuex";
 export default {
      props: {
         module:{
-            type: Object
+            type: Array
         }
     },
     data(){
@@ -138,7 +139,7 @@ export default {
         }
     },
     computed:{
-        ...mapState([])
+        ...mapState(["currentModule"])
     },
     components: {
         PageListForm,

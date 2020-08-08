@@ -76,30 +76,15 @@
                     </ul>
                 </div>
             </div>
+
             <!-- datasource的配置 -->
-            <le-dialog title="新建dataSource" height="505" width="1000" v-model="datasourceDialog">
+            <le-dialog title="新建dataSource" height="505" width="1000" v-model="dialog.showDialog">
                 <div slot="body">
-                    <le-form labelWidth='180' ref="dataSourceSaveForm">
-                        <div class="clearfix">
-                            
-                            <le-input on required msg="name必填" label="name:" v-model="newAddDataSource.name"></le-input>
-                            <le-radio-list label="type:" :data-source="pagesDatasource.dataSourceType" 
-                                display-name="name" display-value="code" 
-                                v-model="newAddDataSource.type">
-                            </le-radio-list>
-
-                            <le-radio-list labelWidth='180' v-if="newAddDataSource.type == 'array'" label="reqType:" :data-source="pagesDatasource.dataSourceReqType" 
-                                display-name="name" display-value="code" 
-                                v-model="newAddDataSource.reqType">
-                            </le-radio-list>
-
-                            <le-input on required msg="url必填" label="url:" v-model="newAddDataSource.url"></le-input>
-                        </div>
-                    </le-form>
+                    <StoreDialog :store="newAddDataSource" :action="dialog.action" :idx="dialog.idx" ref="store" />
                 </div>
                 <div slot="button">
-                    <le-button type="cancel" value="<#取消#>" @click="closeDatasourceDialog"></le-button>
-                    <le-button type="save" value="<#保存#>" @click="saveDatasourceDialog"></le-button>
+                    <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
+                    <le-button type="save" value="<#保存#>" @click="handleSave"></le-button>
                 </div>
             </le-dialog>
         </div>
@@ -112,6 +97,18 @@ import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     data(){
         return {
+            dialog: {
+                showDialog: false,
+                action:"",
+                idx:null
+            },
+            store: {
+                name: "",
+                type: "array",
+                url: "",
+                reqType: "get",
+                isCommon:false,
+            },
             datasourceDialog:false,
             //用户配置的dataSource的数据
             newAddDataSource:{},
@@ -180,40 +177,41 @@ export default {
         close(){
             this.$emit("closePagesDialog");
         },
-        //如果storee中的DataSource为空则显示新建DataSource的框
-        addDataSource(){
-            this.newAddDataSource = {
-                name : "",
-                type : "",
-                reqType : "",
-                url : ""
-            };
-        },
+        //DataSource
         showDatasource(){
             this.newAddDataSource = {
                 name : "",
                 type : "",
                 reqType : "",
-                url : ""
+                url : "",
+                isCommon:false,
             };
             this.datasourceDialog = true; 
         },
-        saveDatasourceDialog(){
-            this.$refs.dataSourceSaveForm.validate()
-            .then(res=>{
-                this.addStore(this.newAddDataSource);
-                this.closeDatasourceDialog(); 
-            })
-            .catch(error=>{
-                this.alert.showAlert("error","请填写所有必填项")
+        clearStore(){
+            this.store = {
+                name: "",
+                type: "array",
+                url: "",
+                reqType: "get",
+                isCommon: false,
+            }
+        },
+        add() {
+            this.clearStore()
+            this.dialog.showDialog = true;
+            this.dialog.action = "create";
+        },
+        handleSave() {
+            this.$refs.store.submit().then((res)=>{
+                this.dialog.showDialog = false;
+            }).catch(err=>{
+                console.log(err)
+                // this.dialog.showDialog = true;
             })
         },
-        closeDatasourceDialog(){
-            this.datasourceDialog = false; 
-        },
-        changeModelName(name){
-            let model = this.modelList.find(item => item.name==name);
-            this.page.model = model.props;
+        handleClose() {
+            this.dialog.showDialog = false;
         }
     },
     mounted(){
