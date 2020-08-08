@@ -46,7 +46,7 @@ const api = {
     }
 }
 
-api.create();
+// api.create();
 // api.setConfigPath();
 
 module.exports = api;
