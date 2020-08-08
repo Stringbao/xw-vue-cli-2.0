@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item,idx) in modelList" :key="idx">
+                    <tr v-for="(item,idx) in models" :key="idx">
                         <td>{{item.name}}</td>
                         <td>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
@@ -25,7 +25,7 @@
                         </td>
                     </tr>
                     <tr
-                        v-show="!modelList.length"
+                        v-show="!models.length"
                         style="width:100%;height:60px;line-height:60px;text-align:center;"
                     >
                         <td colspan="6">暂无数据</td>
@@ -35,7 +35,7 @@
         </div>
         <le-dialog title="Model" v-model="dialog.showDialog" width="1100" height="600">
             <div slot="body">
-                <ModelDialog v-if="dialog.showDialog" :action="dialog.action"  ref="model" />
+                <ModelDialog v-if="dialog.showDialog" :params="dialog.params" :action="dialog.action"  ref="model" />
             </div>
             <div slot="button">
                 <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
@@ -48,34 +48,61 @@
 import { mapState, mapActions } from "vuex";
 import ModelDialog from "@pages/dialog/Model.vue";
 export default {
-    props: {},
+    props: {
+        models:{
+            type:Array
+        }
+    },
     data() {
         return {
             dialog:{
                 showDialog:false,
-                action:"create"
+                action:"create",
+                params:null
             },
-            
+            model:{
+                name:"",
+                props:[]
+            }
         };
     },
     components:{
         ModelDialog
     },
     methods: {
+        ...mapActions(['removeModel']),
         add() {
             this.dialog.showDialog = true;
+            this.dialog.action = "create"
+            this.dialog.params = {
+                name:"",
+                props:[]
+            };
         },
-        update() {},
-        del() {},
+        update(item,idx) {
+            this.dialog.showDialog = true;
+            this.dialog.action = "update"
+            this.dialog.params = {...item,idx}; 
+        },
+        del(item,idx) {
+            this.alert.showConfirm("Are you sure you want to do this?", () => {
+                this.removeModel(idx);
+            });
+        },
         handleSave(){
-            
+            this.$refs.model.submit().then((res)=>{
+                this.dialog.showDialog = false;
+            }).catch(err=>{
+                console.log(err)
+                // this.dialog.showDialog = true;
+            })
         },
         handleClose(){
             this.dialog.showDialog = false
         }
     },
     computed: {
-        ...mapState(["modelList"]),
+        ...mapState(["currentModule"]),
     },
 };
 </script>

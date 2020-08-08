@@ -17,7 +17,6 @@
                     <div class="card">
                         <Model :models="module.modelList"/>
                     </div>
-                    <!-- {{module.ModuleName}} -->
                     <div class="card pagesCard">
                         <Page :module="module.Pages"></Page>
                     </div>
@@ -66,7 +65,6 @@ export default {
             },
            
             moduleName: "",
-           
         };
     },
     computed: {

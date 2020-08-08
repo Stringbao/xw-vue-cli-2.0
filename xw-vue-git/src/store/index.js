@@ -75,13 +75,13 @@ export default {
         },
 
         addModel(state, data) {
-            state.modelList.push(data);
+            state.currentModule.modelList.push(data);
         },
         removeModel(state, data) {
-            state.modelList.splice(data, 1)
+            state.currentModule.modelList.splice(data, 1)
         },
         updateModel(state, data) {
-            state.modelList[data.idx] = data.data;
+            state.currentModule.modelList[data.idx] = data.data;
         },
         //创建services
         addService(state, data) {
@@ -136,7 +136,7 @@ export default {
         },
 
         addModel({ commit, state }, data) {
-            let idx = state.modelList.findIndex(item => item.name == data.name);
+            let idx = state.currentModule.modelList.findIndex(item => item.name == data.name);
             if (idx < 0) {
                 commit("addModel", data);
                 return Promise.resolve();

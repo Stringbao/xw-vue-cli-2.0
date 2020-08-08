@@ -1,9 +1,9 @@
 <template>
     <div>
         <le-form ref="model">
-            <le-input label="name:" msg="请输入model的name" v-model="model.name" on required></le-input>
+            <le-input label="name:" msg="请输入model的name" v-model="params.name" on required></le-input>
             <ul class="propsList">
-                <li class="clearfix" v-for="(item, idx) in model.props" :key="idx">
+                <li class="clearfix" v-for="(item, idx) in params.props" :key="idx">
                     <div>
                         <div class="le_form_row_item">
                             <le-local-select
@@ -11,36 +11,33 @@
                                 :data-source="pagesDatasource.dialogFieldType"
                                 display-name="name"
                                 display-value="name"
+                                on
+                                required
                                 v-model="item.type"
                             ></le-local-select>
-                            <le-input label="label:" v-model="item.label"></le-input>
-                            <le-input label="field:" v-model="item.field"></le-input>
-                            <le-button
-                                class="fr"
-                                type="remove"
-                                value="deleteItem"
-                                @click="remove(idx)"
-                            ></le-button>
+                            <le-input on required label="label:" v-model="item.label"></le-input>
+                            <le-input on required label="field:" v-model="item.field"></le-input>
+                            <span class="asBtn fr remove" @click="remove(idx)">
+                                <i class="fa fa-trash"></i>deleteItem
+                            </span>
                         </div>
                         <div
                             class="le_form_row_item"
                             v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'"
                         >
-                            <le-input label="displayName:" v-model="item.displayName"></le-input>
-                            <le-input label="displayValue:" v-model="item.displayValue"></le-input>
+                            <le-input on required label="displayName:" v-model="item.displayName"></le-input>
+                            <le-input on required label="displayValue:" v-model="item.displayValue"></le-input>
                             <le-local-select
                                 label="dataSource"
                                 :data-source="currentModule.Store"
                                 display-name="name"
                                 display-value="name"
+                                on required
                                 v-model="item.dataSource"
                             ></le-local-select>
-                            <le-button
-                                class="fr"
-                                type="create"
-                                value="datasource"
-                                @click="showDatasource"
-                            ></le-button>
+                            <span class="asBtn fr create"  @click="showDatasource()">
+                                <i class="fa fa-plus-square"></i>datasource
+                            </span>
                         </div>
                         <div class="col4">
                             <le-radio-list
@@ -80,7 +77,13 @@
         </le-form>
         <le-dialog title="create Store" v-model="dialog.showDialog" width="700" height="600">
             <div slot="body">
-                <StoreDialog v-if="dialog.showDialog" :store="store" :action="dialog.action" :idx="dialog.idx" ref="store" />
+                <StoreDialog
+                    v-if="dialog.showDialog"
+                    :store="store"
+                    :action="dialog.action"
+                    :idx="dialog.idx"
+                    ref="store"
+                />
             </div>
             <div slot="button">
                 <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
@@ -91,89 +94,111 @@
 </template>
 <script>
 import StoreDialog from "@pages/dialog/Store.vue";
-import { mapState,mapActions,mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
+    props: {
+        params: Object,
+        action:String
+    },
     data() {
         return {
-            model: {
-                name: "",
-                props: [],
-            },
             dialog: {
                 showDialog: false,
-                action:"create",
-                idx:null
+                action: "create",
+                idx: null,
             },
             store: {
                 name: "",
                 type: "array",
                 url: "",
                 reqType: "get",
-                isCommon:false,
+                isCommon: false,
             },
         };
     },
-    computed:{
-        ...mapState(['dataSource','pagesDatasource','currentModule'])
+    computed: {
+        ...mapState(["dataSource", "pagesDatasource", "currentModule"]),
+        model() {
+            return {
+                name:this.params.name,
+                props:this.params.props
+            };
+        },
     },
-    components:{
-        StoreDialog
+    components: {
+        StoreDialog,
     },
     methods: {
-        ...mapActions(['addModel','updateModel']),
-        clearStore(){
+        ...mapActions(["addModel", "updateModel"]),
+        clearStore() {
             this.store = {
                 name: "",
                 type: "array",
                 url: "",
                 reqType: "get",
                 isCommon: false,
-            }
+            };
         },
         add() {
             this.model.props.push({
-                type:"text",
-                label:"",
-                field:"",
-            })
+                type: "text",
+                label: "",
+                field: "",
+            });
         },
-        remove(i){
-            this.model.props.splice(i,1)
+        remove(i) {
+            this.model.props.splice(i, 1);
         },
-        showDatasource(){
+        showDatasource() {
             this.clearStore();
             this.dialog.showDialog = true;
         },
         handleSave() {
-            this.$refs.store.submit().then((res)=>{
-                this.dialog.showDialog = false;
-            }).catch(err=>{
-                console.log(err)
-                // this.dialog.showDialog = true;
-            })
+            this.$refs.store
+                .submit()
+                .then((res) => {
+                    this.dialog.showDialog = false;
+                })
+                .catch((err) => {
+                    console.log(err);
+                    // this.dialog.showDialog = true;
+                });
         },
         handleClose() {
             this.dialog.showDialog = false;
         },
-        submit(){
-            return new Promise((resolve,reject)=>{
-                this.$refs.model.validate().then(() => {
-                    if (this.action == "create") {
-                        this.addModel(this.model).then(()=>{
-                            resolve();
-                        }).catch(err=>{
-                            alert(err.msg);
-                            reject(err);
-                        })
-                    } else {
-                        this.updateModel({ data: this.model, idx: this.idx });
-                        resolve();
-                    }
-                }).catch(err=>{
-                    reject(err);
-                })
-            })
-        }
+        submit() {
+            return new Promise((resolve, reject) => {
+                this.$refs.model
+                    .validate()
+                    .then(() => {
+                        if(this.model.props.length){
+                            if (this.action == "create") {
+                                console.log(this.model);
+                                this.addModel(this.model)
+                                    .then(() => {
+                                        resolve();
+                                    })
+                                    .catch((err) => {
+                                        alert(err.msg);
+                                        reject(err);
+                                    });
+                            } else {
+                                this.updateModel({
+                                    data: this.model,
+                                    idx: this.idx,
+                                });
+                                resolve();
+                            }
+                        }else{
+                            alert("the model must have a props at least")
+                        }
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            });
+        },
     },
 };
 </script>
@@ -216,5 +241,27 @@ export default {
     height: 100%;
     border-left: 1px solid #dcdfe6;
     cursor: pointer;
+}
+.asBtn {
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid #dcdfe6;
+    color: #fff;
+    font-size: 12px !important;
+    cursor: pointer;
+    padding: 0 13px 0 22px;
+    position: relative;
+    margin: 3px;
+}
+.asBtn.remove {
+    background-color: #f4364c;
+    border-color: #f4364c;
+}
+.asBtn.create {
+    background-color: #49cfad;
+    border-color: #49cfad;
 }
 </style>
