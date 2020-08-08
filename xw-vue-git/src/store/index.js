@@ -6,22 +6,6 @@ export default {
         modules: [
 
         ],
-        modelList: [
-            // {
-            //     name: "a",
-            //     props: [
-            //         {
-            //             "label": "stype",
-            //             "type": "select",
-            //             "field": "stype",
-            //             "displayName": "name",
-            //             "displayValue": "code",
-            //             "dataSource": "stypes",
-            //             "msg": "displayValue"
-            //         }
-            //     ]
-            // }
-        ],
         existedModules: [],
         currentModule: null,
         dataSource: {
@@ -130,7 +114,8 @@ export default {
                     { name: "remove", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
                     { name: "detail", reqType: "get", isCommon:false, url: "", pageName: "", stype: 1 }
                 ],
-                Store: []
+                Store: [],
+                modelList:[]
             });
         },
         removeModules({ commit, state }, ModuleName) {
