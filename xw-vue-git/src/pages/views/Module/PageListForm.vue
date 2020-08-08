@@ -122,65 +122,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- model的配置 -->
-            <div class="configItem">
-                <div class="configItem-title">
-                    <h4 data-v-12db787f="" data-v-17f97166="" class="label">dialog</h4>
-                </div>
-                <div class="item" >
-                    <ul>
-                        <li class="clearfix" v-for="(item, idx) in page.model" :key="idx">
-                            <div>
-                                <div class="le_form_row_item">
-                                    <le-local-select label="type:" :data-source="pagesDatasource.dialogFieldType" 
-                                        display-name="name" display-value="name"
-                                        v-model="item.type">
-                                    </le-local-select>
-                                    <le-input label="label:" v-model="item.label"></le-input>
-                                    <le-input label="field:" v-model="item.field"></le-input>
-                                    <le-button class="fr" type="remove" 
-                                        value="deleteItem" @click="removeCurModelItem(item,idx)">
-                                    </le-button>
-                                </div>
-                                <div class="le_form_row_item" 
-                                    v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'">
-                                    <le-input label="displayName:" v-model="item.displayName"></le-input>
-                                    <le-input label="displayValue:" v-model="item.displayValue"></le-input>
-                                    <le-local-select label="dataSource" :data-source="dataSource.state" 
-                                        display-name="name" display-value="name" 
-                                        v-model="item.dataSource">
-                                    </le-local-select>
-                                    <le-button class="fr" type="create" value="datasource" @click="add"></le-button>
-                                </div>
-                                <div class="col4">
-                                    <le-radio-list label="on:" :data-source="pagesDatasource.dialogValidateType" 
-                                        display-name="name" display-value="code" 
-                                        v-model="item.on">
-                                    </le-radio-list>
-                                    <le-radio-list label="required:" :data-source="pagesDatasource.dialogValidateType" 
-                                        display-name="name" display-value="code" 
-                                        v-model="item.required">
-                                    </le-radio-list>
-                                    <le-input label="msg:" v-model="item.msg"></le-input>
-                                </div>
-                                <div class="clearfix le_form_row_item co2">
-                                    <le-input label="tip:" v-model="item.tip"></le-input>
-                                    <!-- <le-input label="Vtype:" v-model="item.Vtype" v-if="item.type == 'text'"></le-input> -->
-                                    <le-local-select label="Vtype" v-if="item.type == 'text'"
-                                        :data-source="pagesDatasource.vtypeList" 
-                                        display-name="name" display-value="code" 
-                                        v-model="item.Vtype">
-                                    </le-local-select>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="createBtn">
-                            <i class="addParams iconfont icon-add" @click="addModelArr"></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
             
             <!-- datasource的配置 -->
             <le-dialog title="新建dataSource" height="505" width="1000" v-model="dialog.showDialog">
