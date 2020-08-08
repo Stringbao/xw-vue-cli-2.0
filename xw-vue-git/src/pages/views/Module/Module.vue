@@ -15,85 +15,11 @@
                     :currentIndex="currentIndex"
                 >
                     <div class="card">
-                        create model
+                        <Model/>
                     </div>
                     <!-- {{module.ModuleName}} -->
                     <div class="card pagesCard">
-                        <div class="head">
-                            <h4 class="le_page_name" style="text-align:center;">Pages Management</h4>
-                            <button class="tab_add" @click="createPage">
-                                <span role="img" class="actions_add">
-                                    <i class="iconfont icon-add"></i>
-                                </span>
-                            </button>
-                        </div>
-
-                        <table class="le_table_container">
-                            <thead>
-                                <tr>
-                                    <th>PageName</th>
-                                    <th>PageTitle</th>
-                                    <th>PageType</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item,idx) in module.Pages" :key="idx">
-                                    <td>{{item.pageName}}</td>
-                                    <td>{{item.pageTitle}}</td>
-                                    <td>{{item.type}}</td>
-                                    <td>
-                                        <le-button
-                                            type="update"
-                                            value="modify"
-                                            @click="modifyPageHandle(item,idx)"
-                                        ></le-button>
-                                        <le-button
-                                            type="remove"
-                                            value="delete"
-                                            @click="removePageHandle(item,idx)"
-                                        ></le-button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <le-dialog
-                            :title="pageDialog.title"
-                            v-model="pageDialog.showDialog"
-                            width="1100"
-                            height="600"
-                        >
-                            <div slot="body">
-                                <le-local-select
-                                    label="页面类型:"
-                                    class="pagesType"
-                                    :data-source="pageTypes"
-                                    display-name="name"
-                                    display-value="code"
-                                    :readonly="isEditPages"
-                                    @change="changePageType"
-                                    v-model="pageType"
-                                ></le-local-select>
-                                <div>
-                                    <component
-                                        v-if="pageDialog.showDialog"
-                                        ref="pageDialog"
-                                        :dataSource="module.Store"
-                                        :action="pageDialog.action"
-                                        :is="pageDialog.component"
-                                        :page="pageDialog.params"
-                                        :idx="pageDialog.idx"
-                                        @closePageDialog="closePagesDialogs"
-                                    ></component>
-                                </div>
-                            </div>
-                            <div slot="button">
-                                <div class="le_new_page_btn_group">
-                                    <le-button value="返回" type="back" @click="closePagesDialogs"></le-button>
-                                    <le-button value="确定" type="save" @click="handleSavePages"></le-button>
-                                </div>
-                            </div>
-                        </le-dialog>
+                        <Page :module="module"></Page>
                     </div>
                     <div class="card">
                         <Service :sevices="module.Services"></Service>
@@ -125,11 +51,11 @@
     </div>
 </template>
 <script>
+import Model from "@pages/views/Module/Model.vue";
 import Tab from "@pages/components/tab/Tab.vue";
 import TabPane from "@pages/components/tab/TabPane.vue";
-import PageListForm from "@pages/views/Module/PageListForm.vue";
-import PageSaveForm from "@pages/views/Module/PageSaveForm.vue";
-import StoreForm from "./StoreForm.vue";
+import Page from "./Page.vue"
+import StoreForm from "./Store.vue";
 import Service from "./Service.vue";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -138,46 +64,9 @@ export default {
             dialog: {
                 showDialog: false,
             },
-            pageDialog: {
-                showDialog: false,
-                title: "",
-                params: null,
-                component: PageListForm,
-                action: "",
-                type: "",
-                idx: null,
-            },
-            pageModel: {
-                pageName: "",
-                type: "list",
-                pageTitle: "",
-                config: {
-                    searchModel: [],
-                    table: {
-                        url: "",
-                        showCK:"",
-                        page: {
-                            pageSize: "",
-                            currentPage: "",
-                        },
-                        map: [],
-                    },
-                    toolbar:[]
-                },
-                model: [],
-            },
-            pageSaveModel: {
-                pageName: "",
-                type: "save",
-                model: [],
-            },
+           
             moduleName: "",
-            pageType: "list",
-            pageTypes: [
-                { name: "list", code: "list" },
-                { name: "save", code: "save" },
-            ],
-            isEditPages: false,
+           
         };
     },
     computed: {
@@ -186,10 +75,10 @@ export default {
     components: {
         Tab,
         TabPane,
-        PageListForm,
-        PageSaveForm,
+        Page,
         StoreForm,
         Service,
+        Model
     },
     methods: {
         ...mapActions([
@@ -245,85 +134,7 @@ export default {
             this.moduleName = "";
         },
 
-        //添加page的操作
-        createPage() {
-            this.clearPage();
-            this.pageDialog.params = this.pageModel;
-            this.pageDialog.showDialog = true;
-            this.pageDialog.action = "create";
-            this.pageDialog.title = "create";
-            this.isEditPages = false;
-        },
-        clearPage() {
-            this.pageDialog.params = null;
-            this.pageDialog.showDialog = true;
-        },
-        clearPageModel() {
-            this.pageModel = {
-                pageName: "",
-                type: "list",
-                pageTitle: "",
-                config: {
-                    searchModel: [],
-                    table: {
-                        url: "",
-                        showCK:"",
-                        page: {
-                            pageSize: "",
-                            currentPage: "",
-                        },
-                        map: [],
-                    },
-                    toolbar:[]
-                },
-                model: [],
-            };
-        },
-        clearSavePageModel() {
-            this.pageSaveModel = {
-                pageName: "",
-                type: "save",
-                model: [],
-            };
-        },
-        modifyPageHandle(data, idx) {
-            this.pageDialog.showDialog = true;
-            this.pageType = data.type;
-            this.changePageType();
-            this.pageDialog.params = { ...data };
-            this.pageDialog.action = "edit";
-            this.pageDialog.title = "edit";
-            this.pageDialog.idx = idx;
-        },
-        removePageHandle(data) {
-            this.removePages(data);
-        },
-        //关闭dialog
-        closePagesDialogs(val) {
-            if (this.pageType == "list") {
-                this.clearPageModel();
-            } else {
-                this.clearSavePageModel();
-            }
-            this.pageDialog.showDialog = false;
-        },
-        handleSavePages() {
-            this.$refs.pageDialog[0].save();
-            console.log(this.pageModel)
-            console.log(this.pageSaveModel)
-        },
-        changePageType() {
-            if (this.pageType == "list") {
-                this.pageDialog.params = this.pageModel;
-                this.pageDialog.component = "PageListForm";
-            } else {
-                this.pageDialog.params = this.pageSaveModel;
-                this.pageDialog.component = "PageSaveForm";
-            }
-
-            this.pageDialog.type = this.pageType;
-        },
-    },
+    }
 };
 </script>
 

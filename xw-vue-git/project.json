@@ -103,68 +103,85 @@
                 "reqType":"post",
                 "url": "/api/getRoleTypes",
                 "stype":"1",
-                "pageName":"list.vue"
+                "pageName":"list.vue",
+                "isCommon": false
             },
             {
                 "name":"update",
                 "reqType":"post",
                 "url": "",
                 "stype":"1",
-                "pageName":"list.vue"
+                "pageName":"list.vue",
+                "isCommon": false
             },
             {
                 "name":"remove",
                 "reqType":"post",
                 "url": "/api/getRoleTypes",
                 "stype":"1",
-                "pageName":"list.vue"
+                "pageName":"list.vue",
+                "isCommon": false
             },
             {
                 "name":"detail",
                 "reqType":"get",
                 "url": "/api/getRoleTypes",
                 "stype":"1",
-                "pageName":"list.vue"
+                "pageName":"list.vue",
+                "isCommon": false
             },
             {
                 "name":"list",
                 "reqType":"post",
                 "url": "/api/getRoleTypes",
                 "stype":"1",
-                "pageName":"list.vue"
+                "pageName":"list.vue",
+                "isCommon": false
             },
             {
                 "name":"querySubItems",
                 "reqType":"post",
                 "url": "/api/getSubItems",
                 "stype":"2",
-                "pageName":"list.vue"
+                "pageName":"list.vue",
+                "isCommon": false
             }
         ],
-        "Store": {
-            "state": [
+        "Store": [
                 {
                     "name": "salesRoute",
                     "type": "array",
-                    "url": "/api/getRoleTypes"
+                    "url": "/api/getRoleTypes",
+                    "isCommon": false
                 },
                 {
                     "name": "salesRoute_A",
                     "type": "array",
                     "reqType":"post",
-                    "url": "/api/getRoleTypes"
+                    "url": "/api/getRoleTypes",
+                    "isCommon": false
                 },
                 {
                     "name": "salesRoute_B",
                     "type": "enum",
-                    "url": "KEYS.SALES.ACTION_LIST"
+                    "url": "KEYS.SALES.ACTION_LIST",
+                    "isCommon": false
                 },
                 {
                     "name": "salesRoute_C",
                     "type": "enum",
-                    "url": "KEYS.SALES.ACTION_List_C"
+                    "url": "KEYS.SALES.ACTION_List_C",
+                    "isCommon": false
                 }
-            ]
-        }
+        ],
+        "commonStore": [
+            {
+                "name": "stypes",
+                "type": "array",
+                "reqType": "get",
+                "url": "/api/stypes",
+                "isCommon": true
+            }
+        ]
     }]
 }

@@ -6,11 +6,28 @@ export default {
         modules:[
 
         ],
+        modelList:[
+            {
+                name:"a",
+                props:[
+                     {
+                                    "label": "stype",
+                                    "type": "select",
+                                    "field": "stype",
+                                    "displayName": "name",
+                                    "displayValue": "code",
+                                    "dataSource": "stypes",
+                                    "msg": "displayValue"
+                                }	
+                ]
+            }
+        ],
         existedModules:[],
         currentModule:null,
         dataSource:{
             storeType:Enum.storeType,
-            requestType:Enum.requestType
+            requestType:Enum.requestType,
+            isCommon:Enum.isCommon
         },
         pagesDatasource:{
             searchModelTypes:Enum.searchModelTypes,
@@ -55,6 +72,9 @@ export default {
                 alert("the page name is unique,this page name is exist");
                 return;
             }
+        },
+        removePages(state,data){
+            state.currentModule.Pages.splice(data,1)
         },
         updatePages(state,data){
             state.currentModule.Pages[data.idx] = data.page
@@ -116,6 +136,9 @@ export default {
 
         addPages({commit,state},data){
             commit("addPages",data)
+        },
+        removePages({commit,state},data){
+            commit("removePages",data)
         },
         updatePages({commit,state},data){
             commit("updatePages",data)

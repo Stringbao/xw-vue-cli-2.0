@@ -14,6 +14,7 @@
                     <tr>
                         <th>URL Name</th>
                         <th>RequestType</th>
+                        <th>isCommon</th>
                         <th>URL</th>
                         <th>PageName</th>
                         <th>stype</th>
@@ -24,6 +25,7 @@
                     <tr v-for="(item,idx) in sevices" :key="idx">
                         <td>{{item.name}}</td>
                         <td>{{item.reqType}}</td>
+                        <td>{{item.isCommon}}</td>
                         <td>{{item.url}}</td>
                         <td>{{item.pageName}}</td>
                         <td>{{item.stype}}</td>
@@ -75,6 +77,7 @@ export default {
                 name: "",
                 url: "",
                 reqType: "get",
+                isCommon:false,
                 pageName:"",
                 stype:"",
             },
@@ -111,6 +114,7 @@ export default {
             let service = {
                 name:this.dialog.params.name,
                 reqType:this.dialog.params.reqType,
+                isCommon:this.dialog.params.isCommon,
                 url:this.dialog.params.url,
                 pageName:this.dialog.params.pageName,
                 stype:this.dialog.params.stype
@@ -130,6 +134,7 @@ export default {
                 name: "",
                 url: "",
                 reqType: "get",
+                isCommon: false,
                 pageName:"",
                 stype:"",
             }

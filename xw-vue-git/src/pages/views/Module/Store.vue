@@ -16,6 +16,7 @@
                         <th>type</th>
                         <th>url</th>
                         <th>Request Type</th>
+                        <th>isCommon</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -25,6 +26,7 @@
                         <td>{{item.type}}</td>
                         <td>{{item.url}}</td>
                         <td>{{item.reqType}}</td>
+                        <td>{{item.isCommon}}</td>
                         <td>
                             <le-button type="update" value="modify" @click="update(item,idx)"></le-button>
                             <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
@@ -72,6 +74,7 @@ export default {
                 type: "array",
                 url: "",
                 reqType: "get",
+                isCommon:false,
             },
         };
     },
@@ -86,6 +89,7 @@ export default {
                 type: "array",
                 url: "",
                 reqType: "get",
+                isCommon: false,
             }
         },
         add() {

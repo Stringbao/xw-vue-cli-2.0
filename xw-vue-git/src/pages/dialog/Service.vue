@@ -3,29 +3,32 @@
         <div slot="body">
             <le-form ref="servicesForm" v-if="params">
                 <le-input on required :readonly="params.stype == 1" label="name:" v-model="params.name"></le-input>
-                <div class="form-item">
-                    <le-radio-list
-                        on
-                        required
-                        msg="please select RequestType"
-                        label="type:"
-                        :data-source="dataSource.requestType"
-                        display-name="name"
-                        display-value="code"
-                        v-model="params.reqType"
-                    ></le-radio-list>
-                </div>
-                <div class="form-item">
-                    <le-local-select
-                        msg="please select pageName"
-                        label="pageName:"
-                        multiple
-                        :data-source="currentModule.Pages"
-                        display-name="pageName"
-                        display-value="pageName"
-                        v-model="params.pageName"
-                    ></le-local-select>
-                </div>
+                <le-radio-list
+                    on
+                    required
+                    msg="please select RequestType"
+                    label="type:"
+                    :data-source="dataSource.requestType"
+                    display-name="name"
+                    display-value="code"
+                    v-model="params.reqType"
+                ></le-radio-list>
+                <le-radio-list
+                    label="isCommon:"
+                    :data-source="dataSource.isCommon"
+                    display-name="name"
+                    display-value="code"
+                    v-model="params.isCommon"
+                ></le-radio-list>
+                <le-local-select
+                    msg="please select pageName"
+                    label="pageName:"
+                    multiple
+                    :data-source="currentModule.Pages"
+                    display-name="pageName"
+                    display-value="pageName"
+                    v-model="params.pageName"
+                ></le-local-select>
                 <le-input on required label="url:" v-model="params.url"></le-input>
             </le-form>
         </div>
