@@ -6,22 +6,6 @@ export default {
         modules: [
 
         ],
-        modelList: [
-            // {
-            //     name: "a",
-            //     props: [
-            //         {
-            //             "label": "stype",
-            //             "type": "select",
-            //             "field": "stype",
-            //             "displayName": "name",
-            //             "displayValue": "code",
-            //             "dataSource": "stypes",
-            //             "msg": "displayValue"
-            //         }
-            //     ]
-            // }
-        ],
         existedModules: [],
         currentModule: null,
         dataSource: {
@@ -89,6 +73,16 @@ export default {
         updateStore(state, data) {
             state.currentModule.Store[data.idx] = data.data;
         },
+
+        addModel(state, data) {
+            state.modelList.push(data);
+        },
+        removeModel(state, data) {
+            state.modelList.splice(data, 1)
+        },
+        updateModel(state, data) {
+            state.modelList[data.idx] = data.data;
+        },
         //创建services
         addService(state, data) {
             let idx = state.currentModule.Services.findIndex(item => item.name == data.name && item.reqType == data.reqType);
@@ -115,12 +109,13 @@ export default {
                 ModuleName: ModuleName,
                 Pages: [],
                 Services: [
-                    { name: "create", reqType: "post", url: "", pageName: "", stype: 1 },
-                    { name: "update", reqType: "post", url: "", pageName: "", stype: 1 },
-                    { name: "remove", reqType: "post", url: "", pageName: "", stype: 1 },
-                    { name: "detail", reqType: "get", url: "", pageName: "", stype: 1 }
+                    { name: "create", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
+                    { name: "update", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
+                    { name: "remove", reqType: "post", isCommon:false, url: "", pageName: "", stype: 1 },
+                    { name: "detail", reqType: "get", isCommon:false, url: "", pageName: "", stype: 1 }
                 ],
-                Store: []
+                Store: [],
+                modelList:[]
             });
         },
         removeModules({ commit, state }, ModuleName) {
@@ -139,6 +134,24 @@ export default {
         updatePages({ commit, state }, data) {
             commit("updatePages", data)
         },
+
+        addModel({ commit, state }, data) {
+            let idx = state.modelList.findIndex(item => item.name == data.name);
+            if (idx < 0) {
+                commit("addModel", data);
+                return Promise.resolve();
+            } else {
+                return Promise.reject({ msg: "there had been exited a same model" });
+            }
+        },
+        updateModel({ commit, state }, data) {
+            commit("updateModel", data);
+            return Promise.resolve();
+        },
+        removeModel({ commit, state }, data) {
+            commit("removeModel", data);
+        },
+
         addStore({ commit, state }, data) {
             let idx = state.currentModule.Store.findIndex(item => item.name == data.name);
             if (idx < 0) {

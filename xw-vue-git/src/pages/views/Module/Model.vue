@@ -67,7 +67,9 @@ export default {
         },
         update() {},
         del() {},
-        handleSave(){},
+        handleSave(){
+            
+        },
         handleClose(){
             this.dialog.showDialog = false
         }

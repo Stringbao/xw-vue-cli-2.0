@@ -41,7 +41,7 @@
                                 <div class="le_form_row_item" v-if="item.type == 'select' || item.type == 'checkboxList' || item.type=='radioList'">
                                     <le-input label="displayName:" v-model="item.displayName"></le-input>
                                     <le-input label="displayValue:" v-model="item.displayValue"></le-input>
-                                    <le-local-select label="dataSource:" :data-source="dataSource.state" 
+                                    <le-local-select label="dataSource:" :data-source="dataSource" 
                                         display-name="name" display-value="name" 
                                         v-model="item.dataSource">
                                     </le-local-select>
@@ -129,7 +129,7 @@ export default {
             type : Object
         },
         dataSource : {
-            type : Object
+            type : Array
         },
         idx : {
             type : Number
