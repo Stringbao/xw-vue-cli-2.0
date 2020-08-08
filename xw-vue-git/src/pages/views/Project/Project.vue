@@ -48,7 +48,7 @@ export default {
         return {};
     },
     computed: {
-        ...mapState(["modules", "project", "existedModules"])
+        ...mapState(["modules", "project", "existedModules"]),
     },
     methods: {
         publish() {
@@ -58,17 +58,22 @@ export default {
             } else {
                 url = "/v2API/comp/create";
             }
+            console.log(
+                this.existedModules.concat(
+                    this.modules.filter((item) => item.Pages.length)
+                )
+            );
             Ajax.post(url, {
                 Project: this.project,
                 Modules: this.existedModules.concat(
-                    this.modules.filter(item => item.Pages.length)
-                )
-            }).then(res => {
+                    this.modules.filter((item) => item.Pages.length)
+                ),
+            }).then((res) => {
                 alert(res.msg);
             });
-        }
+        },
     },
-    mounted() {}
+    mounted() {},
 };
 </script>
 <style lang="scss" scoped>

@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody >
-                    <tr v-for="(item,idx) in stores" :key="idx">
+                    <tr v-for="(item,idx) in stores" :key="item.name">
                         <td>{{item.name}}</td>
                         <td>{{item.type}}</td>
                         <td>{{item.url}}</td>
@@ -99,7 +99,7 @@ export default {
         },
         del(item, idx) {
             this.alert.showConfirm("Are you sure you want to do this?", () => {
-                this.removeStore(idx);
+                this.removeStore({idx,...item});
             });
         },
         update(item, idx) {

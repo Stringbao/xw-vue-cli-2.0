@@ -24,7 +24,7 @@
                         <Service :sevices="module.Services"></Service>
                     </div>
                     <div class="card">
-                        <storeForm :stores="module.Store"></storeForm>
+                        <storeForm :stores="module.Store.concat(commonStore)"></storeForm>
                     </div>
                 </TabPane>
             </template>
@@ -68,7 +68,7 @@ export default {
         };
     },
     computed: {
-        ...mapState(["modules", "currentModule", "existedModules"]),
+        ...mapState(["modules", "currentModule", "existedModules","commonStore"]),
     },
     components: {
         Tab,

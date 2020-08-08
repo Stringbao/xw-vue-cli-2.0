@@ -22,7 +22,8 @@ export default {
             dialogValidateType: Enum.dialogValidateType,
             dataSourceType: Enum.dataSourceType,
             dataSourceReqType: Enum.dataSourceReqType,
-        }
+        },
+        commonStore:[]
     },
     mutations: {
         addModules(state, data) {
@@ -65,13 +66,28 @@ export default {
         },
         //创建stores
         addStore(state, data) {
-            state.currentModule.Store.push(data);
+            if(data.isCommon){
+                state.commonStore.push(data)
+            }else{
+                state.currentModule.Store.push(data);
+            }
+
         },
         removeStore(state, data) {
-            state.currentModule.Store.splice(data, 1)
+            if(data.isCommon){
+                let i = data.idx - state.currentModule.Store.length;
+                state.commonStore.splice(i, 1)
+            }else{
+                state.currentModule.Store.splice(data.idx, 1)
+            }
         },
         updateStore(state, data) {
-            state.currentModule.Store[data.idx] = data.data;
+            if(data.isCommon){
+                let i = data.idx - state.currentModule.Store.length;
+                state.commonStore[i] = data.data;
+            }else{
+                state.currentModule.Store[data.idx] = data.data;
+            }
         },
 
         addModel(state, data) {
@@ -153,7 +169,7 @@ export default {
         },
 
         addStore({ commit, state }, data) {
-            let idx = state.currentModule.Store.findIndex(item => item.name == data.name);
+            let idx = state.currentModule.Store.concat(state.commonStore).findIndex(item => item.name == data.name);
             if (idx < 0) {
                 commit("addStore", data);
                 return Promise.resolve();

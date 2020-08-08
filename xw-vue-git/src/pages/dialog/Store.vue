@@ -50,7 +50,6 @@ export default {
         submit() {
             return new Promise((resolve,reject)=>{
                 this.$refs.store.validate().then(() => {
-                    console.log(this.action)
                     if (this.action == "create") {
                         this.addStore(this.store).then(()=>{
                             resolve();
