@@ -48,7 +48,7 @@ export default {
         return {};
     },
     computed: {
-        ...mapState(["modules", "project", "existedModules"]),
+        ...mapState(["modules", "project", "existedModules","commonStore"]),
     },
     methods: {
         publish() {
