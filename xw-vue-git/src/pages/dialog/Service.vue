@@ -26,7 +26,7 @@
                     :data-source="currentModule.modelList"
                     display-name="name"
                     display-value="name"
-                    v-model="params.mode"
+                    v-model="params.model"
                 ></le-local-select>
                 <le-input on required label="url:" v-model="params.url"></le-input>
             </le-form>

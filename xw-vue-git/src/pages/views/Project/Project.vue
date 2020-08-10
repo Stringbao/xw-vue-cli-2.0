@@ -68,6 +68,7 @@ export default {
                 Modules: this.existedModules.concat(
                     this.modules.filter((item) => item.Pages.length)
                 ),
+                commonStore:this.commonStore
             }).then((res) => {
                 alert(res.msg);
             });

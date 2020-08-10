@@ -97,6 +97,7 @@ export default {
         },
         uploadModules(el) {
             let file = el.target.files[0];
+            console.log(file);
             if (file.type === "application/json") {
                 Ajax.upload("/v2API/comp/upload", { file: file })
                     .then((res) => {

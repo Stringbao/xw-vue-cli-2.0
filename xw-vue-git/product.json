@@ -1,0 +1,391 @@
+{
+    "Project": "",
+    "Modules": [
+        {
+            "ModuleName": "test1",
+            "Pages": [
+                {
+                    "pageName": "list.vue",
+                    "type": "list",
+                    "pageTitle": "testa",
+                    "config": {
+                        "searchModel": [
+                            {
+                                "label": "name",
+                                "type": "text",
+                                "field": "name"
+                            },
+                            {
+                                "label": "sex",
+                                "type": "select",
+                                "field": "sex",
+                                "displayName": "name",
+                                "displayValue": "code",
+                                "dataSource": "getSex"
+                            },
+                            {
+                                "label": "hobby",
+                                "type": "select",
+                                "field": "hobby",
+                                "displayName": "name",
+                                "displayValue": "code",
+                                "dataSource": "getHobby"
+                            }
+                        ],
+                        "table": {
+                            "url": "/getlist",
+                            "showCK": "",
+                            "page": {
+                                "pageSize": "pageSize",
+                                "currentPage": "pageNumber"
+                            },
+                            "map": [
+                                {
+                                    "key": "id",
+                                    "val": "id"
+                                },
+                                {
+                                    "key": "name",
+                                    "val": "name"
+                                },
+                                {
+                                    "key": "sex",
+                                    "val": "sex"
+                                },
+                                {
+                                    "key": "hobby",
+                                    "val": "hobby"
+                                }
+                            ]
+                        },
+                        "toolbar": []
+                    },
+                    "model": "a",
+                    "hasDialog": true
+                },
+                {
+                    "pageName": "model2list.vue",
+                    "type": "list",
+                    "pageTitle": "model2list",
+                    "config": {
+                        "searchModel": [
+                            {
+                                "label": "sex",
+                                "type": "select",
+                                "field": "sex",
+                                "dataSource": "getSex",
+                                "displayValue": "code",
+                                "displayName": "name"
+                            },
+                            {
+                                "label": "a2",
+                                "type": "select",
+                                "field": "a2",
+                                "displayName": "name",
+                                "displayValue": "code",
+                                "dataSource": "getA2"
+                            }
+                        ],
+                        "table": {
+                            "url": "",
+                            "showCK": "",
+                            "page": {
+                                "pageSize": "",
+                                "currentPage": ""
+                            },
+                            "map": []
+                        },
+                        "toolbar": []
+                    },
+                    "model": "model2",
+                    "hasDialog": false
+                },
+                {
+                    "pageName": "model2Save.vue",
+                    "type": "save",
+                    "model": "model2",
+                    "hasDialog": false
+                }
+            ],
+            "Services": [
+                {
+                    "name": "create",
+                    "reqType": "post",
+                    "isCommon": false,
+                    "url": "/create",
+                    "model": "a",
+                    "stype": 1
+                },
+                {
+                    "name": "update",
+                    "reqType": "post",
+                    "isCommon": false,
+                    "url": "/update",
+                    "model": "a",
+                    "stype": 1
+                },
+                {
+                    "name": "remove",
+                    "reqType": "post",
+                    "isCommon": false,
+                    "url": "/remove",
+                    "model": "a",
+                    "stype": 1
+                },
+                {
+                    "name": "detail",
+                    "reqType": "get",
+                    "isCommon": false,
+                    "url": "/detail",
+                    "model": "a",
+                    "stype": 1
+                }
+            ],
+            "Store": [
+                {
+                    "name": "getA2",
+                    "type": "array",
+                    "url": "/getA2",
+                    "reqType": "get",
+                    "isCommon": false
+                },
+                {
+                    "name": "getB2",
+                    "type": "array",
+                    "url": "/getB2",
+                    "reqType": "get",
+                    "isCommon": false
+                }
+            ],
+            "modelList": [
+                {
+                    "name": "a",
+                    "props": [
+                        {
+                            "type": "text",
+                            "label": "a1",
+                            "field": "a1",
+                            "on": true,
+                            "required": true
+                        },
+                        {
+                            "type": "select",
+                            "label": "a2",
+                            "field": "a2",
+                            "dataSource": "getA2",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "on": true,
+                            "required": true
+                        },
+                        {
+                            "type": "select",
+                            "label": "sex",
+                            "field": "sex",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "dataSource": "getSex"
+                        },
+                        {
+                            "type": "select",
+                            "label": "hobby",
+                            "field": "hobby",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "dataSource": "getHobby"
+                        }
+                    ]
+                },
+                {
+                    "name": "model2",
+                    "props": [
+                        {
+                            "type": "select",
+                            "label": "sex",
+                            "field": "sex",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "dataSource": "getSex"
+                        },
+                        {
+                            "type": "select",
+                            "label": "a2",
+                            "field": "a2",
+                            "dataSource": "getA2",
+                            "displayName": "name",
+                            "displayValue": "code"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "ModuleName": "test2",
+            "Pages": [
+                {
+                    "pageName": "list.vue",
+                    "type": "list",
+                    "pageTitle": "test2List",
+                    "config": {
+                        "searchModel": [
+                            {
+                                "label": "sex",
+                                "type": "select",
+                                "field": "sex",
+                                "displayName": "name",
+                                "displayValue": "code",
+                                "dataSource": "getSex"
+                            },
+                            {
+                                "label": "b2",
+                                "type": "select",
+                                "field": "b2",
+                                "displayName": "name",
+                                "displayValue": "code",
+                                "dataSource": "getB2"
+                            },
+                            {
+                                "label": "hobby",
+                                "type": "select",
+                                "field": "hobby",
+                                "displayName": "name",
+                                "displayValue": "code",
+                                "dataSource": "getHobby"
+                            }
+                        ],
+                        "table": {
+                            "url": "/tablelist",
+                            "showCK": "",
+                            "page": {
+                                "pageSize": "pageSize",
+                                "currentPage": "pageNumber"
+                            },
+                            "map": [
+                                {
+                                    "key": "sex",
+                                    "val": "sex"
+                                },
+                                {
+                                    "key": "hobby",
+                                    "val": "hobby"
+                                },
+                                {
+                                    "key": "b2",
+                                    "val": "b2"
+                                }
+                            ]
+                        },
+                        "toolbar": []
+                    },
+                    "model": "b",
+                    "hasDialog": false
+                },
+                {
+                    "pageName": "save.vue",
+                    "type": "save",
+                    "model": "b",
+                    "hasDialog": false
+                }
+            ],
+            "Services": [
+                {
+                    "name": "create",
+                    "reqType": "post",
+                    "isCommon": false,
+                    "url": "/create",
+                    "model": "b",
+                    "stype": 1
+                },
+                {
+                    "name": "update",
+                    "reqType": "post",
+                    "isCommon": false,
+                    "url": "/update",
+                    "model": "b",
+                    "stype": 1
+                },
+                {
+                    "name": "remove",
+                    "reqType": "post",
+                    "isCommon": false,
+                    "url": "/remove",
+                    "model": "b",
+                    "stype": 1
+                },
+                {
+                    "name": "detail",
+                    "reqType": "get",
+                    "isCommon": false,
+                    "url": "/detail",
+                    "model": "b",
+                    "stype": 1
+                }
+            ],
+            "Store": [
+                {
+                    "name": "getB2",
+                    "type": "array",
+                    "url": "/getB2",
+                    "reqType": "get",
+                    "isCommon": false
+                }
+            ],
+            "modelList": [
+                {
+                    "name": "b",
+                    "props": [
+                        {
+                            "type": "text",
+                            "label": "b1",
+                            "field": "b1",
+                            "on": true,
+                            "required": true
+                        },
+                        {
+                            "type": "select",
+                            "label": "sex",
+                            "field": "sex",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "dataSource": "getSex"
+                        },
+                        {
+                            "type": "select",
+                            "label": "hobby",
+                            "field": "hobby",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "dataSource": "getHobby"
+                        },
+                        {
+                            "type": "select",
+                            "label": "b2",
+                            "field": "b2",
+                            "displayName": "name",
+                            "displayValue": "code",
+                            "dataSource": "getB2",
+                            "on": true,
+                            "required": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "commonStore": [
+        {
+            "name": "getSex",
+            "type": "array",
+            "url": "/getSex",
+            "reqType": "get",
+            "isCommon": true
+        },
+        {
+            "name": "getHobby",
+            "type": "array",
+            "url": "/getHobby",
+            "reqType": "get",
+            "isCommon": true
+        }
+    ]
+}
