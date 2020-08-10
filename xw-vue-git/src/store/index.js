@@ -50,13 +50,7 @@ export default {
         },
         //创建page
         addPages(state, data) {
-            let idx = state.currentModule.Pages.findIndex(item => item.pageName == data.pageName);
-            if (idx < 0) {
-                state.currentModule.Pages.push(data)
-            } else {
-                alert("the page name is unique,this page name is exist");
-                return;
-            }
+            state.currentModule.Pages.push(data);
         },
         removePages(state, data) {
             state.currentModule.Pages.splice(data, 1)
@@ -140,15 +134,31 @@ export default {
         changeModules({ commit, state }, module) {
             commit("changeModules", module)
         },
-
         addPages({ commit, state }, data) {
-            commit("addPages", data)
+            let idx = state.currentModule.Pages.findIndex(item => item.pageName == data.pageName);
+            if (idx < 0) {
+                commit("addPages", data);
+                return Promise.resolve();
+            } else {
+                return Promise.reject({ msg: "there had been exited a same page name" });
+            }
         },
         removePages({ commit, state }, data) {
             commit("removePages", data)
         },
         updatePages({ commit, state }, data) {
-            commit("updatePages", data)
+            let res = true;
+            state.currentModule.Pages.forEach((item,idx) => {
+                if(item.pageName == data.page.pageName && idx !== data.idx){
+                    res = false;
+                };
+            });
+            if(res){
+                commit("updatePages", data)
+                return Promise.resolve();
+            }else{
+                return Promise.reject({ msg: "there had been exited a same page name" });
+            }
         },
 
         addModel({ commit, state }, data) {

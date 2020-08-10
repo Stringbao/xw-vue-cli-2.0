@@ -2,6 +2,7 @@
     <le-form labelWidth='100' ref="saveForm">
         <div>
             <le-radio-list 
+                readonly
                 label="hasDialog" 
                 :data-source="hasDialog" display-name="name" display-value="code" 
                 v-model="page.hasDialog">
@@ -76,11 +77,18 @@ export default {
                     if(reg.test(that.page.pageName)){
                         that.page.pageName.replace(/\s/, "");
                         if(that.action == "create"){ 
-                            that.addPages(that.page);  
+                            that.addPages(that.page).then(re=>{
+                                that.$emit("closePageDialog");
+                            }).catch(error=>{
+                                that.alert.showAlert("error",error.msg)
+                            })  
                         }else{
-                            that.updatePages({page:that.page,idx:that.idx});
+                            that.updatePages({page:that.page,idx:that.idx}).then(res=>{
+                                that.$emit("closePageDialog");
+                            }).catch(error=>{
+                                that.alert.showAlert("error",error.msg)
+                            })
                         };
-                        this.$emit("closePageDialog");
                     }else{
                         that.alert.showAlert("error","页面名称必须以.vue结尾");
                     };

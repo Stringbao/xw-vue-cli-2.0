@@ -82,8 +82,8 @@
 </template>
 
 <script>
-import PageListForm from "@pages/views/Module/PageListForm.vue";
-import PageSaveForm from "@pages/views/Module/PageSaveForm.vue";
+import PageListForm from "@pages/dialog/PageListForm.vue";
+import PageSaveForm from "@pages/dialog/PageSaveForm.vue";
 
 import { mapState, mapActions } from "vuex";
 export default {
@@ -121,13 +121,13 @@ export default {
                     toolbar:[]
                 },
                 model: [],
-                hasDialog:""
+                hasDialog:false
             },
             pageSaveModel: {
                 pageName: "",
                 type: "save",
                 model: [],
-                hasDialog:""
+                hasDialog:false
             },
             pageType: "list",
             pageTypes: [
@@ -180,7 +180,7 @@ export default {
                     toolbar:[]
                 },
                 model: [],
-                hasDialog:"",
+                hasDialog:false,
             };
         },
         clearSavePageModel() {
@@ -188,7 +188,7 @@ export default {
                 pageName: "",
                 type: "save",
                 model: [],
-                hasDialog:""
+                hasDialog:false
             };
         },
         modifyPageHandle(data, idx) {
@@ -214,8 +214,6 @@ export default {
         },
         handleSavePages() {
             this.$refs.pageDialog.save();
-            console.log(this.pageModel)
-            console.log(this.pageSaveModel)
         },
         changePageType() {
             if (this.pageType == "list") {

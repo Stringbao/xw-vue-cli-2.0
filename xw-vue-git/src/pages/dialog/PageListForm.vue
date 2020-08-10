@@ -139,7 +139,7 @@
 <script>
 import Util from "@util/util.js";
 import { mapState, mapActions, mapMutations } from "vuex";
-import StoreDialog from "@pages/dialog/Store.vue";
+import StoreDialog from "./Store.vue";
 export default {
     data(){
         return {
@@ -237,6 +237,7 @@ export default {
         },
         save(){
             let that = this;
+            debugger
             let res = this.$refs.saveForm.validate()
                 .then(res=>{
                     that.page.type = "list";
@@ -244,11 +245,19 @@ export default {
                     if(reg.test(that.page.pageName)){
                         that.page.pageName.replace(/\s/, "");
                         if(that.action == "create"){ 
-                            that.addPages(that.page);  
+                            that.addPages(that.page).then(res=>{
+                                that.$emit("closePageDialog");
+                            }).catch(error=>{
+                                that.alert.showAlert("error",error.msg)
+                            })  
                         }else{
-                            that.updatePages({page:that.page,idx:that.idx});
-                        }
-                        this.$emit("closePageDialog");
+                            debugger
+                            that.updatePages({page:that.page,idx:that.idx}).then(res=>{
+                                that.$emit("closePageDialog");
+                            }).catch(error=>{
+                                that.alert.showAlert("error",error.msg)
+                            })
+                        };
                     }else{
                         that.alert.showAlert("error","页面名称必须以.vue结尾");
                     };
