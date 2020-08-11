@@ -24,7 +24,7 @@
                         <Service :sevices="module.Services"></Service>
                     </div>
                     <div class="card">
-                        <storeForm :stores="module.Store.concat(commonStore)"></storeForm>
+                        <storeForm :index="i" :stores="[...module.Store, ...commonStore]"></storeForm>
                     </div>
                 </TabPane>
             </template>
@@ -66,6 +66,11 @@ export default {
            
             moduleName: "",
         };
+    },
+    watch: {
+        modules() {
+           console.log(this.modules) 
+        }
     },
     computed: {
         ...mapState(["modules", "currentModule", "existedModules","commonStore"]),

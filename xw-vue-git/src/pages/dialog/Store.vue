@@ -39,10 +39,11 @@ export default {
         store: Object,
         action: String,
         idx: Number,
+        index: Number
     },
     data() {
         return {
-            showType: true,
+            showType: true
         };
     },
     methods: {
@@ -58,10 +59,12 @@ export default {
                             reject(err);
                         })
                     } else {
-                        this.updateStore({ data: this.store, idx: this.idx });
-                        resolve();
+                        this.updateStore({ data: this.store, idx: this.idx, index: this.index }).then(res=>{
+                            resolve();
+                        })
                     }
                 }).catch(err=>{
+                    console.log(err)
                     reject(err);
                 })
             })

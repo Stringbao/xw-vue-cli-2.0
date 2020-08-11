@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody >
-                    <tr v-for="(item,idx) in stores" :key="item.name">
+                    <tr v-for="(item,idx) in stores" :key="idx">
                         <td>{{item.name}}</td>
                         <td>{{item.type}}</td>
                         <td>{{item.url}}</td>
@@ -38,9 +38,9 @@
                 </tbody>
             </table>
         </div>
-        <le-dialog title="create Store" v-model="dialog.showDialog" width="700" height="600">
+        <le-dialog :title="dialog.dialogTitle" v-model="dialog.showDialog" width="700" height="600">
             <div slot="body">
-                <StoreDialog v-if="dialog.showDialog" :store="store" :action="dialog.action" :idx="dialog.idx" ref="store" />
+                <StoreDialog v-if="dialog.showDialog" :index="dialog.index" :store="store" :action="dialog.action" :idx="dialog.idx" ref="store" />
             </div>
             <div slot="button">
                 <le-button type="cancel" value="<#取消#>" @click="handleClose"></le-button>
@@ -57,6 +57,9 @@ export default {
     props: {
         stores: {
             type: Array
+        },
+        index: {
+            type: Number
         }
     },
     components:{
@@ -67,7 +70,9 @@ export default {
             dialog: {
                 showDialog: false,
                 action:"",
-                idx:null
+                idx:null,
+                dialogTitle:"",
+                index: this.index
             },
             store: {
                 name: "",
@@ -95,6 +100,7 @@ export default {
         add() {
             this.clearStore()
             this.dialog.showDialog = true;
+            this.dialog.dialogTitle = "Create Store";
             this.dialog.action = "create";
         },
         del(item, idx) {
@@ -105,7 +111,9 @@ export default {
         update(item, idx) {
             this.clearStore();
             this.store = {...item};
+            // this.store = item;
             this.dialog.showDialog = true;
+            this.dialog.dialogTitle = "Update Store";
             this.dialog.action = "update";
             this.dialog.idx = idx;
         },

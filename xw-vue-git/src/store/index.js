@@ -1,10 +1,10 @@
 import Enum from "./enum.js";
-import { unionBy } from "lodash-es"
+import { unionBy, cloneDeep } from "lodash-es"
 export default {
     state: {
         project: "",
         modules: [
-
+          
         ],
         existedModules: [],
         currentModule: null,
@@ -76,12 +76,15 @@ export default {
             }
         },
         updateStore(state, data) {
-            if(data.isCommon){
-                let i = data.idx - state.currentModule.Store.length;
+            let newModules = cloneDeep(state.modules);
+            newModules[data.index].Store[data.idx] = data.data;  
+            if(data.data.isCommon){
+                let i = data.idx - state.modules[data.index].Store.length;
+                if(i < 0 ) i = 0;
                 state.commonStore[i] = data.data;
-            }else{
-                state.currentModule.Store[data.idx] = data.data;
+                newModules[data.index].Store.splice(data.idx, 1)
             }
+            state.modules = newModules;
         },
 
         addModel(state, data) {
@@ -106,7 +109,6 @@ export default {
             state.currentModule.Services.splice(data, 1)
         },
         updateService(state, data) {
-
             state.currentModule.Services[data.idx] = data.data;
         },
     },
@@ -179,7 +181,8 @@ export default {
         },
 
         addStore({ commit, state }, data) {
-            let idx = state.currentModule.Store.concat(state.commonStore).findIndex(item => item.name == data.name);
+            let datas = state.currentModule.Store.concat(state.commonStore);
+            let idx = datas.findIndex(item => item.name == data.name);
             if (idx < 0) {
                 commit("addStore", data);
                 return Promise.resolve();
