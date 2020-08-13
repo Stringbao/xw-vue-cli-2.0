@@ -1,6 +1,6 @@
 
 <template>
-    <div class = "le_dialog_mask" :style="{'z-index':dialogZIndex}" v-show="value" :class="valueCls">
+    <div class = "le_dialog_mask" :style="{'z-index':dialogZIndex}" v-show="dialogTag" :class="valueCls">
         <!-- width height margin为计算 width/height的一半 + 10(padding)-->
         <div class = "le_dialog_box" v-bind:style="dialogStyle">
             <!-- 顶部 -->
@@ -24,10 +24,11 @@
 import tool from "../leCompsTool.js";
 export default {
     name:"LeDialog",
-    props:["title","width","height","value"],
+    props:["title","width","height"],
     data(){
         return {
-            dialogZIndex:0
+            dialogZIndex:tool._idSeed.newId(),
+            dialogTag:false
         }
     },
     computed:{
@@ -49,26 +50,22 @@ export default {
             return {width:w,height:h}
         },
         valueCls(){
-            if(this.value){
-                return "show_le_dialog_mask";
-            }else{
-                return "hide_le_dialog_mask";
-            }
-        }
-    },
-    watch:{
-        value(val){
-            this.dialogZIndex = tool._idSeed.newId();
+            return this.dialogTag?"show_le_dialog_mask":"hide_le_dialog_mask";
         }
     },
     methods:{
         close(){
-            this.$emit("input",false);
+            this.hide();
+        },
+        show(){
+            this.dialogTag = true;
+        },
+        hide(){
+            this.dialogTag = false;
             this.$emit("closeCallback",false);
         }
     },
     mounted(){
-        this.dialogZIndex = tool._idSeed.newId();
     }
 }
 </script>

@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody >
-                    <tr v-for="(item,idx) in stores" :key="idx">
+                    <tr v-for="(item,idx) in privateStores.concat(commonStores)" :key="idx">
                         <td>{{item.name}}</td>
                         <td>{{item.type}}</td>
                         <td>{{item.url}}</td>
@@ -32,7 +32,7 @@
                             <le-button type="remove" value="delete" @click="del(item,idx)"></le-button>
                         </td>
                     </tr>
-                    <tr v-if="!stores.length" style="width:100%;height:60px;line-height:60px;text-align:center;">
+                    <tr v-if="!privateStores.concat(commonStores).length" style="width:100%;height:60px;line-height:60px;text-align:center;">
                         <td colspan="6">暂无数据</td>
                     </tr>
                 </tbody>
@@ -55,7 +55,10 @@ import StoreDialog from "@pages/dialog/Store.vue";
 export default {
     name: "storeManage",
     props: {
-        stores: {
+        privateStores: {
+            type: Array
+        },
+        commonStores: {
             type: Array
         },
         index: {
@@ -84,7 +87,8 @@ export default {
         };
     },
     computed: {
-        ...mapState(["dataSource"])
+        ...mapState(["dataSource"]),
+
     },
     methods: {
         ...mapActions(["addStore", "removeStore"]),
@@ -120,6 +124,7 @@ export default {
         handleSave() {
             this.$refs.store.submit().then((res)=>{
                 this.dialog.showDialog = false;
+                this.$forceUpdate();
             }).catch(err=>{
                 console.log(err)
                 // this.dialog.showDialog = true;

@@ -76,15 +76,12 @@ export default {
             }
         },
         updateStore(state, data) {
-            let newModules = cloneDeep(state.modules);
-            newModules[data.index].Store[data.idx] = data.data;  
             if(data.data.isCommon){
-                let i = data.idx - state.modules[data.index].Store.length;
-                if(i < 0 ) i = 0;
-                state.commonStore[i] = data.data;
-                newModules[data.index].Store.splice(data.idx, 1)
+                let i = data.idx - state.currentModule.Store.length;
+                state.commonStore[i] = {...data.data};
+            }else{
+                state.currentModule.Store[data.idx] = {...data.data}
             }
-            state.modules = newModules;
         },
 
         addModel(state, data) {
@@ -94,7 +91,7 @@ export default {
             state.currentModule.modelList.splice(data, 1)
         },
         updateModel(state, data) {
-            state.currentModule.modelList[data.idx] = data.data;
+            state.currentModule.modelList[data.idx] = {...data.data};
         },
         //创建services
         addService(state, data) {
@@ -208,5 +205,5 @@ export default {
         updateService({ commit, state }, data) {
             commit("updateService", data);
         }
-    }
+    },
 }

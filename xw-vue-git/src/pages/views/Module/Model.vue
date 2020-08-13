@@ -81,7 +81,7 @@ export default {
         },
         update(item,idx) {
             this.dialog.showDialog = true;
-            this.dialog.action = "update"
+            this.dialog.action = "update";
             this.dialog.params = {...item,idx}; 
         },
         del(item,idx) {

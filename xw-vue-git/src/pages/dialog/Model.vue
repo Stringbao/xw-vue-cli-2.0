@@ -174,7 +174,6 @@ export default {
                     .then(() => {
                         if(this.model.props.length){
                             if (this.action == "create") {
-                                console.log(this.model);
                                 this.addModel(this.model)
                                     .then(() => {
                                         resolve();
@@ -186,7 +185,7 @@ export default {
                             } else {
                                 this.updateModel({
                                     data: this.model,
-                                    idx: this.idx,
+                                    idx: this.params.idx,
                                 });
                                 resolve();
                             }

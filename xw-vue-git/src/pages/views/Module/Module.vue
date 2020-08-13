@@ -24,7 +24,7 @@
                         <Service :sevices="module.Services"></Service>
                     </div>
                     <div class="card">
-                        <storeForm :index="i" :stores="[...module.Store, ...commonStore]"></storeForm>
+                        <storeForm :index="i" :privateStores="currentModule.Store" :commonStores="commonStore"></storeForm>
                     </div>
                 </TabPane>
             </template>
@@ -56,7 +56,7 @@ import TabPane from "@pages/components/tab/TabPane.vue";
 import Page from "./Page.vue"
 import StoreForm from "./Store.vue";
 import Service from "./Service.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions,mapGetters } from "vuex";
 export default {
     data() {
         return {
@@ -67,13 +67,12 @@ export default {
             moduleName: "",
         };
     },
-    watch: {
-        modules() {
-           console.log(this.modules) 
-        }
-    },
     computed: {
         ...mapState(["modules", "currentModule", "existedModules","commonStore"]),
+        stores:function(){
+            return [...this.currentModule.Store,...this.commonStore]
+            //  this.currentModule.Store.concat(this.commonStore)
+        }
     },
     components: {
         Tab,
@@ -102,7 +101,6 @@ export default {
         },
         uploadModules(el) {
             let file = el.target.files[0];
-            console.log(file);
             if (file.type === "application/json") {
                 Ajax.upload("/v2API/comp/upload", { file: file })
                     .then((res) => {
@@ -137,7 +135,6 @@ export default {
             this.dialog.showDialog = false;
             this.moduleName = "";
         },
-
     }
 };
 </script>
