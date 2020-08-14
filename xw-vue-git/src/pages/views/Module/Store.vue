@@ -60,9 +60,6 @@ export default {
         },
         commonStores: {
             type: Array
-        },
-        index: {
-            type: Number
         }
     },
     components:{
@@ -74,8 +71,7 @@ export default {
                 showDialog: false,
                 action:"",
                 idx:null,
-                dialogTitle:"",
-                index: this.index
+                dialogTitle:""
             },
             store: {
                 name: "",

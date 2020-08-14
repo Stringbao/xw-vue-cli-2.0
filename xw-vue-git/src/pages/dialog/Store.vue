@@ -9,10 +9,9 @@
             display-name="name"
             display-value="code"
             v-model="store.type"
-            @change="changeType"
         ></le-radio-list>
         <le-radio-list
-            v-if="showType"
+            v-show="store.type=='array'?true:false"
             on
             required
             msg="please select Request Type"
@@ -38,12 +37,11 @@ export default {
     props: {
         store: Object,
         action: String,
-        idx: Number,
-        index: Number
+        idx: Number
     },
     data() {
         return {
-            showType: true
+            
         };
     },
     methods: {
@@ -59,23 +57,15 @@ export default {
                             reject(err);
                         })
                     } else {
-                        this.updateStore({ data: this.store, idx: this.idx, index: this.index }).then(res=>{
+                        this.updateStore({ data: this.store, idx: this.idx}).then(res=>{
                             resolve();
                         })
                     }
                 }).catch(err=>{
-                    console.log(err)
                     reject(err);
                 })
             })
-        },
-        changeType() {
-            if (this.store.type == "enum") {
-                this.showType = false;
-            }else{
-                this.showType = true;
-            }
-        },
+        }
     },
     computed: {
         ...mapState(["dataSource"]),
