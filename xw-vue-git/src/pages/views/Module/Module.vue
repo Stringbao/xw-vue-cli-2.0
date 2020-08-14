@@ -24,7 +24,7 @@
                         <Service :sevices="module.Services"></Service>
                     </div>
                     <div class="card">
-                        <storeForm :index="i" :privateStores="currentModule.Store" :commonStores="commonStore"></storeForm>
+                        <storeForm :privateStores="currentModule.Store" :commonStores="commonStore"></storeForm>
                     </div>
                 </TabPane>
             </template>
