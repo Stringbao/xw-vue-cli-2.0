@@ -36,14 +36,20 @@ module.exports = {
             }
         ]
     },
-    // externals: { // 对象
-    //     jquery: { // UMD
-    //         commonjs: "jQuery",
-    //         commonjs2: "jQuery",
-    //         amd: "jQuery",
-    //         root: "$"
-    //     }
-    // },
+    externals: { // 对象
+        // jquery: { // UMD
+        //     commonjs: "jQuery",
+        //     commonjs2: "jQuery",
+        //     amd: "jQuery",
+        //     root: "$"
+        // }
+        vue: {
+            root: 'Vue',
+            commonjs: 'vue',
+            commonjs2: 'vue',
+            amd: 'vue',
+        },
+    },
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "../src/"),
