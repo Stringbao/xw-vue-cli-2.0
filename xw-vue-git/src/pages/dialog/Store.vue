@@ -1,6 +1,6 @@
 <template>
     <le-form ref="store">
-        <le-input label="name:" msg="请输入storeName" v-model="store.name" on required></le-input>
+        <le-input label="name:" msg="请输入storeName" v-model="store.name" :readonly="isEdit" on required></le-input>
         <le-radio-list
             on
             required
@@ -69,6 +69,9 @@ export default {
     },
     computed: {
         ...mapState(["dataSource"]),
+        isEdit(){
+            return this.action == "update"?true:false
+        }
     },
     mounted(){
         // this.$refs.store.reset();
