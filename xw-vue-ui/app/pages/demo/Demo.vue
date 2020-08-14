@@ -19,6 +19,7 @@
                 <le-dialog ref="dialog">
                     <div slot="body">
                         <div>abc</div>
+                        <le-button type="info" value="info" @click="confirm"></le-button>
                     </div>
                     <div slot="button">
                         <le-button type="cancel" value="取消" @click="dialogCancel"></le-button>
