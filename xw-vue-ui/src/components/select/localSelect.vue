@@ -230,8 +230,8 @@
          * @description 获取所选项
          * @returns items:所选的对象数组，vals:所选的值集合
          */
-        getSelectedItems(){
-            return tool.object.getCheckedItems(this.data,this.displayValue);
+        getSelectedItems(filed){
+            return tool.object.getCheckedItems(this.data,filed?filed:this.displayValue);
         },
         /**
          * @description 获取选中项的displayValue的集合
