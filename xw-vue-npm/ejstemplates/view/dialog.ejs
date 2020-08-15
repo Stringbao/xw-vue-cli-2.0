@@ -78,10 +78,10 @@ export default {
                         .then((res) => {
                             this.$refs.dialog.hide();
                             if(this.action = KEYS.GOLBAL.ACTION.CREATE && this.$listeners.create){
-                                this.$emit('create')
+                                this.$emit('create');
                             }
                             if(this.action = KEYS.GOLBAL.ACTION.UPDATE && this.$listeners.update){
-                                this.$emit('update')
+                                this.$emit('update');
                             }
                             this.alert.showAlert("success", res.msg);
                             resolve();

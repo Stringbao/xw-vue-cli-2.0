@@ -164,7 +164,7 @@
             <table-list title="<%- data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
         </div>
         <%_ if(data.hasDialog){ _%>
-            <Dialog  @create="search" @update="search" ref="dialogRef" />
+        <Dialog @create="search" @update="search" ref="dialogRef" />
         <%_ } -%>
     </div>
 </template>
