@@ -237,7 +237,7 @@ export default {
         },
         save(){
             let that = this;
-            debugger
+            
             let res = this.$refs.saveForm.validate()
                 .then(res=>{
                     that.page.type = "list";
@@ -251,7 +251,6 @@ export default {
                                 that.alert.showAlert("error",error.msg)
                             })  
                         }else{
-                            debugger
                             that.updatePages({page:that.page,idx:that.idx}).then(res=>{
                                 that.$emit("closePageDialog");
                             }).catch(error=>{
