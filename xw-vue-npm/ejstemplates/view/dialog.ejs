@@ -5,7 +5,7 @@
         </div>
         <div slot="button">
             <le-button type="cancel" value="取消" @click = "cancel"></le-button>
-            <le-button :disabled='!isDetail' type="save" value="确定"  @click = "confirm"></le-button>
+            <le-button :disabled='isDetail' type="save" value="确定"  @click = "confirm"></le-button>
         </div>
     </le-dialog>
 </template>
@@ -62,12 +62,12 @@ export default {
         },
     },
     methods:{
-        show(item){
+        show(opt){
             this.<%= data.model.modelDataName %>.clear();
             this.$refs['saveForm'].reset();
             this.action = opt.action;
-            if(action == KEYS.GOLBAL.ACTION.UPDATE || action == KEYS.GOLBAL.ACTION.DETAIL){
-                this.<%= data.model.modelDataName %>.set(item);
+            if(this.action == KEYS.GOLBAL.ACTION.UPDATE || this.action == KEYS.GOLBAL.ACTION.DETAIL){
+                this.<%= data.model.modelDataName %>.set(opt.item);
             }
             this.$refs.dialog.show();
         },
