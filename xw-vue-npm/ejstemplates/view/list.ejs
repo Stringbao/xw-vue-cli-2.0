@@ -164,21 +164,17 @@
             <table-list title="<%- data.tableTitle %>" ref='tableListRef' :options='list_table_options'></table-list>
         </div>
         <%_ if(data.hasDialog){ _%>
-        <le-dialog v-model = "dialogTag">
-            <div slot = "body">
-              <%- include(data.includeFormPath, {data: data.model.modelArray, model: data.model.modelDataName}) %>
-            </div>
-            <div slot="button">
-                <le-button type="cancel" value="取消" @click = "dialogCancel"></le-button>
-                <le-button type="save" value="确定"  @click = "dialogConfirm"></le-button>
-            </div>
-        </le-dialog>
+            <Dialog  @create="search" @update="search" ref="dialogRef" />
         <%_ } -%>
     </div>
 </template>
 <script>
 import util from "@util/util.js";
 import KEYS from "@constant/index.js";
+
+<%_ if( data.hasDialog){ -%>
+import Dialog from "./dialog.vue";
+<%_ } -%>
 
 import { createNamespacedHelpers } from 'vuex';
 <%_ if( data.hasCommonStore){ -%>
@@ -194,6 +190,11 @@ import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileNam
 import <%= data.service.serviceClassName%> from '@services/<%= data.service.serviceFileName%>';
 export default {
     name:"<%= data.componentName %>",
+    <%_ if( data.hasDialog){ -%>
+    components: {
+        Dialog,
+    },
+    <%_ } -%>
     data(){
         return {
             // 搜索条件
@@ -268,7 +269,6 @@ export default {
             <%_ }) -%>
         ])
         <%_ } -%>
-        
     },
     methods:{
         <%_ if( data.hasStore){ -%>
@@ -293,30 +293,25 @@ export default {
         <%_ if(item.key == 'create') { %>
         <%= item.actionName%>(row) {
             <%_ if(data.hasDialog){ _%>
-            this.$refs['saveForm'].reset();
-            this.dialogTag = true;    
+            this.$refs.dialogRef.show({action:KEYS.GOLBAL.ACTION.CREATE,item:null});
             <%_ }else {  -%>
-            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.ADD, id: -1}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.CREATE, id: -1}});
             <%_ }  -%>
         },
         <%_ }  -%>
         <%_ if(item.key == 'update'){  -%>
         <%= item.actionName%>(row) {
             <%_ if(data.hasDialog){ _%>
-            this.$refs['saveForm'].reset();
-            this.dialogTag = true; 
-            this.<%= data.model.modelDataName %>.set(row);   
+            this.$refs.dialogRef.show({action:KEYS.GOLBAL.ACTION.UPDATE,item:row});
             <%_ }else {  -%>
-            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.EDIT, id: row.id}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.UPDATE, id: row.id}});
             <%_ }  -%>
         },
         <%_ }  -%>
         <%_ if(item.key == 'detail'){  -%>
         <%= item.actionName%>(row) {
             <%_ if(data.hasDialog){ _%>
-            this.$refs['saveForm'].reset();
-            this.dialogTag = true; 
-            this.<%= data.model.modelDataName %>.set(row);  
+            this.$refs.dialogRef.show({action:KEYS.GOLBAL.ACTION.DETAIL,item:row});
             <%_ }else {  -%>
             this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.DETAIL, id: row.id}});
             <%_ }  -%>
@@ -341,22 +336,6 @@ export default {
 
         },
         <%_ }) -%>
-        <%_ if(data.hasDialog){ _%>
-        dialogConfirm(){
-            this.$refs.saveForm.validate().then(x => {
-                <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get()).then(res=>{
-                    this.alert.showAlert("success",res.msg);
-                    this.search();
-                    this.dialogCancel();
-                }).catch(err=>{
-                    this.alert.showAlert("error",err.msg);
-                })
-            }).catch(err=>{console.log(err)});
-        },
-        dialogCancel(){
-            this.dialogTag = false;
-        },
-        <%_ }  -%>
     },
     mounted(){
     <%_ if( data.hasStore){ -%>

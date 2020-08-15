@@ -226,6 +226,15 @@ let APIhelper = {
         let _data = this.compileByData("../ejstemplates/router.ejs",{data:data});
         fsTool.file.writeFile(filePath, _data);
     },
+    checkDialog(modulePath, page, data){
+        if(page.hasDialog){
+            let vuePath = modulePath + "/dialog.vue";
+            fsTool.file.createFile(vuePath);
+            let ejsPath = "../ejstemplates/view/dialog.ejs";
+            let _data = this.compileByData(ejsPath, {data: data});
+            fsTool.file.writeFile( modulePath + "/dialog.vue", _data);
+        }
+    },
     //创建view文件，并且准备数据(维度：Module)
     createView(projectPath, module, commonStore){
         let pages = module.Pages;
@@ -247,16 +256,13 @@ let APIhelper = {
             console.log("create vue completed;")
             
             let pageData = this.dataForListView(x, module, commonStore);
-            let ejsPath = "../ejstemplates/view/list.ejs";
-            if(x.type != "list"){
-                ejsPath = "../ejstemplates/view/save.ejs";
-            }
+            let ejsPath = x.type == "list"?"../ejstemplates/view/list.ejs":"../ejstemplates/view/save.ejs";
             let includeFormPath = NPath.resolve(__dirname, "../ejstemplates/view/form.ejs");
             pageData.includeFormPath = includeFormPath;
             
             let _data = this.compileByData(ejsPath, {data:pageData});
-            
             fsTool.file.writeFile( modulePath + "/" + x.pageName, _data);
+            this.checkDialog(modulePath, x, pageData);
         })
     },
     //创建Core services
