@@ -2,6 +2,7 @@
 const path = require("path");
 const fsTool = require("../tool/fsapi.js");
 const os = require('os');
+const ejs = require("ejs");
 
 let Util = {
     //是否是windows
@@ -44,6 +45,22 @@ let Util = {
         let obj = eval("("+data+")");
         obj.configPath = pathData;
         fsTool.file.writeFile(configPath,JSON.stringify(obj));
+    },
+    //ejs编译模板
+    compileByData(ejsPath, data){
+        let _path = path.resolve(__dirname, ejsPath);
+        let ejsStr = fsTool.file.readFile(_path);
+        return ejs.compile(ejsStr)(data);
+    },
+    //创建project.json到项目root目录
+    writeProjectJson(modules, commonStore, path){
+        let projectJSON = {
+            Modules:modules,
+            commonStore:commonStore,
+            absoultePath:path,
+        }
+        
+        fsTool.file.writeFile(projectJSON.absoultePath+ "/project.json", JSON.stringify(projectJSON));
     }
 }
 

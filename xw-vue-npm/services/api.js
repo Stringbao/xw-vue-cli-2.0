@@ -23,16 +23,18 @@ const api = {
         APIhelper.viewDeal(modules,"update",commonStore);
         APIhelper.createCommonServices(commonStore);
         APIhelper.createCommonStore(commonStore);
-        APIhelper.writeProjectJson(modules,commonStore);
+        Util.writeProjectJson(modules, commonStore, ProjectPathTool.get());
         return res && res.status("200").json({status:200, data:null,msg:"update success"});
     },
     create(req,res){
         let modules = req?req.body.Modules:_test_data.Modules;
         let commonStore = req?req.body.commonStore:_test_data.commonStore;
+        
         APIhelper.viewDeal(modules,"create",commonStore);
         APIhelper.createCommonServices(commonStore);
         APIhelper.createCommonStore(commonStore);
-        APIhelper.writeProjectJson(modules,commonStore);
+        
+        Util.writeProjectJson(modules, commonStore, ProjectPathTool.get());
         return res && res.status("200").json({status:200, data:null,msg:"create success"});
     },
     getConfigPath(){

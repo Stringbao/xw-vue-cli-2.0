@@ -1,7 +1,7 @@
 <template>
     <div>
         <le-form ref="model">
-            <le-input label="name:" msg="请输入model的name" v-model="params.name" on required></le-input>
+            <le-input label="name:" msg="请输入model的name" v-model="params.name" :readonly="isEdit" on required></le-input>
             <ul class="propsList">
                 <li class="clearfix" v-for="(item, idx) in params.props" :key="idx">
                     <div>
@@ -124,6 +124,9 @@ export default {
                 props:this.params.props
             };
         },
+        isEdit(){
+            return this.action == "update"?true:false;
+        }
     },
     components: {
         StoreDialog,

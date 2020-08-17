@@ -26,7 +26,6 @@ async function startServer() {
     })
 }
 
-debugger
 if(!Util.getConfigPath()){
     return;
 }

@@ -1,0 +1,105 @@
+<template>
+    <le-dialog ref="dialog" :height="height">
+        <div slot = "body">
+            <%- include(data.includeFormPath, {data: data.model.modelArray, model: data.model.modelDataName}) %>
+        </div>
+        <div slot="button">
+            <le-button type="cancel" value="取消" @click = "cancel"></le-button>
+            <le-button :disabled='isDetail' type="save" value="确定"  @click = "confirm"></le-button>
+        </div>
+    </le-dialog>
+</template>
+
+<script>
+import KEYS from "@constant/index.js";
+
+import { createNamespacedHelpers } from 'vuex';
+<%_ if( data.hasCommonStore){ -%>
+const CommonStore = createNamespacedHelpers('CommonStore');
+<%_ } -%>
+<%_ if( data.hasStore){ -%>
+const <%= data.store.storeName %> = createNamespacedHelpers('<%= data.store.storeName %>');
+<%_ } -%>
+
+<%_ if(data.hasModel){ -%>
+import <%= data.model.modelClassName %> from '@model/<%= data.model.modelFileName %>';
+<%_ } -%>
+import <%= data.service.serviceClassName%> from '@services/<%= data.service.serviceFileName%>';
+
+export default {
+    name:"Dialog",
+    data(){
+        return {
+            action:"",
+            height:'80vh',
+            <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
+        }
+    },
+    computed:{
+        <%_ if( data.hasStore){ -%>
+        ...<%= data.store.storeName %>.mapState([
+            <%_ data.store.storeKeys.forEach(function(name){ -%>
+            "<%= name%>",
+            <%_ }) -%>
+        ]),
+        <%_ } -%>
+        
+        <%_ if( data.hasCommonStore){ -%>
+        ...CommonStore.mapState([
+            <%_ data.commonStores.forEach(function(item){ -%>
+            "<%= item.name%>",
+            <%_ }) -%>
+        ]),
+        <%_ } -%>
+        isEdit(){
+            return this.action == KEYS.GOLBAL.ACTION.UPDATE;
+        },
+        isCreate(){
+            return this.action == KEYS.GOLBAL.ACTION.CREATE;
+        },
+        isDetail(){
+            return this.action == KEYS.GOLBAL.ACTION.DETAIL;
+        },
+    },
+    methods:{
+        show(opt){
+            this.<%= data.model.modelDataName %>.clear();
+            this.$refs['saveForm'].reset();
+            this.action = opt.action;
+            if(this.action == KEYS.GOLBAL.ACTION.UPDATE || this.action == KEYS.GOLBAL.ACTION.DETAIL){
+                this.<%= data.model.modelDataName %>.set(opt.item);
+            }
+            this.$refs.dialog.show();
+        },
+        confirm(){
+            return new Promise((resolve,reject)=>{
+                this.$refs.saveForm.validate().then((x) => {
+                    <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get())
+                        .then((res) => {
+                            this.$refs.dialog.hide();
+                            if(this.action = KEYS.GOLBAL.ACTION.CREATE && this.$listeners.create){
+                                this.$emit('create');
+                            }
+                            if(this.action = KEYS.GOLBAL.ACTION.UPDATE && this.$listeners.update){
+                                this.$emit('update');
+                            }
+                            this.alert.showAlert("success", res.msg);
+                            resolve();
+                        })
+                        .catch((err) => {
+                            this.alert.showAlert("error", err.msg);
+                            reject();
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });  
+            })
+        },
+        cancel(){
+            this.$refs.dialog.hide();
+        }
+    }
+
+}
+</script>

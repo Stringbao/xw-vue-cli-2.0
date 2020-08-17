@@ -384,7 +384,6 @@
             },
             // getFormData(){
             //     return new Promise((resolve,reject)=>{
-            //         debugger
             //         let result = this.getFormDataByFileList();
             //         if(result.count > 0){
             //             resolve(result.formData);
