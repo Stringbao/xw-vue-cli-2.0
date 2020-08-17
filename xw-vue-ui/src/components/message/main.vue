@@ -112,7 +112,7 @@ export default {
 .le_alert__content {
     padding-right: 16px;
 }
-.le_alert.message {
+.le_alert.message,.le_alert.success {
     background-color: #f0f9eb;
     border-color: #e1f3d8;
     color: #67c23a;
