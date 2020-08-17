@@ -73,7 +73,7 @@ export default {
          * @returns
          */
         init(data){
-            this.data = JSON.parse(JSON.stringify(tool.object.addPrimaryAndCk(data)));
+            this.data = tool.object.cloneObj(tool.object.addPrimaryAndCk(data));
         },
         /**
          * @description 重置数据源
