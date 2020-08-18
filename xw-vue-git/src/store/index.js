@@ -113,6 +113,11 @@ export default {
         addExistedModules({ commit, state }, data) {
             commit("addExistedModules", data);
         },
+        uploadModule({ commit, state }, data){
+            data.forEach(module=>{
+                commit("addModules",module);
+            })
+        },
         addModules({ commit, state }, ModuleName) {
             commit("addModules", {
                 ModuleName: ModuleName,

@@ -58,11 +58,6 @@ export default {
             } else {
                 url = "/v2API/comp/create";
             }
-            console.log(
-                this.existedModules.concat(
-                    this.modules.filter((item) => item.Pages.length)
-                )
-            );
             Ajax.post(url, {
                 Project: this.project,
                 Modules: this.existedModules.concat(

@@ -2,10 +2,15 @@
     <div>
         <div class="extrac">
             <span class="asBtn import">
-                <i class="fa fa-cloud-download"></i>添加已存在模块
-                <input type="file" accept=".json" @change="uploadModules" />
+                <i class="fa fa-cloud-download"></i>UpdateByJson
+                <input type="file" accept=".json" @change="updateByJson" />
+            </span>
+            <span class="asBtn import">
+                <i class="fa fa-cloud-download"></i>CreateByJson
+                <input type="file" accept=".json" @change="createByJson" />
             </span>
         </div>
+        <p class="tip">CreateByJson  :请清空已有module 并上传json文件</p>
         <Tab :modules="modules" @add="add" @del="del" @change="change">
             <template #pane="{currentIndex}">
                 <TabPane
@@ -24,7 +29,7 @@
                         <Service :sevices="module.Services"></Service>
                     </div>
                     <div class="card">
-                        <storeForm :privateStores="currentModule.Store" :commonStores="commonStore"></storeForm>
+                        <storeForm :privateStores="module.Store" :commonStores="commonStore"></storeForm>
                     </div>
                 </TabPane>
             </template>
@@ -89,6 +94,7 @@ export default {
             "changeModules",
             "removePages",
             "addExistedModules",
+            "uploadModule"
         ]),
         del(item) {
             this.removeModules(item.ModuleName);
@@ -99,7 +105,7 @@ export default {
         change(module, idx) {
             this.changeModules(module);
         },
-        uploadModules(el) {
+        updateByJson(el) {
             let file = el.target.files[0];
             if (file.type === "application/json") {
                 Ajax.upload("/v2API/comp/upload", { file: file })
@@ -117,6 +123,22 @@ export default {
             }
             el.target.value = "";
         },
+        createByJson(el) {
+            let file = el.target.files[0];
+            if (file.type === "application/json") {
+                Ajax.upload("/v2API/comp/upload", { file: file })
+                    .then((res) => {
+                        this.uploadModule(res.data);
+                        alert("添加成功，可以在project中查看");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                alert("请上传正确格式的 json 文件");
+            }
+            el.target.value = "";
+        },
         handleSave() {
             this.$refs.module
                 .validate()
@@ -125,6 +147,7 @@ export default {
                         this.addModules(this.moduleName.replace(/\s/, ""));
                         this.dialog.showDialog = false;
                         this.moduleName = "";
+                        
                     }
                 })
                 .catch((err) => {
@@ -249,5 +272,10 @@ export default {
     .pagesType {
         line-height: 40px;
     }
+}
+.tip{
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
 }
 </style>
