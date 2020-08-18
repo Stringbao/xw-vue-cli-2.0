@@ -61,7 +61,7 @@ export default {
             this.setValue(val);
         },
         dataSource(val){
-            if(val && val.length >0){
+            if(val && Array.isArray(val)){
                 this.init(val);
                 this.setValue(this.value);
             }
@@ -115,12 +115,12 @@ export default {
          * @return
          */
         setValue(vals = ""){
-            vals = vals.toString();
             if(!vals){
                 this.data.forEach(item=>{
                     item.ck = false;
                 })
             }else{
+                vals = vals.toString();
                 this.data.forEach(item=>{
                     let cked = false;
                     vals.split && vals.split(',').forEach(x=>{
