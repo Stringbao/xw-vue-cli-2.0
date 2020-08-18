@@ -111,10 +111,10 @@ export default {
         },
         /**
          * @description 回写的方法，设置checkbox选中状态
-         * @param vals 必须为数组, 必须设置displayValue为需要传递的value字段，如果传入空，则重置所有
+         * @param vals 必须为字符串, 必须设置displayValue为需要传递的value字段，如果传入空，则重置所有
          * @return
          */
-        setValue(vals = []){
+        setValue(vals = ""){
             if(!vals){
                 this.data.forEach(item=>{
                     item.ck = false;
