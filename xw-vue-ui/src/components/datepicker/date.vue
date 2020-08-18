@@ -197,7 +197,7 @@ export default {
             // }
             // return this.splitKey;
 
-            return "/";
+            return "-";
         },
         labelWidthVal(){
             if(this.$attrs.labelWidth){
