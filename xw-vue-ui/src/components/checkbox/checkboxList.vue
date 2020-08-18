@@ -114,13 +114,13 @@ export default {
          * @param vals 必须为数组, 必须设置displayValue为需要传递的value字段，如果传入空，则重置所有
          * @return
          */
-        setValue(vals = ""){
+        setValue(vals = []){
             if(!vals){
                 this.data.forEach(item=>{
                     item.ck = false;
                 })
             }else{
-                vals = vals.toString();
+                // vals = vals.toString();
                 this.data.forEach(item=>{
                     let cked = false;
                     vals.split && vals.split(',').forEach(x=>{
