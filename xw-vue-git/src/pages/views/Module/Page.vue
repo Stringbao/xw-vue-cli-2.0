@@ -120,13 +120,13 @@ export default {
                     },
                     toolbar:[]
                 },
-                model: [],
+                model: "",
                 hasDialog:false
             },
             pageSaveModel: {
                 pageName: "",
                 type: "save",
-                model: [],
+                model: "",
                 hasDialog:false
             },
             pageType: "list",
@@ -179,7 +179,7 @@ export default {
                     },
                     toolbar:[]
                 },
-                model: [],
+                model: "",
                 hasDialog:false,
             };
         },
@@ -187,7 +187,7 @@ export default {
             this.pageSaveModel = {
                 pageName: "",
                 type: "save",
-                model: [],
+                model: "",
                 hasDialog:false
             };
         },
