@@ -1,11 +1,4 @@
-export const sales = {
-    type:[
-        { name: "Unlimited", code: 0 },
-        { name: "Virtual inventory", code: 1 },
-        { name: "Actual inventory", code: 2 }
-    ],
-    outOfStock: [
-        { name: "品切れ", code: 0 },
-        { name: "完売御礼", code: 1 }
-    ],
-}
+export const isCover = [
+    { name:"覆盖已存在module", code:1 },
+    { name:"添加已存在module", code:0 },
+]

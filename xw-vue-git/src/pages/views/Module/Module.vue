@@ -2,15 +2,11 @@
     <div>
         <div class="extrac">
             <span class="asBtn import">
-                <i class="fa fa-cloud-download"></i>UpdateByJson
-                <input type="file" accept=".json" @change="updateByJson" />
-            </span>
-            <span class="asBtn import">
                 <i class="fa fa-cloud-download"></i>CreateByJson
                 <input type="file" accept=".json" @change="createByJson" />
             </span>
         </div>
-        <p class="tip">CreateByJson  :请清空已有module 并上传json文件</p>
+        <p class="tip">CreateByJson :请清空已有module 再上传json文件</p>
         <Tab :modules="modules" @add="add" @del="del" @change="change">
             <template #pane="{currentIndex}">
                 <TabPane
@@ -20,7 +16,7 @@
                     :currentIndex="currentIndex"
                 >
                     <div class="card">
-                        <Model :models="module.modelList"/>
+                        <Model :models="module.modelList" />
                     </div>
                     <div class="card pagesCard">
                         <Page :module="module.Pages"></Page>
@@ -52,32 +48,60 @@
                 <le-button type="save" value="<#保存#>" @click="handleSave"></le-button>
             </div>
         </le-dialog>
+        <le-dialog title="create Module by uploading json file" v-model="uploadJson.showDialogJson">
+            <div slot="body">
+                <le-form>
+                    <le-radio-list
+                        on
+                        :data-source="isCover"
+                        display-name="name"
+                        display-value="code"
+                        v-model="uploadJson.isUpdate"
+                    ></le-radio-list>
+                </le-form>
+            </div>
+            <div slot="button">
+                <le-button type="cancel" value="<#取消#>" @click="handleCloseUpload"></le-button>
+                <le-button type="save" value="<#保存#>" @click="handleSaveUpload"></le-button>
+            </div>
+        </le-dialog>
     </div>
 </template>
 <script>
 import Model from "@pages/views/Module/Model.vue";
 import Tab from "@pages/components/tab/Tab.vue";
 import TabPane from "@pages/components/tab/TabPane.vue";
-import Page from "./Page.vue"
+import Page from "./Page.vue";
 import StoreForm from "./Store.vue";
 import Service from "./Service.vue";
-import { mapState, mapActions,mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
+import { isCover } from "@constant/index.js";
 export default {
     data() {
         return {
             dialog: {
                 showDialog: false,
             },
-           
+            uploadJson:{
+                showDialogJson: false,
+                isUpdate:0,
+                data:[]
+            },
+            isCover: isCover,
             moduleName: "",
         };
     },
     computed: {
-        ...mapState(["modules", "currentModule", "existedModules","commonStore"]),
-        stores:function(){
-            return [...this.currentModule.Store,...this.commonStore]
+        ...mapState([
+            "modules",
+            "currentModule",
+            "existedModules",
+            "commonStore",
+        ]),
+        stores: function () {
+            return [...this.currentModule.Store, ...this.commonStore];
             //  this.currentModule.Store.concat(this.commonStore)
-        }
+        },
     },
     components: {
         Tab,
@@ -85,7 +109,7 @@ export default {
         Page,
         StoreForm,
         Service,
-        Model
+        Model,
     },
     methods: {
         ...mapActions([
@@ -94,7 +118,7 @@ export default {
             "changeModules",
             "removePages",
             "addExistedModules",
-            "uploadModule"
+            "uploadModule",
         ]),
         del(item) {
             this.removeModules(item.ModuleName);
@@ -105,31 +129,13 @@ export default {
         change(module, idx) {
             this.changeModules(module);
         },
-        updateByJson(el) {
-            let file = el.target.files[0];
-            if (file.type === "application/json") {
-                Ajax.upload("/v2API/comp/upload", { file: file })
-                    .then((res) => {
-                        this.addExistedModules(res.data);
-                        alert("添加成功，可以在project中查看");
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            } else {
-                alert(
-                    "请选择项目根目录的 project.json 文件 添加已经存在的 modules"
-                );
-            }
-            el.target.value = "";
-        },
         createByJson(el) {
             let file = el.target.files[0];
             if (file.type === "application/json") {
                 Ajax.upload("/v2API/comp/upload", { file: file })
                     .then((res) => {
-                        this.uploadModule(res.data);
-                        alert("添加成功，可以在project中查看");
+                        this.uploadJson.showDialogJson = true;
+                        this.uploadJson.data = res.data;
                     })
                     .catch((err) => {
                         console.log(err);
@@ -147,7 +153,6 @@ export default {
                         this.addModules(this.moduleName.replace(/\s/, ""));
                         this.dialog.showDialog = false;
                         this.moduleName = "";
-                        
                     }
                 })
                 .catch((err) => {
@@ -158,7 +163,21 @@ export default {
             this.dialog.showDialog = false;
             this.moduleName = "";
         },
-    }
+        handleSaveUpload(){
+            if(this.uploadJson.isUpdate){
+                this.uploadModule(this.uploadJson.data);
+            }else{
+                this.addExistedModules(this.uploadJson.data);
+            }
+            this.uploadJson.showDialogJson = false;
+            this.uploadJson.isUpdate = 0;
+            alert("添加成功，可以在project中查看");
+        },
+        handleCloseUpload(){
+            this.uploadJson.showDialogJson = false;
+            this.uploadJson.isUpdate = 0;
+        }
+    },
 };
 </script>
 
@@ -273,7 +292,7 @@ export default {
         line-height: 40px;
     }
 }
-.tip{
+.tip {
     color: red;
     font-size: 12px;
     margin-bottom: 10px;
