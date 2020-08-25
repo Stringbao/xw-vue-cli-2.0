@@ -77,7 +77,7 @@ export default {
             //     return "/";
             // }
             // return this.splitKey;
-            return "/";
+            return "-";
         },
         placeholderStr(){
             if(this.$attrs.placeholder){
