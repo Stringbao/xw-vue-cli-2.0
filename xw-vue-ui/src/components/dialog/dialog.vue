@@ -36,7 +36,7 @@ export default {
         dialogStyle(){
             let w = 0;
             let h = 0;
-            if(this.width && isNaN(this.width) &&this.width.indexOf('vh') != -1){
+            if(this.width && isNaN(this.width) &&this.width.indexOf('vw') != -1){
                 w = this.width;
             }else{
                 w = this.width?this.width + "px" : "700px";
