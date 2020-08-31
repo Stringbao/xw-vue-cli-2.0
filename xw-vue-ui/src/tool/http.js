@@ -92,7 +92,7 @@ let ajaxTool = {
             .then(ajaxTool.checkCode)
             .catch((err) => Promise.reject({ msg: err }))
     }
-    const upload = (url, params = {})=> {
+    const upload = (url, formData)=> {
         // const formData = ajaxTool.JsonToFormData(params);
         const options = {
             body: formData,
