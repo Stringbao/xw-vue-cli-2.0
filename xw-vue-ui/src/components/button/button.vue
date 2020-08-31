@@ -61,6 +61,9 @@ export default {
             if(!this.disabled){
                 this.$emit('click')
             }
+        },
+        submit(){
+            this.$emit('submit');
         }
     },
     mounted(){
