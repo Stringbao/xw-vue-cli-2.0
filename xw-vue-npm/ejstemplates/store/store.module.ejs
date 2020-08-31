@@ -22,7 +22,7 @@ export default {
             if(state.<%= row.stateKey %>.length >0){
                 return Promise.resolve(state.<%= row.stateKey %>);
             }
-            <%= data.servicesClassName %>.<%= row.serviceFnName %>(data).then((res)=>{
+            return <%= data.servicesClassName %>.<%= row.serviceFnName %>(data).then((res)=>{
                 commit("<%= row.commitFnName %>",res.data);
                 return Promise.resolve(res); 
             }).catch(error=>{

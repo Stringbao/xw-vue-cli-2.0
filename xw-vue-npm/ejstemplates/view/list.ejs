@@ -325,7 +325,7 @@ export default {
                     this.alert.showAlert("success",'Remove success!');
                     this.search();
                 }).catch(err=>{
-                    this.alert.showAlert("error",err.data);
+                    this.alert.showAlert("error",err.msg);
                 });
             })
         },
@@ -341,13 +341,13 @@ export default {
     <%_ if( data.hasStore){ -%>
         //self store
     <%_ data.store.storeActions.forEach(function(name){ -%>
-        this.<%= name%>();
+        this.<%= name%>().then(x=>{}).catch(err=>{this.alert.showAlert("error",err.msg);});
     <%_ }) -%>
     <%_ } -%>
     <%_ if( data.hasCommonStore){ -%>
         //common store
         <%_ data.commonStores.forEach(function(item){ -%>
-        this.<%= item.fnName%>();
+        this.<%= item.fnName%>().then(x=>{}).catch(err=>{this.alert.showAlert("error",err.msg);});
         <%_ }) -%>
     <%_ } -%>
     }
