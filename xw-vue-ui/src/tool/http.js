@@ -46,7 +46,7 @@ let ajaxTool = {
         // response.status
         if(response.status == 200){
             return response;
-        }else if (response.status > 200 && response.status == 500) {
+        }else if (response.status > 200 && response.status < 500) {
             return Promise.reject({status:response.status,msg:response.statusText})
         }else{
             return Promise.reject({status:response.status,msg:"server error"})
