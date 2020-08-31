@@ -2,6 +2,7 @@ import "@components/leComponents.css";
 import "@assets/css/font-awesome.css";
 
 import LeButton from "@components/button/button.vue";
+import LeSubmit from "@components/button/submit.vue";
 import LeCheckboxList from "@components/checkbox/checkboxList.vue";
 import LeRadioList from "@components/radio/radioList.vue";
 import LeInput from "@components/input/vInput.vue";
@@ -42,6 +43,7 @@ const LeAlert = {
 export default {
     install(Vue) {
         Vue.component('LeButton', LeButton);
+        Vue.component('LeSubmit',LeSubmit);
         Vue.component('LeCheckboxList', ValidataHOC(LeCheckboxList));
         Vue.component('LeRadioList', ValidataHOC(LeRadioList));
         Vue.component('LeInput', ValidataHOC(LeInput));

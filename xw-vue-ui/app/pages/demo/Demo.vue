@@ -9,6 +9,10 @@
                 <le-button type="remove" value="delete" @click="del"></le-button>
             </fieldset>
             <fieldset>
+                <legend>submit:</legend>
+                <le-submit type="info" value="info" @click="submitFn"></le-submit>
+            </fieldset>
+            <fieldset>
                 <legend>confirm:</legend>
                 <le-button type="info" value="info" @click="confirm"></le-button>
             </fieldset>
@@ -48,6 +52,16 @@ export default {
         },
         info() {
             this.alert.showAlert("info", "library里面没有jquery");
+        },
+        submitFn(){
+            console.log(1);
+
+            return new Promise((resolve,reject) =>{
+                window.setTimeout(x=>{
+                    console.log(3);
+                    resolve();
+                },2000)
+            })
         },
         update() {
             this.alert.showAlert("warning", "library里面没有jquery");
