@@ -43,12 +43,14 @@ let ajaxTool = {
         return url;
     },
     checkStatus(response) {
-        if (response.status >= 200 && response.status < 500) {
-            return response
+        // response.status
+        if(response.status == 200){
+            return response;
+        }else if (response.status > 200 && response.status == 500) {
+            return Promise.reject({status:response.status,msg:response.statusText})
+        }else{
+            return Promise.reject({status:response.status,msg:"server error"})
         }
-        const error = new Error(response.statusText);
-        error.response = response;
-        return Promise.reject(error)
     },
     checkCode(response) {
         let { status,data,msg } = response;

@@ -15,11 +15,11 @@
                         <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
                     </div>
                 </td>
-                
                 <td v-for="(item,idx) in cols" :key="idx">
                     <div v-if="item.etype == 'img'">
                         <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
                     </div>
+                    
                     <div v-else>
                         <div v-html="item.convert?item.convert(item,row):getValByFieldInRow(item,row)" @click="item.action && item.action(row,item)"></div>
                     </div>
