@@ -87,9 +87,17 @@ export default {
     mounted(){
         <%_ if( data.hasStore){ -%>
         <%_ data.store.storeActions.forEach(function(name){ -%>
-        this.<%= name%>();
+        this.<%= name%>().then(x=>{}).catch(err=>{this.alert.showAlert("error",err.msg);});
         <%_ }) -%>
         <%_ } -%>
+
+        <%_ if( data.hasCommonStore){ -%>
+        //common store
+        <%_ data.commonStores.forEach(function(item){ -%>
+        this.<%= item.fnName%>().then(x=>{}).catch(err=>{this.alert.showAlert("error",err.msg);});
+        <%_ }) -%>
+        <%_ } -%>
+
         this.$refs.saveForm.reset();
         if(this.isEdit || this.isDetail){
             this.<%= data.model.modelDataName %>.set({id:this.$route.query.id});
