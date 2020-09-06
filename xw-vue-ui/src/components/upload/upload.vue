@@ -42,7 +42,7 @@
 <script>
     import define from "../define.js";
     import tool from "../leCompsTool.js";
-    import Ajax from "../../tool/http.js";
+    // import Ajax from "../../tool/http.js";
     
     export default {
         components: {},
@@ -306,7 +306,7 @@
             },
             doUploadAjax(formData){
                 this.showLoading = true;
-                Ajax.upload(this.url,formData).then((result) => {
+                this.ajax.upload(this.url,formData).then((result) => {
                     // this.srcs = [];
                     let src = this.options.analysis?this.options.analysis(result):result;
                     this.alert.showAlert("success","<#上传成功#>");
