@@ -32,7 +32,7 @@ const LeAlert = {
     showAlert(type, msg) {
         Message({ type, msg, showClose: true });
     },
-    showConfirm(message, cb ,options) {
+    showConfirm(message, cb ,options = {}) {
         MessageBox({ message ,...options},cb)
     },
     showNotify() {
