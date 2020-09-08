@@ -89,7 +89,7 @@ function ValidataHOC(Component){
                 let currentComp = this.$children[0];
                 let value = currentComp.getValue();
                 let isSuccess = false;
-                if(currentComp.validataComponentType == "Input"){
+                if(currentComp.validataComponentType == "Input"||currentComp.validataComponentType == "TextArea"){
                     isSuccess = this.verifyReg(value);
                 }else{
                     isSuccess = value?true:false;
