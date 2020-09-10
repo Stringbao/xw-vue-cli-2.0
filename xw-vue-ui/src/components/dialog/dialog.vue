@@ -1,6 +1,6 @@
 
 <template>
-    <div class = "le_dialog_mask" :style="{'z-index':dialogZIndex}" v-show="dialogTag" :class="valueCls">
+    <div class = "le_dialog_mask" :style="{'z-index':dialogZIndex}" v-if="dialogTag" :class="valueCls">
         <!-- width height margin为计算 width/height的一半 + 10(padding)-->
         <div class = "le_dialog_box" v-bind:style="dialogStyle">
             <!-- 顶部 -->

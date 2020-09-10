@@ -18,10 +18,10 @@
                 <li class="page-item"><a class="page-link span">{{index}}/{{total}}</a></li>
                 
 
-                <!-- <li class="page-item"><span class="page-link span"><#跳至#></span></li>                        
+                <li class="page-item"><span class="page-link span"><#跳至#></span></li>                        
                 <li class="page-item"><input type="text" :ref="this.goIndexKey" @keyup.enter.stop = "goToIndex" class="enter-number" placeholder=''/></li>
                 <li class="page-item"><span class="page-link span"><#页#></span></li> 
-                <li class="page-item" @click="this.goToIndex"><a class="page-link button"><#确定#></a></li>  -->
+                <li class="page-item" @click="this.goToIndex"><a class="page-link button"><#确定#></a></li> 
 
 
 
