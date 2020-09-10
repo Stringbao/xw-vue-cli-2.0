@@ -16,7 +16,7 @@
                     </div>
                 </td>
                 
-                <td v-for="(item,idx) in cols" :key="idx">
+                <td v-for="(item,idx) in cols" :key="idx" :width="item.width">
                     <div v-if="item.etype == 'img'">
                         <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
                     </div>

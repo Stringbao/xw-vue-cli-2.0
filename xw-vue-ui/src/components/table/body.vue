@@ -10,7 +10,7 @@
                         <input type="checkbox" :checked="row.ck" />
                     </div>
                 </td>
-                <td class="opration" v-if="actions && actions.length != 0">
+                <td class="opration" v-if="actions && actions.length != 0" >
                     <div v-for="(x,i) in actions" class="btnContent" :key="i">
                         <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
                     </div>

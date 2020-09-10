@@ -44,7 +44,7 @@
             },
             singleSelected(){
                 return this.options.singleSelected;
-            }
+            },
         },
         methods:{
             /**

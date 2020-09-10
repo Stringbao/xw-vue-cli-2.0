@@ -133,7 +133,7 @@
                         console.log("<#数据源为空或者检查analysis, getUrl, pageOption参数!#>");
                     }
                 }).catch(e=>{
-                    this.alert.showAlert("error",e.data);
+                    this.alert.showAlert("error",e.msg);
                     this.noResultCb();
                 })
             },
