@@ -5,7 +5,7 @@
 			<!--选中的标签-->
 			<div class="tags" :_body_tag="inputdomKey" :class="{readonlyIcon:readonlyFlag}" @mouseenter="showArr" @mouseleave="hideArr">
                 <i v-show="showArrow" :_body_tag="inputdomKey" class="fa fa-chevron-down icon-del" @click="clickInput"></i>
-                <i v-show="!showArrow" class="fa fa-chevron-down icon-del fa-times-circle" @click.stop="clear"></i>
+                <i v-show="!showArrow&&showClearButtonFlag" class="fa fa-chevron-down icon-del fa-times-circle" @click.stop="clear"></i>
                 <span class="placeholderText" @click.stop="focusInput" v-show="placeholderStr && (!inputFlag && !readonlyFlag)">{{placeholderStr}}</span>
 				<left-section :readonly="readonlyFlag" :display-name="displayName" :data="leftArray" :notice-parent="noticeFromLeft"></left-section>
 				
@@ -39,7 +39,7 @@
 
   export default {
     name: 'LeLocalSelect',
-    props:["multiple","displayName","displayValue","value","dataSource","readonly","enabledInput"],
+    props:["multiple","displayName","displayValue","value","dataSource","readonly","enabledInput","hideClearButton"],
     components: {LeftSection,ButtomSection},
     inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
     data () {
@@ -104,6 +104,12 @@
                 return true;
             }
             if(this.enabledInput == false){
+                return false;
+            }
+            return true;
+        },
+        showClearButtonFlag(){
+            if(this.hideClearButton){
                 return false;
             }
             return true;
@@ -290,6 +296,9 @@
             if(this.readonlyFlag){
                 return;
             }
+            if(this.hideClearButton){
+                return;
+            }
             this.showArrow = true;
         },
         showArr(){
@@ -297,6 +306,9 @@
                 return;
             }
             if(this.leftArray.length == 0){
+                return;
+            }
+            if(this.hideClearButton){
                 return;
             }
             this.showArrow = false;
