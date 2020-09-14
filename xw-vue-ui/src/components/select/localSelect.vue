@@ -75,7 +75,7 @@
         buttomArray(){
             if(this.searchName != ""){
                 return this.data.filter(item=>{
-                    return item[this.displayName].indexOf(this.searchName) != -1;
+                    return item[this.displayName].toLowerCase().indexOf(this.searchName.toLowerCase()) != -1;
                 })
             }
             return this.data;
