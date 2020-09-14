@@ -35,10 +35,13 @@
             <fieldset>
                 <legend>form validate:</legend>
                 <le-form labelWidth="180" ref="saveForm">
-                    <le-input on max="4" required label="地址" v-model="entity.address"></le-input>
+                    <!-- <le-input on max="4" required label="地址" v-model="entity.address"></le-input> -->
+                    <le-local-select label="收货地址" :data-source="dataSoruce.shops" display-name="name" display-value="code" :multiple="true" v-model="entity.address"></le-local-select>
                 </le-form>
                 <le-button type="save" value="save" @click="saveForm"></le-button>
             </fieldset>
+
+
         </form>
     </div>
 </template>
@@ -52,6 +55,18 @@ export default {
             entity: {
                 address: "",
             },
+            dataSoruce:{
+                shops:[
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                ]
+            }
         };
     },
     methods: {
