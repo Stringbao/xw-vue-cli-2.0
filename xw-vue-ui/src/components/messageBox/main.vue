@@ -38,8 +38,8 @@ export default {
             visible: false,
             title: "",
             closed:false,
-            cancelName:"<#取消#>",
-            confirmName:"<#确定#>"
+            cancelName:"Cancel",
+            confirmName:"Save"
         };
     },
     methods: {

@@ -5,7 +5,7 @@
         <div class = "le_dialog_box" v-bind:style="dialogStyle">
             <!-- 顶部 -->
             <div class="le_dialog_top">
-                <div class="le_dialog_title">{{title?title:"<#标题#>"}}</div>
+                <div class="le_dialog_title">{{title?title:"Title"}}</div>
                 <div class="le_dialog_closeIcon">
                     <i class="fa fa-close" @click="close"></i>
                 </div>
