@@ -11,17 +11,17 @@
                         <option>100</option>
                     </select>
                 </li>
-                <li class="page-item"><a class="page-link span"><#总条数#>:{{count}}</a></li>
-                <li class="page-item" @click="this.prev"><a class="page-link button" ><#上一页#></a></li>
-                <li class="page-item" @click="this.next"><a class="page-link button" ><#下一页#></a></li>                
-                <li class="page-item"><a class="page-link span"><#当前页#>:</a></li>
+                <li class="page-item"><a class="page-link span">Total:{{count}}</a></li>
+                <li class="page-item" @click="this.prev"><a class="page-link button" >Prev</a></li>
+                <li class="page-item" @click="this.next"><a class="page-link button" >Next</a></li>                
+                <li class="page-item"><a class="page-link span">Current Page:</a></li>
                 <li class="page-item"><a class="page-link span">{{index}}/{{total}}</a></li>
                 
 
-                <li class="page-item"><span class="page-link span"><#跳至#></span></li>                        
+                <li class="page-item"><span class="page-link span">Skip to</span></li>                        
                 <li class="page-item"><input type="text" :ref="this.goIndexKey" @keyup.enter.stop = "goToIndex" class="enter-number" placeholder=''/></li>
-                <li class="page-item"><span class="page-link span"><#页#></span></li> 
-                <li class="page-item" @click="this.goToIndex"><a class="page-link button"><#确定#></a></li> 
+                <li class="page-item"><span class="page-link span">Page</span></li> 
+                <li class="page-item" @click="this.goToIndex"><a class="page-link button">Confirm</a></li> 
 
 
 
