@@ -4,8 +4,8 @@
             <%- include(data.includeFormPath, {data: data.model.modelArray, model: data.model.modelDataName}) %>
         </div>
         <div slot="button">
-            <le-button type="cancel" value="取消" @click = "cancel"></le-button>
-            <le-button :disabled='isDetail' type="save" value="确定"  @click = "confirm"></le-button>
+            <le-button type="cancel" value="Cancel" @click = "cancel"></le-button>
+            <le-submit :disabled='isDetail' type="save" value="Save" @click="confirm"></le-submit>
         </div>
     </le-dialog>
 </template>
@@ -52,13 +52,13 @@ export default {
         ]),
         <%_ } -%>
         isEdit(){
-            return this.action == KEYS.GOLBAL.ACTION.UPDATE;
+            return this.action == KEYS.GLOBAL.ACTION.UPDATE;
         },
         isCreate(){
-            return this.action == KEYS.GOLBAL.ACTION.CREATE;
+            return this.action == KEYS.GLOBAL.ACTION.CREATE;
         },
         isDetail(){
-            return this.action == KEYS.GOLBAL.ACTION.DETAIL;
+            return this.action == KEYS.GLOBAL.ACTION.DETAIL;
         },
     },
     methods:{
@@ -66,7 +66,7 @@ export default {
             this.<%= data.model.modelDataName %>.clear();
             this.$refs['saveForm'].reset();
             this.action = opt.action;
-            if(this.action == KEYS.GOLBAL.ACTION.UPDATE || this.action == KEYS.GOLBAL.ACTION.DETAIL){
+            if(this.action == KEYS.GLOBAL.ACTION.UPDATE || this.action == KEYS.GLOBAL.ACTION.DETAIL){
                 this.<%= data.model.modelDataName %>.set(opt.item);
             }
             this.$refs.dialog.show();
@@ -77,10 +77,10 @@ export default {
                     <%= data.service.serviceClassName%>.save(this.<%= data.model.modelDataName %>.get())
                         .then((res) => {
                             this.$refs.dialog.hide();
-                            if(this.action = KEYS.GOLBAL.ACTION.CREATE && this.$listeners.create){
+                            if(this.action = KEYS.GLOBAL.ACTION.CREATE && this.$listeners.create){
                                 this.$emit('create');
                             }
-                            if(this.action = KEYS.GOLBAL.ACTION.UPDATE && this.$listeners.update){
+                            if(this.action = KEYS.GLOBAL.ACTION.UPDATE && this.$listeners.update){
                                 this.$emit('update');
                             }
                             this.alert.showAlert("success", res.msg);
@@ -92,7 +92,7 @@ export default {
                         });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    reject(err);
                 });  
             })
         },

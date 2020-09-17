@@ -293,27 +293,27 @@ export default {
         <%_ if(item.key == 'create') { %>
         <%= item.actionName%>(row) {
             <%_ if(data.hasDialog){ _%>
-            this.$refs.dialogRef.show({action:KEYS.GOLBAL.ACTION.CREATE,item:null});
+            this.$refs.dialogRef.show({action:KEYS.GLOBAL.ACTION.CREATE,item:null});
             <%_ }else {  -%>
-            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.CREATE, id: -1}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GLOBAL.ACTION.CREATE, id: -1}});
             <%_ }  -%>
         },
         <%_ }  -%>
         <%_ if(item.key == 'update'){  -%>
         <%= item.actionName%>(row) {
             <%_ if(data.hasDialog){ _%>
-            this.$refs.dialogRef.show({action:KEYS.GOLBAL.ACTION.UPDATE,item:row});
+            this.$refs.dialogRef.show({action:KEYS.GLOBAL.ACTION.UPDATE,item:row});
             <%_ }else {  -%>
-            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.UPDATE, id: row.id}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GLOBAL.ACTION.UPDATE, id: row.id}});
             <%_ }  -%>
         },
         <%_ }  -%>
         <%_ if(item.key == 'detail'){  -%>
         <%= item.actionName%>(row) {
             <%_ if(data.hasDialog){ _%>
-            this.$refs.dialogRef.show({action:KEYS.GOLBAL.ACTION.DETAIL,item:row});
+            this.$refs.dialogRef.show({action:KEYS.GLOBAL.ACTION.DETAIL,item:row});
             <%_ }else {  -%>
-            this.$router.push({path: 'this is path', query: {tag: KEYS.GOLBAL.ACTION.DETAIL, id: row.id}});
+            this.$router.push({path: 'this is path', query: {tag: KEYS.GLOBAL.ACTION.DETAIL, id: row.id}});
             <%_ }  -%>
         },
         <%_ }  -%>
