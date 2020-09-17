@@ -27,7 +27,7 @@
             </tr>
         </template>
         <tr v-show="data.length == 0" style="text-align:center;width:100%;color:#333;">
-            <td :colspan="getAllCols"><#暂无数据#></td>
+            <td :colspan="getAllCols">No data available</td>
         </tr>
     </tbody>
 </template>

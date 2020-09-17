@@ -260,7 +260,7 @@ let LeCompTool = {
         date:function(val){
             if(!val){return "";}
             if(new Date(val) == "Invalid Date"){
-                return "<#非法的时间格式#>";
+                return "Invalid time format";
             }
             let d = new Date(val);
             let m = d.getMonth()+1;
@@ -272,7 +272,7 @@ let LeCompTool = {
         time:function(val){
             if(!val){return "";}
             if(new Date(val) == "Invalid Date"){
-                return "<#非法的时间格式#>";
+                return "Invalid time format";
             }
             let d = new Date(val);
             let h = d.getHours() >=10?d.getHours():"0"+d.getHours();
@@ -285,7 +285,7 @@ let LeCompTool = {
                 return "";
             }
             if(new Date(val) == "Invalid Date"){
-                return "<#非法的时间格式#>";
+                return "Invalid time format";
             }
             return this.date(val) + " " + this.time(val);
         },

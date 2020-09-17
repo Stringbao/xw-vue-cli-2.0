@@ -85,7 +85,7 @@
                 let size = this.state.pageOption.size;
                 if( url === ""){
                     this.noResultCb();
-                    console.log("<#无有效的url#>!");
+                    console.log("invalid url !");
                     return;
                 }
                 let tmpPromise = null;
@@ -130,7 +130,7 @@
                         }
                     }else{
                         this.noResultCb();
-                        console.log("<#数据源为空或者检查analysis, getUrl, pageOption参数!#>");
+                        console.log("The data source is empty, please check  analysis , getUrl and pageOption");
                     }
                 }).catch(e=>{
                     this.alert.showAlert("error",e.msg);
