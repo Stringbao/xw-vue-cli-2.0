@@ -24,7 +24,7 @@ const defaults = {
     closed: false,
     message:"",
     cancelName:"Cancel",
-    confirmName:"Save"
+    confirmName:"Confirm"
 }
 
 let MessageBoxConstructor = Vue.extend(Main);

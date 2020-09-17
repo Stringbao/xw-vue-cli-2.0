@@ -39,7 +39,7 @@ export default {
             title: "",
             closed:false,
             cancelName:"Cancel",
-            confirmName:"Save"
+            confirmName:"Confirm"
         };
     },
     methods: {
