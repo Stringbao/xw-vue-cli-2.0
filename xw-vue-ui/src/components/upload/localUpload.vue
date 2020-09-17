@@ -4,14 +4,14 @@
             <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
 
             <div style="flex:1">
-                <span :class="{'readonlyIcon':readonlyFlag}" class="input-file"><#请选择#>
+                <span :class="{'readonlyIcon':readonlyFlag}" class="input-file">Please select a file
                 <input :disabled="readonlyFlag" :multiple="multipleTag" @change="change" type="file" :ref="fkey" class="imgFile" /></span>
                 <img v-show="showLoading" src="//p3-nec.static.pub/product/adminweb/2018/05/28/6f7b5572-8693-4f6c-a041-cf6f32b367ac.gif" class="loading">
                 <span class="rules">{{tipStr}}</span>
                 <div class="fileList" v-show="srcs.length>0">
                     <div v-if="noResultTag">
                         <span class="noResult">
-                            <a><#上传成功#></a>
+                            <a>Upload successful</a>
                         </span>
                     </div>
                     <div v-else>
