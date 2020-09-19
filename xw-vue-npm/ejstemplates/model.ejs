@@ -13,6 +13,7 @@ export default class <%= data.className %>{
     }
 
     clear() {
+        this.id = "";
 <%_ if (data.data.length){ -%>
 <%_ data.data.forEach(function(item){ -%>
         this.<%= item %> = '';

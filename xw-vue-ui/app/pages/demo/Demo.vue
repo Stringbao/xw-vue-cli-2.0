@@ -31,6 +31,17 @@
                     </div>
                 </le-dialog>
             </fieldset>
+
+            <fieldset>
+                <legend>form validate:</legend>
+                <le-form labelWidth="180" ref="saveForm">
+                    <!-- <le-input on max="4" required label="地址" v-model="entity.address"></le-input> -->
+                    <le-local-select label="收货地址" :data-source="dataSoruce.shops" display-name="name" display-value="code" :multiple="true" v-model="entity.address"></le-local-select>
+                </le-form>
+                <le-button type="save" value="save" @click="saveForm"></le-button>
+            </fieldset>
+
+
         </form>
     </div>
 </template>
@@ -41,6 +52,21 @@ export default {
             dialog: {
                 showDialog: false,
             },
+            entity: {
+                address: "",
+            },
+            dataSoruce:{
+                shops:[
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                    {name:"ABC",code:"abc"},
+                    {name:"BBB",code:"abc"},
+                ]
+            }
         };
     },
     methods: {
@@ -53,15 +79,15 @@ export default {
         info() {
             this.alert.showAlert("info", "library里面没有jquery");
         },
-        submitFn(){
+        submitFn() {
             console.log(1);
 
-            return new Promise((resolve,reject) =>{
-                window.setTimeout(x=>{
+            return new Promise((resolve, reject) => {
+                window.setTimeout((x) => {
                     console.log(3);
                     resolve();
-                },2000)
-            })
+                }, 2000);
+            });
         },
         update() {
             this.alert.showAlert("warning", "library里面没有jquery");
@@ -77,6 +103,11 @@ export default {
         dialogCancel() {
             this.$refs.dialog.hide();
         },
+        saveForm(){
+            this.$refs.saveForm.validate().then(res=>{
+                console.log(res)
+            })
+        }
     },
 };
 </script>

@@ -20,9 +20,11 @@ function merge(target) {
 }
 
 const defaults = {
-    title: "提示",
+    title: "title",
     closed: false,
     message:"",
+    cancelName:"Cancel",
+    confirmName:"Confirm"
 }
 
 let MessageBoxConstructor = Vue.extend(Main);

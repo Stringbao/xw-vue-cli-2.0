@@ -1,16 +1,18 @@
 <template>
     <transition name="le_alert_fade" @after-leave="handleAfterLeave">
-        <div
-            :class="['le_alert',type,showClose?'hasIcon':'']"
-            :style="{top:verticalOffset+'px'}"
-            v-show="visible"
-            @mouseenter="clearTimer"
-            @mouseleave="startTimer"
-        >
-            <slot>
-                <div v-html="msg" class="le_alert__content"></div>
-            </slot>
-            <i v-if="showClose" class="fa fa-times le_alert__icon" @click="close"></i>
+        <div class="le_alert_wrapper" v-show="visible">
+            <div
+                :class="['le_alert',type,showClose?'hasIcon':'']"
+                :style="{top:verticalOffset+'px'}"
+                v-show="visible"
+                @mouseenter="clearTimer"
+                @mouseleave="startTimer"
+            >
+                <slot>
+                    <div v-html="msg" class="le_alert__content"></div>
+                </slot>
+                <i v-if="showClose" class="fa fa-times le_alert__icon" @click="close"></i>
+            </div>
         </div>
     </transition>
 </template>
@@ -79,6 +81,14 @@ export default {
 };
 </script>
 <style scoped>
+.le_alert_wrapper{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+}
 .le_alert {
     min-width: 380px;
     position: fixed;

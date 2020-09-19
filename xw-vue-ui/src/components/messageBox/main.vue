@@ -19,8 +19,8 @@
                     </div>
                 </div>
                 <div class="le_message_box__btns">
-                    <LeButton type="cancel" @click="close" value="取消" />
-                    <LeButton type="confirm" @click="confirm" value="确定" />
+                    <LeButton type="cancel" @click="close" :value="cancelName" />
+                    <LeButton type="confirm" @click="confirm" :value="confirmName" />
                 </div>
             </div>
         </div>
@@ -37,7 +37,9 @@ export default {
         return {
             visible: false,
             title: "",
-            closed:false
+            closed:false,
+            cancelName:"Cancel",
+            confirmName:"Confirm"
         };
     },
     methods: {

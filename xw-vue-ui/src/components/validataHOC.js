@@ -24,48 +24,72 @@ function ValidataHOC(Component){
             },
             //Input正则验证方法
             verifyReg(val){
-                //如果都没有设置，那么返回true
-                if(this.$attrs.vType == undefined && this.$attrs.required == undefined){
-                    return true;
+                let result = true;
+
+                if(this.$attrs.required !== undefined ){
+                    result = val?true:false;
                 }
-                //如果设置了vType，没有设置required
-                if(this.$attrs.vType != undefined && this.$attrs.required == undefined){
-                    //如果是空，则不验证，直接验证通过
-                    if(!val){
-                        return true;
-                    }
-                    let reg = DEFINE_KEY.INPUT_VALIDATA_TYPES.TYPES[this.$attrs.vType];
-                    reg = new RegExp(reg);
-                    if (!reg.test(val)) {
-                        return false;
-                    }
-                    return true;
-                }
-                //如果设置了vType，也设置required
-                if(this.$attrs.vType != undefined && this.$attrs.required != undefined){
-                    if(val == ""){
-                        return false;
-                    }else{
+
+                if(this.$attrs.vType !== undefined){
+                    if(val){
                         let reg = DEFINE_KEY.INPUT_VALIDATA_TYPES.TYPES[this.$attrs.vType];
                         reg = new RegExp(reg);
                         if (!reg.test(val)) {
-                            return false;
+                            result = false;
                         }
-                        return true;
+                    }
+                }   
+                
+                if(this.$attrs.max !== undefined){
+                    if(val){
+                        result = val.length <= this.$attrs.max;
                     }
                 }
-                //如果设置了required，没有设置vType
-                if(this.$attrs.required != undefined &&this.$attrs.vType == undefined){
-                    return val?true:false;
-                }
-                return true;
+
+
+                //如果都没有设置，那么返回true
+                // if(this.$attrs.vType == undefined && this.$attrs.required == undefined && this.$attrs.max == undefined){
+                //     return true;
+                // }
+                // //如果设置了vType，没有设置required
+                // if(this.$attrs.vType != undefined && this.$attrs.required == undefined){
+                //     //如果是空，则不验证，直接验证通过
+                //     if(!val){
+                //         return true;
+                //     }
+                //     let reg = DEFINE_KEY.INPUT_VALIDATA_TYPES.TYPES[this.$attrs.vType];
+                //     reg = new RegExp(reg);
+                //     if (!reg.test(val)) {
+                //         return false;
+                //     }
+                //     return true;
+                // }
+                // //如果设置了vType，也设置required
+                // if(this.$attrs.vType != undefined && this.$attrs.required != undefined){
+                //     if(val == ""){
+                //         return false;
+                //     }else{
+                //         let reg = DEFINE_KEY.INPUT_VALIDATA_TYPES.TYPES[this.$attrs.vType];
+                //         reg = new RegExp(reg);
+                //         if (!reg.test(val)) {
+                //             return false;
+                //         }
+                //         return true;
+                //     }
+                // }
+                // //如果设置了required，没有设置vType
+                // if(this.$attrs.required != undefined &&this.$attrs.vType == undefined){
+                //     return val?true:false;
+                // }
+                
+                return result;
             },
             //获取组件验证结果
             getVerifyResult(){
                 let currentComp = this.$children[0];
                 let value = currentComp.getValue();
                 let isSuccess = false;
-                if(currentComp.validataComponentType == "Input"){
+                if(currentComp.validataComponentType == "Input"||currentComp.validataComponentType == "TextArea"){
                     isSuccess = this.verifyReg(value);
                 }else{
                     isSuccess = value?true:false;

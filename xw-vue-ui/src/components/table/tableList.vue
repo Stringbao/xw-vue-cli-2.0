@@ -24,7 +24,7 @@
     import BodySection from "./body.vue";
     import PagingSection from "./paging.vue";
     import tool from "../leCompsTool.js";
-    import Ajax from "../../tool/http.js";
+    // import Ajax from "../../tool/http.js";
     
     export default {
         components: {HeaderSection,BodySection,PagingSection},
@@ -85,19 +85,19 @@
                 let size = this.state.pageOption.size;
                 if( url === ""){
                     this.noResultCb();
-                    console.log("<#无有效的url#>!");
+                    console.log("invalid url !");
                     return;
                 }
                 let tmpPromise = null;
                 if(this.ajaxType == "get"){
                     let suffix = url.indexOf('?') === -1?"?":"&";
                     url += suffix + this.options.pageOption.indexKey + "=" + index + "&"+ this.options.pageOption.sizeKey + "=" + size;
-                    tmpPromise = Ajax.get(url);
+                    tmpPromise = this.ajax.get(url);
                 }else{
                     let tmpData = this.options.getParams?this.options.getParams():{};
                     tmpData[this.options.pageOption.indexKey] = index;
                     tmpData[this.options.pageOption.sizeKey] = size;
-                    tmpPromise = Ajax.post(url,tmpData);
+                    tmpPromise = this.ajax.post(url,tmpData);
                 }
                 
                 tmpPromise.then(data=>{
@@ -130,10 +130,10 @@
                         }
                     }else{
                         this.noResultCb();
-                        console.log("<#数据源为空或者检查analysis, getUrl, pageOption参数!#>");
+                        console.log("The data source is empty, please check  analysis , getUrl and pageOption");
                     }
                 }).catch(e=>{
-                    this.alert.showAlert("error",e.data);
+                    this.alert.showAlert("error",e.msg);
                     this.noResultCb();
                 })
             },
@@ -151,7 +151,7 @@
                     pageOption:{
                         index:1,
                         count:0,
-                        total:0,
+                        total:1,
                         size:size
                     }
                 }

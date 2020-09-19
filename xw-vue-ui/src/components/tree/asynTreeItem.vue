@@ -24,7 +24,7 @@
 <script>
 import DEFINE_KEY from "../define.js";
 import tool from "../leCompsTool.js";
-import Ajax from "../../tool/http.js";
+// import Ajax from "../../tool/http.js";
 
 export default {
     name:"TreeItem",
@@ -62,7 +62,7 @@ export default {
                 //发送ajax请求, 改变loading状态
                 
                 item.__cls = "fa-caret-load";
-                Ajax.get(_url).then(d=>{
+                this.ajax.get(_url).then(d=>{
                     //asynOptions 函数必须返回数组
                     let tmp = this.asynOptions.analysis && this.asynOptions.analysis(d);
                     
@@ -81,7 +81,6 @@ export default {
                     tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,tmpObject);
                 })
             }else{
-                console.log("<#展开折叠操作#>");
                 let cls = "";
                 if(item.__children && item.__children instanceof Array && item.__children.length != 0){
                     if(item.__cls == "fa-caret-right"){

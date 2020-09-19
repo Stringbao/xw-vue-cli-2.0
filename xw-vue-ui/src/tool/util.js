@@ -58,7 +58,7 @@ const $date = {
     date:function(val){
         if(!val){return "";}
         if(new Date(val) == "Invalid Date"){
-            return "<#非法的时间格式#>";
+            return "invalid time format";
         }
         let d = new Date(val);
         let m = d.getMonth()+1;
@@ -70,7 +70,7 @@ const $date = {
     time:function(val){
         if(!val){return "";}
         if(new Date(val) == "Invalid Date"){
-            return "<#非法的时间格式#>";
+            return "invalid time format";
         }
         let d = new Date(val);
         let h = d.getHours() >=10?d.getHours():"0"+d.getHours();
@@ -83,13 +83,13 @@ const $date = {
             return "";
         }
         if(new Date(val) == "Invalid Date"){
-            return "<#非法的时间格式#>";
+            return "invalid time format";
         }
         return this.date(val) + " " + this.time(val);
     },
     compareData(one,two){
         if(new Date(one) == "Invalid Date" || new Date(two) == "Invalid Date"){
-            throw new Error("<#非法的时间格式#>");
+            throw new Error("invalid time format");
         }else{
             return new Date(one).getTime() > new Date(two).getTime()?true:false;
         }

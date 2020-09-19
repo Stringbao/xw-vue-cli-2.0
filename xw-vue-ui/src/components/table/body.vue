@@ -10,7 +10,7 @@
                         <input type="checkbox" :checked="row.ck" />
                     </div>
                 </td>
-                <td class="opration" v-if="actions && actions.length != 0">
+                <td class="opration" v-if="actions && actions.length != 0" >
                     <div v-for="(x,i) in actions" class="btnContent" :key="i">
                         <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
                     </div>
@@ -27,7 +27,7 @@
             </tr>
         </template>
         <tr v-show="data.length == 0" style="text-align:center;width:100%;color:#333;">
-            <td :colspan="getAllCols"><#暂无数据#></td>
+            <td :colspan="getAllCols">No data available</td>
         </tr>
     </tbody>
 </template>

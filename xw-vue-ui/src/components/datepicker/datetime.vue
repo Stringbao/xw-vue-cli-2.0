@@ -21,9 +21,9 @@
                         </div>
                     </div>
                     <div @click.stop class="picker-bottom" style="border-top:1px solid #f2f2f2;background:#fff;height:40px;margin-top:10px">
-                        <span @click.stop="getDateTimeStr"><#确定#></span>
-                        <span class="text" @click.stop="getNow"><#此刻#></span>
-                        <span class="text" @click.stop="clear"><#清空#></span>
+                        <span @click.stop="getDateTimeStr">Confirm</span>
+                        <span class="text" @click.stop="getNow">Now</span>
+                        <span class="text" @click.stop="clear">Clear</span>
                         <div style="clear:both;"></div>
                     </div>
                 </div>

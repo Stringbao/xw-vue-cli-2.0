@@ -70,6 +70,7 @@ export default {
             this.submitDisabled = true;
             
             let ckFn = this.$listeners.click();
+            ckFn.catch(err=> console.log(err));
             if(isPromise(ckFn)){
                 return ckFn.then(x=>{
                     this.submitDisabled = false;

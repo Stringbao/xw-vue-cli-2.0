@@ -18,7 +18,7 @@ import TreeItem from "./asynTreeItem.vue";
 import tool from '../leCompsTool.js';
 import DEFINE_KEY from "../define.js";
 import _treeTool from "./treePrivateMethods.js";
-import Ajax from "../../tool/http.js";
+// import Ajax from "../../tool/http.js";
 
 export default {
     name:"LeAsynTree",
@@ -124,7 +124,7 @@ export default {
         reloadNode(node){
             let _url  = this.asynOptions.getUrl(node);
             node.__cls = "fa-caret-load";
-            Ajax.get(_url).then(d=>{
+            this.ajax.get(_url).then(d=>{
                 let tmp = this.asynOptions.analysis && this.asynOptions.analysis(d);
                 if(tmp && tmp instanceof Array && tmp.length != 0){
                     let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);

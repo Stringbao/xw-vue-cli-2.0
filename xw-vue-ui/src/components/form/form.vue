@@ -62,7 +62,7 @@ export default {
                     resolve({
                         success:true,
                         errorInfo:[],
-                        msg:"<#没有找到需要验证的组件#>"
+                        msg:"No components to verify were found"
                     })
                 })
             }else{

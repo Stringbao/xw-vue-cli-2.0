@@ -16,7 +16,7 @@
                     </div>
                 </td>
                 
-                <td v-for="(item,idx) in cols" :key="idx">
+                <td v-for="(item,idx) in cols" :key="idx" :width="item.width">
                     <div v-if="item.etype == 'img'">
                         <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
                     </div>
@@ -27,7 +27,7 @@
             </tr>
         </template>
         <tr v-show="data.length == 0" style="text-align:center;width:100%;color:#333;">
-            <td :colspan="getAllCols"><#暂无数据#></td>
+            <td :colspan="getAllCols">No data available</td>
         </tr>
     </tbody>
 </template>

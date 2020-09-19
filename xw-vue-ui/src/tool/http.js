@@ -76,7 +76,7 @@ let ajaxTool = {
             .then(ajaxTool.checkStatus)
             .then(ajaxTool.parseJSON)
             .then(ajaxTool.checkCode)
-            .catch((err) => { Promise.reject({ msg: err }) })
+            .catch((err) => { Promise.reject(err) })
     }
     const post = (url, params = {})=> {
         const options = {
@@ -90,7 +90,7 @@ let ajaxTool = {
             .then(ajaxTool.checkStatus)
             .then(ajaxTool.parseJSON)
             .then(ajaxTool.checkCode)
-            .catch((err) => Promise.reject({ msg: err }))
+            .catch((err) => Promise.reject(err))
     }
     const upload = (url, formData)=> {
         // const formData = ajaxTool.JsonToFormData(params);
@@ -105,7 +105,7 @@ let ajaxTool = {
             .then(ajaxTool.checkStatus)
             .then(ajaxTool.parseJSON)
             .then(ajaxTool.checkCode)
-            .catch((err) => Promise.reject({ msg: err }))
+            .catch((err) => Promise.reject(err))
     }
     const all = (promises)=> { 
         return Promise.all(promises);
@@ -120,7 +120,7 @@ let ajaxTool = {
             .then(ajaxTool.checkStatus)
             .then(ajaxTool.parseJSON)
             .then(ajaxTool.checkCode)
-            .catch((err) => Promise.reject({ msg: err }))
+            .catch((err) => Promise.reject(err))
     }
 
 export{
