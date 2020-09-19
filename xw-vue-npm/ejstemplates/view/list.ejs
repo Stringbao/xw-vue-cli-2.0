@@ -1,6 +1,9 @@
 <template>
     <div class="le_comps_core_css">
-        <h4 class="le_page_name"><%- data.pageTitle %></h4>
+        <!-- <h4 class="le_page_name"><%- data.pageTitle %></h4> -->
+        <div class="le_list_breadcrumb_pannel">
+            <a href="javascript:void(0)">Bread crumbs1 > Bread crumbs2</a>
+        </div>
         <div class='le_list_search_pannel clearfix'>
             <%_ data.templateSearchModel.forEach(function(row){ -%>
             <div class="col<%= row.length %>"><%_ %>
