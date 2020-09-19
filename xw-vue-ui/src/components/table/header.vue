@@ -1,5 +1,5 @@
 <template>
-    <thead>
+    <thead :style="{transform: 'translateY(' + fixedHeight + 'px)'}">
         <tr>
             <th v-if="showCk">
                 <div v-if="!singleSelected">
@@ -30,7 +30,7 @@
 <script>
     import tool from "../leCompsTool.js";
     export default {
-        props:["originCols","accpetHBNotice","noticeChangeCols","ck","actions","cols","showCk","singleSelected"],
+        props:["originCols","accpetHBNotice","noticeChangeCols","ck","actions","cols","showCk","singleSelected","fixedHeight"],
         name: "HeaderSection",
         data(){
             return {

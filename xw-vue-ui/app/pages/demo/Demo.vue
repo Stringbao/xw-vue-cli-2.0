@@ -54,11 +54,7 @@
 
             <fieldset>
                 <legend>table</legend>
-                <table-list
-                    title="Inventory Management"
-                    ref="inventory_list_ref"
-                    :options="list_table_options"
-                ></table-list>
+                <table-list title="BasicParamManagement List Table" ref='tableListRef' :options='list_table_options'></table-list>
             </fieldset>
 
         </form>
@@ -89,46 +85,40 @@ export default {
                 ]
             },
             list_table_options: {
-                showCk: true,
                 map: [
-                    { key: "productCode", val: "Product Code" },
-                    { key: "restQuantity", val: "Rest Quantity" },
-                    { key: "reserveQuantity", val: "Reserve Quantity" },
-                    { key: "weeklyQuantity", val: "Weekly Quantity" },
-                    { key: "originalQuantity", val: "Original Quantity" },
-                    { key: "seccQuantity", val: "SECC Quantitiy" },
-                    { key: "limitQuantity", val: "Max Qty" },
-                    { key: "remainQuantity", val: "remain quantity" },
+                    {key:'dictKey',val:'Parameter Group'},
+                    {key:'dictCode',val:'Parameter Name'},
+                    {key:'status',val:'Status',convert:this.showStatus},
+                    {key:'type',val:'Parameter Type',convert:this.showParameterType},
+                    {key:'isInheritance',val:'Support Inheritance',convert:this.showInheritance},
+                    {key:'paramSourceUrl',val:'Parameter Optional Value'},
                 ],
-                getUrl: () => {
-                    let url =`/inventoryAPI/api/inventory/queryInventoryInfo.jhtm`
-                    return url;
+                getUrl: ()=> {
+                   return `/dictapi/basiccfg/list`;
                 },
                 pageOption: {
                     sizeKey: "pageSize",
-                    indexKey: "pageNum",
+                    indexKey: "curPage",
                     index: 1,
-                    size: 10
+                    size: 20
                 },
                 actions: [
-                   { key:"info" , val:"detail"  },
-                   { key:"remove" , val:"delete"  }
+                    {key:'update',val:'Updata',action:this.update},
+                    {key:'info',val:'Detail',action:this.detail},
+                    {key:'start',val:'Enable',action:this.enableFn},
+                    {key:'stop',val:'Disable',action:this.disableFn},
                 ],
                 analysis: data => {
-                    if (
-                        data &&
-                        data.data &&
-                        data.data.datas
-                    ) {
+                    if (data &&data.data &&data.data.dataList) {
                         return {
-                            data: data.data.datas,
-                            count: data.data.totalCount
+                            data: data.data.dataList,
+                            count: data.data.count
                         };
                     } else {
                         return { data: [], count: 0 };
                     }
                 }
-            },
+            }
         };
     },
     methods: {

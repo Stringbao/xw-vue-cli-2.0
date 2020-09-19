@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="table-title" v-show="title">{{title}}</div>
+        <!-- <div class="table-title" v-show="title">{{title}}</div> -->
         <div class="tableContainer">
-            <div class="tableBox">
+            <div class="tableBox" @scroll="scrollHandler">
                 <table class="table">
-                    <header-section :singleSelected="singleSelected" :show-ck="showCk" :origin-cols="originCols" :accpet-h-b-notice="accpetHBNotice" :notice-change-cols="noticeChangeCols" :ck="state.ck" :actions="actions" :cols="state.cols"></header-section>        
+                    <header-section :singleSelected="singleSelected" :show-ck="showCk" :origin-cols="originCols" :accpet-h-b-notice="accpetHBNotice" :notice-change-cols="noticeChangeCols" :ck="state.ck" :actions="actions" :cols="state.cols" :fixedHeight="fixedHeight"></header-section>        
 
                     <body-section :singleSelected="singleSelected" :show-ck="showCk" :actions="actions" :cols="state.cols" :accpet-h-b-notice="accpetHBNotice" :data="state.data"></body-section>
                 </table>
@@ -45,7 +45,8 @@
                     },
                 },
                 //在上一次请求没有完成之前，不允许发送下一次请求
-                isLoading:false
+                isLoading:false,
+                fixedHeight:0
             }
         },
         computed:{
@@ -259,6 +260,9 @@
              */
             searchCurrentIndex(){
                 this.search(this.getParams().index);
+            },
+            scrollHandler(e){
+                this.fixedHeight = e.target.scrollTop;
             }
         },
         mounted () {
@@ -305,6 +309,7 @@
 
     .tableContainer .tableBox{
         overflow:scroll; 
+        height: 640px;
     }
 
     .tableContainer .table-title{
@@ -341,8 +346,9 @@
     }
 
     table tbody{
-        height: 38px;
         line-height: 38px;
+        max-height: 500px;
+        overflow: auto;
         font-size: 12px;
     }
 

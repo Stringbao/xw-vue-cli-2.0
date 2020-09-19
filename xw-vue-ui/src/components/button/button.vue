@@ -78,7 +78,6 @@ export default {
         display: inline-block;
         outline: none;
         cursor: pointer;
-        position: relative;
         padding: 0px 12px;
         background-color:#fbfbf9;
         color: #76777b;
