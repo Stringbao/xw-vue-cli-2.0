@@ -82,7 +82,7 @@ export default {
         background-color:#fbfbf9;
         color: #76777b;
         font-size: 13px;
-        line-height: 24px;
+        line-height: 30px;
         letter-spacing: 0px;
         border-radius: 6px;
 	    border: solid 1px #c9c9cb;

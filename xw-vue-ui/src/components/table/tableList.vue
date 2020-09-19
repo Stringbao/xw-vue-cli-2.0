@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- <div class="table-title" v-show="title">{{title}}</div> -->
+        <div class="table-title" v-show="title">{{title}}</div>
         <div class="tableContainer">
             <div class="tableBox" @scroll="scrollHandler">
                 <table class="table">
@@ -295,6 +295,10 @@
         display: block;
         min-width: 100%;
         position: relative;
+        background-color: #ffffff;
+        box-shadow: 3px 0px 12px 0px 
+            rgba(112, 112, 112, 0.2);
+        border: solid 1px #c9c9cb;
     }
 
     .tableContainer .tableMask{

@@ -1,5 +1,23 @@
 <template>
     <div>
+        <div class="le_comps_core_css">
+            <!-- <h4 class="le_page_name">title</h4> -->
+            <div class="le_list_breadcrumb_pannel">
+                <a href="">Product Management > category</a>
+            </div>
+            <div class='le_list_search_pannel clearfix'>
+                <div class="col1">
+                    <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                </div>
+            </div>
+            <div class="le_search_btn_group cleatfix">
+                <le-button type="create" value="Create"></le-button>
+                <le-button type="search" value="Search"></le-button>
+            </div>
+            <div class='le_table_container'>
+                <table-list title="BasicParamManagement List Table" ref='tableListRef' :options='list_table_options'></table-list>
+            </div>
+        </div>
         <form>
             <fieldset>
                 <legend>button:</legend>
@@ -56,14 +74,17 @@
                 <legend>table</legend>
                 <table-list title="BasicParamManagement List Table" ref='tableListRef' :options='list_table_options'></table-list>
             </fieldset>
-
         </form>
+
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
+            searchModel:{
+                orderCode:""
+            },
             dialog: {
                 showDialog: false,
                 width:'',
