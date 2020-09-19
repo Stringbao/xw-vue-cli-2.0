@@ -9,6 +9,11 @@ const routers = [
         path: '/demo',
         name: 'demo',
         component:() => import('@pages/demo/Demo.vue')
+    },
+    {
+        path: '/tree',
+        name: 'tree',
+        component:() => import('@pages/demo/tree.vue')
     }
 ];
 
