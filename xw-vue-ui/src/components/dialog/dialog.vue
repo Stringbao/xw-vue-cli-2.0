@@ -93,10 +93,7 @@ export default {
         top:50%;
         transform: translate(-50%,-50%);
         background:#fff;
-        border-radius: 7px;
-        padding:10px;
-        padding: 20px 35px;
-        border-radius: 3px;
+        border-radius: 4px;
         min-width: 400px;
         padding-bottom: 0;
     }
@@ -112,16 +109,15 @@ export default {
         display:flex;
         justify-content:space-between;
         border-bottom: 1px solid #dcdfe6;
-        height: 35px;
+        padding: 22px 30px;
         /* margin-bottom: 20px; */
     }
     /* 标题 */
     .le_dialog_title{
-        color:#333;
-        font-size:18px;
-        line-height:35px;
+        color:#62626e;
+        font-size:14px;
         padding-bottom:0;
-        font-weight:normal;
+        font-weight:bold;
         text-align: left;
         margin-left: 4px;
         overflow: hidden;
@@ -133,8 +129,7 @@ export default {
         flex:1;
         text-align:right;
         vertical-align: middle;
-        font-size:20px;
-        line-height: 35px;
+        font-size:14px;
     }
 
     .fa-close{
@@ -151,7 +146,7 @@ export default {
         color: #606266;
         text-align: left;
         position: relative;
-        padding-top: 10px;
+        padding: 24px 30px;
     }
     /* 滚动条整体的样式 */
     .le_dialog_contine::-webkit-scrollbar{
@@ -173,12 +168,10 @@ export default {
     .dialogBtnContent{
         text-align: right;
         border-top: 1px solid #ccc;
-        width: 100%;
-        bottom: 6px;
-        height: 60px;
-        line-height: 60px;
         background-color: #fff;
-        text-align: right;
+        padding: 22px 30px;
+        background-color: #ecf0f1;
+        border-radius: 0 0 4px 4px;
     }
     
     .show_le_dialog_mask{
