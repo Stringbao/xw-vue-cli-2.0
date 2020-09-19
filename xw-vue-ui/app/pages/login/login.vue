@@ -30,7 +30,7 @@ export default {
                     $cookie.setCookie("tid", res.data.tid);
                     $cookie.setCookie("userName", res.data.uname);
                     $cookie.setCookie("userid", this.user.username);
-                    this.$router.push({ path: "/tree" });
+                    this.$router.push({ path: "/demo" });
                 })
                 .catch(err => {
                     console.log(err);
