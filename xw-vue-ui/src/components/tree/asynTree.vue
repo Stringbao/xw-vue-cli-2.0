@@ -54,6 +54,7 @@ export default {
          * @returns
          */
         setParentCheckBoxStatus(node){
+            
             if(node && node.__children.length != 0){
                 let res = {s1:0,s2:0,s3:0};
                 node.__children.forEach(x=>{
@@ -172,6 +173,21 @@ export default {
                 tool.arrayServer.removeItems(this.state.data,[node]);
             }
         },
+        convertData(arr, filed){
+            let res = [];
+            arr.forEach(x=>{
+                let tmp = {name:x[filed],status:x.__checkboxStatus};
+                res.push(tmp);
+            })
+            return res;
+        },
+        getIdsInConvertData(data){
+            let res = [];
+            data.forEach(x=>{
+                res.push(x.name);
+            })
+            return res.join(',');
+        },
         /**
          * @description 获取所有被选中子节点
          * @returns Array
@@ -189,6 +205,41 @@ export default {
             _treeTool.checkedNodes = [];
             _treeTool.getAllCheckboxNodesExcludeParent(this.state.data);
             return _treeTool.checkedNodes;
+        },
+        expandNodeById(idArr, count = 0, cb){
+            if(idArr.length == count){
+                return;
+            }
+            let id = idArr[count].name;
+            let node = _treeTool.getNodeByField(this.state.data, "id", id);
+            if(!node){
+                console.log('node 404');
+                return;
+            }
+            node.__checkboxStatus = idArr[count].status;
+            console.log(node);
+            let _url  = this.asynOptions.getUrl(node);
+            node.__cls = "fa-caret-load";
+            this.ajax.get(_url).then(d=>{
+                let tmp = this.asynOptions.analysis && this.asynOptions.analysis(d);
+                let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);
+                node.__children = tmpData;
+                node.__expand = true;
+                node.__cls = "fa-caret-down";
+                count++;
+                this.expandNodeById(idArr, count, cb);
+                if(idArr.length == count){
+                    cb && cb();
+                }
+            })
+        },
+        /**
+         * {id1:status,id2:status}
+         */
+        bindData(arr){
+            this.expandNodeById(arr, 0, ()=>{
+                console.log(this.state.data);
+            });
         }
     },
     mounted(){
@@ -205,22 +256,26 @@ export default {
             }
             //无children情况下，展开事件（ajax请求）
             if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.UPDATECHILDREN){
+                console.log("do ajax");
                 item.__children = d.data.children;
                 item.__expand = d.data.expand;
                 item.__cls = d.data.cls;
             }
             //有children的情况下，展开事件
             else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.OPEN){
+                console.log("do expand");
                 item.__expand = d.data.expand;
                 item.__cls = d.data.cls;
             }
             //当前项选中事件，执行callback
             else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.SELECTEDITEM){
+                console.log("do select item");
                 _treeTool.setSingleColor(this.state.data,item);
                 this.itemClick(item);
             }
             //checkbox状态变化事件
             else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX){
+                console.log("checkbox status changed");
                 //改变所有子节点的checkbox状态
                 this.setChildrenCheckboxStatus(item, d.checkboxStatus);
                 //改变所有父节点的checkbox状态

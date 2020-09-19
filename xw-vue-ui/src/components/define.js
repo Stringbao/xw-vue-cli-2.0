@@ -19,7 +19,7 @@ let TREE_CONFIG = {
                 element.__parentNode = isRoot?null:currentNode;
                 element.__parentId = isRoot?-1:currentNode.__tmpId;//根节点的__parentId:-1
                 element.__color = "";
-                element.__checkboxStatus = false;
+                element.__checkboxStatus = 2;
             })
             return data;
         }

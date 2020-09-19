@@ -68,7 +68,6 @@ export default {
          */
         expandNode(item){
             if(item.__children.length == 0){
-                console.log("ajax请求");
                 let _url  = this.asynOptions.getUrl(item);
                 //发送ajax请求, 改变loading状态
                 

@@ -85,8 +85,7 @@ let _treeTool = {
                 _treeTool.getAllCheckboxNodesExcludeParent(_children);
             }
         }
-    },
-    
+    }
 }
 
 export default _treeTool;

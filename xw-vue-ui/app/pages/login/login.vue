@@ -1,9 +1,5 @@
 <template>
     <div>
-        <le-form labelWidth="180" ref="login">
-            <le-input label="itcode" v-model="user.username"></le-input>
-            <le-input type="password" label="password" v-model="user.password"></le-input>
-        </le-form>
         <le-button value="登录" type="save" @click="login"></le-button>
     </div>
 </template>
@@ -16,8 +12,8 @@ export default {
     data() {
         return {
             user:{
-                username:"",
-                password:""
+                username:"wupeng5",
+                password:"Chen19910208aaaa"
             }
         };
     },
@@ -34,7 +30,7 @@ export default {
                     $cookie.setCookie("tid", res.data.tid);
                     $cookie.setCookie("userName", res.data.uname);
                     $cookie.setCookie("userid", this.user.username);
-                    this.$router.push({ path: "/demo" });
+                    this.$router.push({ path: "/tree" });
                 })
                 .catch(err => {
                     console.log(err);
