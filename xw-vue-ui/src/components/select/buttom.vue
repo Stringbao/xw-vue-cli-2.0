@@ -102,7 +102,8 @@
 	}
 
 	.selectList li:hover{
-		background-color: #f5f7fa
+		background-color: #51536a;
+		color: #fff;
 	}
 
 	.selectList li i{

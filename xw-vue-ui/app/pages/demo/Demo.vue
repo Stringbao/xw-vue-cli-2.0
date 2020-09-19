@@ -55,8 +55,8 @@
                         <le-button type="info" value="info" @click="confirm"></le-button>
                     </div>
                     <div slot="button">
-                        <le-button type="cancel" value="取消" @click="dialogCancel"></le-button>
-                        <le-button type="save" value="确定"></le-button>
+                        <le-button type="cancel" value="Cancel" @click="dialogCancel"></le-button>
+                        <le-button type="save" value="Save"></le-button>
                     </div>
                 </le-dialog>
             </fieldset>
