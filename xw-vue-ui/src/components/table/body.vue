@@ -137,8 +137,9 @@
         text-align: center; 
         word-break: keep-all;
         white-space: nowrap;
-        padding: 10px;
+        padding: 14px;
         max-width: 300px;
+        line-height: 24px;
         overflow: hidden;
     }
 

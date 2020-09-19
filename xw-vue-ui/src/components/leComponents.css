@@ -10,9 +10,9 @@
 html,body{
     width: 100%;
     height: 100%;
+    background-color: #ecedf0;
 }
 .le_comps_core_css{
-    background-color: #ecedf0;
     padding: 0 23px;
 }
 .le_list_breadcrumb_pannel{
