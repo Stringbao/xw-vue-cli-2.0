@@ -312,8 +312,8 @@
     }
 
     .tableContainer .tableBox{
-        overflow:scroll; 
-        height: 400px;
+        overflow:auto; 
+        max-height: 400px;
     }
 
     .tableContainer .table-title{
