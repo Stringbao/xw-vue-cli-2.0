@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="table-title" v-show="title">{{title}}</div>
+        <!-- <div class="table-title" v-show="title">{{title}}</div> -->
         <div class="tableContainer">
             <div class="tableBox" @scroll="scrollHandler">
                 <table class="table">
@@ -313,7 +313,7 @@
 
     .tableContainer .tableBox{
         overflow:scroll; 
-        height: 640px;
+        height: 400px;
     }
 
     .tableContainer .table-title{
