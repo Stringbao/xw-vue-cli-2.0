@@ -12,8 +12,8 @@ export default {
     data() {
         return {
             user:{
-                username:"wupeng5",
-                password:"Chen19910208aaaa"
+                username:"wangrj9",
+                password:"Lenovo-654321"
             }
         };
     },
@@ -30,7 +30,7 @@ export default {
                     $cookie.setCookie("tid", res.data.tid);
                     $cookie.setCookie("userName", res.data.uname);
                     $cookie.setCookie("userid", this.user.username);
-                    this.$router.push({ path: "/tree" });
+                    this.$router.push({ path: "/demo" });
                 })
                 .catch(err => {
                     console.log(err);
