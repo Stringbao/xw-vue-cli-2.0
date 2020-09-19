@@ -1,5 +1,5 @@
 <template>
-    <le-dialog ref="dialog" :height="height">
+    <le-dialog ref="dialog" :title="title">
         <div slot = "body">
             <%- include(data.includeFormPath, {data: data.model.modelArray, model: data.model.modelDataName}) %>
         </div>
@@ -30,6 +30,7 @@ export default {
     name:"Dialog",
     data(){
         return {
+            title:"",
             action:"",
             height:'80vh',
             <%= data.model.modelDataName %>: new <%= data.model.modelClassName %>(),
@@ -66,6 +67,17 @@ export default {
             this.<%= data.model.modelDataName %>.clear();
             this.$refs['saveForm'].reset();
             this.action = opt.action;
+
+            if(this.action == KEYS.GOLBAL.ACTION.DETAIL){
+                this.title = 'Detail';
+            }
+            if(this.action == KEYS.GOLBAL.ACTION.UPDATE){
+                this.title = 'Modify';
+            }
+            if(this.action == KEYS.GOLBAL.ACTION.CREATE){
+                this.title = 'Create';
+            }
+
             if(this.action == KEYS.GLOBAL.ACTION.UPDATE || this.action == KEYS.GLOBAL.ACTION.DETAIL){
                 this.<%= data.model.modelDataName %>.set(opt.item);
             }
