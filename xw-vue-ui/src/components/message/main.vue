@@ -1,6 +1,6 @@
 <template>
     <transition name="le_alert_fade" @after-leave="handleAfterLeave">
-        <div class="le_alert_wrapper" v-show="visible">
+        <!-- <div class="le_alert_wrapper" v-show="visible"> -->
             <div
                 :class="['le_alert',type,showClose?'hasIcon':'']"
                 :style="{top:verticalOffset+'px'}"
@@ -13,7 +13,7 @@
                 </slot>
                 <i v-if="showClose" class="fa fa-times le_alert__icon" @click="close"></i>
             </div>
-        </div>
+        <!-- </div> -->
     </transition>
 </template>
 <script>
@@ -90,13 +90,8 @@ export default {
     background-color: rgba(0, 0, 0, 0.4);
 }
 .le_alert {
-    min-width: 380px;
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
     padding: 15px 15px 15px 20px;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     background-color: #edf2fc;
     display: flex;
     align-items: center;
@@ -105,8 +100,10 @@ export default {
     border-width: 1px;
     border-style: solid;
     border-color: #ebeef5;
-    min-width: 380px;
-    transition: opacity 0.3s, transform 0.4s, top 0.4s;
+    transition: opacity 0.3s, transform 0.25s, top 0.25s;
+    position: fixed;
+    left: 0;
+    right: 0;
 }
 .le_alert__icon {
     font-size: 16px;
@@ -133,9 +130,9 @@ export default {
     color: #e6a23c;
 }
 .le_alert.error {
-    background-color: #fef0f0;
-    border-color: #fde2e2;
-    color: #f56c6c;
+    background-color: #fbf1f3;
+    border-color: #c9c9cb;
+    color: #61616d;
 }
 .le_alert.info {
     color: #909399;
@@ -143,7 +140,7 @@ export default {
 .le_alert_fade-enter,
 .le_alert_fade-leave-active {
     opacity: 0;
-    -webkit-transform: translate(-50%, -100%);
-    transform: translate(-50%, -100%);
+    -webkit-transform: translate(0%, -100%);
+    transform: translate(0%, -100%);
 }
 </style>

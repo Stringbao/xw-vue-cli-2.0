@@ -11,18 +11,27 @@
                         <option>100</option>
                     </select>
                 </li>
-                <li class="page-item"><a class="page-link span">Total:{{count}}</a></li>
-                <li class="page-item" @click="this.prev"><a class="page-link button" >Prev</a></li>
-                <li class="page-item" @click="this.next"><a class="page-link button" >Next</a></li>                
-                <li class="page-item"><a class="page-link span">Current Page:</a></li>
-                <li class="page-item"><a class="page-link span">{{index}}/{{total}}</a></li>
+                <!-- <li class="page-item"><a class="page-link span">Total:{{count}}</a></li> -->
+                <li class="page-item prev" @click="this.prev">
+                    <a class="page-link button " >
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                </li>
+                <li class="page-item next" @click="this.next">
+                    <a class="page-link button " >
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>                
+               
                 
 
                 <li class="page-item"><span class="page-link span">Skip to</span></li>                        
                 <li class="page-item"><input type="text" :ref="this.goIndexKey" @keyup.enter.stop = "goToIndex" class="enter-number" placeholder=''/></li>
-                <li class="page-item"><span class="page-link span">Page</span></li> 
-                <li class="page-item" @click="this.goToIndex"><a class="page-link button">Confirm</a></li> 
+                <!-- <li class="page-item"><span class="page-link span">Page</span></li>  -->
+                <!-- <li class="page-item" @click="this.goToIndex"><a class="page-link button">Confirm</a></li>  -->
 
+                 <li class="page-item"><a class="page-link span">Current:</a></li>
+                <li class="page-item"><a class="page-link span">{{index}}/{{total}}</a></li>
 
 
             </ul>
@@ -82,16 +91,15 @@
 <style scoped>
     .button{
         cursor: pointer;
-        background-color: #5bc0de;
         display: inline-block;
-        color: #fff;
+        color: #61616d;
         font-size: 12px;
         padding: 0 6px;
         border: none;
     }
 
     .pagination>li>a.button{
-        color:#fff;
+        color: #61616d;
         height: 26px;
         line-height: 26px;
     }
@@ -110,10 +118,15 @@
     .paging span{padding: 0 5px;}
     .pageNumCls{margin-right: 20px;margin-top:10px;float:right;font-size:14px;text-align:center;}
     .pagination{
-        list-style: none;overflow: hidden;font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        overflow: hidden;
+        font-weight: 600;
     }
     .pagination>li{
-        display: block;float: left;margin-left: 8px;height: auto;color: #797979;
+        display: block;margin-left: 8px;height: auto;color: #797979;
     }
     .pagination>li>a, .pagination>li>span{
         border:none;border-radius: 3px;line-height: 27px;color: #797979;
@@ -125,18 +138,15 @@
     }
 
     .pagination .enter-number{
-        height:18px;
-        line-height:18px;
+        width: 32px;
+        height: 24px;
+        height: 24px;
         text-align:center;
-        border: 1px solid rgba(217,217,217,1);
-        line-height: 20px;
-        width: 30px;
-        padding: 0 5px;border-radius: 6px;outline: none;
+        border: solid 1px #c9c9cb;
+        background-color: #fbfbf9;
+        /* padding: 0 5px;border-radius: 6px;outline: none; */
     }
 
-    .button:hover{
-        background-color: rgba(0,0,0,0.5);
-    }
 
     .selectPages{
         line-height: 27px;
@@ -146,6 +156,28 @@
     .selectPages select{
         border: 1px solid rgba(217,217,217,1);
         color: #797979;
+        width: 70px;
+    }
+    .pagination .page-item.prev:hover,.pagination .page-item.next:hover{
+        background-color: #4d5062;
+        border: solid 1px #4d5062;
+    }
+    .pagination .page-item.prev:hover a,.pagination .page-item.next:hover a{
+        color: #fff;
+    }
+    .pagination .page-item.prev{
+        width: 28px;
+        background-color: #ffffff;
+        border-radius: 6px 0px 0px 6px;
+        cursor: pointer;
+        border: solid 1px #c9c9cb;
+    }
+    .pagination .page-item.next{
+        width: 28px;
+        background-color: #ffffff;
+        border-radius: 0px 6px 6px 0px;
+        cursor: pointer;
+        border: solid 1px #c9c9cb;
     }
 
 </style>

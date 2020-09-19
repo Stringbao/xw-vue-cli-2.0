@@ -127,8 +127,14 @@
     .btnCls{
         margin:0 5px;
     }
+    .table tbody tr:hover{
+        background-color: #fefced;
+    }
     tbody tr td{
-        color: rgba(0,0,0,0.65);border: 1px solid #ddd;vertical-align: middle;text-align: center; 
+        color: rgba(0,0,0,0.65);
+        border: 1px solid #c9c9cb;;
+        vertical-align: middle;
+        text-align: center; 
         word-break: keep-all;
         white-space: nowrap;
         padding: 10px;
@@ -170,9 +176,15 @@
         /* float: left;
         transform: translateY(0); */
     }
-
+    .btnContent + .btnContent{
+        margin-left: 9px;
+    }
     .opration{
         max-width: 1000px;
     }
-
+    .opration span.asBtn{
+       padding: 0 8px;
+       line-height: 20px;
+       font-size: 12px;
+    }
 </style>

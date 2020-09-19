@@ -2,7 +2,7 @@
 <template>
     <div class = "le_dialog_mask" :style="{'z-index':dialogZIndex}" v-show="dialogTag" :class="valueCls">
         <!-- width height margin为计算 width/height的一半 + 10(padding)-->
-        <div class = "le_dialog_box" v-bind:style="dialogStyle">
+        <div class = "le_dialog_box" >
             <!-- 顶部 -->
             <div class="le_dialog_top">
                 <div class="le_dialog_title">{{title?title:"Title"}}</div>
@@ -10,7 +10,7 @@
                     <i class="fa fa-close" @click="close"></i>
                 </div>
             </div>
-            <div class = "le_dialog_contine">
+            <div class = "le_dialog_contine" v-bind:style="dialogStyle">
                 <slot name="body"></slot>
             </div>
             <div class="dialogBtnContent">
@@ -44,7 +44,7 @@ export default {
             if(this.height && isNaN(this.height) &&this.height.indexOf('vh') != -1){
                 h = this.height;
             }else{
-                h = this.height?this.height + "px" : "300px";
+                h = this.height?this.height + "px" : "400px";
             }
 
             return {width:w,height:h}
@@ -95,14 +95,6 @@ export default {
         background:#fff;
         border-radius: 7px;
         padding:10px;
-        display:box;
-        display:-webkit-box;
-        display:-webkit-flex; 
-        display:-moz-box; 
-        display:-ms-flexbox; 
-        display:flex;
-        justify-content:space-between;
-        flex-direction:column;
         padding: 20px 35px;
         border-radius: 3px;
         min-width: 400px;

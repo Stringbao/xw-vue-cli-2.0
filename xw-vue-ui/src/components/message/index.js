@@ -11,9 +11,12 @@ let instance;
 let instances = [];
 let seed = 1;
 
+const defaultOptions = {
+    offset : 20
+}
 
 const Message = function (options) {
-    options = options || {};
+    options = options || defaultOptions;
     if (typeof options === 'string') {
         options = {
             message: options
@@ -35,11 +38,11 @@ const Message = function (options) {
         instance.message = null;
     }
     instance.$mount();
-    document.body.appendChild(instance.$el);
-    let verticalOffset = options.offset || 20;
-    instances.forEach(item => {
-        verticalOffset += item.$el.offsetHeight + 16;
-    });
+    document.body.insertBefore(instance.$el,document.body.children[0]);
+    let verticalOffset = options.offset;
+    // instances.forEach(item => {
+    //     verticalOffset += item.$el.offsetHeight + 16;
+    // });
     instance.verticalOffset = verticalOffset;
     instance.visible = true;
     instance.$el.style.zIndex = tool._idSeed.newId();

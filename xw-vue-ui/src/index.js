@@ -30,7 +30,7 @@ import lang18n from "@components/i18n.js";
 
 const LeAlert = {
     showAlert(type, msg) {
-        Message({ type, msg, showClose: true });
+        Message({ type, msg, showClose: true ,offset:0});
     },
     showConfirm(message, cb ,options = {}) {
         MessageBox({ message ,...options},cb)

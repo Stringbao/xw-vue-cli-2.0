@@ -10,6 +10,9 @@ import LeComponent from "@/index.js";
 Vue.use(LeComponent);
 Vue.use(Router);
 
+import Ajax from "@util/http.js";
+
+Vue.prototype.ajax = Ajax;
 const router = new Router({routes});
 Vue.config.productionTip = false;
 

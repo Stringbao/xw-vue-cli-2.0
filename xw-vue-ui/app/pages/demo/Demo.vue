@@ -20,9 +20,20 @@
             <fieldset>
                 <legend>dialog:</legend>
                 <le-button type="create" value="dialog" @click="showDialog"></le-button>
-                <le-dialog ref="dialog">
+                <le-dialog ref="dialog" :width="dialog.width" :height="dialog.height">
                     <div slot="body">
-                        <div>abc</div>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>
                         <le-button type="info" value="info" @click="confirm"></le-button>
                     </div>
                     <div slot="button">
@@ -41,6 +52,14 @@
                 <le-button type="save" value="save" @click="saveForm"></le-button>
             </fieldset>
 
+            <fieldset>
+                <legend>table</legend>
+                <table-list
+                    title="Inventory Management"
+                    ref="inventory_list_ref"
+                    :options="list_table_options"
+                ></table-list>
+            </fieldset>
 
         </form>
     </div>
@@ -51,6 +70,8 @@ export default {
         return {
             dialog: {
                 showDialog: false,
+                width:'',
+                height:""
             },
             entity: {
                 address: "",
@@ -66,7 +87,48 @@ export default {
                     {name:"ABC",code:"abc"},
                     {name:"BBB",code:"abc"},
                 ]
-            }
+            },
+            list_table_options: {
+                showCk: true,
+                map: [
+                    { key: "productCode", val: "Product Code" },
+                    { key: "restQuantity", val: "Rest Quantity" },
+                    { key: "reserveQuantity", val: "Reserve Quantity" },
+                    { key: "weeklyQuantity", val: "Weekly Quantity" },
+                    { key: "originalQuantity", val: "Original Quantity" },
+                    { key: "seccQuantity", val: "SECC Quantitiy" },
+                    { key: "limitQuantity", val: "Max Qty" },
+                    { key: "remainQuantity", val: "remain quantity" },
+                ],
+                getUrl: () => {
+                    let url =`/inventoryAPI/api/inventory/queryInventoryInfo.jhtm`
+                    return url;
+                },
+                pageOption: {
+                    sizeKey: "pageSize",
+                    indexKey: "pageNum",
+                    index: 1,
+                    size: 10
+                },
+                actions: [
+                   { key:"info" , val:"detail"  },
+                   { key:"remove" , val:"delete"  }
+                ],
+                analysis: data => {
+                    if (
+                        data &&
+                        data.data &&
+                        data.data.datas
+                    ) {
+                        return {
+                            data: data.data.datas,
+                            count: data.data.totalCount
+                        };
+                    } else {
+                        return { data: [], count: 0 };
+                    }
+                }
+            },
         };
     },
     methods: {
