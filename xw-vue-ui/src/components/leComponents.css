@@ -71,6 +71,7 @@ html,body{
     text-align: left;
     padding: 10px 22px;
     border-bottom: 1px solid #eae4e4;
+    padding-left: 0px;
 }
 
 /* .le_form_row  .le_form_row_item 是为了把单加的button和前面的组件放到一行上*/
