@@ -146,7 +146,7 @@ export default {
         color: #606266;
         text-align: left;
         position: relative;
-        padding: 24px 30px;
+        padding: 0px 30px;
     }
     /* 滚动条整体的样式 */
     .le_dialog_contine::-webkit-scrollbar{
