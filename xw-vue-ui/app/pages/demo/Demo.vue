@@ -5,8 +5,8 @@
                 <legend>button:</legend>
                 <le-button type="info" value="info" @click="info"></le-button>
                 <le-button type="create" value="create" @click="create"></le-button>
-                <le-button type="update" value="update" @click="update"></le-button>
-                <le-button type="remove" value="delete" @click="del"></le-button>
+                <le-button type="update" :disabled="true" value="update" @click="update"></le-button>
+                <le-button type="remove"  value="delete" @click="del"></le-button>
             </fieldset>
             <fieldset>
                 <legend>submit:</legend>
