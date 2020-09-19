@@ -7,6 +7,9 @@ import routes from '@route/index.js';
 import LeComponent from "@/index.js";
 // import LeComponent from "@root/dist/leComponent.min.js";
 
+import ajax from "@util/http.js";
+Vue.prototype.ajax =  ajax;
+
 Vue.use(LeComponent);
 Vue.use(Router);
 

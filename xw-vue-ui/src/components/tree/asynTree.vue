@@ -55,13 +55,34 @@ export default {
          */
         setParentCheckBoxStatus(node){
             if(node && node.__children.length != 0){
-                let count = 0;
+                let res = {s1:0,s2:0,s3:0};
                 node.__children.forEach(x=>{
-                    if(x.__checkboxStatus){
-                        count++;
+                    if(x.__checkboxStatus == 1){
+                        res.s1++;
+                    }
+                    if(x.__checkboxStatus == 2){
+                        res.s2++;
+                    }
+                    if(x.__checkboxStatus == 3){
+                        res.s3++;
                     }
                 })
-                node.__checkboxStatus = count == node.__children.length?true:false;
+                
+                if(res.s2 == node.__children.length){
+                    node.__checkboxStatus = 2;
+                }else{
+                    if(res.s1 == node.__children.length){
+                        node.__checkboxStatus = 1;
+                    }
+                    if(res.s1 >0 && res.s1 < node.__children.length){
+                        node.__checkboxStatus = 3;
+                    }
+                    if(res.s3 >0){
+                        node.__checkboxStatus = 3;
+                    }
+                }
+                
+                // node.__checkboxStatus = count == node.__children.length?true:false;
 
                 this.setParentCheckBoxStatus(node.__parentNode);
             }
@@ -72,7 +93,7 @@ export default {
          * @param status状态
          * @returns
          */
-        setChildrenCheckboxStatus(node,status){
+        setChildrenCheckboxStatus(node, status){
             if(!node){
                 return;
             }
@@ -201,7 +222,7 @@ export default {
             //checkbox状态变化事件
             else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX){
                 //改变所有子节点的checkbox状态
-                this.setChildrenCheckboxStatus(item,d.checkboxStatus);
+                this.setChildrenCheckboxStatus(item, d.checkboxStatus);
                 //改变所有父节点的checkbox状态
                 this.setParentCheckBoxStatus(item.__parentNode);
             }

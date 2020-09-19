@@ -61,7 +61,7 @@ let _treeTool = {
      */
     getAllCheckedNodes(arr){
         for(let i =0;i<arr.length;i++){
-            if(arr[i].__checkboxStatus){
+            if(arr[i].__checkboxStatus != 2){
                 _treeTool.checkedNodes.push(arr[i]);
             }
             let _children = arr[i].__children;
@@ -77,7 +77,7 @@ let _treeTool = {
      */
     getAllCheckboxNodesExcludeParent(arr){
         for(let i =0;i<arr.length;i++){
-            if(arr[i].__checkboxStatus && arr[i].__children.length == 0){
+            if(arr[i].__checkboxStatus == 1 && arr[i].__children.length == 0){
                 _treeTool.checkedNodes.push(arr[i]);
             }
             let _children = arr[i].__children;
