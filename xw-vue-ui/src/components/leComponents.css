@@ -133,6 +133,7 @@ html,body{
 		rgba(112, 112, 112, 0.2);
     border: solid 1px #c9c9cb;
     padding: 36px ;
+    padding-bottom: 14px;
 }
 
 .le_comps_core_css .le_list_search_pannel::after{
