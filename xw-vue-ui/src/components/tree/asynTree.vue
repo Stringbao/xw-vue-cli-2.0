@@ -54,7 +54,6 @@ export default {
          * @returns
          */
         setParentCheckBoxStatus(node){
-            
             if(node && node.__children.length != 0){
                 let res = {s1:0,s2:0,s3:0};
                 node.__children.forEach(x=>{
@@ -206,12 +205,12 @@ export default {
             _treeTool.getAllCheckboxNodesExcludeParent(this.state.data);
             return _treeTool.checkedNodes;
         },
-        expandNodeById(idArr, count = 0, cb){
+        expandNodeById(field, idArr, count = 0, cb){
             if(idArr.length == count){
                 return;
             }
             let id = idArr[count].name;
-            let node = _treeTool.getNodeByField(this.state.data, "id", id);
+            let node = _treeTool.getNodeByField(this.state.data, field, id);
             if(!node){
                 console.log('node 404');
                 return;
@@ -227,7 +226,7 @@ export default {
                 node.__expand = true;
                 node.__cls = "fa-caret-down";
                 count++;
-                this.expandNodeById(idArr, count, cb);
+                this.expandNodeById(field, idArr, count, cb);
                 if(idArr.length == count){
                     cb && cb();
                 }
@@ -236,8 +235,8 @@ export default {
         /**
          * {id1:status,id2:status}
          */
-        bindData(arr){
-            this.expandNodeById(arr, 0, ()=>{
+        bindData(field, arr){
+            this.expandNodeById(field, arr, 0, ()=>{
                 console.log(this.state.data);
             });
         }

@@ -53,13 +53,34 @@ export default {
          */
         setParentCheckBoxStatus(node){
             if(node && node.__children.length != 0){
-                let count = 0;
+                let res = {s1:0,s2:0,s3:0};
                 node.__children.forEach(x=>{
-                    if(x.__checkboxStatus){
-                        count++;
+                    if(x.__checkboxStatus == 1){
+                        res.s1++;
+                    }
+                    if(x.__checkboxStatus == 2){
+                        res.s2++;
+                    }
+                    if(x.__checkboxStatus == 3){
+                        res.s3++;
                     }
                 })
-                node.__checkboxStatus = count == node.__children.length?true:false;
+                
+                if(res.s2 == node.__children.length){
+                    node.__checkboxStatus = 2;
+                }else{
+                    if(res.s1 == node.__children.length){
+                        node.__checkboxStatus = 1;
+                    }
+                    if(res.s1 >0 && res.s1 < node.__children.length){
+                        node.__checkboxStatus = 3;
+                    }
+                    if(res.s3 >0){
+                        node.__checkboxStatus = 3;
+                    }
+                }
+                
+                // node.__checkboxStatus = count == node.__children.length?true:false;
 
                 this.setParentCheckBoxStatus(node.__parentNode);
             }
@@ -100,10 +121,14 @@ export default {
                     data[i].__parentNode = parentNode;
                     data[i].__tmpId = tool._idSeed.newId();
                     data[i].__children = data[i][this.childrenKey]&&data[i][this.childrenKey] != 0?data[i][this.childrenKey]:[];
-                    data[i].__cls = "fa-caret-right";
+                    if(data[i].__children.length >0){
+                        data[i].__cls = "fa-caret-right";
+                    }else{
+                        data[i].__cls = "fa-caret-left";
+                    }
                     data[i].__expand = false;
                     data[i].__color = "";
-                    data[i].__checkboxStatus = false;
+                    data[i].__checkboxStatus = 2;
                     this.initAttributeData(data[i].__children,data[i]);
                 }
             }
@@ -134,36 +159,6 @@ export default {
                 data:_originData
             };
             this._originData = _originData;
-        },
-        checkExist(data,val){
-            let res = false;
-            data.forEach(x=>{
-                if(x == val){
-                    res = true;
-                }
-            })
-            return res;
-        },
-        /**
-         * @description 根据数据源，需绑定字段，绑定数据来递归绑定
-         * @param {Array} data 
-         * @param {String} field 
-         * @param {Array} array 
-         */
-        recurrentStatus(data,field,array){
-            if(data && data instanceof Array && data.length >0){
-                for(let i=0;i<data.length;i++){
-                    if(array && array instanceof Array && this.checkExist(array,data[i][field])){
-                        data[i].__checkboxStatus = true;
-                    }else{
-                        data[i].__checkboxStatus = false;
-                    }
-                    let _children = data[i][this.childrenKey];
-                    if(_children && _children instanceof Array && _children.length != 0){
-                        this.recurrentStatus(_children,field,array);
-                    }
-                }
-            }
         },
         /**
          * @description 递归，展开折叠所有
@@ -196,7 +191,7 @@ export default {
          * @param {Array} data 
          * @param {beanloon} flag 
          */
-        recurrentChecked(data,flag){
+        recurrentChecked(data, flag){
             if(data && data instanceof Array && data.length > 0){
                 for(let i=0;i<data.length;i++){
                     data[i].__checkboxStatus = flag;
@@ -212,8 +207,32 @@ export default {
          * @param {String} field 
          * @param {Array} array 
          */
-        bindCKByField(field,array){
-            this.recurrentStatus(this.state.data,field,array);
+        bindData(field, array){
+            array.forEach(x=>{
+                let node = _treeTool.getNodeByField(this.state.data, field, x.name);
+                node.__checkboxStatus = x.status;
+                node.__expand = true;
+                if(node.__children.length >0){
+                    node.__cls = "fa-caret-down";
+                }else{
+                    node.__cls = "fa-caret-left";
+                }
+            })
+        },
+        convertData(arr, filed){
+            let res = [];
+            arr.forEach(x=>{
+                let tmp = {name:x[filed],status:x.__checkboxStatus};
+                res.push(tmp);
+            })
+            return res;
+        },
+        getIdsInConvertData(data){
+            let res = [];
+            data.forEach(x=>{
+                res.push(x.name);
+            })
+            return res.join(',');
         },
         setParentNodeExpand(node,tag){
             let parentNode = node.__parentNode;
@@ -248,7 +267,7 @@ export default {
          * @param {beanloon} flag 
          */
         checkAll(flag){
-            this.recurrentChecked(this.state.data,flag);
+            this.recurrentChecked(this.state.data, flag);
         },
         /**
          * @description 更新单个节点
