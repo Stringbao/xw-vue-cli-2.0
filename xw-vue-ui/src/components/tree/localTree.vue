@@ -21,7 +21,7 @@ import _treeTool from "./treePrivateMethods.js";
 export default {
     name:"LeLocalTree",
     components:{TreeItem},
-    props:["displayName","itemClick",'checkbox','childrenKey'],
+    props:["displayName","itemClick",'checkbox','childrenKey',"related"],
     data(){
         return {
             originData:null,
@@ -341,10 +341,14 @@ export default {
             }
             //checkbox状态变化事件
             else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX){
-                //改变所有子节点的checkbox状态
-                this.setChildrenCheckboxStatus(item,d.checkboxStatus);
-                //改变所有父节点的checkbox状态
-                this.setParentCheckBoxStatus(item.__parentNode);
+                if(this.related == undefined){
+                    //改变所有子节点的checkbox状态
+                    this.setChildrenCheckboxStatus(item, d.checkboxStatus);
+                    //改变所有父节点的checkbox状态
+                    this.setParentCheckBoxStatus(item.__parentNode);
+                }else{
+                    item.__checkboxStatus = d.checkboxStatus;
+                }
             }
         })
     }

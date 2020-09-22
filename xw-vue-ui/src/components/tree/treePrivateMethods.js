@@ -5,6 +5,10 @@ let _treeTool = {
      */
     checkedNodes:[],
     /**
+     * @description 保存当前节点上的所有parentNode
+     */
+    parentNodes:[],
+    /**
      * @description 设置单行颜色
      * @param arr 数据源，初始为this.state.data
      * @param node 当前选中行
@@ -53,6 +57,13 @@ let _treeTool = {
             }
         }
         return res;
+    },
+    getParentNodes(node){
+        let parentNode = node.__parentNode;
+        if(parentNode){
+            _treeTool.parentNodes.push(parentNode);
+            _treeTool.getParentNodes(parentNode);
+        }
     },
     /**
      * @description 获取所有的checked属性的nodes
