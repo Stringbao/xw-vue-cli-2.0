@@ -3,7 +3,7 @@
          <div class = "fa-item" :class="item.__color" :style="'margin-left:'+(item.__level-1)*10+'px'">
             <!-- <input type="button" @click="expandNode(item)" class="fa" :class="item.__cls" /> -->
             <span type="button" @click="expandNode(item)" class="fa arrIcon" :class="item.__cls"></span>
-            <span v-if="checkbox!=undefined?true:false" class="fa fa-checkBox" :class="item.__checkboxStatus?'fa-check-square':''" @click="changeCheckboxStatus(item)"></span>
+            <span v-if="checkbox!=undefined?true:false" class="fa" :class="getCheckedCls(item)" @click="changeCheckboxStatus(item)"></span>
             <span class="tree-item-name" @click="selectItem(item)">{{item[displayName]}}</span>     
         </div>
         <div v-if="item.__children instanceof Array && item.__children.length != 0" v-show="item.__expand">
@@ -33,8 +33,19 @@ export default {
         }
     },
     methods:{
+        getCheckedCls(item){
+            if(item.__checkboxStatus == "1"){
+                return 'fa-checkBox fa-check-square';
+            }else if(item.__checkboxStatus == "3"){
+                return 'fa-minus-square';
+            }
+            else{
+                return 'fa-checkBox';
+            }
+        },
         /**
          * @description checkbox状态改变的事件
+         * 1：选中，2：未选中，3：子节点未全部选中
          */
         changeCheckboxStatus(item){
             if(this.readonly){
@@ -45,7 +56,7 @@ export default {
                     actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX,
                     __tmpId:item.__tmpId,
                     item:item,
-                    checkboxStatus:!item.__checkboxStatus
+                    checkboxStatus:item.__checkboxStatus == 1?2:1
                 });
             }
         },

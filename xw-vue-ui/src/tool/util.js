@@ -161,6 +161,10 @@ const $array = {
     }
 }
 
+const $util = {
+    
+}
+
 const $event_publisher = new EventPublisher();
 
 export {
@@ -169,7 +173,8 @@ export {
     $event_publisher,
     $obj,
     $array,
-    $date
+    $date,
+    $util
 }
 
 export default {
@@ -178,5 +183,6 @@ export default {
     $event_publisher,
     $obj,
     $array,
-    $date
+    $date,
+    $util
 }

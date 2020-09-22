@@ -74,6 +74,8 @@
                 <legend>table</legend>
                 <table-list title="BasicParamManagement List Table" ref='tableListRef' :options='list_table_options'></table-list>
             </fieldset>
+
+            <le-upload labeel="上传文件啊：" :options="imgUploadOpt" v-model="dd"></le-upload>
         </form>
 
     </div>
@@ -82,6 +84,10 @@
 export default {
     data() {
         return {
+            dd:"",
+            imgUploadOpt:{
+                url:""
+            },
             searchModel:{
                 orderCode:""
             },
