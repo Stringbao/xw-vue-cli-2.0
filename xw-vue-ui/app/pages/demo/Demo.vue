@@ -3,9 +3,15 @@
         <div class="le_comps_core_css">
             <!-- <h4 class="le_page_name">title</h4> -->
             <div class="le_list_breadcrumb_pannel">
-                <a href="">Product Management > category</a>
+                <a href="">Product Management > <b>category</b></a>
             </div>
             <div class='le_list_search_pannel clearfix'>
+                <div class="col1">
+                    <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                </div>
+                <div class="col1">
+                    <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                </div>
                 <div class="col1">
                     <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
                 </div>
