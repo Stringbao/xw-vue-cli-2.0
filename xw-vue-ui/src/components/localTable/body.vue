@@ -131,7 +131,7 @@
         color: rgba(0,0,0,0.65);border: 1px solid #ddd;vertical-align: middle;text-align: center; 
         word-break: keep-all;
         white-space: nowrap;
-        padding: 0 10px;
+        padding: 6px;
         max-width: 300px;
         overflow: hidden;
     }
