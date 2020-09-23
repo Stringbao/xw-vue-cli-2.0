@@ -128,7 +128,10 @@
         margin:0 5px;
     }
     tbody tr td{
-        color: rgba(0,0,0,0.65);border: 1px solid #ddd;vertical-align: middle;text-align: center; 
+        color: rgba(0,0,0,0.65);
+        border: 1px solid #ddd;
+        vertical-align: middle;
+        text-align: center; 
         word-break: keep-all;
         white-space: nowrap;
         padding: 6px;
