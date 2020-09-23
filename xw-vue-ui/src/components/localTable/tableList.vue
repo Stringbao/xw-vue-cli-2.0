@@ -225,8 +225,6 @@
     }
 
     table tbody{
-        height: 38px;
-        line-height: 38px;
         font-size: 12px;
     }
 
