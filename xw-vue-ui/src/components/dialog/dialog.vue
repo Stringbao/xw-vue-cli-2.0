@@ -139,9 +139,7 @@ export default {
     /* 内容区 */
     .le_dialog_contine{
         flex:1;
-        /* 火狐禁用滚动条 */
-        overflow:-moz-hidden-unscrollable!important;
-        overflow:scroll;
+        overflow:auto;
         font-size: 14px;
         color: #606266;
         text-align: left;
@@ -153,17 +151,7 @@ export default {
         width: 1px;
         height:10px;
     }
-    /* ie */
-    .le_dialog_contine{
-        -ms-scroll-chaining: chained;
-        -ms-overflow-style: none;
-        -ms-content-zooming: zoom;
-        -ms-scroll-rails: none;
-        -ms-content-zoom-limit-min: 100%;
-        -ms-content-zoom-limit-max: 500%;
-        -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
-        -ms-overflow-style: none;
-    }
+    
 
     .dialogBtnContent{
         text-align: right;

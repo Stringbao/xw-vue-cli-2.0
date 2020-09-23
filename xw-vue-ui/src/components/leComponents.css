@@ -16,11 +16,14 @@ html,body{
     padding: 0 23px;
 }
 .le_list_breadcrumb_pannel{
-    height: 60px;
-    line-height: 60px;
+    height: 40px;
+    line-height: 40px;
 } 
 .le_list_breadcrumb_pannel a{
     color: #84848d;
+}
+.le_list_breadcrumb_pannel a b{
+    color: #333333;
 }
 /* 一行放俩个 */
 .le_comps_core_css .col1{
@@ -67,7 +70,8 @@ html,body{
 }
 
 .le_comps_core_css .le_page_name{
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: normal;
     text-align: left;
     padding: 10px 22px;
     border-bottom: 1px solid #eae4e4;
@@ -108,16 +112,13 @@ html,body{
     clear: both;
     visibility: hidden
 }
-.le_list_breadcrumb_pannel{
-
-}
 
 /* 新建页面的按钮和所有搜索处按钮 */
 .le_comps_core_css .le_search_btn_group {
     margin-bottom: 10px;
     text-align: right;
     padding: 0 20px;
-    margin-top: 36px;
+    margin-top: 10px;
     /* margin-top: -30px; */
 }
 
@@ -134,7 +135,8 @@ html,body{
 		rgba(112, 112, 112, 0.2);
     border: solid 1px #c9c9cb;
     padding: 36px ;
-    padding-bottom: 14px;
+    padding-top: 22px;
+    padding-bottom: 0px;
 }
 
 .le_comps_core_css .le_list_search_pannel::after{

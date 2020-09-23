@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="table-title" v-show="title">{{title}}</div>
+        <!-- <div class="table-title" v-show="title">{{title}}</div> -->
         <div class="tableContainer">
             <div class="tableBox">
                 <table class="table">

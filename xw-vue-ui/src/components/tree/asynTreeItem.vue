@@ -70,7 +70,9 @@ export default {
             if(item.__children.length == 0){
                 let _url  = this.asynOptions.getUrl(item);
                 //发送ajax请求, 改变loading状态
-                
+                if(!_url){
+                    return;
+                }
                 item.__cls = "fa-caret-load";
                 this.ajax.get(_url).then(d=>{
                     //asynOptions 函数必须返回数组

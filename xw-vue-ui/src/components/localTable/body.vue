@@ -131,11 +131,15 @@
         color: rgba(0,0,0,0.65);border: 1px solid #ddd;vertical-align: middle;text-align: center; 
         word-break: keep-all;
         white-space: nowrap;
-        padding: 0 10px;
+        padding: 6px;
         max-width: 300px;
         overflow: hidden;
     }
 
+    .table tbody tr:hover{
+        background-color: #fefced;
+    }
+    
     tbody tr td div{
         text-overflow: ellipsis;
         overflow: hidden;
@@ -162,16 +166,22 @@
     }
 
     .btnContent{
-            width: auto;
+        width: auto;
         height: auto;
         display: inline-block;
-        transform: translateY(25%);
+        vertical-align: middle;
     }
 
+    .btnContent + .btnContent{
+        margin-left: 9px;
+    }
     .opration{
-        /* text-align: left; */
-        white-space: nowrap;
-         max-width: 1000px;
+        max-width: 1000px;
+    }
+    .opration span.asBtn{
+       padding: 0 8px;
+       line-height: 20px;
+       font-size: 12px;
     }
 
 </style>
