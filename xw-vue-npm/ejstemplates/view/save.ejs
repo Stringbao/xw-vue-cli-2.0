@@ -46,10 +46,10 @@ export default {
         ]),
         <%_ } -%>
         isEdit(){
-            return this.$route.query.tag == KEYS.GLOBAL.ACTION.EDIT;
+            return this.$route.query.tag == KEYS.GLOBAL.ACTION.UPDATE;
         },
         isCreate(){
-            return this.$route.query.tag == KEYS.GLOBAL.ACTION.ADD;
+            return this.$route.query.tag == KEYS.GLOBAL.ACTION.CREATE;
         },
         isDetail(){
             return this.$route.query.tag == KEYS.GLOBAL.ACTION.DETAIL;
