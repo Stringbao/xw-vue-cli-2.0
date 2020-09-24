@@ -266,7 +266,6 @@ export default {
         },
         bindRelatedData(field, pNodes, nodeIds){
             this.expandNodeById(field, pNodes, 0, ()=>{
-                debugger
                 nodeIds.split(',').forEach(x=>{
                     let node = _treeTool.getNodeByField(this.state.data, field, x);
                     node.__checkboxStatus = 1;
