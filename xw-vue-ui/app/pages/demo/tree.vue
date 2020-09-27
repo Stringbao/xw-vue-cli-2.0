@@ -82,6 +82,7 @@ export default {
                     Array.prototype.push.apply(pNodes, x.parentNodes);
                 })
                 let nodeIds = relatedRes.nodeIds.join(',');
+                debugger
                 this.$refs["menuTree"].bindRelatedData('id', pNodes, nodeIds);
             }
         },
