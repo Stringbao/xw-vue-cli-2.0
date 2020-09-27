@@ -17,7 +17,7 @@ function ValidataHOC(Component){
             },
             //校验是否开启验证, 默认关闭，如需要开启 加on标识
             checkVerifyEnabled(){
-                if(this.$attrs.on){
+                if(this.$attrs.on === "" || this.$attrs.on ){
                     return true;
                 }
                 return false;
