@@ -2,7 +2,7 @@
     <div class="selectedTagBox">
         <div class="selectedTag">
             <!-- <span>{{data.length!=0 && data[0][displayName]}}</span> -->
-            <div class="selectedTagItem" v-for="(item,idx) in data" :key="idx">{{item[displayName]}}</div>
+            <div class="selectedTagItem" v-for="(item,idx) in data" :key="idx">{{item[displayName]}}<i class="fa fa-times" @click.stop="removeItem(data[idx])"></i></div>
 
             <!-- <i class="fa fa-times" @click.stop="removeItem(data[0])"></i> -->
         </div>
@@ -35,7 +35,7 @@
 	
     .searchMulSelect .selectedTagBox .selectedTag .selectedTagItem{ 	    
 	    /* display: inline-block; */
-	    padding: 0 10px;
+	    padding: 0 18px;
 	    height: 24px;
 	    line-height: 22px;
 	    font-size: 14px;
@@ -56,20 +56,14 @@
     }
 	
 	.searchMulSelect .selectedTagBox .selectedTag i{
-		width: 12px;
-	    height: 12px;
-	    line-height: 12px;
-	    display: inline-block;
 	    position: absolute;
 	    top: 5px;
 	    right: 4px;
 	    font-size: 12px;
-	     font-size: 12px; 
 	    font-style: normal;
-	    background-color: #c8cacd;
-	    border-radius: 9px;
-	    color: #fff3f3;
+	    color: #3c3c3c;
 	    text-align: center;
+		
 	}
 	
 	.searchMulSelect .selectedTagBox .selectedTag i:hover{

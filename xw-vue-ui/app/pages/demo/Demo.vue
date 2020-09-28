@@ -15,6 +15,9 @@
                 <div class="col1">
                     <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
                 </div>
+                <div class="col1">
+                    <le-local-select label="选择职业" multiple :data-source="dataSoruce.shops" display-name="name" display-value="code" v-model="entity.address"></le-local-select>
+                </div>
             </div>
             <div class="le_search_btn_group cleatfix">
                 <le-button type="create" value="Create"></le-button>
@@ -46,17 +49,6 @@
                 <le-button type="create" value="dialog" @click="showDialog"></le-button>
                 <le-dialog ref="dialog" :width="dialog.width" :height="dialog.height">
                     <div slot="body">
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
-                        <div>dialog</div><br>
                         <div>dialog</div><br>
                         <le-button type="info" value="info" @click="confirm"></le-button>
                     </div>
@@ -111,6 +103,8 @@ export default {
                 shops:[
                     {name:"ABC",code:"abc"},
                     {name:"BBB",code:"a"},
+                    {name:"ABC",code:"b"},
+                    {name:"BBB",code:"c"},
                 ]
             },
             list_table_options: {
