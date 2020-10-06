@@ -218,6 +218,7 @@ html,body{
     padding: 0;
     box-sizing: border-box;
     margin: 0 5px 0 10px;
+    font-weight: bold;
 }
 
 .le_comps_core_css .form-item .form-item-div{
