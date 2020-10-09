@@ -2,7 +2,7 @@
 	<div>
 		<div class="selectList" v-show="showButtom">
 			<ul>
-				<li @click.stop="selectItem(item)" v-for="(item,index) in data" :key="index" :class="item.cls">{{item[displayName]}}</li>
+				<li @click.stop="selectItem(item)"  :title="`${item[displayName]}(${item[displayValue]})`"  v-for="(item,index) in data" :key="index" :class="item.cls">{{item[displayName]}}</li>
 			</ul>
 		</div>
 		<!-- <div class="selectList" v-show="searchKey && data.length == 0?true:false">
@@ -16,13 +16,12 @@
 
   export default {
     name: 'ButtomSection',
-    props:['showButtom','data','noticeParent','searchKey','displayName'],
+    props:['showButtom','data','noticeParent','searchKey','displayName','displayValue'],
     data () {
 		return {
 			
 		}
 	},
-	
     methods:{
 		selectItem(item){
 			this.noticeParent(item);
@@ -91,11 +90,11 @@
 		font-size: 14px;
 		padding: 0 30px 0 10px;
 		position: relative;
-		white-space: nowrap;
+		/* white-space: nowrap; */
 		overflow: hidden;
 		text-overflow: ellipsis;
 		color: #606266;
-		height: 34px;
+		/* height: 34px; */
 		line-height: 34px;
 		box-sizing: border-box;
 		cursor: pointer;

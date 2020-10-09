@@ -7,7 +7,7 @@
                 <i v-show="showArrow" :_body_tag="inputdomKey" class="fa fa-chevron-down icon-del" @click="clickInput"></i>
                 <i v-show="!showArrow&&showClearButtonFlag" class="fa fa-chevron-down icon-del fa-times-circle" @click.stop="clear"></i>
                 <span class="placeholderText" @click.stop="focusInput" v-show="placeholderStr && (!inputFlag && !readonlyFlag)">{{placeholderStr}}</span>
-				<left-section :readonly="readonlyFlag" :display-name="displayName" :data="leftArray" :notice-parent="noticeFromLeft"></left-section>
+				<left-section :readonly="readonlyFlag" :display-name="displayName" :displayValue="displayValue" :data="leftArray" :notice-parent="noticeFromLeft"></left-section>
 				
 				<input :placeholder="placeholderStr" :_body_tag="inputdomKey" @click="clickInput" :ref="inputdomKey" :readonly=" !inputFlag || readonlyFlag" type="text" :class="{searchMsg:true,hideInput:!inputFlag || readonlyFlag}" v-model="searchName" />
 			
@@ -16,7 +16,7 @@
             </div>
 
             <!--下拉弹出框-->
-            <buttom-section :show-buttom="showButtom" :display-name="displayName" :searchKey="searchName" :data="buttomArray" :multipl="multiple" :notice-parent="noticeFromButtom"></buttom-section>
+            <buttom-section :show-buttom="showButtom" :display-name="displayName" :displayValue="displayValue" :searchKey="searchName" :data="buttomArray" :multipl="multiple" :notice-parent="noticeFromButtom"></buttom-section>
         </div>
     </div>
 </template>

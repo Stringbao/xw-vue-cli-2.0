@@ -6,6 +6,7 @@
                 <a href="">Product Management > <b>category</b></a>
             </div>
             <div class='le_list_search_pannel clearfix'>
+                <le-form>
                 <div class="col1">
                     <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
                 </div>
@@ -18,6 +19,7 @@
                 <div class="col1">
                     <le-local-select label="选择职业" multiple :data-source="dataSoruce.shops" display-name="name" display-value="code" v-model="entity.address"></le-local-select>
                 </div>
+                </le-form>
             </div>
             <div class="le_search_btn_group cleatfix">
                 <le-button type="create" value="Create"></le-button>
@@ -101,7 +103,7 @@ export default {
             },
             dataSoruce:{
                 shops:[
-                    {name:"ABC",code:"abc"},
+                    {name:"ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC",code:"abc"},
                     {name:"BBB",code:"a"},
                     {name:"ABC",code:"b"},
                     {name:"BBB",code:"c"},
