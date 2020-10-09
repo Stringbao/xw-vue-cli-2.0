@@ -16,7 +16,7 @@ function isPromise(obj) {
 }
 
 export default {
-    name:"LeButton",
+    name:"LeSubmit",
     props:["type","value","disabled"],
     inheritAttrs:false,
     data(){
