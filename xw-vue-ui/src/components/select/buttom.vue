@@ -21,7 +21,8 @@
 		return {
 			
 		}
-    },
+	},
+	
     methods:{
 		selectItem(item){
 			this.noticeParent(item);

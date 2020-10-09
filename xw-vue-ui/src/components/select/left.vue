@@ -2,7 +2,7 @@
     <div class="selectedTagBox">
         <div class="selectedTag">
             <!-- <span>{{data.length!=0 && data[0][displayName]}}</span> -->
-            <div class="selectedTagItem" v-for="(item,idx) in data" :key="idx">{{item[displayName]}}<i class="fa fa-times" @click.stop="removeItem(data[idx])"></i></div>
+            <div class="selectedTagItem" v-for="(item,idx) in data" :key="idx">{{item[displayName]}}<i class="fa fa-times" v-if="isMultiple" @click.stop="removeItem(data[idx])"></i></div>
 
             <!-- <i class="fa fa-times" @click.stop="removeItem(data[0])"></i> -->
         </div>
@@ -16,10 +16,19 @@
     export default {
         name: 'LeftSection',
         components: {},
-        props:["data","noticeParent","displayName"],
+        props:["data","noticeParent","displayName",'multiple'],
         data () {
             return {}
-        },
+		},
+		computed:{
+			isMultiple(){
+				if(this.multiple != undefined){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		},
         methods:{
             removeItem(item){
                 this.noticeParent(item);

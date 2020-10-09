@@ -16,7 +16,7 @@
             </div>
 
             <!--下拉弹出框-->
-            <buttom-section :show-buttom="showButtom" :display-name="displayName" :searchKey="searchName" :data="buttomArray" :notice-parent="noticeFromButtom"></buttom-section>
+            <buttom-section :show-buttom="showButtom" :display-name="displayName" :searchKey="searchName" :data="buttomArray" :multipl="multiple" :notice-parent="noticeFromButtom"></buttom-section>
         </div>
     </div>
 </template>
