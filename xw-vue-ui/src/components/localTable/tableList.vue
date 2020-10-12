@@ -188,7 +188,7 @@
     }
 
     .tableContainer .tableBox{
-        overflow:scroll; 
+        overflow:auto; 
     }
 
     .tableContainer .table-title{

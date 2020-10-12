@@ -49,7 +49,7 @@
             <fieldset>
                 <legend>dialog:</legend>
                 <le-button type="create" value="dialog" @click="showDialog"></le-button>
-                <le-dialog ref="dialog" :width="dialog.width" :height="dialog.height">
+                <le-dialog ref="dialog" :width="dialog.width" :height="dialog.height" @closeCallback="closeFn">
                     <div slot="body">
                         <div>dialog</div><br>
                         <le-button type="info" value="info" @click="confirm"></le-button>
@@ -77,7 +77,19 @@
                 <table-list title="BasicParamManagement List Table" ref='tableListRef' :options='list_table_options'></table-list>
             </fieldset>
 
-            <le-upload labeel="上传文件啊：" :options="imgUploadOpt" v-model="dd"></le-upload>
+            <fieldset>
+                <legend>upload</legend>
+                <le-upload labeel="上传文件：" :options="imgUploadOpt" v-model="dd"></le-upload>
+            </fieldset>
+
+            <fieldset>
+                <legend>local Upload</legend>
+                <le-form>
+                        <le-local-upload labeel="local Upload 上传文件：" :options="localUpload" ref="localUpload"></le-local-upload>
+                </le-form>
+
+                <le-button @click="localUploadHandler" value="点击上传"></le-button>
+            </fieldset>
         </form>
 
     </div>
@@ -143,6 +155,11 @@ export default {
                         return { data: [], count: 0 };
                     }
                 }
+            },
+            localUpload:{
+                fname:"translationKeyFile",
+                vtype:".xlsx",
+                multiple:false,
             }
         };
     },
@@ -174,6 +191,9 @@ export default {
                 console.log(111);
             });
         },
+        closeFn(){
+            console.log("关闭之后的回掉函数");
+        },
         showDialog() {
             this.$refs.dialog.show();
         },
@@ -184,6 +204,10 @@ export default {
             this.$refs.saveForm.validate().then(res=>{
                 console.log(res)
             })
+        },
+        localUploadHandler(){
+            let formData = this.$refs.localUpload.getCurrentComponent().getFormDataByFileList();
+            console.log(formData);
         }
     },
 };
