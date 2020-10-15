@@ -44,7 +44,7 @@ export default {
             if(this.height && isNaN(this.height) &&this.height.indexOf('vh') != -1){
                 h = this.height;
             }else{
-                h = this.height?this.height + "px" : "400px";
+                h = this.height?this.height + "px" : "340px";
             }
 
             return {width:w,height:h}
