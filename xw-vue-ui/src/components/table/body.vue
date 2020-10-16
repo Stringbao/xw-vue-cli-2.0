@@ -177,7 +177,7 @@
         /* float: left;
         transform: translateY(0); */
     }
-    .btnContent + .btnContent{
+    .btnContent[visibility] + .btnContent{
         margin-left: 9px;
     }
     .opration{

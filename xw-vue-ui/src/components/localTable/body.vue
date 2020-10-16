@@ -175,7 +175,7 @@
         vertical-align: middle;
     }
 
-    .btnContent + .btnContent{
+    .btnContent[visibility] + .btnContent{
         margin-left: 9px;
     }
     .opration{
