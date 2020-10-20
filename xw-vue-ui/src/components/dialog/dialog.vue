@@ -10,7 +10,7 @@
                     <i class="fa fa-close" @click="close"></i>
                 </div>
             </div>
-            <div class = "le_dialog_contine" v-bind:style="dialogStyle">
+            <div class = "le_dialog_contine" v-bind:style="dialogStyle" ref="content">
                 <slot name="body"></slot>
             </div>
             <div class="dialogBtnContent">
@@ -32,7 +32,6 @@ export default {
         }
     },
     computed:{
-        
         dialogStyle(){
             let w = 0;
             let h = 0;
@@ -53,6 +52,15 @@ export default {
             return this.dialogTag?"show_le_dialog_mask":"hide_le_dialog_mask";
         }
     },
+    watch:{
+       dialogTag(val,oldVal){
+           if(val){
+               this.$nextTick(function(){
+                   this.$refs.content.scrollTop = 0;
+               })
+           }
+       } 
+    }, 
     methods:{
         close(){
             this.hide();
@@ -65,6 +73,7 @@ export default {
             this.$emit("closeCallback",false);
         }
     },
+
     mounted(){
     }
 }

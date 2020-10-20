@@ -55,7 +55,7 @@
                 <le-button type="create" value="dialog" @click="showDialog"></le-button>
                 <le-dialog ref="dialog" :width="dialog.width" :height="dialog.height" @closeCallback="closeFn">
                     <div slot="body">
-                        <div>dialog</div><br>
+                        <div>第一个行</div><br>
                         <div>dialog</div><br>   
                         <div>dialog</div><br>
                         <div>dialog</div><br>   
