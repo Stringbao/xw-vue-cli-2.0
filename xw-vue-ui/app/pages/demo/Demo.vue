@@ -52,6 +52,35 @@
                 <le-dialog ref="dialog" :width="dialog.width" :height="dialog.height" @closeCallback="closeFn">
                     <div slot="body">
                         <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+                        <div>dialog</div><br>
+                        <div>dialog</div><br>   
+
+                        <div>很多内容。。。。</div><br>
                         <le-button type="info" value="info" @click="confirm"></le-button>
                     </div>
                     <div slot="button">

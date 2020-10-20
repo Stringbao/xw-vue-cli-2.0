@@ -146,11 +146,6 @@ export default {
         position: relative;
         padding: 0px 30px;
     }
-    /* 滚动条整体的样式 */
-    .le_dialog_contine::-webkit-scrollbar{
-        width: 1px;
-        height:10px;
-    }
     
 
     .dialogBtnContent{
