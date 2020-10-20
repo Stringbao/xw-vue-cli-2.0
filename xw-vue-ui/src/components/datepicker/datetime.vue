@@ -9,7 +9,7 @@
                 <!-- <div class = "dateTimeText" :_body_tag="dateKey" :class="{readonlyIcon:readonlyFlag}" @click.stop="showDateTimePickerHandle" >
                     {{dateTimeStr}}
                 </div> -->
-                <input @blur="blurdate($event)" :placeholder="placeholderStr" class = "dateTimeText" :_body_tag="dateTimeKey" :class="{readonlyIcon:readonlyFlag}" @click="showDateTimePickerHandle" v-model='dateTimeStr'/>
+                <input @blur="blurdate($event)" :placeholder="placeholderStr" class = "dateTimeText" :_body_tag="dateTimeKey" :readonly="true" :class="{readonlyIcon:readonlyFlag}" @click="showDateTimePickerHandle" v-model='dateTimeStr'/>
                 <!-- 展开日期下拉 -->
                 <div class="picker-box" v-show="showDateTimePicker">
                     <div class="picker-header" style = "height:272px;">

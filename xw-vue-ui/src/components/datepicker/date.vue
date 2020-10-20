@@ -7,7 +7,7 @@
             <!-- 添加current激活input current样式  去掉则是默认样式 -->
             <div class="div-box current" >
                 <i class="icon-date fa fa-calendar"></i>
-                <input @blur="blurdate($event)" :placeholder="placeholderStr" :isDatetimePicker="isDatetimePicker" type="text" :class="{readonlyIcon:readonlyFlag}" class="form-item-input date" :value="selectDayStr" :_body_tag="__DatetimePickerKey" @click="showPicker"/>
+                <input @blur="blurdate($event)" :placeholder="placeholderStr" :isDatetimePicker="isDatetimePicker" type="text" :class="{readonlyIcon:readonlyFlag}" class="form-item-input date" :readonly="true" :value="selectDayStr" :_body_tag="__DatetimePickerKey" @click="showPicker"/>
                 <i v-show="showClear" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
                 <p class="promptMsg" @click.stop v-show="state.showError">{{$attrs.msg}}</p>
                 <p class="tip" @click.stop v-show="!state.showError">{{$attrs.tip}}</p>

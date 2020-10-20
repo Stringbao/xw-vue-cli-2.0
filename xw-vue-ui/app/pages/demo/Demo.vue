@@ -7,18 +7,22 @@
             </div>
             <div class='le_list_search_pannel clearfix'>
                 <le-form>
-                <div class="col1">
-                    <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
-                </div>
-                <div class="col1">
-                    <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
-                </div>
-                <div class="col1">
-                    <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
-                </div>
-                <div class="col1">
-                    <le-local-select label="选择职业" multiple :data-source="dataSoruce.shops" display-name="name" display-value="code" v-model="entity.address"></le-local-select>
-                </div>
+                    <div class="col1">
+                        <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                    </div>
+                    <div class="col1">
+                        <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                    </div>
+                    <div class="col1">
+                        <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                    </div>
+                    <div class="col1">
+                        <le-local-select label="选择职业" multiple :data-source="dataSoruce.shops" display-name="name" display-value="code" v-model="entity.address"></le-local-select>
+                    </div>
+                    <div class="col2">
+                        <le-date-picker label="选择时间" v-model="entity.time"></le-date-picker>
+                        <le-date-time-picker label="选择时间" v-model="entity.datetime"></le-date-time-picker>
+                    </div>
                 </le-form>
             </div>
             <div class="le_search_btn_group cleatfix">
@@ -119,6 +123,7 @@
 
                 <le-button @click="localUploadHandler" value="点击上传"></le-button>
             </fieldset>
+
         </form>
 
     </div>
@@ -141,6 +146,8 @@ export default {
             },
             entity: {
                 address: "",
+                time:"",
+                datetime:""
             },
             dataSoruce:{
                 shops:[
