@@ -173,11 +173,9 @@
         height: auto;
         display: inline-block;
         vertical-align: middle;
+        margin: 0 4px;
     }
 
-    .btnContent[visibility] + .btnContent{
-        margin-left: 9px;
-    }
     .opration{
         max-width: 1000px;
     }
