@@ -46,7 +46,7 @@ export default {
         Vue.component('LeSubmit',LeSubmit);
         Vue.component('LeCheckboxList', ValidataHOC(LeCheckboxList));
         Vue.component('LeRadioList', ValidataHOC(LeRadioList));
-        Vue.component('LeInput', ValidataHOC(LeInput));
+        Vue.component('LeInput', LeInput);
         Vue.component('LeTextarea', ValidataHOC(LeTextarea));
         Vue.component('LeLocalSelect', ValidataHOC(LeLocalSelect));
         Vue.component('TableList', TableList);
