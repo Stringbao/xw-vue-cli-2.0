@@ -11,9 +11,11 @@
                     </div>
                 </td>
                 <td class="opration" v-if="actions && actions.length != 0"  >
-                    <div v-for="(x,i) in actions" class="btnContent" :key="i">
-                        <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
-                    </div>
+                    <template v-for="(x,i) in actions">
+                        <div v-if="actionShowFn(x,row)" class="btnContent" :key="i">
+                            <le-button  :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
+                        </div>
+                    </template>
                 </td>
                 <td v-for="(item,idx) in cols" :key="idx" :width="item.width">
                     <div v-if="item.etype == 'img'">
