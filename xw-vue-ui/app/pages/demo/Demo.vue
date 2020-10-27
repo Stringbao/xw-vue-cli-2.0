@@ -8,7 +8,7 @@
             <div class='le_list_search_pannel clearfix'>
                 <le-form>
                     <div class="col1">
-                        <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
+                        <le-input :rules="{checkA, checkB}" max="99" min="12" :msg="emsg" labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
                     </div>
                     <div class="col1">
                         <le-input labelWidth="80" label="订单编号:" v-model="searchModel.orderCode"></le-input>
@@ -132,74 +132,24 @@
 export default {
     data() {
         return {
-            dd:"",
-            imgUploadOpt:{
-                url:""
-            },
-            searchModel:{
-                orderCode:""
-            },
-            dialog: {
-                showDialog: false,
-                width:'',
-                height:""
-            },
-            entity: {
-                address: "",
-                time:"",
-                datetime:""
-            },
-            dataSoruce:{
-                shops:[
-                    {name:"ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC ABC",code:"abc"},
-                    {name:"BBB",code:"a"},
-                    {name:"ABC",code:"b"},
-                    {name:"BBB",code:"c"},
-                ]
-            },
-            list_table_options: {
-                map: [
-                    {key:'dictKey',val:'Parameter Group'},
-                    {key:'dictCode',val:'Parameter Name'},
-                    {key:'status',val:'Status',convert:this.showStatus},
-                    {key:'type',val:'Parameter Type',convert:this.showParameterType},
-                    {key:'isInheritance',val:'Support Inheritance',convert:this.showInheritance},
-                    {key:'paramSourceUrl',val:'Parameter Optional Value'},
-                ],
-                getUrl: ()=> {
-                   return `/dictapi/basiccfg/list`;
-                },
-                pageOption: {
-                    sizeKey: "pageSize",
-                    indexKey: "curPage",
-                    index: 1,
-                    size: 20
-                },
-                actions: [
-                    {key:'update',val:'Updata',action:this.update},
-                    {key:'info',val:'Detail',action:this.detail},
-                    {key:'start',val:'Enable',action:this.enableFn},
-                    {key:'stop',val:'Disable',action:this.disableFn},
-                ],
-                analysis: data => {
-                    if (data &&data.data &&data.data.dataList) {
-                        return {
-                            data: data.data.dataList,
-                            count: data.data.count
-                        };
-                    } else {
-                        return { data: [], count: 0 };
-                    }
-                }
-            },
-            localUpload:{
-                fname:"translationKeyFile",
-                vtype:".xlsx",
-                multiple:false,
+            emsg:{
+                checkA:"name can not be null",
+                checkB:"age can not be null",
+                required:"xxx is required"
             }
-        };
+        }
     },
     methods: {
+        checkA(){
+            if(this._entity._name = ""){
+                return false
+            }
+        },
+        CheckB(){
+            if(this._entity._age = ""){
+                return false
+            }
+        },
         del() {
             this.alert.showAlert("error", "library里面没有jquery");
         },

@@ -8,7 +8,7 @@ const routers = [
     {
         path: '/demo',
         name: 'demo',
-        component:() => import('@pages/demo/Demo.vue')
+        component:() => import('@pages/demo/Demo-v2.vue')
     },
     {
         path: '/tree',
