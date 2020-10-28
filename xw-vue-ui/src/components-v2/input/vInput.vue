@@ -3,7 +3,7 @@
         <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined && required!=undefined?'required':''">{{label}}</label>
         <div class="form-item-div fa" :class="{'fa-times-circle-o':state.showError}">
             <input :ref="inputKey" @click="inputClick($event)" :placeholder="placeholderStr" class="form-item-input" :class="{'readonlyIcon':readonlyFlag}" @keyup.enter="enterEvent($event)" v-on:blur="blurEvent($event)" :readonly="readonlyFlag" :type="vType=='password'?'password':'text'" :value="value" v-on:input="changeEvent($event)" />
-            <i v-if="hideRemoveIcon==undefined?false:true" v-show="value.length>0?true:false" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
+            <i v-if="showClearBtn" v-show="value.length>0?true:false" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
             <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
             <p class="tip" v-show="!state.showError">{{tip}}</p>
         </div>
@@ -15,7 +15,7 @@
     import tool from "../leCompsTool.js";
     export default{
         name:"LeInput",
-        props:["on","required","max","min","vType","tip","msg","rules","value","labelWidth","placeholder","hideRemoveIcon","readonly","label"],
+        props:["on","required","max","min","vType","tip","msg","rules","value","labelWidth","placeholder","showClear","readonly","label"],
         inject:["leForm"],
         data(){
             return {
@@ -36,8 +36,13 @@
                 return this.placeholder || define.PLACEHOLDER.INPUT;
             },
             readonlyFlag(){
-                let rd = this.readonly;
-                if(rd === "" || rd){
+                if(this.readonly === "" || this.readonly){
+                    return true;
+                }
+                return false;
+            },
+            showClearBtn(){
+                if(this.showClear === "" || this.showClear === undefined ||this.showClear){
                     return true;
                 }
                 return false;
@@ -78,6 +83,11 @@
             clear(){
                 if(!this.readonlyFlag){
                     this.$emit("input","");
+                    this.$nextTick(()=>{
+                        if(this.leForm.checkSubComponentVerify(this)){
+                            this.leForm.validateSubComponent(this);
+                        }
+                    })
                 }
             },
             focus(){

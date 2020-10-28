@@ -83,7 +83,6 @@ export default {
         validateSubComponent(component){
             let value = component.getValue();
             let res = this.collectSubComponentRules(component);
-            console.log(res);
             return res.every(item=>{
                 let success = item.fn(value);
                 component.state.showError = !success;
@@ -98,12 +97,12 @@ export default {
         },
         getAllValidateSubComponents(comps){
             comps.forEach(comp => {
-                if(comp.$children.length == 0){
-                    if(FormUtil.verifyIsOn(comp)){
-                        this.allValidateComps.push(comp);
-                    }
+                if(FormUtil.verifyIsOn(comp)){
+                    this.allValidateComps.push(comp);
                 }else{
-                    this.getAllValidateSubComponents(comp.$children);
+                    if(comp.$children.length){
+                        this.getAllValidateSubComponents(comp.$children);
+                    }
                 }
             });
         },
@@ -133,7 +132,6 @@ export default {
         init(){
             this.allValidateComps = [];
             this.getAllValidateSubComponents(this.$children);
-            console.log(this.allValidateComps);
         }
     },
     mounted(){

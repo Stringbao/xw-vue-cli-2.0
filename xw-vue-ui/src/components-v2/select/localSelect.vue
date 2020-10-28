@@ -1,18 +1,18 @@
 <template>
     <div style="position:relative" class="form-item selectContent" >
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on!=undefined?'required':''">{{$attrs.label}}</label>
-        <div class="form-item-div searchMulSelect" :class="state.successIcon" @click="focusInput" v-bodyClick="hideButtom" :_body_tag="inputdomKey">
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on!=undefined?'required':''">{{label}}</label>
+        <div class="form-item-div searchMulSelect" :class="{'fa-times-circle-o':state.showError}" @click="focusInput" v-bodyClick="hideButtom" :_body_tag="inputdomKey">
 			<!--选中的标签-->
 			<div class="tags" :_body_tag="inputdomKey" :class="{readonlyIcon:readonlyFlag}" @mouseenter="showArr" @mouseleave="hideArr">
                 <i v-show="showArrow" :_body_tag="inputdomKey" class="fa fa-chevron-down icon-del" @click="clickInput"></i>
-                <i v-show="!showArrow&&showClearButtonFlag" class="fa fa-chevron-down icon-del fa-times-circle" @click.stop="clear"></i>
+                <i v-show="!showArrow&&showClearBtn" class="fa fa-chevron-down icon-del fa-times-circle" @click.stop="clear"></i>
                 <span class="placeholderText" @click.stop="focusInput" v-show="placeholderStr && (!inputFlag && !readonlyFlag)">{{placeholderStr}}</span>
 				<left-section :readonly="readonlyFlag" :display-name="displayName" :displayValue="displayValue" :data="leftArray" :notice-parent="noticeFromLeft"></left-section>
 				
 				<input :placeholder="placeholderStr" :_body_tag="inputdomKey" @click="clickInput" :ref="inputdomKey" :readonly=" !inputFlag || readonlyFlag" type="text" :class="{searchMsg:true,hideInput:!inputFlag || readonlyFlag}" v-model="searchName" />
 			
-                <p class="promptMsg" @click.stop v-show="state.showError">{{$attrs.msg}}</p>
-                <p class="tip" @click.stop v-show="!state.showError">{{$attrs.tip}}</p>
+                <p class="promptMsg" @click.stop v-show="state.showError">{{state.errorMsg}}</p>
+                <p class="tip" @click.stop v-show="!state.showError">{{tip}}</p>
             </div>
 
             <!--下拉弹出框-->
@@ -39,34 +39,27 @@
 
   export default {
     name: 'LeLocalSelect',
-    props:["multiple","displayName","displayValue","value","dataSource","readonly","enabledInput","hideClearButton"],
+    props:["on","required","tip","msg","rules","label","labelWidth","multiple","displayName","displayValue","value","dataSource","readonly","enabledInput","showClear","placeholder"],
+    inject:["leForm"],
     components: {LeftSection,ButtomSection},
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
     data () {
         return {
             validataComponentType:"Radio",
             inputdomKey:tool._idSeed.newId(),
             state:{
-                successIcon:"",
                 showError:false,
+                errorMsg:""
             },
             searchName:"",
             data:[],
             showButtom:false,
             showArrow:true,
-            formLabelWidth:"0",
             placeholderStr:""
         }
     },
     computed:{
         labelWidthVal(){
-            if(this.$attrs.labelWidth){
-                return this.$attrs.labelWidth;
-            }
-            if(this.formLabelWidth != 0){
-                return this.formLabelWidth;
-            }
-            return define.LABELWIDTH;
+            return this.labelWidth || this.leForm.labelWidth || define.LABELWIDTH;
         },
         /**
          * @description 根据输入关键字来搜索
@@ -84,35 +77,23 @@
             return tool.object.getCheckedItems(this.data).items;
         },
         readonlyFlag(){
-            if(this.readonly == undefined){
-                return false;
-            }
-            if(this.readonly === ""){
+            if(this.readonly === "" || this.readonly){
                 return true;
             }
-            if(this.readonly === false){
-                return false;
-            }
-            return true;
+            return false;
         },
         //是否允许模糊查询，默认不开启
         inputFlag(){
-            if(this.enabledInput == undefined){
-                return false;
-            }
-            if(this.enabledInput == ""){
+            if(this.enabledInput === "" || this.enabledInput){
                 return true;
             }
-            if(this.enabledInput == false){
-                return false;
-            }
-            return true;
+            return false;
         },
-        showClearButtonFlag(){
-            if(this.hideClearButton){
-                return false;
+        showClearBtn(){
+            if(this.showClear === "" || this.showClear === undefined ||this.showClear){
+                return true;
             }
-            return true;
+            return false;
         }
     },
     watch:{
@@ -182,8 +163,9 @@
             let vals = selectedItems.vals.join(',');
             this.$emit("input",vals);
             this.$emit("change",vals);
-            if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                this.$attrs.setVerifyCompState();
+
+            if(this.leForm.checkSubComponentVerify(this)){
+                this.leForm.validateSubComponent(this);
             }
         },
         checkPlaceholder(){
@@ -192,7 +174,7 @@
             if(vals != ""){
                 this.placeholderStr = "";
             }else{
-                this.placeholderStr = this.$attrs.placeholder;
+                this.placeholderStr = this.placeholder;
             }
         },
         /**
@@ -286,11 +268,11 @@
             this.$emit("input","");
             this.$emit("change","");
             this.showButtom = false;
-            window.setTimeout(()=>{
-                if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                    this.$attrs.setVerifyCompState();
+            this.$nextTick(()=>{
+                if(this.leForm.checkSubComponentVerify(this)){
+                    this.leForm.validateSubComponent(this);
                 }
-            },0)
+            })
         },
         hideArr(){
             if(this.readonlyFlag){
@@ -313,12 +295,6 @@
             }
             this.showArrow = false;
         },
-    },
-    created(){
-        let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
-            this.formLabelWidth = data;
-        });
     },
     mounted(){
         /**

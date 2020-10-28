@@ -1,14 +1,14 @@
 
 <template>
     <div class="form-item">
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
-        <div class="form-item-div fa" :class="state.successIcon">
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
+        <div class="form-item-div fa" :class="{'fa-times-circle-o':state.showError}">
             <span :class="{'readonlyIcon':readonlyFlag}" class="span" v-for="(item,index) in data" :key="index" @click="changeItem(item)">
-                <span>{{item[displayName]}}</span>
                 <span class="fa" :class="item.ck?'fa-check-square':'fa-square-o'"></span>
+                <span>{{item[displayName]}}</span>
             </span>
-            <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
-            <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
+            <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
+            <p class="tip" v-show="!state.showError">{{tip}}</p>
         </div>
     </div>
 </template>
@@ -20,40 +20,27 @@ import define from "../define.js";
 
 export default {
     name:"LeCheckboxList",
-    props:["displayName","displayValue","value","dataSource","readonly"],
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
+    props:["on","required","max","min","tip","msg","rules","label","labelWidth","displayName","displayValue","value","dataSource","readonly"],
+    inject:["leForm"],
     data(){
         return {
-            validataComponentType:"Checkbox",
+            componentKey:tool._idSeed.newId(),
             state:{
-                successIcon:"",
-                showError:false
+                showError:false,
+                errorMsg:""
             },
             data:[],
-            formLabelWidth:"0"
         }
     },
     computed:{
         labelWidthVal(){
-            if(this.$attrs.labelWidth){
-                return this.$attrs.labelWidth;
-            }
-            if(this.formLabelWidth != 0){
-                return this.formLabelWidth;
-            }
-            return define.LABELWIDTH;
+            return this.labelWidth || this.leForm.labelWidth || define.LABELWIDTH;
         },
         readonlyFlag(){
-            if(this.readonly == undefined){
-                return false;
-            }
-            if(this.readonly === ""){
+            if(this.readonly === "" || this.readonly){
                 return true;
             }
-            if(this.readonly === false){
-                return false;
-            }
-            return true;
+            return false;
         }
     },
     watch:{
@@ -88,8 +75,8 @@ export default {
             let res = this.getCheckedItems();
             this.$emit('input',res.vals.join(','));
             this.$emit('change',res);
-            if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                this.$attrs.setVerifyCompState();
+            if(this.leForm.checkSubComponentVerify(this)){
+                this.leForm.validateSubComponent(this);
             }
         },
         /**
@@ -106,7 +93,7 @@ export default {
          * @returns 类型:字符串,为兼容validataHOC，必须返回字符串
          */
         getValue(){
-            let res = this.getCheckedItems().vals.join(',');
+            let res = this.getCheckedItems().vals;
             return res;
         },
         /**
@@ -138,10 +125,7 @@ export default {
         }
     },
     created(){
-        let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
-            this.formLabelWidth = data;
-        });
+
     },
     mounted(){
         if(this.dataSource && this.dataSource.length >0){

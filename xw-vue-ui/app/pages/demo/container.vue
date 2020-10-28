@@ -1,8 +1,6 @@
 
 <template>
-    <div>
-        <le-input on required :rules="rules" :msg="emsg" labelWidth="80" label="container:" v-model="entity.code"></le-input>
-    </div>
+    <le-input on required :rules="rules" :msg="emsg" labelWidth="80" label="container:" v-model="entity.code"></le-input>
 </template>
 <script>
 export default {

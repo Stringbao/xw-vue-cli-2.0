@@ -98,13 +98,13 @@ let ajaxTool = {
             .then(ajaxTool.checkCode)
             .catch((err) => Promise.reject(err));
     }
-    const upload = (url, params = {})=> {
-        const formData = ajaxTool.JsonToFormData(params);
+    const upload = (url, formData)=> {
+        // const formData = ajaxTool.JsonToFormData(params);
         const options = {
             body: formData,
             method: 'POST',
             headers: {
-                'content-type': 'multipart/form-data',
+                // 'content-type': 'multipart/form-data',
                 'credentials': 'same-origin',
             }
         }

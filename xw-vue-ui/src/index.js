@@ -44,11 +44,11 @@ export default {
     install(Vue) {
         Vue.component('LeButton', LeButton);
         Vue.component('LeSubmit',LeSubmit);
-        Vue.component('LeCheckboxList', ValidataHOC(LeCheckboxList));
-        Vue.component('LeRadioList', ValidataHOC(LeRadioList));
+        Vue.component('LeCheckboxList',LeCheckboxList);
+        Vue.component('LeRadioList', LeRadioList);
         Vue.component('LeInput', LeInput);
-        Vue.component('LeTextarea', ValidataHOC(LeTextarea));
-        Vue.component('LeLocalSelect', ValidataHOC(LeLocalSelect));
+        Vue.component('LeTextarea', LeTextarea);
+        Vue.component('LeLocalSelect', LeLocalSelect);
         Vue.component('TableList', TableList);
         Vue.component('LocalTableList', LocalTableList);
         Vue.component('LeUpload', ValidataHOC(LeUpload));

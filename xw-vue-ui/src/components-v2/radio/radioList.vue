@@ -1,13 +1,13 @@
 <template>
     <div class="form-item">
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
-        <div  class="form-item-div fa" :class="state.successIcon">
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
+        <div  class="form-item-div fa" :class="{'fa-times-circle-o':state.showError}">
             <span :class="{'readonlyIcon':readonlyFlag}" class="span" @click="changeCK(item)" v-for="(item,index) in data" :key="index">
                 <span class="fa" :class="item.ck?'fa-dot-circle-o':'fa-circle-o'"></span>
                 <span>{{item[displayName]}}</span>
             </span>
-            <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
-            <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
+            <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
+            <p class="tip" v-show="!state.showError">{{tip}}</p>
         </div>
     </div>
 </template>
@@ -19,41 +19,27 @@ import define from "../define.js";
 
 export default {
     name:"LeRadioList",
-    props:["displayName","displayValue","value","dataSource","readonly"],
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
+    props:["on","required","tip","msg","rules","label","labelWidth","displayName","displayValue","value","dataSource","readonly"],
+    inject:["leForm"],
     data(){
         return {
+            componentKey:tool._idSeed.newId(),
             state:{
-                successIcon:"",
                 showError:false,
+                errorMsg:""
             },
             data:[],
-            validataComponentType:"Radio",
-            name:tool._idSeed.newId(),
-            formLabelWidth:"0"
         }
     },
     computed:{
         labelWidthVal(){
-            if(this.$attrs.labelWidth){
-                return this.$attrs.labelWidth;
-            }
-            if(this.formLabelWidth != 0){
-                return this.formLabelWidth;
-            }
-            return define.LABELWIDTH;
+            return this.labelWidth || this.leForm.labelWidth || define.LABELWIDTH;
         },
         readonlyFlag(){
-            if(this.readonly == undefined){
-                return false;
-            }
-            if(this.readonly === ""){
+            if(this.readonly === "" || this.readonly){
                 return true;
             }
-            if(this.readonly === false){
-                return false;
-            }
-            return true;
+            return false;
         }
     },
     watch:{
@@ -122,12 +108,6 @@ export default {
             let res = tool.object.getCheckedItems(this.data,this.displayValue);
             return res.vals.join(',');
         },
-    },
-    created(){
-        let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
-            this.formLabelWidth = data;
-        });
     },
     mounted(){
         if(this.dataSource && this.dataSource.length >0){

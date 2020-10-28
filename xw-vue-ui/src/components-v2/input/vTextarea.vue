@@ -1,11 +1,11 @@
 <template>
     <div class="form-item" :style="{height:_height,width:_width}">
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
-        <div class="form-item-div fa" :class="state.successIcon">
-            <textarea :placeholder="placeholderStr" :class="{readonlyIcon:readonlyFlag}" v-on:blur="blurEvent($event)" :readonly="readonlyFlag" class="form-item-input" :value="currentValue" v-on:input="changeEvent($event)"></textarea>
-            <i v-show="showClear" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
-            <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
-            <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
+        <div class="form-item-div fa" :class="{'fa-times-circle-o':state.showError}">
+            <textarea :placeholder="placeholderStr" :class="{readonlyIcon:readonlyFlag}" v-on:blur="blurEvent($event)" :readonly="readonlyFlag" class="form-item-input" :value="value" v-on:input="changeEvent($event)"></textarea>
+            <i  v-if="showClearBtn" v-show="value.length" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
+            <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
+            <p class="tip" v-show="!state.showError">{{tip}}</p>
         </div>
     </div>
 </template>
@@ -14,21 +14,16 @@
     import define from "../define.js";
     import tool from "../leCompsTool.js";
     export default{
-        inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
         name:"LeTextarea",
-        //不能显示声明props，必须从HOC里面传递下来，然后通过$attrs获取，因为props不让修改
-        props:["value","width","height","readonly"],
+        props:["on","required","max","min","vType","tip","msg","rules","label","value","width","height","readonly","placeholder","showClear"],
+        inject:["leForm"],
         data(){
             return {
-                textareaKey:tool._idSeed.newId(),
-                //所有需要验证的组件必须带上这个validataType属性，这个属性的值可以为input，select，radio等需要验证的组件 
-                validataComponentType:"TextArea",
+                componentKey:tool._idSeed.newId(),
                 state:{
                     showError:false,
-                    successIcon:""
+                    errorMsg:""
                 },
-                currentValue:this.value,
-                formLabelWidth:"0"
             }
         },
         computed:{
@@ -48,82 +43,56 @@
                 return "100%"
             },
             labelWidthVal(){
-                if(this.$attrs.labelWidth){
-                    return this.$attrs.labelWidth;
-                }
-                if(this.formLabelWidth != 0){
-                    return this.formLabelWidth;
-                }
-                return define.LABELWIDTH;
+                return this.labelWidth || this.leForm.labelWidth || define.LABELWIDTH;
             },
             placeholderStr(){
-                if(this.$attrs.placeholder){
-                    return this.$attrs.placeholder;
-                }
-                return define.PLACEHOLDER.INPUT;
+                return this.placeholder || define.PLACEHOLDER.INPUT;
             },
-            showClear(){
-                if(this.readonlyFlag){
-                    return false;
-                }
-                if(this.currentValue && this.currentValue.length >0){
+            showClearBtn(){
+                if(this.showClear === "" || this.showClear === undefined ||this.showClear){
                     return true;
                 }
                 return false;
             },
             readonlyFlag(){
-                if(this.readonly == undefined){
-                    return false;
-                }
-                if(this.readonly === ""){
+                if(this.readonly === "" || this.readonly){
                     return true;
                 }
-                if(this.readonly === false){
-                    return false;
-                }
-                return true;
+                return false;
             }
         },
         watch:{
-            value(val){
-                this.setValue(val);
-            }
         },
         methods:{
             blurEvent(e){
                 if(this.readonlyFlag){
                     return;
                 }
-                if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                    this.$attrs.setVerifyCompState();
+                if(this.leForm.checkSubComponentVerify(this)){
+                    this.leForm.validateSubComponent(this);
                 }
                 this.$emit("blur",e.target.value);
             },
             changeEvent(e){
-                this.currentValue = e.target.value;
                 this.$emit("input",e.target.value);
                 this.$emit("change",e.target.value);
             },
             getValue(){
-                return this.currentValue;
+                return this.value;
             },
             setValue(value){
-                this.currentValue = value;
-                if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                    this.$attrs.setVerifyCompState();
-                }
             },
             clear(){
                 if(!this.readonlyFlag){
                     this.$emit("input","");
+                    console.log(this.leForm.checkSubComponentVerify(this))
+                    this.$nextTick(()=>{
+                        if(this.leForm.checkSubComponentVerify(this)){
+                            this.leForm.validateSubComponent(this);
+                        }
+                    })
                 }
             }
-        },
-        created(){
-            let that = this;
-            tool._form_event_publisher.on(that._uid,(data)=>{
-                this.formLabelWidth = data;
-            });
         },
         mounted(){
             

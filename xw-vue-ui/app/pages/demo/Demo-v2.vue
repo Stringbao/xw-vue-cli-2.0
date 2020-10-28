@@ -6,15 +6,27 @@
                 <a href="">Product Management > <b>category</b></a>
             </div>
             <div class='le_list_search_pannel clearfix'>
-                <le-form ref='form1'>
-                    <div class="col1">
-                        <le-input on required :rules="allRules" :msg="msg1" labelWidth="80" label="订单:" v-model="entity.code"></le-input>
+                <le-form ref='form1' labelWidth="80">
+                    <div class="col2">
+                        <le-input on required :rules="allRules" :msg="msg1"  label="订单:" v-model="entity.code"></le-input>
                     </div>
-                    <div class="col1">
-                        <le-input on max="5" min="1" :msg="msg2" labelWidth="80" label="编号:" v-model="entity.name"></le-input>
+                    <div class="col2">
+                        <le-input on max="5" min="1" :msg="msg2"  label="编号:" v-model="entity.name"></le-input>
                     </div>
-                    <div class="col1">
+                    <div class="col2">
                         <container></container>
+                    </div>
+                    <div class="col2">
+                        <le-checkbox-list on required max="2" label="爱好:" :data-source="hobbies" display-name="name" :msg="hobbyRules" display-value="code" v-model="entity.hobby"></le-checkbox-list>
+                    </div>
+                    <div class="col2">
+                       <le-radio-list on required msg="性别不能为空" label="性别:" :data-source="sexes" display-name="name" display-value="code" v-model="entity.sex"></le-radio-list> 
+                    </div>
+                    <div class="col2">
+                        <le-textarea on required max="10" :msg="descriptionRules" placeholder="请输入详细地址" label="详细地址:" v-model="entity.description"></le-textarea>
+                    </div>
+                    <div class="col2">
+                        <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
                     </div>
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
@@ -31,7 +43,34 @@ export default {
         return {
             entity:{
                 code:"",
-                name:""
+                name:"",
+                hobby:"",
+                sex:"",
+                description:"",
+                job:"",
+            },
+            occupations:[
+                {name:"工作1",code:1},
+                {name:"工作2",code:2},
+                {name:"工作3",code:3},
+                {name:"工作4",code:4}
+            ],
+            descriptionRules:{
+                required:"description not be null",
+                max:"description must be less than 10"
+            },
+            sexes:[
+                {name:"👨男",code:1},
+                {name:"👩女",code:0}
+            ],
+            hobbies:[
+                { name:"足球⚽️",code:1 },
+                { name:"篮球🏀",code:2 },
+                { name:"羽毛球🏸️",code:3 }
+            ],
+            hobbyRules:{
+                required:"hobby is not be null",
+                max:"hobby must be less than 2 "
             },
             msg1:{
                 checkA:"checkA can not be null",
