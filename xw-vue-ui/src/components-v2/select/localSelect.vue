@@ -25,7 +25,7 @@
     import tool from '../leCompsTool.js';
     import LeftSection from "./left.vue";
     import ButtomSection from "./buttom.vue";
-    import define from "../define.js";
+    import Constant from "../contant/index.js";
 
     const getItemByDisplayValue = (data,displayValue,value)=>{
         let res = null;
@@ -45,7 +45,7 @@
     data () {
         return {
             validataComponentType:"Radio",
-            inputdomKey:tool._idSeed.newId(),
+            inputdomKey:$idSeed.newId(),
             state:{
                 showError:false,
                 errorMsg:""
@@ -74,7 +74,7 @@
             return this.data;
         },
         leftArray(){
-            return tool.object.getCheckedItems(this.data).items;
+            return $util.getCheckedItems(this.data).items;
         },
         readonlyFlag(){
             if(this.readonly === "" || this.readonly){
@@ -219,7 +219,7 @@
          * @returns items:所选的对象数组，vals:所选的值集合
          */
         getSelectedItems(filed){
-            return tool.object.getCheckedItems(this.data,filed?filed:this.displayValue);
+            return $util.getCheckedItems(this.data,filed?filed:this.displayValue);
         },
         /**
          * @description 获取选中项的displayValue的集合

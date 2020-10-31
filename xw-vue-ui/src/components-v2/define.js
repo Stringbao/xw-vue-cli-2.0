@@ -11,7 +11,7 @@ let TREE_CONFIG = {
     ASYNINITATTRIBUTE(data,currentNode,isRoot){
         if(data && data instanceof Array && data.length != 0){
             data.forEach(element=>{
-                element.__tmpId = tool._idSeed.newId();
+                element.__tmpId = $idSeed.newId();
                 element.__children = [];
                 element.__cls = "fa-caret-right";
                 element.__level = isRoot?1:currentNode.__level + 1;

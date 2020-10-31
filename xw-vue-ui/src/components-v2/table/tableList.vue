@@ -32,7 +32,7 @@
         name: "TableList",
         data(){
             return {
-                changeKey:tool._idSeed.newId(),
+                changeKey:$idSeed.newId(),
                 state:{
                     data:[],
                     cols:this.options.map,
@@ -174,7 +174,7 @@
                     }
                 }
                 if(bData){
-                    let items = tool.object.getCheckedItems(bData.data);
+                    let items = $util.getCheckedItems(bData.data);
                     let flag = items.items.length == this.state.data.length?true:false;
                     this.state = {
                         data:bData.data,

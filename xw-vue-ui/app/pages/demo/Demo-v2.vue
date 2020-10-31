@@ -20,7 +20,7 @@
                     <div class="col2">
                         <le-checkbox-list readonly on required :max="2" label="爱好:" :data-source="hobbies" display-name="name" :msg="hobbyRules" display-value="code" v-model="entity.hobby"></le-checkbox-list>
                     </div>
-                    <!-- <div class="col2">
+                    <div class="col2">
                        <le-radio-list on required msg="性别不能为空" label="性别:" :data-source="sexes" display-name="name" display-value="code" v-model="entity.sex"></le-radio-list> 
                     </div>
                     <div class="col2">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="col2">
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
-                    </div> -->
+                    </div>
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
                 <le-button @click="reset" value="reset"></le-button>

@@ -60,7 +60,7 @@ const MessageBox = function (options, callback) {
     instance.id = id;
     instance.callback = callback;
     document.body.appendChild(instance.$el);
-    instance.$el.style.zIndex = tool._idSeed.newId();
+    instance.$el.style.zIndex = $idSeed.newId();
     msgQueue.push(instance);
     Vue.nextTick(() => {
         instance.visible = true;

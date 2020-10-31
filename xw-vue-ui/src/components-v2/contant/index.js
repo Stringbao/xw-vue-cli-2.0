@@ -14,6 +14,9 @@ let FormConstant = {
     CHECKBOX:{
         LABEL_WIDTH:100
     },
+    RADIO:{
+        LABEL_WIDTH:100,
+    },
     BUTTON:{
         ICON_CONFIG:{
             "search":{cls:"search",iCls:"fa-search-plus"}, //搜索

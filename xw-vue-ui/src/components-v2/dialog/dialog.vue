@@ -27,7 +27,7 @@ export default {
     props:["title","width","height"],
     data(){
         return {
-            dialogZIndex:tool._idSeed.newId(),
+            dialogZIndex:$idSeed.newId(),
             dialogTag:false
         }
     },

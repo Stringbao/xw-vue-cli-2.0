@@ -53,9 +53,6 @@ export default {
         min: {
             type: Number,
         },
-        vType: {
-            type: String,
-        },
         msg: {
             type: String | Object,
         },
@@ -126,7 +123,7 @@ export default {
                 this.init(val);
                 this.setValue(this.value);
             }
-        },
+        }
     },
     methods: {
         init(data) {

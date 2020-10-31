@@ -30,7 +30,7 @@ export default {
             state:{
                 data:[]
             },
-            EVENTPUBLISHKEY:tool._idSeed.newId() + "_TREE_NOTICEKEY",
+            EVENTPUBLISHKEY:$idSeed.newId() + "_TREE_NOTICEKEY",
         }
     },
     computed:{

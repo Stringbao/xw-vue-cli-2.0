@@ -45,7 +45,7 @@ const Message = function (options) {
     // });
     instance.verticalOffset = verticalOffset;
     instance.visible = true;
-    instance.$el.style.zIndex = tool._idSeed.newId();
+    instance.$el.style.zIndex = $idSeed.newId();
     
     instances.push(instance);
 }

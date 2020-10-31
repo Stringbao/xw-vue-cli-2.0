@@ -40,7 +40,7 @@
 
     
 <script>
-    import define from "../define.js";
+    import Constant from "../contant/index.js";
     import { $idSeed,$util,$obj } from "../leCompsTool.js";
     // import Ajax from "../../tool/http.js";
     
@@ -52,7 +52,7 @@
         data(){
             return {
                 validataComponentType:"FileUpload",
-                fkey:tool._idSeed.newId(),
+                fkey:$idSeed.newId(),
                 showLoading:false,
                 srcs:[],
                 state:{

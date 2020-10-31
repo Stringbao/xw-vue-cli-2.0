@@ -47,7 +47,7 @@
         data(){
             return {
                 currentSize:this.options.size,
-                goIndexKey:tool._idSeed.newId(),
+                goIndexKey:$idSeed.newId(),
             }
         },
         computed:{

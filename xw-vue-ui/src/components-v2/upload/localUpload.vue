@@ -41,7 +41,7 @@
 
     
 <script>
-    import define from "../define.js";
+    import Constant from "../contant/index.js";
     import { $idSeed,$util,$obj } from "../leCompsTool.js";
     export default {
         components: {},
@@ -51,7 +51,7 @@
         data(){
             return {
                 validataComponentType:"FileUpload",
-                fkey:tool._idSeed.newId(),
+                fkey:$idSeed.newId(),
                 showLoading:false,
                 srcs:[],
                 state:{

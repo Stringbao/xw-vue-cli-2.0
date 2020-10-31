@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import define from "../define.js";
+import Constant from "../contant/index.js";
 import { $idSeed,$util,$obj } from "../leCompsTool.js";
 const _tool = {
     on:(function(){
@@ -95,14 +95,14 @@ export default {
             isShowTimePicker:false,
             //每次组件初始化都会赋上唯一的key
             KEYS:{
-                ROOTDOM:tool._idSeed.newId(),
-                hourDomKey:tool._idSeed.newId(),
-                minDomKey:tool._idSeed.newId(),
-                secDomKey:tool._idSeed.newId(),
-                timeKey:tool._idSeed.newId(),
-                timeInputDomKey:tool._idSeed.newId(),
-                timePanelDomKey:tool._idSeed.newId(),
-                clearTimeDomKey:tool._idSeed.newId()
+                ROOTDOM:$idSeed.newId(),
+                hourDomKey:$idSeed.newId(),
+                minDomKey:$idSeed.newId(),
+                secDomKey:$idSeed.newId(),
+                timeKey:$idSeed.newId(),
+                timeInputDomKey:$idSeed.newId(),
+                timePanelDomKey:$idSeed.newId(),
+                clearTimeDomKey:$idSeed.newId()
             },
             hourDomKey:[],
             minDomKey:[],

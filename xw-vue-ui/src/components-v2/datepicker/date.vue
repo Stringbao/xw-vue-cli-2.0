@@ -141,7 +141,7 @@ let _tool = {
     }
 }
 
-import define from "../define.js";
+import Constant from "../contant/index.js";
 import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 /**
@@ -160,7 +160,7 @@ export default {
     data(){
         return {
             validataComponentType:"DatePicker",
-            dateKey:tool._idSeed.newId(),
+            dateKey:$idSeed.newId(),
             state:{
                 showError:false,
                 successIcon:""

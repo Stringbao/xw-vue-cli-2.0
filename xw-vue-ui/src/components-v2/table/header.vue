@@ -53,7 +53,7 @@
                 this.reSetCols();
             },
             reSetCols:function(){
-                let cols = tool.object.getCheckedItems(this.defaultCols).items;
+                let cols = $util.getCheckedItems(this.defaultCols).items;
                 if(cols.length == 0){
                     this.noticeChangeCols(this.defaultCols);
                     this.defaultCols.forEach(item => {

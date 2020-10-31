@@ -39,7 +39,7 @@
 
 import LeDatePicker from "./date.vue";
 import LeTimePicker from "./time.vue";
-import define from "../define.js";
+import Constant from "../contant/index.js";
 import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
@@ -50,9 +50,9 @@ export default {
     data(){
         return {
             validataComponentType:"DateTimePicker",
-            dateTimeKey:tool._idSeed.newId(),
-            dateKey:tool._idSeed.newId(),
-            timeKey:tool._idSeed.newId(),
+            dateTimeKey:$idSeed.newId(),
+            dateKey:$idSeed.newId(),
+            timeKey:$idSeed.newId(),
             dateTimeStr:"",
             showDateTimePicker:false,
             state:{
