@@ -107,7 +107,10 @@ export default {
         getAllValidateSubComponents(comps){
             comps.forEach(comp => {
                 if(FormUtil.verifyIsOn(comp)){
-                    this.allValidateComps.push(comp);
+                    //只读组件不参与验证
+                    if(!comp.readonlyFlag){
+                        this.allValidateComps.push(comp);
+                    }
                 }else{
                     if(comp.$children.length){
                         this.getAllValidateSubComponents(comp.$children);

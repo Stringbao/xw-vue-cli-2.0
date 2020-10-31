@@ -26,9 +26,10 @@
                     <div class="col2">
                         <le-textarea on required :max="10" :msg="descriptionRules" placeholder="请输入详细地址" label="详细地址:" v-model="entity.description"></le-textarea>
                     </div>
-                    <div class="col2">
+                    <!-- <div class="col2">
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
-                    </div>
+                    </div> -->
+                    <br>
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
                 <le-button @click="reset" value="reset"></le-button>
