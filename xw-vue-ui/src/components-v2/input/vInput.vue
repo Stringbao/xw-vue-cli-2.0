@@ -40,7 +40,7 @@
 
 <script>
 import Constant from "../contant/index.js";
-import tool from "../leCompsTool.js";
+import {$idSeed} from "../leCompsTool.js";
 export default {
     name: "LeInput",
     props: {
@@ -103,7 +103,7 @@ export default {
                 showError: false,
                 errorMsg: "",
             },
-            componentKey: tool._idSeed.newId(),
+            componentKey: $idSeed.newId(),
         };
     },
     computed: {

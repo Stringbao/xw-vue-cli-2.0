@@ -6,8 +6,8 @@
 </template>
 <script>
 
-import DEFINE_KEY from "../define.js";
-import tool from "../leCompsTool.js";
+import Constant from "../contant/index.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 function isPromise(obj) {
     return !!obj  //有实际含义的变量才执行方法，变量null，undefined和''空串都为false
@@ -51,7 +51,7 @@ export default {
         },
         data(){
             let tmp = {cls:"",iCls:"",value:""};
-            let _tmpObj = tool.object.cloneObj(DEFINE_KEY.BUTTON_CONFIG);
+            let _tmpObj = $obj.clone(DEFINE_KEY.BUTTON_CONFIG);
             tmp = _tmpObj[this._type];
             if(!tmp){
                 tmp = {cls:"default",iCls:"",value:""};

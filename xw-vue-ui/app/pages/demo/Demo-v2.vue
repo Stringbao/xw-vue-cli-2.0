@@ -16,10 +16,11 @@
                     <div class="col2">
                         <container></container>
                     </div>
+                    
                     <div class="col2">
-                        <le-checkbox-list on required max="2" label="爱好:" :data-source="hobbies" display-name="name" :msg="hobbyRules" display-value="code" v-model="entity.hobby"></le-checkbox-list>
+                        <le-checkbox-list readonly on required :max="2" label="爱好:" :data-source="hobbies" display-name="name" :msg="hobbyRules" display-value="code" v-model="entity.hobby"></le-checkbox-list>
                     </div>
-                    <div class="col2">
+                    <!-- <div class="col2">
                        <le-radio-list on required msg="性别不能为空" label="性别:" :data-source="sexes" display-name="name" display-value="code" v-model="entity.sex"></le-radio-list> 
                     </div>
                     <div class="col2">
@@ -27,7 +28,7 @@
                     </div>
                     <div class="col2">
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
-                    </div>
+                    </div> -->
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
                 <le-button @click="reset" value="reset"></le-button>
@@ -37,6 +38,8 @@
 </template>
 <script>
 import Container from "./container.vue";
+import {$obj} from "../../../src/tool/util.js";
+
 export default {
     components:{Container},
     data() {
@@ -64,7 +67,8 @@ export default {
                 {name:"👩女",code:0}
             ],
             hobbies:[
-                { name:"足球⚽️",code:1 },
+                { name:"足球⚽️",code:1, convert:(node, comp)=>{
+                }},
                 { name:"篮球🏀",code:2 },
                 { name:"羽毛球🏸️",code:3 }
             ],
@@ -89,15 +93,15 @@ export default {
     },
     methods: {
         checkA(){
-            if(this.entity.code.indexOf('a') == -1){
-                return false;
-            }
+            // if(this.entity.code.indexOf('a') == -1){
+            //     return false;
+            // }
             return true;
         },
         checkB(){
-            if(this.entity.code.indexOf('b') == -1){
-                return false;
-            }
+            // if(this.entity.code.indexOf('b') == -1){
+            //     return false;
+            // }
             return true;
         },
         submit(){
@@ -106,7 +110,7 @@ export default {
             })
         },  
         change1(){
-            debugger
+            
         },
         reset(){
             this.$refs['form1'].reset();

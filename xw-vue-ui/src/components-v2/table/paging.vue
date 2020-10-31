@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import tool from "../leCompsTool.js";
+    import { $idSeed,$util,$obj } from "../leCompsTool.js";
     export default {
         props:["options","goNext","goPrev","goIndex","changeKey"],
         name: "PagingSection",

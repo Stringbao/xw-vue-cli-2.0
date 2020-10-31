@@ -41,7 +41,7 @@
     
 <script>
     import define from "../define.js";
-    import tool from "../leCompsTool.js";
+    import { $idSeed,$util,$obj } from "../leCompsTool.js";
     // import Ajax from "../../tool/http.js";
     
     export default {

@@ -6,13 +6,12 @@
 </template>
 <script>
 
-import DEFINE_KEY from "../define.js";
-import tool from "../leCompsTool.js";
+import Constant from "../contant/index.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
     name:"LeButton",
     props:["type","value","disabled"],
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
     data(){
         return {
             
@@ -45,7 +44,7 @@ export default {
         },
         data(){
             let tmp = {cls:"",iCls:"",value:""};
-            let _tmpObj = tool.object.cloneObj(DEFINE_KEY.BUTTON_CONFIG);
+            let _tmpObj = $obj.clone(Constant.BUTTON.ICON_CONFIG);
             tmp = _tmpObj[this._type];
             if(!tmp){
                 tmp = {cls:"default",iCls:"",value:""};

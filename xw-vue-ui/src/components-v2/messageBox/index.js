@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Main from './main.vue';
-import tool from "../leCompsTool.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 function isVNode(node) {
     return node !== null && typeof node === 'object' && hasOwnProperty.call(node, 'componentOptions');
 };

@@ -40,7 +40,7 @@
 import LeDatePicker from "./date.vue";
 import LeTimePicker from "./time.vue";
 import define from "../define.js";
-import tool from "../leCompsTool.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
     name:"LeDateTimePicker",

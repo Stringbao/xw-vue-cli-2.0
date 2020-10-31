@@ -45,7 +45,7 @@
 
 <script>
 import define from "../define.js";
-import tool from "../leCompsTool.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 const _tool = {
     on:(function(){
         if (document.addEventListener) {
@@ -267,9 +267,9 @@ export default {
             let currentMin = str.split(':')[1];
             let currentSec = str.split(':')[2];
 
-            this.hourDomKey = tool.object.cloneObj(define.DATE_TIME_PICKER_CONFIG.HOUR)
-            this.minDomKey = tool.object.cloneObj(define.DATE_TIME_PICKER_CONFIG.MINUTE)
-            this.secDomKey = tool.object.cloneObj(define.DATE_TIME_PICKER_CONFIG.SECOND)
+            this.hourDomKey = $obj.clone(define.DATE_TIME_PICKER_CONFIG.HOUR)
+            this.minDomKey = $obj.clone(define.DATE_TIME_PICKER_CONFIG.MINUTE)
+            this.secDomKey = $obj.clone(define.DATE_TIME_PICKER_CONFIG.SECOND)
 
             this.toggleClass('hourDomKey',currentHour)
             this.toggleClass('minDomKey',currentMin)

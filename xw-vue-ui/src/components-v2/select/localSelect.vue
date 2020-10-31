@@ -151,8 +151,8 @@
          * @returns 
          */
         init(data){
-            let tmp = tool.object.cloneObj(data);
-            this.data = tool.object.addPrimaryAndCk(tmp);
+            let tmp = $obj.clone(data);
+            this.data = $util.addPrimaryAndCk(tmp);
         },
         /**
          * @description 组件验证以及分发change事件

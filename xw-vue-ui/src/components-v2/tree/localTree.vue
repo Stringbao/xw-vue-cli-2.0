@@ -15,7 +15,7 @@
 
 import TreeItem from "./localTreeItem.vue";
 import tool from '../leCompsTool.js';
-import DEFINE_KEY from "../define.js";
+import Constant from "../contant/index.js";
 import _treeTool from "./treePrivateMethods.js";
 
 export default {
@@ -138,8 +138,8 @@ export default {
          * @returns node/null
          */
         init(data){
-            this.originData = tool.object.cloneObj(data);
-            let tmpData = tool.object.cloneObj(data);
+            this.originData = $obj.clone(data);
+            let tmpData = $obj.clone(data);
             this.initAttributeData(tmpData, null);
             this.state = {
                 data:tmpData
@@ -153,7 +153,7 @@ export default {
          * @description 重置所有
          */
         reset(){
-            let _originData = tool.object.cloneObj(this.originData);
+            let _originData = $obj.clone(this.originData);
             this.initAttributeData(_originData);
             this.state = {
                 data:_originData

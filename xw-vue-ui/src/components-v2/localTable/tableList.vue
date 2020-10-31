@@ -16,7 +16,7 @@
 <script>
     import HeaderSection from "./header.vue";
     import BodySection from "./body.vue";
-    import tool from "../leCompsTool.js";
+    import { $idSeed,$util,$obj } from "../leCompsTool.js";
     
     export default {
         components: {HeaderSection,BodySection},
@@ -34,7 +34,7 @@
         },
         computed:{
             originCols(){
-                return tool.object.cloneObj(this.options.map);
+                return $obj.clone(this.options.map);
             },
             showCk(){
                 return this.options.showCk;
@@ -53,10 +53,10 @@
              */
             init(data){
                 if(data && data instanceof Array && data.length !=0){
-                    let tmp = tool.object.cloneObj(data);
-                    this.originData = tool.object.cloneObj(data);
+                    let tmp = $obj.clone(data);
+                    this.originData = $obj.clone(data);
                     this.state = {
-                        data:tool.object.addPrimaryAndCk(tmp),
+                        data:$util.addPrimaryAndCk(tmp),
                         cols:this.state.cols,
                         ck:false
                     }

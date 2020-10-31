@@ -16,7 +16,7 @@
 
 import TreeItem from "./asynTreeItem.vue";
 import tool from '../leCompsTool.js';
-import DEFINE_KEY from "../define.js";
+import Constant from "../contant/index.js";
 import _treeTool from "./treePrivateMethods.js";
 // import Ajax from "../../tool/http.js";
 
@@ -111,8 +111,8 @@ export default {
          * @returns node/null
          */
         init(data){
-            this.originData = tool.object.cloneObj(data);
-            let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(tool.object.cloneObj(data),null,true);
+            this.originData = $obj.clone(data);
+            let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE($obj.clone(data),null,true);
             this.state = {
                 data:tmpData
             };
@@ -125,7 +125,7 @@ export default {
          * @description 重置所有
          */
         reset(){
-            let _originData = tool.object.cloneObj(this.originData);
+            let _originData = $obj.clone(this.originData);
             this.state = {
                 data:DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(_originData,null,true)
             };

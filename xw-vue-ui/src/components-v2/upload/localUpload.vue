@@ -42,7 +42,7 @@
     
 <script>
     import define from "../define.js";
-    import tool from "../leCompsTool.js";
+    import { $idSeed,$util,$obj } from "../leCompsTool.js";
     export default {
         components: {},
         props:["options","value","readonly"],

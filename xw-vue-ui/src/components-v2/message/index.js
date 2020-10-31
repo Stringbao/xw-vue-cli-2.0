@@ -1,5 +1,5 @@
 import Vue from "vue";
-import tool from "../leCompsTool.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 import Main from "./main";
 
 function isVNode(node) {

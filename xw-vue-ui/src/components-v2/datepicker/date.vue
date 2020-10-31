@@ -142,7 +142,7 @@ let _tool = {
 }
 
 import define from "../define.js";
-import tool from "../leCompsTool.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 /**
  * @description 日期格式  6(row)*7(col)

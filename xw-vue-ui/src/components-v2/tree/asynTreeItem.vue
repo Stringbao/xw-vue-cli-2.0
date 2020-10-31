@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import DEFINE_KEY from "../define.js";
-import tool from "../leCompsTool.js";
+import Constant from "../contant/index.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 // import Ajax from "../../tool/http.js";
 
 export default {

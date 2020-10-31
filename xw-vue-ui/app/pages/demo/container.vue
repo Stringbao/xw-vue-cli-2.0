@@ -22,15 +22,15 @@ export default {
     },
     methods:{
         checkAA(){
-            if(this.entity.code.indexOf('aa') == -1){
-                return false;
-            }
+            // if(this.entity.code.indexOf('aa') == -1){
+            //     return false;
+            // }
             return true;
         },
         checkBB(){
-            if(this.entity.code.indexOf('bb') == -1){
-                return false;
-            }
+            // if(this.entity.code.indexOf('bb') == -1){
+            //     return false;
+            // }
             return true;
         }
     }

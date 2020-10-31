@@ -14,7 +14,7 @@
 
 <script>
 
-import tool from "../leCompsTool.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 import define from "../define.js";
 
 export default {
@@ -59,7 +59,7 @@ export default {
          * @returns
          */
         init(data){
-            this.data = tool.object.cloneObj(tool.object.addPrimaryAndCk(data));
+            this.data = $obj.clone($util.addPrimaryAndCk(data));
         },
         /**
          * @description 重置数据源

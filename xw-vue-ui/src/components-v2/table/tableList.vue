@@ -23,7 +23,7 @@
     import HeaderSection from "./header.vue";
     import BodySection from "./body.vue";
     import PagingSection from "./paging.vue";
-    import tool from "../leCompsTool.js";
+    import { $idSeed,$util,$obj } from "../leCompsTool.js";
     // import Ajax from "../../tool/http.js";
     
     export default {
@@ -54,7 +54,7 @@
                 return this.options.ajaxType?this.options.ajaxType:"get";
             },
             originCols:function(){
-                return tool.object.cloneObj(this.options.map);
+                return $obj.clone(this.options.map);
             },
             showCk:function(){
                 return this.options.showCk;
@@ -110,7 +110,7 @@
                         res = data;
                     }                    
                     if(res.data && res.data instanceof Array && res.data.length != 0){
-                        let arr = tool.object.addPrimaryAndCk(res.data);
+                        let arr = $util.addPrimaryAndCk(res.data);
                         let total = -1;
                         if(parseInt(res.count)%size == 0){
                             total = parseInt(res.count)/size;

@@ -39,7 +39,7 @@
 
 <script>
 import Constant from "../contant/index.js";
-import tool from "../leCompsTool.js";
+import {$idSeed} from "../leCompsTool.js";
 export default {
     name: "LeTextarea",
     props: {
@@ -102,7 +102,7 @@ export default {
     inject: ["leForm"],
     data() {
         return {
-            componentKey: tool._idSeed.newId(),
+            componentKey: $idSeed.newId(),
             state: {
                 showError: false,
                 errorMsg: "",

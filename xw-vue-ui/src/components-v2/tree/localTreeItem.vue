@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import DEFINE_KEY from "../define.js";
-import tool from "../leCompsTool.js";
+import Constant from "../contant/index.js";
+import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
     name:"TreeItem",

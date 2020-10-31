@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import tool from "../leCompsTool.js";
+    import { $idSeed,$util,$obj } from "../leCompsTool.js";
     export default {
         props:["originCols","accpetHBNotice","noticeChangeCols","ck","actions","cols","showCk","singleSelected"],
         name: "HeaderSection",
@@ -39,7 +39,7 @@
         },
         computed:{
             defaultCols:function(){
-                return tool.object.addPrimaryAndCk(tool.object.cloneObj(this.originCols),true);
+                return $util.addPrimaryAndCk($obj.clone(this.originCols),true);
             }
         },
         methods:{
