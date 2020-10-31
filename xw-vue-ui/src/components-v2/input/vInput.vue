@@ -2,7 +2,7 @@
     <div class="form-item">
         <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined && required!=undefined?'required':''">{{label}}</label>
         <div class="form-item-div fa" :class="{'fa-times-circle-o':state.showError}">
-            <input :ref="inputKey" @click="inputClick($event)" :placeholder="placeholderStr" class="form-item-input" :class="{'readonlyIcon':readonlyFlag}" @keyup.enter="enterEvent($event)" v-on:blur="blurEvent($event)" :readonly="readonlyFlag" :type="vType=='password'?'password':'text'" :value="value" v-on:input="changeEvent($event)" />
+            <input :type="type" :ref="componentKey" :placeholder="placeholderStr" class="form-item-input" :class="{'readonlyIcon':readonlyFlag}" @keyup.enter="enterEvent($event)" @focus="focusEvent($event)" @blur="blurEvent($event)" :readonly="readonlyFlag" :value="value" @change="changeEvent($event)" @input="inputEvent($event)" />
             <i v-if="showClearBtn" v-show="value.length>0?true:false" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
             <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
             <p class="tip" v-show="!state.showError">{{tip}}</p>
@@ -15,12 +15,62 @@
     import tool from "../leCompsTool.js";
     export default{
         name:"LeInput",
-        props:["on","required","max","min","vType","tip","msg","rules","value","labelWidth","placeholder","showClear","readonly","label"],
+        props:{
+            on:{
+                type:Boolean | String,
+                default:false
+            },
+            required:{
+                type:Boolean | String,
+                default:false
+            },
+            max:{
+                type:Number
+            },
+            min:{
+                type:Number
+            },
+            vType:{
+                type:String
+            },
+            msg:{
+                type:String | Object
+            },
+            tip:{
+                type:String
+            },
+            rules:{
+                type:Function | Object
+            },
+            value:{
+                type:String
+            },
+            placeholder:{
+                type:String
+            },
+            labelWidth:{
+                type:Number | String
+            },
+            showClear:{
+                type:Boolean | String,
+                default:false
+            },
+            readonly:{
+                type:Boolean | String,
+                default:false
+            },
+            label:{
+                type:String
+            },
+            type:{
+                type:String,
+                default:"text"
+            }
+        },
         inject:["leForm"],
         data(){
             return {
                 validataComponentType:"Input",
-                inputKey:tool._idSeed.newId(),
                 state:{
                     showError:false,
                     errorMsg:""
@@ -42,60 +92,57 @@
                 return false;
             },
             showClearBtn(){
-                if(this.showClear === "" || this.showClear === undefined ||this.showClear){
+                if(this.showClear === "" || this.showClear === undefined || this.showClear){
+                    return true;
+                }
+                if(this.leForm.showClear === "" || this.leForm.showClear === undefined ||this.leForm.showClear){
                     return true;
                 }
                 return false;
             }
         },
         methods:{
-            inputClick(e){
-                if(this.readonlyFlag){
-                    return;
-                }
-                this.$emit("click", e.target.value);
+            //event begin
+            focus(){
+                this.$refs[this.componentKey].focus();
+            },
+            focusEvent(e){
+                this.focus();
+                this.$emit("focus", e.target.value);
             },
             enterEvent(e){
-                if(this.readonlyFlag){
-                    return;
-                }
                 this.$emit("enter",e.target.value);
             },
             blurEvent(e){
-                if(this.readonlyFlag){
-                    return;
-                }
-                if(this.leForm.checkSubComponentVerify(this)){
-                    this.leForm.validateSubComponent(this);
-                }
                 this.$emit("blur",e.target.value);
             },
             changeEvent(e){
-                this.$emit("input",e.target.value);
                 this.$emit("change",e.target.value);
+                if(this.leForm.checkSubComponentVerify(this)){
+                    this.leForm.validateSubComponent(this);
+                }
             },
+            inputEvent(e){
+                this.$emit("input",e.target.value);
+                if(this.leForm.checkSubComponentVerify(this)){
+                    this.leForm.validateSubComponent(this);
+                }
+            },
+            //event end
             getValue(){
                 return this.value;
             },
             setValue(value){
-                
+
             },
             clear(){
                 if(!this.readonlyFlag){
                     this.$emit("input","");
-                    this.$nextTick(()=>{
-                        if(this.leForm.checkSubComponentVerify(this)){
-                            this.leForm.validateSubComponent(this);
-                        }
-                    })
+                    if(this.leForm.checkSubComponentVerify(this)){
+                        this.leForm.validateSubComponent(this);
+                    }
                 }
-            },
-            focus(){
-                this.$refs[this.inputKey].focus();
             }
-        },
-        created(){
-            
         },
         mounted(){
             

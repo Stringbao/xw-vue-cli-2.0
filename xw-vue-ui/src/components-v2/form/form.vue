@@ -29,6 +29,7 @@ export default {
         }
     },
     methods:{
+        //provide方法
         checkSubComponentVerify(component){
             if(component.on === "" || component.on){
                 return true;
@@ -95,6 +96,7 @@ export default {
             component.state.showError = false;
             component.state.errorMsg = "";
         },
+        //form表单使用方法
         getAllValidateSubComponents(comps){
             comps.forEach(comp => {
                 if(FormUtil.verifyIsOn(comp)){
@@ -119,6 +121,7 @@ export default {
             if(this.failedComponents.length == 0){
                 return Promise.resolve(this.successComponents);
             }else{
+                this.failedComponents[0].focus();
                 return Promise.reject(this.failedComponents);
             }
         },

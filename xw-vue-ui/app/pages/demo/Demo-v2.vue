@@ -8,10 +8,10 @@
             <div class='le_list_search_pannel clearfix'>
                 <le-form ref='form1' labelWidth="80">
                     <div class="col2">
-                        <le-input on required :rules="allRules" :msg="msg1"  label="订单:" v-model="entity.code"></le-input>
+                        <le-input @focus="fc" on required :rules="allRules" :msg="msg1"  label="订单:" v-model="entity.code"></le-input>
                     </div>
                     <div class="col2">
-                        <le-input on max="5" min="1" :msg="msg2"  label="编号:" v-model="entity.name"></le-input>
+                        <le-input type='password' ref="input1" on :max="5" :min="1" :msg="msg2"  label="编号:" v-model="entity.name"></le-input>
                     </div>
                     <div class="col2">
                         <container></container>
@@ -101,12 +101,20 @@ export default {
             return true;
         },
         submit(){
-            this.$refs['form1'].validate();
-        },
+            this.$refs['form1'].validate().then().catch(err=>{
+                
+            })
+        },  
         reset(){
             this.$refs['form1'].reset();
+        },
+        fc(e){
+            
         }
     },
+    mounted(){
+        this.$refs['input1'].focus();
+    }
 };
 </script>
 <style lang="scss" scoped>
