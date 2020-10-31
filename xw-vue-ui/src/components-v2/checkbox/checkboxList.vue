@@ -1,5 +1,5 @@
 <template>
-    <div class="form-item" :ref="componentKey" tabIndex="0">
+    <div class="form-item" :ref="componentKey" tabindex="0">
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
