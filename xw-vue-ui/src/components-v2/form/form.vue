@@ -90,11 +90,18 @@ export default {
                 component.state.errorMsg = !success?item.msg:"";
                 return success;
             });
-
         },
         resetSubComponent(component){
             component.state.showError = false;
             component.state.errorMsg = "";
+        },
+        //因为$emit是异步的，所以无法实时获取到v-model的值，所以抽象出一个方法等待$emit执行完毕后开始验证
+        verifySubComponentAfterEmit(component){
+            component.$nextTick(()=>{
+                if (this.checkSubComponentVerify(component)) {
+                    this.validateSubComponent(component);
+                }
+            })
         },
         //form表单使用方法
         getAllValidateSubComponents(comps){
@@ -121,7 +128,7 @@ export default {
             if(this.failedComponents.length == 0){
                 return Promise.resolve(this.successComponents);
             }else{
-                this.failedComponents[0].focus();
+                this.failedComponents[0].focus && this.failedComponents[0].focus();
                 return Promise.reject(this.failedComponents);
             }
         },

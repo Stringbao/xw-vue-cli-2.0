@@ -8,7 +8,7 @@
             <div class='le_list_search_pannel clearfix'>
                 <le-form ref='form1' labelWidth="80">
                     <div class="col2">
-                        <le-input @focus="fc" on required :rules="allRules" :msg="msg1"  label="订单:" v-model="entity.code"></le-input>
+                        <le-input @change='change1' @focus="fc" on required :rules="allRules" :msg="msg1"  label="订单:" v-model="entity.code"></le-input>
                     </div>
                     <div class="col2">
                         <le-input type='password' ref="input1" on :max="5" :min="1" :msg="msg2"  label="编号:" v-model="entity.name"></le-input>
@@ -23,7 +23,7 @@
                        <le-radio-list on required msg="性别不能为空" label="性别:" :data-source="sexes" display-name="name" display-value="code" v-model="entity.sex"></le-radio-list> 
                     </div>
                     <div class="col2">
-                        <le-textarea on required max="10" :msg="descriptionRules" placeholder="请输入详细地址" label="详细地址:" v-model="entity.description"></le-textarea>
+                        <le-textarea on required :max="10" :msg="descriptionRules" placeholder="请输入详细地址" label="详细地址:" v-model="entity.description"></le-textarea>
                     </div>
                     <div class="col2">
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
@@ -105,6 +105,9 @@ export default {
                 
             })
         },  
+        change1(){
+            debugger
+        },
         reset(){
             this.$refs['form1'].reset();
         },
