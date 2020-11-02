@@ -1,7 +1,7 @@
 <template>
     <div class="form-item upaload">
         <div style="display: flex;">
-            <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
+            <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
 
             <div style="flex:1">
                 <span :class="{'readonlyIcon':readonlyFlag}" class="input-file">Please select a file
@@ -15,24 +15,15 @@
                         </span>
                     </div>
                     <div v-else>
-                        <div v-if="fileType != 'image'">
+                        <div>
                             <span class="fileContent" v-for="(item,index) in srcs" :key="index">
                                 <a target="_blank" :href="item.name">{{"attachment_" + item.idx}}</a>
                                 <i v-show="!readonlyFlag" @click="removeItem(item)" class="fa fa-times"></i>
                             </span>
                         </div>
-                        <div v-else>
-                            <span v-for="(item,index) in srcs" :key="index" style="height:auto">
-                                <a target="_blank" :href="item.name" style="display:block;height:100px;">
-                                    <img :src="item.name" style="width:100px;height:100px">
-                                </a>
-                                <i v-show="!readonlyFlag" @click="removeItem(item)" class="fa fa-times"></i>
-                            </span>
-                        </div>
                     </div>
-                    
                 </div>
-                <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
+                <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
             </div>
         </div>
     </div>
@@ -43,11 +34,34 @@
     import Constant from "../contant/index.js";
     import { $idSeed,$util,$obj,$event_publisher } from "../leCompsTool.js";
     // import Ajax from "../../tool/http.js";
-    
     export default {
         components: {},
-        props:["options","value","readonly"],
-        name: "LeUpload",
+        props: {
+            on: {
+                type: Boolean | String,
+                default: false,
+            },
+            label: {
+                type: String
+            },
+            options: {
+                type: Object 
+            },
+            value: {
+                type: String 
+            },
+            readonly: {
+                type: Boolean | String,
+                default: false,
+            },
+            required :{
+                type : Boolean | String,
+                default :false 
+            }
+        },
+        // props:["options","value","readonly"],
+        inject: ["leForm"],
+        name: "LeUploadFile",
         inheritAttrs:false,
         data(){
             return {
@@ -55,23 +69,26 @@
                 fkey:$idSeed.newId(),
                 showLoading:false,
                 srcs:[],
-                state:{
-                    showError:false,
-                    successIcon:""
+                state: {
+                    showError: false,
+                    errorMsg: "",
                 },
                 formLabelWidth:"0"
             }
         },
         computed:{
-            labelWidthVal(){
-                if(this.$attrs.labelWidth){
-                    return this.$attrs.labelWidth;
-                }
-                if(this.formLabelWidth != 0){
-                    return this.formLabelWidth;
-                }
-                return Constant.LABELWIDTH;
+            labelWidthVal() {
+                return (
+                    this.labelWidth || this.leForm.labelWidth || Constant.UPLOADFILE.LABEL_WIDTH
+                );
             },
+            readonlyFlag() {
+                if (this.readonly === "" || this.readonly) {
+                    return true;
+                }
+                return false;
+            },
+
             tipStr(){
                 return this.options.tip?this.options.tip:"";
             },
@@ -105,12 +122,6 @@
             vtype(){
                 return this.options.vtype?this.options.vtype:"";
             },
-            width(){
-                return this.options.width?this.options.width:"";
-            },
-            height(){
-                return this.options.height?this.options.height:"";
-            },
             size(){
                 if(this.options.size){
                     let re = /^[0-9]+.?[0-9]*$/;
@@ -122,23 +133,12 @@
                     return 0;
                 }
             },
-            readonlyFlag(){
-                if(this.readonly == undefined){
-                    return false;
-                }
-                if(this.readonly === ""){
-                    return true;
-                }
-                if(this.readonly === false){
-                    return false;
-                }
-                return true;
-            },
+           
             fileType(){
                 let _fileType = "";
                 if(this.vtype){
                     if(this.vtype.indexOf('jpg') != -1 || this.vtype.indexOf('png') != -1 || this.vtype.indexOf('gif') != -1 || this.vtype.indexOf('icon') != -1){
-                        _fileType = Constant.UPLOADFILE.IMAGE;
+                        _fileType = Constant.UPLOADFILETYPE.IMAGE;
                     }
                     if(this.vtype.indexOf('pdf') != -1){
                         _fileType = Constant.UPLOADFILE.PDF;
@@ -159,31 +159,27 @@
             }
         },
         methods:{
-            /**
-             * @description filechange事件
-             * @returns
-             */
             change(){
                 let val = this.$refs[this.fkey].value;
                 this.upload();
             },
-            /**
-             * @description 重置file-input的value，防止value一样的情况下再次点击file-input按钮不生效
-             * @returns
-             */
+           
             reloadFileInput(){
                 this.$refs[this.fkey].value = "";
             },
             checkSuffix(fileList){
-                if(!this.vtype){
-                    return true;
-                }
+                // if(!this.vtype){
+                //     return true;
+                // }
                 let count = 0;
                 for(let i=0;i<fileList.length;i++){
                     let fileName = fileList[i].name;
                     let suffix = fileName.substring(fileName.lastIndexOf('.')+1);
-                    if(this.vtype.indexOf(suffix) == -1){
-                        count++;
+                    if(this.vtype && this.vtype.indexOf(suffix) == -1){
+                        count = count + 1;
+                    }
+                    if(suffix.indexOf('jpg') !== -1 || suffix.indexOf('png') !== -1 || suffix.indexOf('gif') !== -1 || suffix.indexOf('icon') !== -1){
+                        return false
                     }
                 }
                 if(count != 0){
@@ -207,63 +203,7 @@
                 }
                 return true;
             },
-            checkSpecification(fileList){
-                let that = this;
-                let readerPromises = [];
-                for(let i=0;i<fileList.length;i++){
-                    let fileObj = fileList[i];
-                    ((fileObj)=>{
-                        let reader = new FileReader();
-                        reader.readAsDataURL(fileObj);
-                        let _reader_promsie = new Promise((resolve,reject)=>{
-                            reader.onload = (e)=> {
-                                let data = e.target.result;
-                                let image = new Image();
-                                image.src= data;
-                                image.onload = ()=>{
-                                    let flag = true;
-                                    if(that.width && that.width != image.width){
-                                        flag = false;
-                                    }
-                                    if(that.height && that.height != image.height){
-                                        flag = false;
-                                    }
-                                    resolve(flag);
-                                };
-                                image.onerror = (e)=>{
-                                    reject(e);
-                                }
-                            }
-                            reader.onerror = (e=>{
-                                reject(e);
-                            })
-                        })
-                        readerPromises.push(_reader_promsie);
-                    })(fileObj);
-                }
-                let resultPromise = new Promise((resResolt,resReject)=>{
-                    Promise.all(readerPromises).then(xx=>{
-                        let count = 0;
-                        xx.forEach(f=>{
-                            if(!f){
-                                count++;
-                            }
-                        })
-                        if(count == 0){
-                            resResolt(true);
-                        }else{
-                            resResolt(false);
-                        }
-                    }).catch(x=>{
-                        resResolt(xx);
-                    })
-                });
-                return resultPromise;
-            },
-            /**
-             * @description 上传的主体方法
-             * @returns
-             */
+           
             upload(){
                 if(!this.url || !this.fname){
                     this.alert.showAlert("error","URL and fname is mandatory!");
@@ -277,10 +217,14 @@
                 for(let i=0;i<fileList.length;i++){
                     formData.append(this.fname,fileList[i]);
                 }
+                
                 //控制格式
                 if(!this.checkSuffix(fileList)){
-                    this.alert.showAlert("error","Extension must be "+ this.vtype);
-
+                    if(this.vtype){
+                        this.alert.showAlert("error","Extension must be "+ this.vtype);
+                    }else{
+                        this.alert.showAlert("error","The current component cannot upload images,please reupload");
+                    }
                     this.reloadFileInput();
                     return;
                 }
@@ -291,21 +235,17 @@
                     return;
                 }
                 //控制规格,仅支持图片规格
-                if(this.fileType == Constant.UPLOADFILE.IMAGE && this.width && this.height){
-                    this.checkSpecification(fileList).then(x=>{
-                        if(x){
-                            this.doUploadAjax(formData);
-                        }else{
-                            this.alert.showAlert("error","Image format must be "+ this.width + "*" + this.height);
-                        }
-                    }).catch(e=>{})
-                }else{
+                if(this.fileType !== Constant.UPLOADFILE.IMAGE){
                     this.doUploadAjax(formData);
+                }else{
+                    this.alert.showAlert("error","The current component cannot upload images,please reupload");
                 }
                 this.reloadFileInput();
             },
             doUploadAjax(formData){
                 this.showLoading = true;
+                let that = this;
+                debugger
                 this.ajax.upload(this.url,formData).then((result) => {
                     // this.srcs = [];
                     let src = this.options.analysis?this.options.analysis(result):result;
@@ -320,15 +260,16 @@
                     }
                     this.$emit('input',this.getNames(this.srcs));
                     this.showLoading = false;
-                    if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                        this.$attrs.setVerifyCompState();
-                    }
+                    // if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
+                    //     this.$attrs.setVerifyCompState();
+                    // }
+                    this.leForm.verifySubComponentAfterEmit(this);
                     this.completedCallback&&this.completedCallback({success:true,data:result});
                 }).catch((err) => {
-                    this.showLoading = false;
-                    this.showError = true;
-                    this.alert.showAlert("error","Upload exception");
-                    this.completedCallback&&this.completedCallback({success:false,data:err});
+                    that.showLoading = false;
+                    that.showError = true;
+                    that.alert.showAlert("error","Upload exception");
+                    that.completedCallback&&this.completedCallback({success:false,data:err});
                 });
             },
             getValue(){
@@ -357,6 +298,7 @@
                         this.srcs.push({name:x,idx:(this.srcs.length+1)});
                     })
                 }
+                this.leForm.verifySubComponentAfterEmit(this);
             },
             getNames(data){
                 let res = [];
@@ -364,6 +306,7 @@
                     res.push(x.name);
                 })
                 return res.join(',');
+                this.leForm.verifySubComponentAfterEmit(this);
             },
             removeItem(item){
                 if(this.readonlyFlag){
@@ -377,10 +320,12 @@
                 })
                 this.srcs = tmp;
                 this.$emit('input',this.getNames(this.srcs));
+                this.leForm.verifySubComponentAfterEmit(this);
             },
             //单独重写reset方法,不调用父组件的reset
             reset(){
                 this.$emit('input',"");
+                this.leForm.verifySubComponentAfterEmit(this);
                 this.srcs = [];
                 this.$attrs.setStateByFlag(0);
             }

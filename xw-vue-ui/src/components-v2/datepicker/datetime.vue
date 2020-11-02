@@ -40,7 +40,7 @@
 import LeDatePicker from "./date.vue";
 import LeTimePicker from "./time.vue";
 import Constant from "../contant/index.js";
-import { $idSeed,$util,$obj } from "../leCompsTool.js";
+import { $idSeed,$util,$obj,$event_publisher } from "../leCompsTool.js";
 
 export default {
     name:"LeDateTimePicker",
@@ -70,7 +70,7 @@ export default {
             if(this.formLabelWidth != 0){
                 return this.formLabelWidth;
             }
-            return define.LABELWIDTH;
+            return Constant.LABELWIDTH;
         },
         splitStr(){
             // if(!this.splitKey){
@@ -83,7 +83,7 @@ export default {
             if(this.$attrs.placeholder){
                 return this.$attrs.placeholder;
             }
-            return define.PLACEHOLDER.DATETIME;
+            return Constant.DATE_TIME_PICKER_CONFIG;
         },
         readonlyFlag(){
             if(this.readonly == undefined){
@@ -215,7 +215,7 @@ export default {
     },
     created(){
         let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
+        $event_publisher.on(that._uid,(data)=>{
             this.formLabelWidth = data;
         });
     },

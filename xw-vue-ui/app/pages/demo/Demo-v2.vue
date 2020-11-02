@@ -30,6 +30,15 @@
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
                     </div> -->
                     <br>
+
+                    <div class="col2">
+                        <le-upload-file :options="imgUploadOpt" label="学生文件:"
+                            on required mag="学生文件必须上传"
+                            v-model="entity.uploadFileStr" ref="ref1"
+                        ></le-upload-file>
+                    </div>
+                    <!-- <le-date-time-picker on required label="日期组件" msg="error date" v-model="entity.date"></le-date-time-picker> -->
+
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
                 <le-button @click="reset" value="reset"></le-button>
@@ -45,6 +54,18 @@ export default {
     components:{Container},
     data() {
         return {
+            imgUploadOpt: {
+                multiple: true,
+                url: "/file/img/upload",
+                size: "15",
+                vtype: "xlsx",
+                msg : "请上传文件!" ,
+                tip : "学生文件必传",
+                fname: "file",
+                analysis: (d) => {
+                    return d.data;
+                }
+            },
             entity:{
                 code:"",
                 name:"",
@@ -52,6 +73,9 @@ export default {
                 sex:"",
                 description:"",
                 job:"",
+                // uploadFileStr:"//p1.lefile.cn/fes/cms/2020/10/31/p8ei0svf0vjuk21e6zg92iatjt2s93951371.xlsx",
+                uploadFileStr:"",
+                date:''
             },
             occupations:[
                 {name:"工作1",code:1},
@@ -106,8 +130,10 @@ export default {
             return true;
         },
         submit(){
-            this.$refs['form1'].validate().then().catch(err=>{
-                
+            this.$refs['form1'].validate().then(res=>{
+                console.log(66666)
+            }).catch(err=>{
+                console.log(7777)
             })
         },  
         change1(){
@@ -121,7 +147,7 @@ export default {
         }
     },
     mounted(){
-        this.$refs['input1'].focus();
+        // this.$refs['input1'].focus();
     }
 };
 </script>
