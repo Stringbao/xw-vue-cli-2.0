@@ -24,7 +24,6 @@ import Message from "@components/message";
 import MessageBox from "@components/messageBox";
 
 
-import ValidataHOC from "@components/validataHOC.js";
 import bodyClickDirective from "@components/leDirective.js";
 import lang18n from "@components/i18n.js";
 
@@ -51,13 +50,13 @@ export default {
         Vue.component('LeLocalSelect', LeLocalSelect);
         Vue.component('TableList', TableList);
         Vue.component('LocalTableList', LocalTableList);
-        Vue.component('LeUpload', ValidataHOC(LeUpload));
-        Vue.component('LeLocalUpload', ValidataHOC(LeLocalUpload));
+        Vue.component('LeUpload', LeUpload);
+        Vue.component('LeLocalUpload', LeLocalUpload);
         Vue.component('LeAsynTree', LeAsynTree);
         Vue.component('LeLocalTree', LeLocalTree);
-        Vue.component('LeDatePicker', ValidataHOC(LeDatePicker));
-        Vue.component('LeTimePicker', ValidataHOC(LeTimePicker));
-        Vue.component('LeDateTimePicker', ValidataHOC(LeDateTimePicker));
+        Vue.component('LeDatePicker', LeDatePicker);
+        Vue.component('LeTimePicker', LeTimePicker);
+        Vue.component('LeDateTimePicker', LeDateTimePicker);
         Vue.component('LeDialog', LeDialog);
         Vue.component('LeForm', LeForm);
         Vue.component("LeLoading", LeLoading);

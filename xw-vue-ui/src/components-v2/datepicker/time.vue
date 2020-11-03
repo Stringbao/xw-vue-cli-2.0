@@ -1,14 +1,14 @@
 
 <template>
     <div class="form-item timeContent" :name="KEYS.ROOTDOM" :isDatetimePicker="isDatetimePicker" v-bodyClick="closePicker" :_body_tag="__DatetimePickerKey">
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
-        <div class="form-item-div" :class="state.successIcon">
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
+        <div class="form-item-div" :class="{ 'fa-times-circle-o': state.showError }">
             <div class="searchBar">
                 <i class="fa fa-clock-o clock"></i>
-                <input :_body_tag="__DatetimePickerKey" v-model="timeStr" :isDatetimePicker="isDatetimePicker" :placeholder="placeholderStr" class="timeInput" readonly :class="{readonlyIcon:readonlyFlag}" :name="KEYS.timeInputDomKey" @click="open"/>
+                <input :_body_tag="__DatetimePickerKey" v-model="timeStr" :isDatetimePicker="isDatetimePicker" :placeholder="placeholder" class="timeInput" readonly :class="{readonlyIcon:readonlyFlag}" :name="KEYS.timeInputDomKey" @click="open"/>
                 <div v-show="showClear" class="fa fa-times-circle clearTime" :name="KEYS.clearTimeDomKey" @click.stop="clear"></div>
-                <p class="promptMsg" v-show="state.showError">{{msg}}</p>
-                <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
+                <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
+                <p class="tip" v-show="!state.showError">{{tip}}</p>
             </div>
             <div class="timePicker" v-show="isShowTimePicker"  @click.stop :name="KEYS.timePanelDomKey" :id="KEYS.timePanelDomKey">
                 <div class="timePanel">
@@ -80,17 +80,52 @@ const _tool = {
 }
 export default {
     name:"LeTimePicker",
-    props:["msg","value","readonly","isDatetimePicker","DatetimePickerKey"],
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
+    inject: ["leForm"],
+    props: {
+        isDatetimePicker: {
+            type: Boolean | String
+        },
+        DatetimePickerKey: {
+            type: String | Number
+        },
+        value: {
+            type: String
+        },
+        readonly: {
+            type: Boolean | String,
+            default: false,
+        },
+        labelWidth: {
+            type: Number | String,
+        },
+        placeholder: {
+            type: String,
+            default: Constant.DATE_PICKER.TIME.PLACEHOLDER
+        },
+        on: {
+            type: Boolean | String,
+            default: false,
+        },
+        label: {
+            type: String
+        },
+        tip: {
+            type: String
+        },
+        msg: {
+            type: String
+        },
+        required: {
+            type: String | Boolean,
+            default: false
+        }
+    },
     data(){
         return {
-            //validataHOC组件属性
-            validataComponentType:"TimePicker",
-            define:define,
             //验证组件需要的错误信息提示
-            state:{
-                showError:false,
-                successIcon:""
+            state: {
+                showError: false,
+                errorMsg: "",
             },
             isShowTimePicker:false,
             //每次组件初始化都会赋上唯一的key
@@ -109,43 +144,25 @@ export default {
             secDomKey:[],
             //计算滚动时候的下个位置的li的索引
             nextSelect:0,
-            timeStr:"",
-            formLabelWidth:"0"
+            timeStr:""
         }
     },
     computed:{
         __DatetimePickerKey(){
-            if(this.DatetimePickerKey){
-                return this.DatetimePickerKey;
-            }
-            return this.timeKey;
+            return this.DatetimePickerKey || this.KEYS.timeKey;
         },
         labelWidthVal(){
-            if(this.$attrs.labelWidth){
-                return this.$attrs.labelWidth;
-            }
-            if(this.formLabelWidth != 0){
-                return this.formLabelWidth;
-            }
-            return define.LABELWIDTH;
-        },
-        placeholderStr(){
-            if(this.$attrs.placeholder){
-                return this.$attrs.placeholder;
-            }
-            return define.PLACEHOLDER.TIME;
+            return (
+                this.labelWidth ||
+                this.leForm.labelWidth ||
+                Constant.DATE_PICKER.TIME.LABEL_WIDTH
+            );
         },
         readonlyFlag(){
-            if(this.readonly == undefined){
-                return false;
-            }
-            if(this.readonly === ""){
+            if (this.readonly === "" || this.readonly) {
                 return true;
             }
-            if(this.readonly === false){
-                return false;
-            }
-            return true;
+            return false;
         },
         showClear(){
             if(this.isDatetimePicker != undefined){
@@ -189,9 +206,8 @@ export default {
             this.$emit("input",result);
             this.$emit("change",result);
             this.timeStr = result;
-            if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                this.$attrs.setVerifyCompState();
-            }
+            // form check
+            this.leForm.verifySubComponentAfterEmit(this);
         },
         clickHandler(el,key){
             let index = el.name
@@ -267,9 +283,9 @@ export default {
             let currentMin = str.split(':')[1];
             let currentSec = str.split(':')[2];
 
-            this.hourDomKey = $obj.clone(define.DATE_TIME_PICKER_CONFIG.HOUR)
-            this.minDomKey = $obj.clone(define.DATE_TIME_PICKER_CONFIG.MINUTE)
-            this.secDomKey = $obj.clone(define.DATE_TIME_PICKER_CONFIG.SECOND)
+            this.hourDomKey = $obj.clone(Constant.DATE_PICKER.DATE_TIME_PICKER_CONFIG.HOUR)
+            this.minDomKey = $obj.clone(Constant.DATE_PICKER.DATE_TIME_PICKER_CONFIG.MINUTE)
+            this.secDomKey = $obj.clone(Constant.DATE_PICKER.DATE_TIME_PICKER_CONFIG.SECOND)
 
             this.toggleClass('hourDomKey',currentHour)
             this.toggleClass('minDomKey',currentMin)
@@ -297,21 +313,12 @@ export default {
             }
             this.$emit("input","");
             this.$emit("change","");
-            window.setTimeout(()=>{
-                if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                    this.$attrs.setVerifyCompState();
-                }
-            },0)
+            // form check
+            this.leForm.verifySubComponentAfterEmit(this);
         },
         scrollDocumentHandler(e){
             this.scrollFun(e.target);
         },
-    },
-    created(){
-        let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
-            this.formLabelWidth = data;
-        });
     },
     mounted(){
         if(this.isDatetimePicker == undefined){

@@ -1,7 +1,7 @@
 <template>
     <div class = "form-item current">
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
-        <div class = "form-item-div dataTimePicker" :class="state.successIcon" :_body_tag="dateTimeKey" v-bodyClick="closeDateTimePicker">
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
+        <div class = "form-item-div dataTimePicker" :class="{ 'fa-times-circle-o': state.showError }" :_body_tag="dateTimeKey" v-bodyClick="closeDateTimePicker">
             <!-- 日期 -->
             <i class="icon-date fa fa-calendar"></i>
             <div class = "date-box">
@@ -9,7 +9,7 @@
                 <!-- <div class = "dateTimeText" :_body_tag="dateKey" :class="{readonlyIcon:readonlyFlag}" @click.stop="showDateTimePickerHandle" >
                     {{dateTimeStr}}
                 </div> -->
-                <input @blur="blurdate($event)" :placeholder="placeholderStr" class = "dateTimeText" :_body_tag="dateTimeKey" :readonly="true" :class="{readonlyIcon:readonlyFlag}" @click="showDateTimePickerHandle" v-model='dateTimeStr'/>
+                <input @blur="blurdate($event)" :placeholder="placeholder" class = "dateTimeText" :_body_tag="dateTimeKey" :readonly="true" :class="{readonlyIcon:readonlyFlag}" @click="showDateTimePickerHandle" v-model='dateTimeStr'/>
                 <!-- 展开日期下拉 -->
                 <div class="picker-box" v-show="showDateTimePicker">
                     <div class="picker-header" style = "height:272px;">
@@ -31,7 +31,7 @@
             <!-- 时间 -->
             <i v-show="showClear" class="fa fa-times-circle clearTime" @click="clear"></i>
             <p class="promptMsg" v-show="state.showError">{{msg}}</p>
-            <p class="tip" v-show="!state.showError">{{$attrs.tip}}</p>
+            <p class="tip" v-show="!state.showError">{{tip}}</p>
         </div>
     </div>
 </template>
@@ -44,58 +44,70 @@ import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
     name:"LeDateTimePicker",
-    props:["msg","value","readonly","splitKey"],
+    inject: ["leForm"],
+    props: {
+        value: {
+            type: String
+        },
+        readonly: {
+            type: Boolean | String,
+            default: false
+        },
+        labelWidth: {
+            type: Number | String,
+        },
+        placeholder: {
+            type: String,
+            default: Constant.DATE_PICKER.DATE_TIME.PLACEHOLDER
+        },
+        on: {
+            type: Boolean | String,
+            default: false,
+        },
+        label: {
+            type: String
+        },
+        tip: {
+            type: String
+        },
+        msg: {
+            type: String
+        },
+        required: {
+            type: String | Boolean,
+            default: false
+        }
+    },
     components: {LeDatePicker,LeTimePicker},
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
     data(){
         return {
-            validataComponentType:"DateTimePicker",
+            state: {
+                showError: false,
+                errorMsg: "",
+            },
             dateTimeKey:$idSeed.newId(),
             dateKey:$idSeed.newId(),
             timeKey:$idSeed.newId(),
             dateTimeStr:"",
-            showDateTimePicker:false,
-            state:{
-                showError:false,
-                successIcon:''
-            },
-            formLabelWidth:"0"
+            showDateTimePicker:false
         }
     },
     computed:{
         labelWidthVal(){
-            if(this.$attrs.labelWidth){
-                return this.$attrs.labelWidth;
-            }
-            if(this.formLabelWidth != 0){
-                return this.formLabelWidth;
-            }
-            return define.LABELWIDTH;
+            return (
+                this.labelWidth ||
+                this.leForm.labelWidth ||
+                Constant.DATE_PICKER.DATE_TIME.LABEL_WIDTH
+            );
         },
         splitStr(){
-            // if(!this.splitKey){
-            //     return "/";
-            // }
-            // return this.splitKey;
             return "-";
         },
-        placeholderStr(){
-            if(this.$attrs.placeholder){
-                return this.$attrs.placeholder;
-            }
-            return define.PLACEHOLDER.DATETIME;
-        },
         readonlyFlag(){
-            if(this.readonly == undefined){
-                return false;
-            }
-            if(this.readonly === ""){
+            if (this.readonly === "" || this.readonly) {
                 return true;
             }
-            if(this.readonly === false){
-                return false;
-            }
-            return true;
+            return false;
         },
         showClear(){
             if(this.isDatetimePicker != undefined){
@@ -126,7 +138,7 @@ export default {
             let date = str.split(' ')[0];
             let time = str.split(' ')[1];
 
-            var date_expression = /^\d{4}\/\d{2}\/\d{2}$/ ;
+            var date_expression = /^\d{4}-\d{2}-\d{2}$/ ;
             var time_expression = /^(?:[01]\d|2[0-3])(?::[0-5]\d){2}$/;
             let data_flag = date_expression.test(date);
             let time_flag = time_expression.test(time);
@@ -152,9 +164,8 @@ export default {
             }else{
                 this.dateTimeStr = dataStr + " " + timeStr;
             }
-            if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                this.$attrs.setVerifyCompState();
-            }
+            // form check
+            this.leForm.verifySubComponentAfterEmit(this);
             dateComp.closePicker();
             timeComp.closePicker();
             this.showDateTimePicker = false;
@@ -176,11 +187,8 @@ export default {
             this.showDateTimePicker = false;
             this.$emit("input","");
             this.$emit("change","");
-            window.setTimeout(()=>{
-                if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                    this.$attrs.setVerifyCompState();
-                }
-            },0)
+            // form check
+            this.leForm.verifySubComponentAfterEmit(this);
         },
         initDateAndTime(){
             let y = new Date().getFullYear();
@@ -212,12 +220,6 @@ export default {
         closeDateTimePicker(){
             this.showDateTimePicker = false;
         }
-    },
-    created(){
-        let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
-            this.formLabelWidth = data;
-        });
     },
     mounted(){
         this.setValue(this.value);

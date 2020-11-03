@@ -1,7 +1,7 @@
 <template>
     <div class="form-item upaload">
         <div style="display: flex;">
-            <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
+            <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
 
             <div style="flex:1">
                 <span :class="{'readonlyIcon':readonlyFlag}" class="input-file">Please select a file
@@ -32,7 +32,7 @@
                     </div>
                     
                 </div>
-                <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
+                <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
             </div>
         </div>
     </div>
@@ -40,37 +40,31 @@
 
     
 <script>
-    import Constant from "../contant/index.js";
-    import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import define from "../define.js";
+    import tool from "../leCompsTool.js";
     // import Ajax from "../../tool/http.js";
     
     export default {
         components: {},
-        props:["options","value","readonly"],
+        props:["on","required","label","msg","labelWidth","options","value","readonly"],
         name: "LeUpload",
-        inheritAttrs:false,
+        inject:["leForm"],
         data(){
             return {
                 validataComponentType:"FileUpload",
-                fkey:$idSeed.newId(),
+                fkey:tool._idSeed.newId(),
                 showLoading:false,
                 srcs:[],
                 state:{
                     showError:false,
-                    successIcon:""
+                    errorMsg:""
                 },
-                formLabelWidth:"0"
+                componentKey:tool._idSeed.newId()
             }
         },
         computed:{
             labelWidthVal(){
-                if(this.$attrs.labelWidth){
-                    return this.$attrs.labelWidth;
-                }
-                if(this.formLabelWidth != 0){
-                    return this.formLabelWidth;
-                }
-                return define.LABELWIDTH;
+                return this.labelWidth || this.leForm.labelWidth || define.LABELWIDTH;
             },
             tipStr(){
                 return this.options.tip?this.options.tip:"";
@@ -123,16 +117,10 @@
                 }
             },
             readonlyFlag(){
-                if(this.readonly == undefined){
-                    return false;
-                }
-                if(this.readonly === ""){
+                if(this.readonly === "" || this.readonly){
                     return true;
                 }
-                if(this.readonly === false){
-                    return false;
-                }
-                return true;
+                return false;
             },
             fileType(){
                 let _fileType = "";
@@ -154,9 +142,9 @@
             }
         },
         watch:{
-            value(val){
-                this.setValue(val);
-            }
+            // value(val){
+            //     this.setValue(val);
+            // }
         },
         methods:{
             /**
@@ -320,8 +308,8 @@
                     }
                     this.$emit('input',this.getNames(this.srcs));
                     this.showLoading = false;
-                    if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                        this.$attrs.setVerifyCompState();
+                    if(this.leForm.checkSubComponentVerify(this)){
+                        this.leForm.validateSubComponent(this);
                     }
                     this.completedCallback&&this.completedCallback({success:true,data:result});
                 }).catch((err) => {
@@ -382,14 +370,14 @@
             reset(){
                 this.$emit('input',"");
                 this.srcs = [];
-                this.$attrs.setStateByFlag(0);
+                this.leForm.setStateByFlag(0);
             }
         },
         created(){
-            let that = this;
-            tool._form_event_publisher.on(that._uid,(data)=>{
-                this.formLabelWidth = data;
-            });
+            // let that = this;
+            // tool._form_event_publisher.on(that._uid,(data)=>{
+            //     this.formLabelWidth = data;
+            // });
         },
         mounted(){
             this.setValue(this.value);

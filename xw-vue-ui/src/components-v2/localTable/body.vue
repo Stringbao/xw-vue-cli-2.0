@@ -21,7 +21,9 @@
                         <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
                     </div>
                     <div v-else>
-                        <div v-html="item.convert?item.convert(item,row):getValByFieldInRow(item,row)" @click="item.action && item.action(row,item)"></div>
+                        <div @click="item.action && item.action(row,item)">{{
+                        item.convert?mycompile(item.convert(item,row)):getValByFieldInRow(item,row)    
+                        }}</div>
                     </div>
                 </td>
             </tr>
@@ -34,7 +36,10 @@
 
 <script>
     import { $idSeed,$util,$obj } from "../leCompsTool.js";
-    
+    // const isVNode =(node)=> {
+    //     return node !== null && typeof node === 'object' && hasOwn(node, 'componentOptions');
+    // };
+
     export default {
         name: "BodySection",
         props:["actions","data","cols","accpetHBNotice","showCk","singleSelected"],
@@ -62,6 +67,14 @@
             
         },
         methods:{
+            isVNode(node){
+                return node !== null && typeof node === 'object' && hasOwn(node, 'componentOptions');
+            },
+            mycompile(node){
+                console.log(node)
+                return this.$render(node);
+                
+            },
             actionShowFn(action,row){
                 if(action.show){
                     return action.show(row);

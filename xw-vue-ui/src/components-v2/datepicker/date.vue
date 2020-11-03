@@ -1,16 +1,16 @@
 
 
 <template>
-    <div class="form-item">
-        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
-        <div class="form-item-div dataPicker" :isDatetimePicker="isDatetimePicker" :_body_tag="__DatetimePickerKey" v-bodyClick="closePicker" :class="state.successIcon" style="display:inline-block;position:relative;">
+    <div class="form-item" >
+        <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
+        <div class="form-item-div dataPicker" :isDatetimePicker="isDatetimePicker" :_body_tag="__DatetimePickerKey" v-bodyClick="closePicker" :class="{ 'fa-times-circle-o': state.showError }" style="display:inline-block;position:relative;">
             <!-- 添加current激活input current样式  去掉则是默认样式 -->
             <div class="div-box current" >
                 <i class="icon-date fa fa-calendar"></i>
-                <input @blur="blurdate($event)" :placeholder="placeholderStr" :isDatetimePicker="isDatetimePicker" type="text" :class="{readonlyIcon:readonlyFlag}" class="form-item-input date" :readonly="true" :value="selectDayStr" :_body_tag="__DatetimePickerKey" @click="showPicker"/>
+                <input @blur="blurdate($event)" :placeholder="placeholder" :isDatetimePicker="isDatetimePicker" type="text" :class="{readonlyIcon:readonlyFlag}" class="form-item-input date" :readonly="true" :value="selectDayStr" :_body_tag="__DatetimePickerKey" @click="showPicker"/>
                 <i v-show="showClear" class="fa fa-times-circle icon-del" @click.stop="clear"></i>
-                <p class="promptMsg" @click.stop v-show="state.showError">{{$attrs.msg}}</p>
-                <p class="tip" @click.stop v-show="!state.showError">{{$attrs.tip}}</p>
+                <p class="promptMsg" @click.stop v-show="state.showError">{{state.errorMsg}}</p>
+                <p class="tip" @click.stop v-show="!state.showError">{{tip}}</p>
             </div>
             <!-- 展开下拉 -->
             <div class="picker-box" v-show="isShowPicker" @click.stop>
@@ -155,16 +155,53 @@ import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
     name:"LeDatePicker",
-    props:["isDatetimePicker","DatetimePickerKey","value","readonly","splitKey"],
-    inheritAttrs:false,//控制attrs的属性不渲染到根元素上面
+    inject: ["leForm"],
+    props: {
+        isDatetimePicker: {
+            type: Boolean | String
+        },
+        DatetimePickerKey: {
+            type: String | Number
+        },
+        value: {
+            type: String
+        },
+        readonly: {
+            type: Boolean | String,
+            default: false,
+        },
+        labelWidth: {
+            type: Number | String,
+        },
+        placeholder: {
+            type: String,
+            default: Constant.DATE_PICKER.DATE.PLACEHOLDER
+        },
+        on: {
+            type: Boolean | String,
+            default: false,
+        },
+        label: {
+            type: String
+        },
+        msg: {
+            type: String
+        },
+        tip: {
+            type: String
+        },
+        required: {
+            type: String | Boolean,
+            default: false
+        }
+    },
     data(){
         return {
-            validataComponentType:"DatePicker",
-            dateKey:$idSeed.newId(),
-            state:{
-                showError:false,
-                successIcon:""
+            state: {
+                showError: false,
+                errorMsg: "",
             },
+            componentKey: $idSeed.newId(),
             current:{
                 currentYear:new Date().getFullYear(),
                 currentMonth:new Date().getMonth() + 1,
@@ -172,8 +209,7 @@ export default {
             },
             data:[],
             selectDay:"",
-            isShowPicker:false,
-            formLabelWidth:"0"
+            isShowPicker:false
         }
     },
     watch:{
@@ -186,36 +222,27 @@ export default {
     },
     computed:{
         __DatetimePickerKey(){
-            if(this.DatetimePickerKey){
-                return this.DatetimePickerKey;
-            }
-            return this.dateKey;
+            return this.DatetimePickerKey || this.componentKey;
         },
         splitStr(){
-            // if(!this.splitKey){
-            //     return "/";
-            // }
-            // return this.splitKey;
-
             return "-";
         },
         labelWidthVal(){
-            if(this.$attrs.labelWidth){
-                return this.$attrs.labelWidth;
-            }
-            if(this.formLabelWidth != 0){
-                return this.formLabelWidth;
-            }
-            return define.LABELWIDTH;
-        },
-        placeholderStr(){
-            if(this.$attrs.placeholder){
-                return this.$attrs.placeholder;
-            }
-            return define.PLACEHOLDER.DATE;
+            return (
+                this.labelWidth ||
+                this.leForm.labelWidth ||
+                Constant.DATE_PICKER.DATE.LABEL_WIDTH
+            );
+            // if(this.$attrs.labelWidth){
+            //     return this.$attrs.labelWidth;
+            // }
+            // if(this.formLabelWidth != 0){
+            //     return this.formLabelWidth;
+            // }
+            // return Constant.DATE_PICKER.DATE.LABEL_WIDTH;
         },
         Weeks(){
-            return define.DATE_TIME_PICKER_CONFIG.WEEK;
+            return Constant.DATE_PICKER.DATE_TIME_PICKER_CONFIG.WEEK;
         },
         selectDayStr(){
             if(this.selectDay == ""){
@@ -230,16 +257,10 @@ export default {
             return y + this.splitStr + m + this.splitStr + d;
         },
         readonlyFlag(){
-            if(this.readonly == undefined){
-                return false;
-            }
-            if(this.readonly === ""){
+            if (this.readonly === "" || this.readonly) {
                 return true;
             }
-            if(this.readonly === false){
-                return false;
-            }
-            return true;
+            return false;
         },
         showClear(){
             if(this.isDatetimePicker != undefined){
@@ -259,7 +280,7 @@ export default {
             if(!str){
                 return false;
             }
-            var expression = /^\d{4}\/\d{2}\/\d{2}$/ ;
+            var expression = /^\d{4}-\d{2}-\d{2}$/;
             let objExp = new RegExp(expression);
             return objExp.test(str);
         },
@@ -339,11 +360,8 @@ export default {
             }
             this.$emit("input","");
             this.$emit("change","");
-            window.setTimeout(()=>{
-                if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                    this.$attrs.setVerifyCompState();
-                }
-            },0)
+            // form check
+            this.leForm.verifySubComponentAfterEmit(this);
         },
         /**
          * @description 点击文本框显示picker选择层, 每次点击根据选中的日期来复位
@@ -388,9 +406,9 @@ export default {
             }
             this.state.showError = false;
 
-            if(this.$attrs.checkVerifyEnabled && this.$attrs.checkVerifyEnabled()){
-                this.$attrs.setVerifyCompState();
-            }
+            // form check
+            this.leForm.verifySubComponentAfterEmit(this);
+
             this.$emit("input",this.selectDayStr);
             this.$emit("change",this.selectDayStr);
         },
@@ -484,12 +502,6 @@ export default {
         getValue(){
             return this.selectDayStr;
         }
-    },
-    created(){
-        let that = this;
-        tool._form_event_publisher.on(that._uid,(data)=>{
-            this.formLabelWidth = data;
-        });
     },
     mounted(){
         if(this.isDatetimePicker == undefined){

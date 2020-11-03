@@ -30,6 +30,13 @@
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
                     </div> -->
                     <br>
+                    <div class="col2">
+                        <local-table-list
+                            ref="thumbnailTable"
+                            :options="thumbnailTableOption"
+                        ></local-table-list>
+                    </div>
+
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
                 <le-button @click="reset" value="reset"></le-button>
@@ -45,6 +52,16 @@ export default {
     components:{Container},
     data() {
         return {
+            thumbnailTableOption:{
+                map:[
+                    { key :'imageAddress', val:"Image Address" },
+                    { key :'imageName', val:"Image Name" },
+                    { key :'imageAddress' ,val:"Preview", convert:this.convertImg}
+                ],
+                actions:[
+                    { key:'info' , val:"Preview" ,action:this.previewImg}
+                ]
+            },
             entity:{
                 code:"",
                 name:"",
@@ -93,6 +110,22 @@ export default {
         }
     },
     methods: {
+        convertImg(col,row){
+            const h = this.$createElement;
+            let vnode = h('div',{
+                attrs: {
+                    id: 'foo'
+                },
+                domProps: {
+                    innerHTML: 'baz'
+                },
+            });
+            return vnode;
+            // console.log(vnode);
+            // console.log(vnode.el);
+            
+            // return `<img src="${row.imageAddress}">`;
+        },
         checkA(){
             // if(this.entity.code.indexOf('a') == -1){
             //     return false;
@@ -122,6 +155,7 @@ export default {
     },
     mounted(){
         this.$refs['input1'].focus();
+        this.$refs.thumbnailTable.init([{ imageAddress:"https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",imageName:"baidu"}])
     }
 };
 </script>

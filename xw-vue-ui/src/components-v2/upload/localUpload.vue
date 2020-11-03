@@ -1,11 +1,11 @@
 <template>
     <div class="form-item upaload">
         <div style="display: flex;">
-            <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="$attrs.on != undefined?'required':''">{{$attrs.label}}</label>
+            <label :style="{width:labelWidthVal + 'px'}" class="form-item-label" :class="on != undefined?'required':''">{{label}}</label>
 
             <div style="flex:1">
                 <span :class="{'readonlyIcon':readonlyFlag}" class="input-file">Please select a file
-                <input :disabled="readonlyFlag" :multiple="multipleTag" @change="change" type="file" :ref="fkey" class="imgFile" /></span>
+                <input :disabled="readonlyFlag" :multiple="multipleTag" @change="change" type="file" :ref="componentKey" class="imgFile" /></span>
                 <img v-show="showLoading" src="//p3-nec.static.pub/product/adminweb/2018/05/28/6f7b5572-8693-4f6c-a041-cf6f32b367ac.gif" class="loading">
                 <span class="rules">{{tipStr}}</span>
                 <div class="fileList" v-show="srcs.length>0">
@@ -33,7 +33,7 @@
                     </div>
                     
                 </div>
-                <p class="promptMsg" v-show="state.showError">{{$attrs.msg}}</p>
+                <p class="promptMsg" v-show="state.showError">{{state.errorMsg}}</p>
             </div>
         </div>
     </div>
@@ -42,35 +42,50 @@
     
 <script>
     import Constant from "../contant/index.js";
-    import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import {$idSeed} from "../leCompsTool.js";
     export default {
-        components: {},
-        props:["options","value","readonly"],
         name: "LeLocalUpload",
-        inheritAttrs:false,
+        inject:["leForm"],
+        props:{
+            on: {
+                type: Boolean | String,
+                default: false,
+            },
+            required: {
+                type: Boolean | String,
+                default: false,
+            },
+            label: {
+                type: String,
+            },
+            msg: {
+                type: String | Object,
+            },
+            labelWidth: {
+                type: Number | String,
+            },
+            options:Object,
+            value:String,
+            readonly: {
+                type: Boolean | String,
+                default: false,
+            },
+        },
         data(){
             return {
-                validataComponentType:"FileUpload",
-                fkey:$idSeed.newId(),
+                componentKey:$idSeed.newId(),
                 showLoading:false,
                 srcs:[],
                 state:{
                     showError:false,
-                    successIcon:""
+                    errorMsg:""
                 },
-                formLabelWidth:"0",
-                allFileList:[]
+                allFileList:[],
             }
         },
         computed:{
             labelWidthVal(){
-                if(this.$attrs.labelWidth){
-                    return this.$attrs.labelWidth;
-                }
-                if(this.formLabelWidth != 0){
-                    return this.formLabelWidth;
-                }
-                return define.LABELWIDTH;
+                return this.labelWidth || this.leForm.labelWidth || Constant.LOCAL_UPLOAD.LABELWIDTH;
             },
             tipStr(){
                 return this.options.tip?this.options.tip:"";
@@ -117,16 +132,10 @@
                 }
             },
             readonlyFlag(){
-                if(this.readonly == undefined){
-                    return false;
-                }
-                if(this.readonly === ""){
+                if(this.readonly === "" || this.readonly){
                     return true;
                 }
-                if(this.readonly === false){
-                    return false;
-                }
-                return true;
+                return false;
             },
             fileType(){
                 let _fileType = "";
@@ -147,22 +156,13 @@
                 return _fileType;
             }
         },
-        watch:{
-            value(val){
-                this.setValue(val);
-            }
-        },
         methods:{
-            /**
-             * @description filechange事件
-             * @returns
-             */
             change(){
-                let val = this.$refs[this.fkey].value;
+                let val = this.$refs[this.componentKey].value;
                 this.upload();
             },
             reloadFileInput(){
-                this.$refs[this.fkey].value = "";
+                this.$refs[this.componentKey].value = "";
             },
             checkSuffix(fileList){
                 if(!this.vtype){
@@ -285,7 +285,7 @@
                     this.alert.showAlert("error","URL and fname is mandatory!");
                     return;
                 }
-                let dom = this.$refs[this.fkey];
+                let dom = this.$refs[this.componentKey];
                 let fileList = dom.files;
                 
                 //控制格式
@@ -376,11 +376,10 @@
                 this.setSrcs();
                 this.$emit('input',this.getNames(this.srcs));
             },
-            //单独重写reset方法,不调用父组件的reset
             reset(){
                 this.$emit('input',"");
                 this.srcs = [];
-                this.$attrs.setStateByFlag(0);
+                this.leForm.verifySubComponentAfterEmit(this);
             },
             // getFormData(){
             //     return new Promise((resolve,reject)=>{
@@ -392,12 +391,6 @@
             //         }
             //     })
             // }
-        },
-        created(){
-            let that = this;
-            tool._form_event_publisher.on(that._uid,(data)=>{
-                this.formLabelWidth = data;
-            });
         },
         mounted(){
             this.setValue(this.value);
