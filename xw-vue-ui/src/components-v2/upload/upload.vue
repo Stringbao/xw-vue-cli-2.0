@@ -73,7 +73,7 @@
         inject:["leForm"],
         data(){
             return {
-                componentKey:tool._idSeed.newId(),
+                componentKey:$idSeed.newId(),
                 showLoading:false,
                 srcs:[],
                 state:{

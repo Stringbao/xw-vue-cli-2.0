@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import tool from '../leCompsTool.js';
+    import { $idSeed, $util, $obj } from "../leCompsTool.js";
     import LeftSection from "./left.vue";
     import ButtomSection from "./buttom.vue";
     import Constant from "../contant/index.js";
@@ -268,11 +268,7 @@
             this.$emit("input","");
             this.$emit("change","");
             this.showButtom = false;
-            this.$nextTick(()=>{
-                if(this.leForm.checkSubComponentVerify(this)){
-                    this.leForm.validateSubComponent(this);
-                }
-            })
+            this.leForm.verifySubComponentAfterEmit(this);            
         },
         hideArr(){
             if(this.readonlyFlag){

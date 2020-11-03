@@ -97,7 +97,6 @@ export default {
         },
         //因为$emit是异步的，所以无法实时获取到v-model的值，所以抽象出一个方法等待$emit执行完毕后开始验证
         verifySubComponentAfterEmit(component){
-            debugger
             component.$nextTick(()=>{
                 if (this.checkSubComponentVerify(component)) {
                     this.validateSubComponent(component);

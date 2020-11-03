@@ -38,7 +38,11 @@ let FormConstant = {
         }
     },
     LOCAL_UPLOAD:{
-        LABELWIDTH:100
+        LABELWIDTH:100,
+        IMAGE:"image",
+        WORD:"word",
+        PDF:"pdf",
+        EXCEL:"excel"
     },
     UPLOADFILE:{
         LABEL_WIDTH:100,

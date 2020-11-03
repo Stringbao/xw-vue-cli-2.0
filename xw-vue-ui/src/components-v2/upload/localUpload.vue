@@ -322,9 +322,9 @@
                 }else{
                     this.srcs = [{name:this.allFileList[0].name,idx:1}];
                 }
-
+                this.leForm.verifySubComponentAfterEmit(this);
                 this.options.callback && this.options.callback(this.getFormDataByFileList().formData);
-
+                
                 this.reloadFileInput();
                 this.$emit('input',this.getNames(this.srcs));
             },
