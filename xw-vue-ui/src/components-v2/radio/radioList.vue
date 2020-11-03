@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="on != undefined ? 'required' : ''"
+            :class="{'required':isVertify && readonlyFlag}"
             >{{ label }}</label
         >
         <div
@@ -97,6 +97,12 @@ export default {
         };
     },
     computed: {
+        isVertify(){
+            if (this.on === "" || this.on) {
+                return true;
+            }
+            return false; 
+        },
         labelWidthVal() {
             return (
                 this.labelWidth ||
