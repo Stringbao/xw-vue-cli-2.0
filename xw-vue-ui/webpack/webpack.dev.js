@@ -53,7 +53,7 @@ module.exports = {
         hot:true,
         proxy:{
             '/': {
-                target: '',
+                target: 'http://localhost:9876/',
                 secure: false,
                 changeOrigin: true
             }
