@@ -24,7 +24,7 @@ import Message from "@components/message";
 import MessageBox from "@components/messageBox";
 
 
-import LeUploadFile from "@components/upload/uploadFile.vue";
+// import LeUploadFile from "@components/upload/uploadFile.vue";
 
 
 import bodyClickDirective from "@components/leDirective.js";
@@ -64,7 +64,7 @@ export default {
         Vue.component('LeForm', LeForm);
         Vue.component("LeLoading", LeLoading);
 
-        Vue.component('LeUploadFile',LeUploadFile);
+        // Vue.component('LeUploadFile',LeUploadFile);
 
         Vue.prototype.lang18n = lang18n;
         Vue.prototype.alert = LeAlert;

@@ -5,7 +5,7 @@
 
             <div style="flex:1">
                 <span :class="{'readonlyIcon':readonlyFlag}" class="input-file">Please select a file
-                <input :disabled="readonlyFlag" :multiple="multipleTag" @change="change" type="file" :ref="fkey" class="imgFile" /></span>
+                <input :disabled="readonlyFlag" :multiple="multipleTag" @change="change" type="file" :ref="componentKey" class="imgFile" /></span>
                 <img v-show="showLoading" src="//p3-nec.static.pub/product/adminweb/2018/05/28/6f7b5572-8693-4f6c-a041-cf6f32b367ac.gif" class="loading">
                 <span class="rules">{{tipStr}}</span>
                 <div class="fileList" v-show="srcs.length>0">
@@ -44,21 +44,42 @@
     import { $idSeed,$util,$obj,$event_publisher } from "../leCompsTool.js";
     
     export default {
-        components: {},
-        props:["on","required","label","msg","labelWidth","options","value","readonly"],
         name: "LeUpload",
+        props:{
+            on: {
+                type: Boolean | String,
+                default: false,
+            },
+            required: {
+                type: Boolean | String,
+                default: false,
+            },
+            label: {
+                type: String,
+            },
+            msg: {
+                type: String | Object,
+            },
+            labelWidth: {
+                type: Number | String,
+            },
+            options:Object,
+            value:String,
+            readonly: {
+                type: Boolean | String,
+                default: false,
+            },
+        },
         inject:["leForm"],
         data(){
             return {
-                validataComponentType:"FileUpload",
-                fkey:tool._idSeed.newId(),
+                componentKey:tool._idSeed.newId(),
                 showLoading:false,
                 srcs:[],
                 state:{
                     showError:false,
                     errorMsg:""
                 },
-                componentKey:tool._idSeed.newId()
             }
         },
         computed:{
@@ -140,26 +161,13 @@
                 return _fileType;
             }
         },
-        watch:{
-            // value(val){
-            //     this.setValue(val);
-            // }
-        },
         methods:{
-            /**
-             * @description filechange事件
-             * @returns
-             */
             change(){
-                let val = this.$refs[this.fkey].value;
+                let val = this.$refs[this.componentKey].value;
                 this.upload();
             },
-            /**
-             * @description 重置file-input的value，防止value一样的情况下再次点击file-input按钮不生效
-             * @returns
-             */
             reloadFileInput(){
-                this.$refs[this.fkey].value = "";
+                this.$refs[this.componentKey].value = "";
             },
             checkSuffix(fileList){
                 if(!this.vtype){
@@ -247,10 +255,6 @@
                 });
                 return resultPromise;
             },
-            /**
-             * @description 上传的主体方法
-             * @returns
-             */
             upload(){
                 if(!this.url || !this.fname){
                     this.alert.showAlert("error","URL and fname is mandatory!");
@@ -258,7 +262,7 @@
                     return;
                 }
                 
-                let dom = this.$refs[this.fkey];
+                let dom = this.$refs[this.componentKey];
                 let fileList = dom.files;
                 let formData = new FormData();
                 for(let i=0;i<fileList.length;i++){
@@ -369,7 +373,7 @@
             reset(){
                 this.$emit('input',"");
                 this.srcs = [];
-                this.leForm.setStateByFlag(0);
+                this.leForm.verifySubComponentAfterEmit(this);
             }
         },
         mounted(){

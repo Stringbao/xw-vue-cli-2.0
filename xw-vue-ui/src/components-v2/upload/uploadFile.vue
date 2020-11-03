@@ -59,7 +59,6 @@
                 default :false 
             }
         },
-        // props:["options","value","readonly"],
         inject: ["leForm"],
         name: "LeUploadFile",
         inheritAttrs:false,
@@ -327,7 +326,6 @@
                 this.$emit('input',"");
                 this.leForm.verifySubComponentAfterEmit(this);
                 this.srcs = [];
-                this.$attrs.setStateByFlag(0);
             }
         },
         created(){
