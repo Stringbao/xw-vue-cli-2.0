@@ -70,7 +70,11 @@
                 default: false,
             },
         },
-        inject:["leForm"],
+        inject: {
+            leForm:{
+                default: ""
+            }
+        },
         data(){
             return {
                 componentKey:$idSeed.newId(),
@@ -84,7 +88,7 @@
         },
         computed:{
             labelWidthVal(){
-                return this.labelWidth || this.leForm.labelWidth || Constant.UPLOADFILE.LABELWIDTH;
+                return this.labelWidth || this.leForm&&this.leForm.labelWidth || Constant.UPLOADFILE.LABELWIDTH;
             },
             tipStr(){
                 return this.options.tip?this.options.tip:"";
@@ -311,8 +315,8 @@
                     }
                     this.$emit('input',this.getNames(this.srcs));
                     this.showLoading = false;
-                    if(this.leForm.checkSubComponentVerify(this)){
-                        this.leForm.validateSubComponent(this);
+                    if(this.leForm&&this.leForm.checkSubComponentVerify(this)){
+                        this.leForm&&this.leForm.validateSubComponent(this);
                     }
                     this.completedCallback&&this.completedCallback({success:true,data:result});
                 }).catch((err) => {
@@ -373,7 +377,7 @@
             reset(){
                 this.$emit('input',"");
                 this.srcs = [];
-                this.leForm.verifySubComponentAfterEmit(this);
+                this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
             }
         },
         mounted(){

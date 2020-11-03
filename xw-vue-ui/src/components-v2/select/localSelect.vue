@@ -40,7 +40,11 @@
   export default {
     name: 'LeLocalSelect',
     props:["on","required","tip","msg","rules","label","labelWidth","multiple","displayName","displayValue","value","dataSource","readonly","enabledInput","showClear","placeholder"],
-    inject:["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     components: {LeftSection,ButtomSection},
     data () {
         return {
@@ -59,7 +63,7 @@
     },
     computed:{
         labelWidthVal(){
-            return this.labelWidth || this.leForm.labelWidth || define.LABELWIDTH;
+            return this.labelWidth || this.leForm&&this.leForm.labelWidth || define.LABELWIDTH;
         },
         /**
          * @description 根据输入关键字来搜索
@@ -164,8 +168,8 @@
             this.$emit("input",vals);
             this.$emit("change",vals);
 
-            if(this.leForm.checkSubComponentVerify(this)){
-                this.leForm.validateSubComponent(this);
+            if(this.leForm&&this.leForm.checkSubComponentVerify(this)){
+                this.leForm&&this.leForm.validateSubComponent(this);
             }
         },
         checkPlaceholder(){
@@ -268,7 +272,7 @@
             this.$emit("input","");
             this.$emit("change","");
             this.showButtom = false;
-            this.leForm.verifySubComponentAfterEmit(this);            
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);            
         },
         hideArr(){
             if(this.readonlyFlag){

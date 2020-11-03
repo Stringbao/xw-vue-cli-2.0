@@ -23,7 +23,7 @@
     import HeaderSection from "./header.vue";
     import BodySection from "./body.vue";
     import PagingSection from "./paging.vue";
-    import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import { $idSeed,$util,$obj,$event_publisher } from "../leCompsTool.js";
     // import Ajax from "../../tool/http.js";
     
     export default {
@@ -268,7 +268,7 @@
         mounted () {
             this.getData(this.state.pageOption.index);
 
-            tool._form_event_publisher.on(this.changeKey,(data)=>{
+            $event_publisher.on(this.changeKey,(data)=>{
                 this.state.pageOption.size = data.size;
                 this.search();
             });

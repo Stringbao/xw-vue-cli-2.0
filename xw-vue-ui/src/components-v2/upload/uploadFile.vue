@@ -59,9 +59,12 @@
                 default :false 
             }
         },
-        inject: ["leForm"],
+        inject: {
+            leForm:{
+                default: ""
+            }
+        },
         name: "LeUploadFile",
-        inheritAttrs:false,
         data(){
             return {
                 validataComponentType:"FileUpload",

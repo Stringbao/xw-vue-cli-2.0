@@ -155,7 +155,11 @@ import { $idSeed,$util,$obj } from "../leCompsTool.js";
 
 export default {
     name:"LeDatePicker",
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     props: {
         isDatetimePicker: {
             type: Boolean | String
@@ -230,7 +234,7 @@ export default {
         labelWidthVal(){
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this.leForm&&this.leForm.labelWidth ||
                 Constant.DATE_PICKER.DATE.LABEL_WIDTH
             );
             // if(this.$attrs.labelWidth){
@@ -361,7 +365,7 @@ export default {
             this.$emit("input","");
             this.$emit("change","");
             // form check
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         /**
          * @description 点击文本框显示picker选择层, 每次点击根据选中的日期来复位
@@ -407,7 +411,7 @@ export default {
             this.state.showError = false;
 
             // form check
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
 
             this.$emit("input",this.selectDayStr);
             this.$emit("change",this.selectDayStr);

@@ -99,7 +99,11 @@ export default {
             default: Constant.TEXTAREA.HEIGHT,
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             componentKey: $idSeed.newId(),
@@ -122,7 +126,7 @@ export default {
         labelWidthVal() {
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this.leForm&&this.leForm.labelWidth ||
                 Constant.TEXTAREA.LABEL_WIDTH
             );
         },
@@ -135,9 +139,9 @@ export default {
                 return true;
             }
             if (
-                this.leForm.showClear === "" ||
-                this.leForm.showClear === undefined ||
-                this.leForm.showClear
+                this.leForm&&this.leForm.showClear === "" ||
+                this.leForm&&this.leForm.showClear === undefined ||
+                this.leForm&&this.leForm.showClear
             ) {
                 return true;
             }
@@ -161,20 +165,20 @@ export default {
         },
         enterEvent(e) {
             this.$emit("enter", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         blurEvent(e) {
             this.$emit("blur", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         changeEvent(e) {
             this.$emit("change", e.target.value);
             this.$emit("input", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         inputEvent(e) {
             this.$emit("input", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         //event end
         getValue() {
@@ -183,7 +187,7 @@ export default {
         clear() {
             if (!this.readonlyFlag) {
                 this.$emit("input", "");
-                this.leForm.verifySubComponentAfterEmit(this);
+                this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
             }
         },
     },

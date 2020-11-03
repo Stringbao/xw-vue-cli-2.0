@@ -88,7 +88,11 @@ export default {
             required: true,
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             componentKey: $idSeed.newId(),
@@ -103,7 +107,7 @@ export default {
         labelWidthVal() {
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this.leForm&&this.leForm.labelWidth ||
                 Constant.CHECKBOX.LABEL_WIDTH
             );
         },
@@ -140,7 +144,7 @@ export default {
             let res = $util.getCheckedItems(this.data, this.displayValue);
             this.$emit("input", res.vals.join(","));
             this.$emit("change", res);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         getValue() {
             return $util.getCheckedItems(this.data, this.displayValue).vals;

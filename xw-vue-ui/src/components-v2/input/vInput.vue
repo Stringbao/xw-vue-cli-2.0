@@ -96,7 +96,11 @@ export default {
             default: "text",
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             state: {
@@ -108,11 +112,7 @@ export default {
     },
     computed: {
         labelWidthVal() {
-            return (
-                this.labelWidth ||
-                this.leForm.labelWidth ||
-                Constant.INPUT.LABEL_WIDTH
-            );
+            return this.labelWidth ||this.leForm&&this.leForm.labelWidth || Constant.INPUT.LABEL_WIDTH;
         },
         readonlyFlag() {
             if (this.readonly === "" || this.readonly) {
@@ -121,18 +121,10 @@ export default {
             return false;
         },
         showClearBtn() {
-            if (
-                this.showClear === "" ||
-                this.showClear === undefined ||
-                this.showClear
-            ) {
+            if (this.showClear === "" ||this.showClear === undefined ||this.showClear) {
                 return true;
             }
-            if (
-                this.leForm.showClear === "" ||
-                this.leForm.showClear === undefined ||
-                this.leForm.showClear
-            ) {
+            if (this.leForm&&this.leForm.showClear === "" ||this.leForm&&this.leForm.showClear === undefined ||this.leForm&&this.leForm.showClear) {
                 return true;
             }
             return false;
@@ -149,20 +141,20 @@ export default {
         },
         enterEvent(e) {
             this.$emit("enter", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         blurEvent(e) {
             this.$emit("blur", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         changeEvent(e) {
             this.$emit("change", e.target.value);
             this.$emit("input", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         inputEvent(e) {
             this.$emit("input", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         //event end
         getValue() {
@@ -171,7 +163,7 @@ export default {
         clear() {
             if (!this.readonlyFlag) {
                 this.$emit("input", "");
-                this.leForm.verifySubComponentAfterEmit(this);
+                this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
             }
         },
     },

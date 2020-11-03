@@ -80,7 +80,11 @@ const _tool = {
 }
 export default {
     name:"LeTimePicker",
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     props: {
         isDatetimePicker: {
             type: Boolean | String
@@ -154,7 +158,7 @@ export default {
         labelWidthVal(){
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this.leForm&&this.leForm.labelWidth ||
                 Constant.DATE_PICKER.TIME.LABEL_WIDTH
             );
         },
@@ -207,7 +211,7 @@ export default {
             this.$emit("change",result);
             this.timeStr = result;
             // form check
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         clickHandler(el,key){
             let index = el.name
@@ -314,7 +318,7 @@ export default {
             this.$emit("input","");
             this.$emit("change","");
             // form check
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         scrollDocumentHandler(e){
             this.scrollFun(e.target);

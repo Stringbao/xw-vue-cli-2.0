@@ -45,7 +45,11 @@
     import {$idSeed} from "../leCompsTool.js";
     export default {
         name: "LeLocalUpload",
-        inject:["leForm"],
+        inject: {
+            leForm:{
+                default: ""
+            }
+        },
         props:{
             on: {
                 type: Boolean | String,
@@ -85,7 +89,7 @@
         },
         computed:{
             labelWidthVal(){
-                return this.labelWidth || this.leForm.labelWidth || Constant.LOCAL_UPLOAD.LABELWIDTH;
+                return this.labelWidth || this.leForm&&this.leForm.labelWidth || Constant.LOCAL_UPLOAD.LABELWIDTH;
             },
             tipStr(){
                 return this.options.tip?this.options.tip:"";
@@ -322,7 +326,7 @@
                 }else{
                     this.srcs = [{name:this.allFileList[0].name,idx:1}];
                 }
-                this.leForm.verifySubComponentAfterEmit(this);
+                this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
                 this.options.callback && this.options.callback(this.getFormDataByFileList().formData);
                 
                 this.reloadFileInput();
@@ -379,7 +383,7 @@
             reset(){
                 this.$emit('input',"");
                 this.srcs = [];
-                this.leForm.verifySubComponentAfterEmit(this);
+                this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
             },
             // getFormData(){
             //     return new Promise((resolve,reject)=>{

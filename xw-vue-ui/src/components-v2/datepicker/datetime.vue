@@ -44,7 +44,11 @@ import { $idSeed,$util,$obj,$event_publisher } from "../leCompsTool.js";
 
 export default {
     name:"LeDateTimePicker",
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     props: {
         value: {
             type: String
@@ -96,7 +100,7 @@ export default {
         labelWidthVal(){
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this.leForm&&this.leForm.labelWidth ||
                 Constant.DATE_PICKER.DATE_TIME.LABEL_WIDTH
             );
         },
@@ -165,7 +169,7 @@ export default {
                 this.dateTimeStr = dataStr + " " + timeStr;
             }
             // form check
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
             dateComp.closePicker();
             timeComp.closePicker();
             this.showDateTimePicker = false;
@@ -188,7 +192,7 @@ export default {
             this.$emit("input","");
             this.$emit("change","");
             // form check
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         initDateAndTime(){
             let y = new Date().getFullYear();

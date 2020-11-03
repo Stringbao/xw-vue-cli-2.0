@@ -81,7 +81,11 @@ export default {
             required: true,
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             componentKey: $idSeed.newId(),
@@ -96,7 +100,7 @@ export default {
         labelWidthVal() {
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this.leForm&&this.leForm.labelWidth ||
                 Constant.RADIO.LABEL_WIDTH
             );
         },
@@ -148,7 +152,7 @@ export default {
             this.state.showError = false;
             this.$emit("input", item[this.displayValue]);
             this.$emit("change", item, this.data);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         /**
          * @description 设置选中项, 数据回写用
