@@ -56,7 +56,7 @@ export default {
             type: Function | Object,
         },
         value: {
-            type: String,
+            type: String | Number,
         },
         labelWidth: {
             type: Number | String,
