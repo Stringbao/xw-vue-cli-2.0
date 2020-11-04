@@ -2,13 +2,13 @@
 
 let FormConstant = {
     INPUT:{
-        PLACEHOLDER:"please enter message",
+        PLACEHOLDER:"",
         LABEL_WIDTH:100
     },
     TEXTAREA:{
         WIDTH:"100%",
         HEIGHT:100,
-        PLACEHOLDER:"please enter message",
+        PLACEHOLDER:"",
         LABEL_WIDTH:100
     },
     CHECKBOX:{

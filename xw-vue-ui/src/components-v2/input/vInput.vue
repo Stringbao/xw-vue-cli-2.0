@@ -111,6 +111,9 @@ export default {
         };
     },
     computed: {
+        _leFormLableWidth() {
+            return (this.leForm || {}).labelWidth;
+        },
         isVertify(){
             if (this.on === "" || this.on) {
                 return true;
@@ -118,7 +121,7 @@ export default {
             return false; 
         },
         labelWidthVal() {
-            return this.labelWidth ||this.leForm&&this.leForm.labelWidth || Constant.INPUT.LABEL_WIDTH;
+            return this.labelWidth ||this._leFormLableWidth || Constant.INPUT.LABEL_WIDTH;
         },
         readonlyFlag() {
             if (this.readonly === "" || this.readonly) {

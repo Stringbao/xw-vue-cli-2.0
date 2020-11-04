@@ -97,6 +97,9 @@ export default {
         };
     },
     computed: {
+        _leFormLableWidth() {
+            return (this.leForm || {}).labelWidth;
+        },
         isVertify(){
             if (this.on === "" || this.on) {
                 return true;
@@ -106,7 +109,7 @@ export default {
         labelWidthVal() {
             return (
                 this.labelWidth ||
-                this.leForm&&this.leForm.labelWidth ||
+                this._leFormLableWidth ||
                 Constant.RADIO.LABEL_WIDTH
             );
         },
