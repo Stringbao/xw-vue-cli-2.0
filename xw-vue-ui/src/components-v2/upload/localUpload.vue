@@ -197,22 +197,22 @@ export default {
                     this.vtype.indexOf("gif") != -1 ||
                     this.vtype.indexOf("icon") != -1
                 ) {
-                    _fileType = define.UPLOADFILETYPE.IMAGE;
+                    _fileType = Constant.LOCAL_UPLOAD.IMAGE;
                 }
                 if (this.vtype.indexOf("pdf") != -1) {
-                    _fileType = define.UPLOADFILETYPE.PDF;
+                    _fileType = Constant.LOCAL_UPLOAD.PDF;
                 }
                 if (
                     this.vtype.indexOf("doc") != -1 ||
                     this.vtype.indexOf("docx") != -1
                 ) {
-                    _fileType = define.UPLOADFILETYPE.WORD;
+                    _fileType = Constant.LOCAL_UPLOAD.WORD;
                 }
                 if (
                     this.vtype.indexOf("xls") != -1 ||
                     this.vtype.indexOf("xlsx") != -1
                 ) {
-                    _fileType = define.UPLOADFILETYPE.EXCEL;
+                    _fileType = Constant.LOCAL_UPLOAD.EXCEL;
                 }
             }
             return _fileType;
@@ -373,7 +373,7 @@ export default {
             }
             //控制规格,仅支持图片规格
             if (
-                this.fileType == define.UPLOADFILETYPE.IMAGE &&
+                this.fileType == Constant.LOCAL_UPLOAD.IMAGE &&
                 this.width &&
                 this.height
             ) {

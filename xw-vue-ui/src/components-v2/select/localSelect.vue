@@ -104,24 +104,62 @@ const getItemByDisplayValue = (data, displayValue, value) => {
 
 export default {
     name: "LeLocalSelect",
-    props: [
-        "on",
-        "required",
-        "tip",
-        "msg",
-        "rules",
-        "label",
-        "labelWidth",
-        "multiple",
-        "displayName",
-        "displayValue",
-        "value",
-        "dataSource",
-        "readonly",
-        "enabledInput",
-        "showClear",
-        "placeholder",
-    ],
+    props: {
+        on: {
+            type: Boolean | String,
+            default: false,
+        },
+        required: {
+            type: Boolean | String,
+            default: false,
+        },
+        msg: {
+            type: String | Object,
+        },
+        tip: {
+            type: String,
+        },
+        rules: {
+            type: Function | Object,
+        },
+        label: {
+            type: String,
+        },
+        labelWidth: {
+            type: Number | String,
+        },
+        multiple: {
+            type: Boolean | String
+        },
+        displayName: {
+            type: String
+        },
+        displayValue: {
+            type: String
+        },
+        value: {
+            type: String,
+        },
+        dataSource: {
+            type: Array,
+            default: () => []
+        },
+        readonly: {
+            type: Boolean | String,
+            default: false,
+        },
+        enabledInput: {
+            type: Boolean | String,
+            default: false,
+        },
+        showClear: {
+            type: Boolean | String
+        },
+        placeholder: {
+            type: String,
+            default: Constant.INPUT.PLACEHOLDER,
+        }
+    },
     inject: {
         leForm: {
             default: "",
@@ -157,7 +195,7 @@ export default {
             return (
                 this.labelWidth ||
                 this._leFormLableWidth ||
-                define.LABELWIDTH
+                Constant.INPUT.LABEL_WIDTH
             );
         },
         /**
@@ -299,7 +337,10 @@ export default {
                 //单选
                 this.data.forEach((x) => {
                     if (x.__tmpId == item.__tmpId) {
-                        item.ck = !item.ck;
+                        // item.ck = !item.ck;
+                        // 已选择状态 并且 showClearBtn=false时 不需要取消选中，
+                        // 其他状态下直接取反即可
+                        item.ck = (item.ck && !this.showClearBtn) ? item.ck : !item.ck;
                         item.cls = item.ck ? "active fa fa-check" : "";
                     } else {
                         x.cls = "";
@@ -391,9 +432,6 @@ export default {
             if (this.readonlyFlag) {
                 return;
             }
-            if (this.hideClearButton) {
-                return;
-            }
             this.showArrow = true;
         },
         showArr() {
@@ -403,10 +441,14 @@ export default {
             if (this.leftArray.length == 0) {
                 return;
             }
-            if (this.hideClearButton) {
-                return;
+            // '' false
+            // true false
+            // undefined true
+            // false true
+            if (this.showClear === '' || this.showClear) {
+                this.showArrow = false;
             }
-            this.showArrow = false;
+            // this.showArrow = false;
         },
     },
     mounted() {
