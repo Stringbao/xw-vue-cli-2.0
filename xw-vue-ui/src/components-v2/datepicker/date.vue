@@ -5,7 +5,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="{'required':isVertify && readonlyFlag}"
+            :class="{'required':isVertify && required}"
             >{{ label }}</label
         >
         <div
