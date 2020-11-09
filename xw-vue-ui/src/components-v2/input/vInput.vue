@@ -71,7 +71,7 @@ export default {
             type: Function | Object,
         },
         value: {
-            type: String,
+            type: String | Number,
         },
         placeholder: {
             type: String,
@@ -139,7 +139,6 @@ export default {
             return false;
         },
         isRequired(){
-            console.log(this.required)
             if(this.required ===''){
                 return true
             }
