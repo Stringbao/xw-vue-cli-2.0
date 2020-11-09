@@ -53,7 +53,7 @@ module.exports = {
         hot:true,
         proxy:{
             '/': {
-                target: 'http://localhost:9876/',
+                target: 'https://admin.gl.lenovouat.cn/',
                 secure: false,
                 changeOrigin: true
             }

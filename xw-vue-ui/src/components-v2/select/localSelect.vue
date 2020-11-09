@@ -138,7 +138,7 @@ export default {
             type: String
         },
         value: {
-            type: String,
+            type: String | Number | Boolean,
         },
         dataSource: {
             type: Array,

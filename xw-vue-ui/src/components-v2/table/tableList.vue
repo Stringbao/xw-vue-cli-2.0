@@ -101,7 +101,7 @@ export default {
         },
     },
     methods: {
-        setData(res) {
+        setData(res,index,size) {
             if (res.data && res.data instanceof Array && res.data.length != 0) {
                 let arr = $util.addPrimaryAndCk(res.data);
                 let total = -1;
@@ -175,7 +175,7 @@ export default {
                     let res = {};
                     if (this.secondConvert) {
                         this.props.secondConvert(data).then((x) => {
-                            this.setData(x);
+                            this.setData(x,index,size);
                         });
                     } else {
                         if (this.options.analysis) {
@@ -183,7 +183,7 @@ export default {
                         } else {
                             res = data;
                         }
-                        this.setData(res);
+                        this.setData(res,index,size);
                     }
                 })
                 .catch((e) => {
