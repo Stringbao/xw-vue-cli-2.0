@@ -20,7 +20,7 @@ let getResult = function(){
     arr.forEach(item=>{ 
         if(item != ""){
             item = '展台 Booth' + item;
-            if(item.indexOf('电话 Tel.') == -1 && item.indexOf('网址 Website:') != -1){
+            if(item.indexOf('电话 Tel.') == -1 && item.indexOf('网址 Website:') == -1){
                 res.warning.push(
                     {name:/展台.*\s+(.*\s?.*\s)(?:\s?.*){0,3}.*/g.exec(item), tel:``, fax:``, site:``}
                 )

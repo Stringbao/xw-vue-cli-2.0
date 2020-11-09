@@ -51,7 +51,7 @@ export default {
         },
         data(){
             let tmp = {cls:"",iCls:"",value:""};
-            let _tmpObj = $obj.clone(DEFINE_KEY.BUTTON_CONFIG);
+            let _tmpObj = $obj.clone(Constant.BUTTON.ICON_CONFIG);
             tmp = _tmpObj[this._type];
             if(!tmp){
                 tmp = {cls:"default",iCls:"",value:""};
@@ -71,19 +71,17 @@ export default {
                return;
             }
             this.submitDisabled = true;
-            
-            let ckFn = this.$listeners.click();
-            ckFn.catch(err=> console.log(err));
-            if(isPromise(ckFn)){
-                return ckFn.then(x=>{
+            // 这里有问题
+            try{
+                return this.$listeners.click().then(x=>{
                     this.submitDisabled = false;
-                    return Promise.resolve();
+                    return Promise.resolve(x);
                 }).catch(err=>{
                     this.submitDisabled = false;
                     return Promise.reject(err);
                 })
-            }else{
-                throw new Error("This function must return a Promise Object");
+            }catch(err){
+                console.error(err)
             }
         }
     },

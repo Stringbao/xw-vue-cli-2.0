@@ -34,7 +34,6 @@
 
 <script>
     import { $idSeed,$util,$obj } from "../leCompsTool.js";
-    
     export default {
         name: "BodySection",
         props:["actions","data","cols","accpetHBNotice","showCk","singleSelected"],

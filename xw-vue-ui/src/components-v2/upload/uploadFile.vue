@@ -59,10 +59,12 @@
                 default :false 
             }
         },
-        // props:["options","value","readonly"],
-        inject: ["leForm"],
+        inject: {
+            leForm:{
+                default: ""
+            }
+        },
         name: "LeUploadFile",
-        inheritAttrs:false,
         data(){
             return {
                 validataComponentType:"FileUpload",
@@ -327,7 +329,6 @@
                 this.$emit('input',"");
                 this.leForm.verifySubComponentAfterEmit(this);
                 this.srcs = [];
-                this.$attrs.setStateByFlag(0);
             }
         },
         created(){

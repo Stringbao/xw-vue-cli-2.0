@@ -11,6 +11,7 @@ export default {
     },
     verifyRequire(){
         return function(value){
+            // 这里有问题 isEmpty(1)
             return !isEmpty(value);
         }
     },

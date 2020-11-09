@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="on != undefined ? 'required' : ''"
+            :class="{'required':isVertify && required}"
             >{{ label }}</label
         >
         <div
@@ -88,7 +88,11 @@ export default {
             required: true,
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             componentKey: $idSeed.newId(),
@@ -100,10 +104,19 @@ export default {
         };
     },
     computed: {
+        _leFormLableWidth() {
+            return (this.leForm || {}).labelWidth;
+        },
+        isVertify(){
+            if (this.on === "" || this.on) {
+                return true;
+            }
+            return false; 
+        },
         labelWidthVal() {
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this._leFormLableWidth ||
                 Constant.CHECKBOX.LABEL_WIDTH
             );
         },
@@ -140,7 +153,7 @@ export default {
             let res = $util.getCheckedItems(this.data, this.displayValue);
             this.$emit("input", res.vals.join(","));
             this.$emit("change", res);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         getValue() {
             return $util.getCheckedItems(this.data, this.displayValue).vals;

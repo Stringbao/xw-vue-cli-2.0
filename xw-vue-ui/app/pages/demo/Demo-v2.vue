@@ -7,7 +7,7 @@
             </div>
             <div class='le_list_search_pannel clearfix'>
                 <le-form ref='form1' labelWidth="80">
-                    <div class="col2">
+                    <!-- <div class="col2">
                         <le-input @change='change1' @focus="fc" on required :rules="allRules" :msg="msg1"  label="订单:" v-model="entity.code"></le-input>
                     </div>
                     <div class="col2">
@@ -25,23 +25,31 @@
                     </div>
                     <div class="col2">
                         <le-textarea on required :max="10" :msg="descriptionRules" placeholder="请输入详细地址" label="详细地址:" v-model="entity.description"></le-textarea>
-                    </div>
+                    </div> -->
                     <!-- <div class="col2">
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
                     </div> -->
-                    <br>
 
-                    <div class="col2">
+                    <!-- <div class="col2">
                         <le-upload-file :options="imgUploadOpt" label="学生文件:"
                             on required mag="学生文件必须上传"
                             v-model="entity.uploadFileStr" ref="ref1"
                         ></le-upload-file>
-                    </div>
+                    </div> -->
                     <!-- <le-date-time-picker on required label="日期组件" msg="error date" v-model="entity.date"></le-date-time-picker> -->
 
                 </le-form>
                 <le-button @click="submit" value="验证"></le-button>
                 <le-button @click="reset" value="reset"></le-button>
+                <div>
+                    <div class="le_table_container">
+                        <table-list
+                            title="product Management List Table"
+                            ref="tableListRef"
+                            :options="list_table_options"
+                        ></table-list>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -49,7 +57,15 @@
 <script>
 import Container from "./container.vue";
 import {$obj} from "../../../src/tool/util.js";
-
+const asyncRequest = (data)=>{
+    return new Promise((resolve,reject)=>{
+        debugger;
+        data.data.forEach((x, idx) => {
+            x.__id = idx + 1;
+        });
+        resolve(data);
+    })
+}
 export default {
     components:{Container},
     data() {
@@ -113,10 +129,66 @@ export default {
             allRules:{
                 checkA:this.checkA,
                 checkB:this.checkB
-            }
+            },
+            list_table_options: {
+                map: [
+                    {key:"productNumber",val:"Product  Number"},
+                    {key:"productName",val:"Product  Name"},
+                    {key:"countryCode",val:"Product  Country"},
+                    {key:"productType",val:"Product  Type"},
+                ],
+                getUrl: () => {
+                    return `/productAPI/admin/product/getProductList.jhtm`;
+                },
+                pageOption: {
+                    sizeKey: "pageSize",
+                    indexKey: "pageNum",
+                    index: 1,
+                    size: 10,
+                },
+                actions: [
+                    { key:"create",val:"Detail/Modify"}
+                ],
+                analysis: (data) => {
+                    return new Promise((resolve, reject)=>{
+                        asyncRequest(data).then(res=>{
+                            if (res && res.data && res.data.data) {
+                                resolve(
+                                    {
+                                    data: res.data.data,
+                                    count: res.data.size,
+                                }
+                                );
+                            } else {
+                                resolve(
+                                    { data: [], count: 0 }
+                                );
+                            }
+                        }).catch(err=>{
+
+                        }); 
+                    })
+                },
+            },
         }
     },
     methods: {
+        convertImg(col,row){
+            const h = this.$createElement;
+            let vnode = h('div',{
+                attrs: {
+                    id: 'foo'
+                },
+                domProps: {
+                    innerHTML: 'baz'
+                },
+            });
+            return vnode;
+            // console.log(vnode);
+            // console.log(vnode.el);
+            
+            // return `<img src="${row.imageAddress}">`;
+        },
         checkA(){
             // if(this.entity.code.indexOf('a') == -1){
             //     return false;

@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="on != undefined ? 'required' : ''"
+            :class="{'required':isVertify && required}"
             >{{ label }}</label
         >
         <div
@@ -81,7 +81,11 @@ export default {
             required: true,
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             componentKey: $idSeed.newId(),
@@ -93,10 +97,19 @@ export default {
         };
     },
     computed: {
+        _leFormLableWidth() {
+            return (this.leForm || {}).labelWidth;
+        },
+        isVertify(){
+            if (this.on === "" || this.on) {
+                return true;
+            }
+            return false; 
+        },
         labelWidthVal() {
             return (
                 this.labelWidth ||
-                this.leForm.labelWidth ||
+                this._leFormLableWidth ||
                 Constant.RADIO.LABEL_WIDTH
             );
         },
@@ -148,7 +161,7 @@ export default {
             this.state.showError = false;
             this.$emit("input", item[this.displayValue]);
             this.$emit("change", item, this.data);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         /**
          * @description 设置选中项, 数据回写用

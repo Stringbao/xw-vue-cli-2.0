@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="on != undefined && required != undefined ? 'required' : ''"
+            :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
         <div
@@ -26,7 +26,7 @@
             />
             <i
                 v-if="showClearBtn"
-                v-show="value.length > 0 ? true : false"
+                v-show=" value.toString().length > 0 ? true : false"
                 class="fa fa-times-circle icon-del"
                 @click.stop="clear"
             ></i>
@@ -71,7 +71,7 @@ export default {
             type: Function | Object,
         },
         value: {
-            type: String,
+            type: String | Number | Boolean,
         },
         placeholder: {
             type: String,
@@ -96,7 +96,11 @@ export default {
             default: "text",
         },
     },
-    inject: ["leForm"],
+    inject: {
+        leForm:{
+            default: ""
+        }
+    },
     data() {
         return {
             state: {
@@ -107,12 +111,23 @@ export default {
         };
     },
     computed: {
+        _leFormLableWidth() {
+            return (this.leForm || {}).labelWidth;
+        },
+        isVertify(){
+            if (this.on === "" || this.on) {
+                return true;
+            }
+            return false; 
+        },
+        isRequired(){
+            if (this.required === "" || this.required) {
+                return true;
+            }
+            return false;
+        },
         labelWidthVal() {
-            return (
-                this.labelWidth ||
-                this.leForm.labelWidth ||
-                Constant.INPUT.LABEL_WIDTH
-            );
+            return this.labelWidth ||this._leFormLableWidth || Constant.INPUT.LABEL_WIDTH;
         },
         readonlyFlag() {
             if (this.readonly === "" || this.readonly) {
@@ -121,18 +136,10 @@ export default {
             return false;
         },
         showClearBtn() {
-            if (
-                this.showClear === "" ||
-                this.showClear === undefined ||
-                this.showClear
-            ) {
+            if (this.showClear === "" ||this.showClear === undefined ||this.showClear) {
                 return true;
             }
-            if (
-                this.leForm.showClear === "" ||
-                this.leForm.showClear === undefined ||
-                this.leForm.showClear
-            ) {
+            if (this.leForm&&this.leForm.showClear === "" ||this.leForm&&this.leForm.showClear === undefined ||this.leForm&&this.leForm.showClear) {
                 return true;
             }
             return false;
@@ -149,20 +156,20 @@ export default {
         },
         enterEvent(e) {
             this.$emit("enter", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         blurEvent(e) {
             this.$emit("blur", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         changeEvent(e) {
             this.$emit("change", e.target.value);
             this.$emit("input", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         inputEvent(e) {
             this.$emit("input", e.target.value);
-            this.leForm.verifySubComponentAfterEmit(this);
+            this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
         },
         //event end
         getValue() {
@@ -171,7 +178,7 @@ export default {
         clear() {
             if (!this.readonlyFlag) {
                 this.$emit("input", "");
-                this.leForm.verifySubComponentAfterEmit(this);
+                this.leForm&&this.leForm.verifySubComponentAfterEmit(this);
             }
         },
     },
