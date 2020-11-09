@@ -51,7 +51,7 @@ export default {
         },
         data(){
             let tmp = {cls:"",iCls:"",value:""};
-            let _tmpObj = $obj.clone(DEFINE_KEY.BUTTON_CONFIG);
+            let _tmpObj = $obj.clone(Constant.BUTTON.ICON_CONFIG);
             tmp = _tmpObj[this._type];
             if(!tmp){
                 tmp = {cls:"default",iCls:"",value:""};

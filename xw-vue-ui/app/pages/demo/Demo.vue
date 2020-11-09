@@ -110,7 +110,7 @@
                 <table-list title="BasicParamManagement List Table" ref='tableListRef' :options='list_table_options'></table-list>
             </fieldset>
 
-            <fieldset>
+            <!-- <fieldset>
                 <legend>upload</legend>
                 <le-upload labeel="上传文件：" :options="imgUploadOpt" v-model="dd"></le-upload>
             </fieldset>
@@ -122,7 +122,7 @@
                 </le-form>
 
                 <le-button @click="localUploadHandler" value="点击上传"></le-button>
-            </fieldset>
+            </fieldset> -->
 
         </form>
 
