@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="{'required':isVertify && required}"
+            :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
         <div
@@ -49,7 +49,7 @@ export default {
             default: false,
         },
         required: {
-            type: Boolean | String,
+            type: Boolean | String | undefined | null,
             default: false,
         },
         max: {
@@ -138,6 +138,13 @@ export default {
             }
             return false;
         },
+        isRequired(){
+            console.log(this.required)
+            if(this.required ===''){
+                return true
+            }
+            return this.required
+        }
     },
     methods: {
         //event begin

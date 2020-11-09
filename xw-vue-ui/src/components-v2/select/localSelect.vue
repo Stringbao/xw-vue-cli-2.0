@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="{'required':isVertify && required}"
+            :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
         <div
@@ -240,6 +240,12 @@ export default {
             }
             return false;
         },
+        isRequired(){
+            if(this.required ===''){
+                return true
+            }
+            return this.required
+        }
     },
     watch: {
         value(val) {
