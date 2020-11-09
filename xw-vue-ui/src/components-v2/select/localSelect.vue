@@ -10,6 +10,8 @@
             class="form-item-div searchMulSelect"
             :class="{ 'fa-times-circle-o': state.showError }"
             @click="focusInput"
+            :ref="componentKey"
+            tabindex="0"
             v-bodyClick="hideButtom"
             :_body_tag="inputdomKey"
         >
@@ -169,6 +171,7 @@ export default {
     data() {
         return {
             validataComponentType: "Radio",
+            componentKey: $idSeed.newId(),
             inputdomKey: $idSeed.newId(),
             state: {
                 showError: false,
@@ -262,10 +265,9 @@ export default {
         },
     },
     methods: {
-        /**
-         * @description 点击整体div，触发焦点到input框上面(输入框初始宽度不够)
-         * @returns
-         */
+        focus() {
+            this.$refs[this.componentKey].focus();
+        },
         focusInput() {
             if (this.readonlyFlag) {
                 return;
@@ -276,10 +278,7 @@ export default {
         hideButtom() {
             this.showButtom = false;
         },
-        /**
-         * @description 输入框的点击事件
-         * @returns
-         */
+
         clickInput() {
             if (this.readonlyFlag) {
                 return;
@@ -288,29 +287,19 @@ export default {
                 this.showButtom = true;
             }
         },
-        /**
-         * @description 搜索框的change事件，并且需要动态改变input框的宽度
-         * @returns
-         */
+
         inputChange() {
             let offsetWidth = parseInt(
                 this.$refs[this.inputdomKey].offsetWidth
             );
             this.$refs[this.inputdomKey].style.width = offsetWidth + 5 + "px";
         },
-        /**
-         * @description 设置数据源
-         * @param data 设置数据源, 必须在组件上面配置displayName 和 displayValue
-         * @returns
-         */
+       
         init(data) {
             let tmp = $obj.clone(data);
             this.data = $util.addPrimaryAndCk(tmp);
         },
-        /**
-         * @description 组件验证以及分发change事件
-         * @returns
-         */
+
         onEmit() {
             let selectedItems = this.getSelectedItems();
             let vals = selectedItems.vals.join(",");
@@ -330,10 +319,7 @@ export default {
                 this.placeholderStr = this.placeholder;
             }
         },
-        /**
-         * @description buttom组件发来的更新通知,更新数据源
-         * @returns
-         */
+
         noticeFromButtom(item) {
             //多选
             if (this.multiple != undefined) {
@@ -358,10 +344,7 @@ export default {
             this.searchName = "";
             this.onEmit();
         },
-        /**
-         * @description left组件发来的更新通知，更新数据源
-         * @returns
-         */
+
         noticeFromLeft(item) {
             if (this.readonlyFlag) {
                 return;
@@ -370,31 +353,23 @@ export default {
             item.ck = false;
             this.onEmit();
         },
-        /**
-         * @description 获取所选项
-         * @returns items:所选的对象数组，vals:所选的值集合
-         */
+        
         getSelectedItems(filed) {
             return $util.getCheckedItems(
                 this.data,
                 filed ? filed : this.displayValue
             );
         },
-        /**
-         * @description 获取选中项的displayValue的集合
-         * @returns {String} 逗号分隔的字符串
-         */
+       
         getValue() {
             if (this.data.length == 0) {
                 return "";
             }
             return this.getSelectedItems().vals.join(",");
         },
-        /**
-         * @description 设置选中项
-         * @param {ids} displayValue的集合, 逗号分隔, 如果传入空，则重置所有
-         */
+
         setValue(ids = "") {
+            ids = "" + ids;
             ids = ids.toString();
             //重置
             this.resetDataCkStatus();
@@ -419,10 +394,7 @@ export default {
                 item.ck = false;
             });
         },
-        /**
-         * @description 清空
-         * @returns
-         */
+
         clear() {
             if (this.readonlyFlag) {
                 return;
@@ -447,34 +419,19 @@ export default {
             if (this.leftArray.length == 0) {
                 return;
             }
-            // '' false
-            // true false
-            // undefined true
-            // false true
             if (this.showClear === '' || this.showClear) {
                 this.showArrow = false;
             }
-            // this.showArrow = false;
         },
     },
     mounted() {
-        /**
-         * @description 添加事件监听
-         * @returns
-         */
-        // document.body.addEventListener("click",this.bodyClick,false);
-        //在有数据的清空下，直接初始化数据源以及设置值
         if (this.dataSource && this.dataSource.length > 0) {
             this.init(this.dataSource);
         }
         this.setValue(this.value);
     },
     beforeDestroy() {
-        /**
-         * @description 在组件销毁之前，取消事件监听
-         * @returns
-         */
-        // document.body.removeEventListener("click",this.bodyClick);
+       
     },
 };
 </script>
