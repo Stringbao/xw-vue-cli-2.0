@@ -26,7 +26,7 @@
             />
             <i
                 v-if="showClearBtn"
-                v-show="value.length > 0 ? true : false"
+                v-show=" value.toString().length > 0 ? true : false"
                 class="fa fa-times-circle icon-del"
                 @click.stop="clear"
             ></i>
@@ -71,7 +71,7 @@ export default {
             type: Function | Object,
         },
         value: {
-            type: String,
+            type: String | Number | Boolean,
         },
         placeholder: {
             type: String,
