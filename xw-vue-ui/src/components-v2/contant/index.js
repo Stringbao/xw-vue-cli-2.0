@@ -1,6 +1,8 @@
 
+import { $idSeed} from "../leCompsTool.js";
 
-let FormConstant = {
+
+let Constant = {
     INPUT:{
         PLACEHOLDER:"",
         LABEL_WIDTH:100
@@ -97,6 +99,44 @@ let FormConstant = {
         SECOND:[{"name":"00","cls":""},{"name":"01","cls":""},{"name":"02","cls":""},{"name":"03","cls":""},{"name":"04","cls":""},{"name":"05","cls":""},{"name":"06","cls":""},{"name":"07","cls":""},{"name":"08","cls":""},{"name":"09","cls":""},{"name":"10","cls":""},{"name":"11","cls":""},{"name":"12","cls":""},{"name":"13","cls":""},{"name":"14","cls":""},{"name":"15","cls":""},{"name":"16","cls":""},{"name":"17","cls":""},{"name":"18","cls":""},{"name":"19","cls":""},{"name":"20","cls":""},{"name":"21","cls":""},{"name":"22","cls":""},{"name":"23","cls":""},{"name":"24","cls":""},{"name":"25","cls":""},{"name":"26","cls":""},{"name":"27","cls":""},{"name":"28","cls":""},{"name":"29","cls":""},{"name":"30","cls":""},{"name":"31","cls":""},{"name":"32","cls":""},{"name":"33","cls":""},{"name":"34","cls":""},{"name":"35","cls":""},{"name":"36","cls":""},{"name":"37","cls":""},{"name":"38","cls":""},{"name":"39","cls":""},{"name":"40","cls":""},{"name":"41","cls":""},{"name":"42","cls":""},{"name":"43","cls":""},{"name":"44","cls":""},{"name":"45","cls":""},{"name":"46","cls":""},{"name":"47","cls":""},{"name":"48","cls":""},{"name":"49","cls":""},{"name":"50","cls":""},{"name":"51","cls":""},{"name":"52","cls":""},{"name":"53","cls":""},{"name":"54","cls":""},{"name":"55","cls":""},{"name":"56","cls":""},{"name":"57","cls":""},{"name":"58","cls":""},{"name":"59","cls":""}]
     },
     
+    TREE_CONFIG:{
+        /**
+         * @description 初始化数据源，添加自定义属性，根节点__parentId:-1，初始化__level:1
+         * @param data:需要初始化的数据源数组，必填
+         * @param currentNode:当前节点，根节点时传入null
+         * @param isRoot:是否根节点
+         */
+        ASYNINITATTRIBUTE(data,currentNode,isRoot){
+            if(data && data instanceof Array && data.length != 0){
+                data.forEach(element=>{
+                    element.__tmpId = $idSeed.newId();
+                    element.__children = [];
+                    element.__cls = "fa-caret-right";
+                    element.__level = isRoot?1:currentNode.__level + 1;
+                    element.__expand = false;
+                    element.__parentNode = isRoot?null:currentNode;
+                    element.__parentId = isRoot?-1:currentNode.__tmpId;//根节点的__parentId:-1
+                    element.__color = "";
+                    element.__checkboxStatus = 2;
+                })
+                return data;
+            }
+            return [];
+        },
+        /**
+         * @description 每个操作的KEY
+         * @param OPEN: 当前节点有children的情况下，展开事件
+         * @param UPDATECHILDREN: 当前节点的无children的情况下，请求ajax事件
+         * @param SELECTEDITEM: 当前项选中事件，执行callback
+         * @param CHECKBOX: checkbox状态变化事件
+         */
+        ACTIONKEY:{
+            OPEN:"open",
+            UPDATECHILDREN:"updateChilden",
+            SELECTEDITEM:"selectedItem",
+            CHECKBOX:"checkbox"
+        }
+    },
     DEFINE_KEY : {
         // TREE_CONFIG:TREE_CONFIG,
         // BUTTON_CONFIG:BUTTON_CONFIG,
@@ -111,4 +151,6 @@ let FormConstant = {
     
 }
 
-export default FormConstant;
+
+
+export default Constant;

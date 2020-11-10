@@ -22,7 +22,7 @@
 
 <script>
 import Constant from "../contant/index.js";
-import { $idSeed,$util,$obj } from "../leCompsTool.js";
+import { $idSeed,$obj,$event_publisher } from "../leCompsTool.js";
 
 export default {
     name:"TreeItem",
@@ -52,8 +52,8 @@ export default {
                 return;
             }
             if(this.checkbox != undefined){
-                tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                    actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX,
+                $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                    actionKey:Constant.TREE_CONFIG.ACTIONKEY.CHECKBOX,
                     __tmpId:item.__tmpId,
                     item:item,
                     checkboxStatus:item.__checkboxStatus == 1?2:1
@@ -76,8 +76,8 @@ export default {
                 cls = "fa-caret-left";
             }
 
-            tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.OPEN,
+            $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                actionKey:Constant.TREE_CONFIG.ACTIONKEY.OPEN,
                 __tmpId:item.__tmpId,
                 item:item,
                 data:{
@@ -91,8 +91,8 @@ export default {
          * @param item:当前选中项
          */
         selectItem(item){
-            tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
+            $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
                 __tmpId:item.__tmpId,
                 item:item,
                 selectedItem:item
