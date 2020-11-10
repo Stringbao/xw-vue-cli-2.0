@@ -17,7 +17,7 @@
 import TreeItem from "./asynTreeItem.vue";
 import Constant from "../contant/index.js";
 import _treeTool from "./treePrivateMethods.js";
-import { $idSeed,$event_publisher,$obj} from "../leCompsTool.js";
+import { $idSeed,$event_publisher,$obj,$array} from "../leCompsTool.js";
 export default {
     name:"LeAsynTree",
     components:{TreeItem},
@@ -163,11 +163,11 @@ export default {
             let parentNode = node.__parentNode;
             //非根节点
             if(parentNode){
-                tool.arrayServer.removeItems(parentNode.__children,[node]);
+                $array.removeItem(parentNode.__children,[node]);
             }
             //根节点
             else{
-                tool.arrayServer.removeItems(this.state.data,[node]);
+                $array.removeItem(this.state.data,[node]);
             }
         },
         convertData(arr, filed){
