@@ -26,7 +26,7 @@
                 
 
                 <li class="page-item"><span class="page-link span">Skip to</span></li>                        
-                <li class="page-item"><input type="text" :ref="this.goIndexKey" @keyup.enter.stop = "goToIndex" class="enter-number" placeholder=''/></li>
+                <li class="page-item"><input type="text" :ref="goIndexKey" @keyup.enter.stop = "goToIndex" class="enter-number" placeholder=''/></li>
                 <!-- <li class="page-item"><span class="page-link span">Page</span></li>  -->
                 <!-- <li class="page-item" @click="this.goToIndex"><a class="page-link button">Confirm</a></li>  -->
 
@@ -69,12 +69,14 @@
                 if(this.index >= this.total){
                     return;
                 }
+                this.$refs[this.goIndexKey].value = parseInt(this.index) + 1;
                 this.goNext();
             },
             prev:function () {
                 if(this.index <=1){
                     return;
                 }
+                this.$refs[this.goIndexKey].value = parseInt(this.index) - 1;
                 this.goPrev();
             },
             goToIndex:function () {
