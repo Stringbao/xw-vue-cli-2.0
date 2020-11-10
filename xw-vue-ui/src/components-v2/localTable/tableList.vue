@@ -143,9 +143,7 @@
              */
             removeItems(row){
                 if(row){
-                    console.log(row);
                     this.state.data = $array.removeItem(this.state.data, row);
-                    console.log(this.state.data);
                 }else{
                     let items = this.getCheckedItems();
                     if(items.data.length > 0){
