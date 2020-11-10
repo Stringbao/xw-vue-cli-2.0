@@ -16,7 +16,7 @@
 <script>
     import HeaderSection from "./header.vue";
     import BodySection from "./body.vue";
-    import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import { $idSeed,$util,$obj,$array } from "../leCompsTool.js";
     
     export default {
         components: {HeaderSection,BodySection},
@@ -143,11 +143,13 @@
              */
             removeItems(row){
                 if(row){
-                    this.state.data = t$array.removeItem(this.state.data, [row]);
+                    console.log(row);
+                    this.state.data = $array.removeItem(this.state.data, row);
+                    console.log(this.state.data);
                 }else{
                     let items = this.getCheckedItems();
                     if(items.data.length > 0){
-                        this.state.data = $array.removeItem(this.state.data, items.data);
+                        this.state.data = $array.removeItem(this.state.data, ['ck',true]);
                     }
                 }
             }

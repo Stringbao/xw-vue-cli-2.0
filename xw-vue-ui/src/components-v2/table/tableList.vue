@@ -49,7 +49,7 @@
 import HeaderSection from "./header.vue";
 import BodySection from "./body.vue";
 import PagingSection from "./paging.vue";
-import { $idSeed, $util, $obj, $event_publisher } from "../leCompsTool.js";
+import { $idSeed, $util, $obj, $event_publisher,$array } from "../leCompsTool.js";
 // import Ajax from "../../tool/http.js";
 
 export default {
