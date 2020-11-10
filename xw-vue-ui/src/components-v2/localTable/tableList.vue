@@ -143,11 +143,11 @@
              */
             removeItems(row){
                 if(row){
-                    this.state.data = tool.arrayServer.removeItems(this.state.data, [row]);
+                    this.state.data = t$array.removeItem(this.state.data, [row]);
                 }else{
                     let items = this.getCheckedItems();
                     if(items.data.length > 0){
-                        this.state.data = tool.arrayServer.removeItems(this.state.data, items.data);
+                        this.state.data = $array.removeItem(this.state.data, items.data);
                     }
                 }
             }

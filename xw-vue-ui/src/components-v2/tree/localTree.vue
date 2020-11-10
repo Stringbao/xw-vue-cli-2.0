@@ -291,11 +291,11 @@ export default {
             let parentNode = node.__parentNode;
             //非根节点
             if(parentNode){
-                tool.arrayServer.removeItems(parentNode.__children,[node]);
+                $array.removeItem(parentNode.__children,[node]);
             }
             //根节点
             else{
-                tool.arrayServer.removeItems(this.state.data,[node]);
+                $array.removeItem(this.state.data,[node]);
             }
         },
         /**
