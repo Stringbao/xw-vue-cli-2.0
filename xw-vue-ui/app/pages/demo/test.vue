@@ -16,7 +16,7 @@ export default {
             options:{
                 map:[
                     {key:"name",val:"name"},
-                    {key:"tel",val:"tel"},
+                    {key:"email",val:"email"},
                     // {key:"fax",val:"fax"},
                     {key:"site",val:"site"}
                 ]
