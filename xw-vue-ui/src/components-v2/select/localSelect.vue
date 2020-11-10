@@ -194,6 +194,12 @@ export default {
             }
             return false; 
         },
+        isRequired(){
+            if (this.required === "" || this.required) {
+                return true;
+            }
+            return false;
+        },
         labelWidthVal() {
             return (
                 this.labelWidth ||
@@ -265,6 +271,7 @@ export default {
         },
     },
     methods: {
+       
         focus() {
             this.$refs[this.componentKey].focus();
         },
