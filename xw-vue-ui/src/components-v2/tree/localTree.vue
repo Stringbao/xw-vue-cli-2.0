@@ -17,7 +17,7 @@ import TreeItem from "./localTreeItem.vue";
 import tool from '../leCompsTool.js';
 import Constant from "../contant/index.js";
 import _treeTool from "./treePrivateMethods.js";
-
+import { $idSeed,$event_publisher,$obj} from "../leCompsTool.js";
 export default {
     name:"LeLocalTree",
     components:{TreeItem},
@@ -277,7 +277,7 @@ export default {
         reloadNode(node,data){
             node[this.displayName] = data.__displayName?data.__displayName:node[this.displayName];
             if(data.__children && data.__children instanceof Array && data.__children.length != 0){
-                let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(data.__children,node,false);
+                let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE(data.__children,node,false);
                 node.__children = tmpData;
             }else{
                 node.__children = [];
@@ -323,24 +323,24 @@ export default {
         /**
          * @description 处理所有订阅事件
          */
-        tool._form_event_publisher.on(this.EVENTPUBLISHKEY,d=>{
+        $event_publisher.on(this.EVENTPUBLISHKEY,d=>{
             let item = d.item;
             //如果数据错误，没有找到当前节点，直接return
             if(!item){
                 return;
             }
             //有children的情况下，展开事件
-            else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.OPEN){
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.OPEN){
                 item.__expand = d.data.expand;
                 item.__cls = d.data.cls;
             }
             //当前项选中事件，执行callback
-            else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.SELECTEDITEM){
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM){
                 _treeTool.setSingleColor(this.state.data,item);
                 this.itemClick(item);
             }
             //checkbox状态变化事件
-            else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX){
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.CHECKBOX){
                 if(this.related == undefined){
                     //改变所有子节点的checkbox状态
                     this.setChildrenCheckboxStatus(item, d.checkboxStatus);

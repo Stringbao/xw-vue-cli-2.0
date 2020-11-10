@@ -23,7 +23,7 @@
 
 <script>
 import Constant from "../contant/index.js";
-import { $idSeed,$util,$obj } from "../leCompsTool.js";
+import { $idSeed,$obj,$event_publisher } from "../leCompsTool.js";
 // import Ajax from "../../tool/http.js";
 
 export default {
@@ -54,8 +54,8 @@ export default {
                 return;
             }
             if(this.checkbox != undefined){
-                tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                    actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX,
+                $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                    actionKey:Constant.TREE_CONFIG.ACTIONKEY.CHECKBOX,
                     item:item,
                     __tmpId:item.__tmpId,
                     checkboxStatus:item.__checkboxStatus == 1?2:1
@@ -79,9 +79,9 @@ export default {
                     let tmp = this.asynOptions.analysis && this.asynOptions.analysis(d);
                     
                     //通知root节点，有数据变化，自己本身节点不做任何改变(不能改变自身对象)
-                    let tmpObject = {actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.UPDATECHILDREN,__tmpId:item.__tmpId,item:item,data:{}};
+                    let tmpObject = {actionKey:Constant.TREE_CONFIG.ACTIONKEY.UPDATECHILDREN,__tmpId:item.__tmpId,item:item,data:{}};
                     if(tmp && tmp instanceof Array && tmp.length != 0){
-                        let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(tmp,item,false);
+                        let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE(tmp,item,false);
                         tmpObject.data.children = tmpData;
                         tmpObject.data.expand = true;
                         tmpObject.data.cls = "fa-caret-down";
@@ -90,7 +90,7 @@ export default {
                         tmpObject.data.expand = false;
                         tmpObject.data.cls = "fa-caret-left";
                     }
-                    tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,tmpObject);
+                    $event_publisher.broadcast(this.EVENTPUBLISHKEY,tmpObject);
                 })
             }else{
                 let cls = "";
@@ -104,8 +104,8 @@ export default {
                     cls = "fa-caret-left";
                 }
 
-                tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                    actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.OPEN,
+                $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                    actionKey:Constant.TREE_CONFIG.ACTIONKEY.OPEN,
                     item:item,
                     __tmpId:item.__tmpId,
                     data:{
@@ -120,8 +120,8 @@ export default {
          * @param item:当前选中项
          */
         selectItem(item){
-            tool._form_event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                actionKey:DEFINE_KEY.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
+            $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
                 __tmpId:item.__tmpId,
                 item:item,
                 selectedItem:item
