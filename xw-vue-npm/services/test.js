@@ -4,9 +4,16 @@ const path = require("path");
 
 
 let getResult = function(){
-    let _path = path.resolve(__dirname,"./test.txt");
+    let _path = path.resolve(__dirname,"./test1.txt");
     let str = fsTool.file.readFile(_path);
-    let arr = str.split('展台 Booth');
+    let arr = str.split('\r\n\r\n');
+
+    arr.forEach(item=>{
+        if(item){
+            //todo
+        }
+    })
+
     let successCount = 0;
     let errorCount = 0;
     let res = {success:[],error:[], warning:[],total:arr.length -1};
@@ -35,6 +42,8 @@ let getResult = function(){
     return res;
 }
 
+getResult();
 
 
-module.exports = getResult;
+
+// module.exports = getResult;
