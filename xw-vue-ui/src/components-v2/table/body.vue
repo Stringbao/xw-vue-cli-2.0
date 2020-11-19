@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import { $idSeed,$util,$obj,$date } from "../leCompsTool.js";
     
     export default {
         name: "BodySection",
@@ -95,13 +95,13 @@
                             type = type.toLowerCase();
                             switch(type){
                                 case "date":
-                                    val = tool.date.date(tmp);
+                                    val = $date.date(tmp);
                                     break;
                                 case "datetime":
-                                    val = tool.date.dateTime(tmp);
+                                    val = $date.dateTime(tmp);
                                     break;
                                 case "time":
-                                    val = tool.date.time(tmp);
+                                    val = $date.time(tmp);
                                     break;
                                 default:
                                     val = tmp;

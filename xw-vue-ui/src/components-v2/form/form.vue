@@ -106,6 +106,7 @@ export default {
         //form表单使用方法
         getAllValidateSubComponents(comps){
             comps.forEach(comp => {
+                console.log(comp)
                 if(FormUtil.verifyIsOn(comp)){
                     //只读组件不参与验证
                     if(!comp.readonlyFlag){

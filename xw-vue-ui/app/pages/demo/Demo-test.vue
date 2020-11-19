@@ -10,6 +10,7 @@
           <div class="col3">
             <le-checkbox-list
               on
+              v-show="show"
               required
               label="复选框："
               tip="checkbox's tip"
@@ -143,6 +144,7 @@
 export default {
     data() {
         return {
+            show:false,
             form: {
                 checkBox: '',
                 radio: '',
