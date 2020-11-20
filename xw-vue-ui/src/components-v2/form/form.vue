@@ -106,7 +106,7 @@ export default {
         //form表单使用方法
         getAllValidateSubComponents(comps){
             comps.forEach(comp => {
-                console.log(comp)
+                // 没有显示出来的组件也不要参与验证 todo something
                 if(FormUtil.verifyIsOn(comp)){
                     //只读组件不参与验证
                     if(!comp.readonlyFlag){
@@ -122,6 +122,7 @@ export default {
         validate(){
             this.successComponents = [];
             this.failedComponents = [];
+            this.init();
             this.allValidateComps.forEach(item=>{
                 if(!this.validateSubComponent(item)){
                     this.failedComponents.push(item);
