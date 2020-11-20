@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: wangrj9
+ * @Date: 2020-07-16 09:58:30
+ * @LastEditors: wangrj9
+ * @LastEditTime: 2020-11-20 11:11:24
+ */
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -33,6 +41,7 @@ module.exports = {
                     "css-loader",
                     'sass-loader'
                 ],
+                sideEffects:false
             }
         ]
     },
