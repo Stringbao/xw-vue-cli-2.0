@@ -138,6 +138,13 @@ export default {
         },
     },
     methods: {
+        focus() {
+            this.$refs[this.componentKey].focus();
+        },
+        focusEvent(e) {
+            this.focus();
+            this.$emit("focus", e.target.value);
+        },
         /**
          * @description 设置数据源，自动添加ck属性来控制是否选中状态
          * @returns
