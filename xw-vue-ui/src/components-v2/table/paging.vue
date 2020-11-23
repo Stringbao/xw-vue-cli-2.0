@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import { $idSeed,$util,$obj,$event_publisher } from "../leCompsTool.js";
     export default {
         props:["options","goNext","goPrev","goIndex","changeKey"],
         name: "PagingSection",
@@ -63,7 +63,7 @@
         },
         methods:{
             changeSize(){
-                tool._form_event_publisher.broadcast(this.changeKey, {size:this.currentSize});
+                $event_publisher.broadcast(this.changeKey, {size:this.currentSize});
             },
             next:function () {
                 if(this.index >= this.total){

@@ -60,6 +60,7 @@
                         hideInput: !inputFlag || readonlyFlag,
                     }"
                     v-model="searchName"
+                    @blur="onBlur($event)"
                 />
 
                 <p class="promptMsg" @click.stop v-show="state.showError">
@@ -262,6 +263,9 @@ export default {
     watch: {
         value(val) {
             this.setValue(val);
+            if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
+                this.leForm && this.leForm.validateSubComponent(this);
+            }
         },
         dataSource(val) {
             if (val && val.length > 0) {
@@ -433,6 +437,15 @@ export default {
                 this.showArrow = false;
             }
         },
+        onBlur(e){
+            let isMatchedSearchName = this.data.every(item => {
+                return item[this.displayName].toLowerCase().indexOf(e.target.value.toLowerCase()) == -1
+            })
+            if(isMatchedSearchName){
+                this.searchName = '';
+                this.hideButtom();
+            }
+        }
     },
     mounted() {
         if (this.dataSource && this.dataSource.length > 0) {
