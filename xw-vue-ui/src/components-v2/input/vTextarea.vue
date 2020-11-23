@@ -146,6 +146,9 @@ export default {
             );
         },
         showClearBtn() {
+            if(this.readonlyFlag){
+                return false;
+            }
             if (
                 this.showClear === "" ||
                 this.showClear === undefined ||

@@ -240,6 +240,9 @@ export default {
             return false;
         },
         showClearBtn() {
+            if(this.readonlyFlag){
+                return false;
+            }
             if (
                 this.showClear === "" ||
                 this.showClear === undefined ||
