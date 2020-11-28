@@ -134,7 +134,7 @@ export default {
             type: Array,
             default: () => []
         },
-        remote: {
+        remote: { // 是否为远程搜索，默认非远程
             type: Boolean | String,
             default: false,
         },
@@ -152,9 +152,6 @@ export default {
         placeholder: {
             type: String,
             default: Constant.INPUT.PLACEHOLDER,
-        },
-        search: {
-            type: Function
         }
     },
     inject: {
@@ -178,7 +175,7 @@ export default {
             placeholderStr: "",
             tagList: [], // 上方tag要展示的数组
             data: [], // 下拉框的列表
-            allList: [] // 全量列表（每次数据更新后返回来的数据集合）
+            // allList: [] // 全量列表（每次数据更新后返回来的数据集合）
         };
     },
     computed: {
@@ -245,12 +242,11 @@ export default {
             this.setValue();
         },
         dataSource(val) {
-            this.getAllList();
-            this.setValue();
+            this.setValue('data');
         },
     },
     mounted() {
-        this.getAllList();
+        this.init(this.dataSource);
         this.setValue();
     },
     methods: {
@@ -271,9 +267,10 @@ export default {
             if (this.readonlyFlag) {
                 return;
             }
-            if (this.data.length != 0) {
-                this.showButtom = true;
-            }
+            this.showButtom = true;
+            // if (this.data.length != 0) {
+            //     this.showButtom = true;
+            // }
         },
         inputChange() {
             let offsetWidth = parseInt(
@@ -331,18 +328,6 @@ export default {
                 }
             }
         }, 200),
-        getAllList() { // 拼接全量数组
-            const dataSource = $obj.clone(this.dataSource);
-            this.data = $util.addPrimaryAndCk(dataSource);
-            dataSource.forEach(item => {
-                const params = this.allList.find(it => {
-                    return it[this.displayValue] == item[this.displayValue];
-                });
-                if (!params) {
-                    this.allList.push(item);
-                }
-            });
-        },
         setDataStatus(item) { // 给下拉列表选中的数据设置状态
             const tmp = this.data.find(it => {
                 return it[this.displayValue] == item;
@@ -353,17 +338,29 @@ export default {
             }
         },
         setTagList(item) { // 向tagList添加数据
-            const allItem = this.allList.find(it => {
+            const haveData = this.data.find(it => { // 先查找是否在返回的下拉列表里
                 return it[this.displayValue] == item;
             });
-            let params = {};
-            if (allItem) {
-                params = allItem;
-            } else {
-                params[this.displayValue] = item;
-                params[this.displayName] = '';
+            if (haveData) { // 如果存在 查找是否在tagList里
+                const havaTag = this.tagList.find(it => {
+                    return it[this.displayValue] == haveData[this.displayValue];
+                });
+                if (!havaTag) { // 如果不在tagList里，直接添加到tagList里
+                    this.tagList.push(haveData);
+                } else if (havaTag && !havaTag[this.displayName]) { // 如果在tagList里 & 不存在displayName字段，则把displayName字段赋值
+                    havaTag[this.displayName] = haveData[this.displayName];
+                }
+            } else { // 如果item不在data里
+                const havaTag = this.tagList.find(it => {
+                    return it[this.displayValue] == item;
+                });
+                if (!havaTag) { // 并且也不在tagList里，给tagList的displayValue赋值，displayName=空串
+                    let obj = {};
+                    obj[this.displayValue] = item;
+                    obj[this.displayName] = '';
+                    this.tagList.push(obj);
+                }
             }
-            this.tagList.push(params);
         },
         filterData(val) { // 非远端搜索时根据input值过滤数据
             return this.data.filter((item) => {
@@ -374,19 +371,40 @@ export default {
                 );
             });
         },
-        setValue() { // 设置选中值：下拉框值 + tag值
+        setValue(type) { // 设置选中值：下拉框值 + tag值
             const value = ('' + this.value).toString();
+            const dataSource = $obj.clone(this.dataSource);
+            this.data = $util.addPrimaryAndCk(dataSource);
+            
             //重置
             this.resetDataCkStatus();
             if (value) {
-                this.tagList = [];
                 const valueList = value.split(',');
                 valueList.forEach(item => {
                     this.setDataStatus(item); // 给下拉列表选中的数据设置状态
                     this.setTagList(item); // 把选中的值添加到tagList列表里
                 });
+            } else {
+                this.tagList = [];
+                if (!type) {
+                    this.searchName = '';
+                }
             }
+            this.filterExcludeeTagList(value);
             this.checkPlaceholder();
+        },
+
+        filterExcludeeTagList(value) { // 过滤掉tagList里不包含value的项
+            // 这块是因为在已选中的值改变后，把tagList里不包含value的值过滤掉
+            const tagList = this.tagList.filter((item, ind) => {
+                const haveValue = value.split(',').find(it => {
+                    return it == item[this.displayValue];
+                });
+                if (haveValue) {
+                    return item;
+                }
+            });
+            this.tagList = $obj.clone(tagList);
         },
 
         delTagItem(item) { // 在tag删除、取消选中时，删除tagList的对应数据
@@ -462,7 +480,6 @@ export default {
                 item.cls = "";
                 item.ck = false;
             });
-            this.tagList = [];
         },
 
         clear() {
@@ -472,7 +489,7 @@ export default {
             this.resetDataCkStatus();
             this.searchName = "";
             this.tagList = [];
-            this.allList = $obj.clone(this.dataSource);
+            // this.allList = $obj.clone(this.dataSource);
             this.$emit('input', '');
             this.$emit('change', '', this.tagList);
             this.$emit('search', '')
