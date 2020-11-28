@@ -22,6 +22,7 @@ import LeDialog from "@components/dialog/dialog.vue";
 import LeLoading from "@components/loading/loading.vue";
 import Message from "@components/message";
 import MessageBox from "@components/messageBox";
+import LeUEditor from "@components/ueditor/ueditor.vue";
 
 
 // import LeUploadFile from "@components/upload/uploadFile.vue";
@@ -63,6 +64,7 @@ export default {
         Vue.component('LeDialog', LeDialog);
         Vue.component('LeForm', LeForm);
         Vue.component("LeLoading", LeLoading);
+        Vue.component("LeUEditor", LeUEditor);
 
         // Vue.component('LeUploadFile',LeUploadFile);
 

@@ -22,12 +22,14 @@
     "vue": "^2.6.11",
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.11",
+    "vue-ueditor-wrap": "^2.4.4",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^6.3.2",
     "jquery": "^3.5.1",
     "vue-router": "^3.3.4"
   }

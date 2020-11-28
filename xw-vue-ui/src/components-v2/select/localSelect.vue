@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="{'required':isVertify && required}"
+            :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
         <div
@@ -194,6 +194,12 @@ export default {
             }
             return false; 
         },
+        isRequired(){
+            if (this.required === "" || this.required) {
+                return true;
+            }
+            return false;
+        },
         labelWidthVal() {
             return (
                 this.labelWidth ||
@@ -234,6 +240,9 @@ export default {
             return false;
         },
         showClearBtn() {
+            if(this.readonlyFlag){
+                return false;
+            }
             if (
                 this.showClear === "" ||
                 this.showClear === undefined ||
@@ -259,6 +268,7 @@ export default {
         },
     },
     methods: {
+       
         focus() {
             this.$refs[this.componentKey].focus();
         },

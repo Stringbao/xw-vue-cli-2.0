@@ -1,6 +1,7 @@
 <template>
     <tbody>
         <template v-if="data.length > 0">
+
             <tr v-for="(row,index) in data" @click="e=>selectRow(row,e)" :key="index">
                 <td v-if="showCk">
                     <div v-if="singleSelected">
@@ -25,6 +26,7 @@
                     </div>
                 </td>
             </tr>
+            
         </template>
         <tr v-show="data.length == 0" style="text-align:center;width:100%;color:#333;">
             <td :colspan="getAllCols">No data available</td>

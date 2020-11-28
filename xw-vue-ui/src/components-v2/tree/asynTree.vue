@@ -15,11 +15,9 @@
 <script>
 
 import TreeItem from "./asynTreeItem.vue";
-import tool from '../leCompsTool.js';
 import Constant from "../contant/index.js";
 import _treeTool from "./treePrivateMethods.js";
-// import Ajax from "../../tool/http.js";
-
+import { $idSeed,$event_publisher,$obj,$array} from "../leCompsTool.js";
 export default {
     name:"LeAsynTree",
     components:{TreeItem},
@@ -28,7 +26,7 @@ export default {
         return {
             originData:null,
             state:{
-                data:[]
+                data:[],
             },
             EVENTPUBLISHKEY:$idSeed.newId() + "_TREE_NOTICEKEY",
         }
@@ -112,7 +110,7 @@ export default {
          */
         init(data){
             this.originData = $obj.clone(data);
-            let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE($obj.clone(data),null,true);
+            let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE($obj.clone(data),null,true);
             this.state = {
                 data:tmpData
             };
@@ -127,14 +125,14 @@ export default {
         reset(){
             let _originData = $obj.clone(this.originData);
             this.state = {
-                data:DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(_originData,null,true)
+                data:Constant.TREE_CONFIG.ASYNINITATTRIBUTE(_originData,null,true)
             };
             this._originData = _originData;
         },
         // updateSingleNode(node,data){
         //     node[this.displayName] = data.__displayName?data.__displayName:node[this.displayName];
         //     if(data.__children && data.__children instanceof Array && data.__children.length != 0){
-        //         let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(data.__children,node,false);
+        //         let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE(data.__children,node,false);
         //         node.__children = tmpData;
         //     }
         // },
@@ -148,7 +146,7 @@ export default {
             this.ajax.get(_url).then(d=>{
                 let tmp = this.asynOptions.analysis && this.asynOptions.analysis(d);
                 if(tmp && tmp instanceof Array && tmp.length != 0){
-                    let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);
+                    let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);
                     node.__children = tmpData;
                     node.__cls = "fa-caret-down";
                 }else{
@@ -165,11 +163,11 @@ export default {
             let parentNode = node.__parentNode;
             //非根节点
             if(parentNode){
-                tool.arrayServer.removeItems(parentNode.__children,[node]);
+                $array.removeItem(parentNode.__children,[node]);
             }
             //根节点
             else{
-                tool.arrayServer.removeItems(this.state.data,[node]);
+                $array.removeItem(this.state.data,[node]);
             }
         },
         convertData(arr, filed){
@@ -244,7 +242,7 @@ export default {
                 node.__cls = "fa-caret-load";
                 this.ajax.get(_url).then(d=>{
                     let tmp = this.asynOptions.analysis && this.asynOptions.analysis(d);
-                    let tmpData = DEFINE_KEY.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);
+                    let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);
                     node.__children = tmpData;
                     node.__expand = true;
                     node.__cls = "fa-caret-down";
@@ -279,33 +277,33 @@ export default {
         /**
          * @description 处理所有订阅事件
          */
-        tool._form_event_publisher.on(this.EVENTPUBLISHKEY,d=>{
+        $event_publisher.on(this.EVENTPUBLISHKEY,d=>{
             let item = d.item;
             //如果数据错误，没有找到当前节点，直接return
             if(!item){
                 return;
             }
             //无children情况下，展开事件（ajax请求）
-            if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.UPDATECHILDREN){
+            if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.UPDATECHILDREN){
                 console.log("do ajax");
                 item.__children = d.data.children;
                 item.__expand = d.data.expand;
                 item.__cls = d.data.cls;
             }
             //有children的情况下，展开事件
-            else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.OPEN){
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.OPEN){
                 console.log("do expand");
                 item.__expand = d.data.expand;
                 item.__cls = d.data.cls;
             }
             //当前项选中事件，执行callback
-            else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.SELECTEDITEM){
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM){
                 console.log("do select item");
                 _treeTool.setSingleColor(this.state.data,item);
                 this.itemClick(item);
             }
             //checkbox状态变化事件
-            else if(d.actionKey == DEFINE_KEY.TREE_CONFIG.ACTIONKEY.CHECKBOX){
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.CHECKBOX){
                 console.log("checkbox status changed");
                 if(this.related == undefined){
                     //改变所有子节点的checkbox状态

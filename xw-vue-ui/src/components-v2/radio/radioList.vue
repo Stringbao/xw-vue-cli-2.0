@@ -3,7 +3,7 @@
         <label
             :style="{ width: labelWidthVal + 'px' }"
             class="form-item-label"
-            :class="{'required':isVertify && required}"
+            :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
         <div
@@ -106,6 +106,12 @@ export default {
             }
             return false; 
         },
+        isRequired(){
+            if (this.required === "" || this.required) {
+                return true;
+            }
+            return false;
+        },
         labelWidthVal() {
             return (
                 this.labelWidth ||
@@ -132,6 +138,13 @@ export default {
         },
     },
     methods: {
+        focus() {
+            this.$refs[this.componentKey].focus();
+        },
+        focusEvent(e) {
+            this.focus();
+            this.$emit("focus", e.target.value);
+        },
         /**
          * @description 设置数据源，自动添加ck属性来控制是否选中状态
          * @returns

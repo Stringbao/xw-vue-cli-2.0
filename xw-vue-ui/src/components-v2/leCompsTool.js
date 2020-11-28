@@ -1,4 +1,4 @@
-import {cloneDeep, isEqual, isEmpty, filter, dropWhile, uniqWith, unionWith,findIndex,orderBy,groupBy, chunk} from "lodash-es";
+import {cloneDeep, isEqual, isEmpty, filter, dropWhile,remove,without,uniqWith, unionWith,findIndex,orderBy,groupBy, chunk} from "lodash-es";
 
 const EventPublisher = function(){
 
@@ -120,7 +120,7 @@ const $array = {
         return filter(arr, condition);
     },
     removeItem(arr, condition){
-        return dropWhile(arr, condition);
+        return without(arr, condition);
     },
     uniq(arr1){
         return uniqWith(arr1, isEqual);

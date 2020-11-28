@@ -143,7 +143,7 @@ export default {
     color: #e6a23c;
 }
 .le_message_box__status + .le_message_box__message {
-    word-break: break-all;
+    word-break: break-word;
     padding-left: 36px;
     padding-right: 12px;
 }
