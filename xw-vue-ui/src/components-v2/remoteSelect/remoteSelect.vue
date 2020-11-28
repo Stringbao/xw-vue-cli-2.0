@@ -14,19 +14,19 @@
             :ref="componentKey"
             tabindex="0"
             v-bodyClick="hideButtom"
-            :_body_tag="inputdomKey"
+            :_body_tag="componentKey"
         >
             <!--选中的标签-->
             <div
                 class="tags"
-                :_body_tag="inputdomKey"
+                :_body_tag="componentKey"
                 :class="{ readonlyIcon: readonlyFlag }"
                 @mouseenter="showArr"
                 @mouseleave="hideArr"
             >
                 <i
                     v-show="showArrow"
-                    :_body_tag="inputdomKey"
+                    :_body_tag="componentKey"
                     class="fa fa-chevron-down icon-del"
                     @click="clickInput"
                 ></i>
@@ -52,9 +52,9 @@
 
                 <input
                     :placeholder="placeholderStr"
-                    :_body_tag="inputdomKey"
+                    :_body_tag="componentKey"
                     @click="clickInput"
-                    :ref="inputdomKey"
+                    :ref="componentKey"
                     :readonly="!inputFlag || readonlyFlag"
                     type="text"
                     :class="{
@@ -164,7 +164,6 @@ export default {
         return {
             validataComponentType: "Radio",
             componentKey: $idSeed.newId(),
-            inputdomKey: $idSeed.newId(),
             state: {
                 showError: false,
                 errorMsg: "",
@@ -251,13 +250,10 @@ export default {
     },
     methods: {
         focus() {
-            this.$refs[this.componentKey].focus();
-        },
-        focusInput() {
             if (this.readonlyFlag) {
                 return;
             }
-            this.$refs[this.inputdomKey].focus();
+            this.$refs[this.componentKey].focus();
             this.clickInput();
         },
         hideButtom() {
@@ -274,9 +270,9 @@ export default {
         },
         inputChange() {
             let offsetWidth = parseInt(
-                this.$refs[this.inputdomKey].offsetWidth
+                this.$refs[this.componentKey].offsetWidth
             );
-            this.$refs[this.inputdomKey].style.width = offsetWidth + 5 + "px";
+            this.$refs[this.componentKey].style.width = offsetWidth + 5 + "px";
         },
        
         init(data) {
