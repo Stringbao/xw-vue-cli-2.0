@@ -162,7 +162,7 @@ export default {
     components: { LeftSection, ButtomSection },
     data() {
         return {
-            validataComponentType: "Radio",
+            validataComponentType: "RemoteSelect",
             componentKey: $idSeed.newId(),
             state: {
                 showError: false,
