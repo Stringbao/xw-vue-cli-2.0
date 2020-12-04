@@ -14,7 +14,7 @@
             @end="end"
             :move="checkMove"
         >
-            <li class="item" v-for="(item, ind) in data" :key="ind">{{ind % 2 === 1 ? '禁止拖拽' : ''}}{{ item.name }}</li>
+            <li :class="ind % 2 === 1 ? '' : 'item'" v-for="(item, ind) in data" :key="ind">{{ind % 2 === 1 ? '禁止拖拽' : ''}}{{ item.name }}</li>
             <!-- <button slot="footer" @click="btnClick">Add</button> -->
             <li>循环外：11</li>
         </le-drag>

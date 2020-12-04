@@ -10,8 +10,7 @@
         <div
             class="form-item-div searchMulSelect"
             :class="{ 'fa-times-circle-o': state.showError }"
-            @click="focusInput"
-            :ref="componentKey"
+            @click="focus"
             tabindex="0"
             v-bodyClick="hideButtom"
             :_body_tag="componentKey"
@@ -35,12 +34,12 @@
                     class="fa fa-chevron-down icon-del fa-times-circle"
                     @click.stop="clear"
                 ></i>
-                <span
+                <!-- <span
                     class="placeholderText"
-                    @click.stop="focusInput"
+                    @click.stop="focus"
                     v-show="placeholderStr && !inputFlag && !readonlyFlag"
                     >{{ placeholderStr }}</span
-                >
+                > -->
                 <left-section
                     :readonly="readonlyFlag"
                     :display-name="displayName"
@@ -55,11 +54,11 @@
                     :_body_tag="componentKey"
                     @click="clickInput"
                     :ref="componentKey"
-                    :readonly="!inputFlag || readonlyFlag"
+                    :readonly="readonlyFlag"
                     type="text"
                     :class="{
                         searchMsg: true,
-                        hideInput: !inputFlag || readonlyFlag,
+                        hideInput: readonlyFlag,
                     }"
                     v-model="searchName"
                     @input="inputQuery"
@@ -91,9 +90,10 @@ import LeftSection from "../select/left.vue";
 import ButtomSection from "../select/buttom.vue";
 import Constant from "../contant/index.js";
 import { debounce } from "lodash-es";
+import ajax from "../../tool/http.js";
 
 export default {
-    name: "LeSelect",
+    name: "LeRemoteSelect",
     props: {
         on: {
             type: Boolean | String,
@@ -118,7 +118,7 @@ export default {
         labelWidth: {
             type: Number | String,
         },
-        multiple: {
+        multiple: { // 是否支持多选
             type: Boolean | String
         },
         displayName: {
@@ -130,21 +130,22 @@ export default {
         value: {
             type: String | Number | Boolean,
         },
-        dataSource: {
+        dataSource: { // 数据源，只接收一次
             type: Array,
             default: () => []
         },
-        remote: { // 是否为远程搜索，默认非远程
+        readonly: { // 是否为只读状态
             type: Boolean | String,
             default: false,
         },
-        readonly: {
+        defaultSearchOn: { // 是否获取焦点时请求接口 （input值为空 & 获取焦点）
             type: Boolean | String,
             default: false,
         },
-        enabledInput: {
-            type: Boolean | String,
-            default: false,
+        remoteOptions: {
+            type: Object,
+            default: {},
+            required: true
         },
         showClear: {
             type: Boolean | String
@@ -162,6 +163,8 @@ export default {
     components: { LeftSection, ButtomSection },
     data() {
         return {
+            isAllowDataSource: false,
+            ajax,
             validataComponentType: "RemoteSelect",
             componentKey: $idSeed.newId(),
             state: {
@@ -173,8 +176,7 @@ export default {
             showArrow: true,
             placeholderStr: "",
             tagList: [], // 上方tag要展示的数组
-            data: [], // 下拉框的列表
-            // allList: [] // 全量列表（每次数据更新后返回来的数据集合）
+            data: [] // 下拉框的列表
         };
     },
     computed: {
@@ -195,16 +197,8 @@ export default {
         },
         labelWidthVal() {
             return (
-                this.labelWidth ||
-                this._leFormLableWidth ||
-                Constant.INPUT.LABEL_WIDTH
+                this.labelWidth || this._leFormLableWidth || Constant.INPUT.LABEL_WIDTH
             );
-        },
-        isRemoteFlag() { // 是否为远端搜索
-            if (this.remote === "" || this.remote) {
-                return true;
-            }
-            return false;
         },
         readonlyFlag() { // 是否只读
             if (this.readonly === "" || this.readonly) {
@@ -212,40 +206,36 @@ export default {
             }
             return false;
         },
-        inputFlag() { //是否允许模糊查询，默认不开启
-            if (this.enabledInput === "" || this.enabledInput) {
+        isDefaultSearchOn() { // 是否获取焦点时请求接口 （input值为空 & 获取焦点）
+            if (this.defaultSearchOn === "" || this.defaultSearchOn) {
                 return true;
             }
             return false;
         },
         showClearBtn() {
-            if (
-                this.showClear === "" ||
-                this.showClear === undefined ||
-                this.showClear
-            ) {
+            if (this.showClear === "" || this.showClear === undefined || this.showClear) {
                 return true;
             }
             return false;
         },
-        getSelectList() { // 获取已选择的列表值的集合
-            let list = [];
-            this.tagList.forEach(item => {
-                list.push(item[this.displayValue]);
-            });
-            return list;
-        }
     },
     watch: {
         value(val) {
             this.setValue();
         },
-        dataSource(val) {
-            this.setValue('data');
+        dataSource(val) { // 只支持接收一次数据源：this.dataSource
+            if (!this.isAllowDataSource) {
+                this.init(val);
+                this.isAllowDataSource = true;
+            }
+            this.setValue();
         },
     },
-    mounted() {
-        this.init(this.dataSource);
+    mounted() { // 只支持接收一次数据源：this.dataSource
+        if (!this.isAllowDataSource && this.dataSource.length) {
+            this.init(this.dataSource);
+            this.isAllowDataSource = true;
+        }
         this.setValue();
     },
     methods: {
@@ -255,6 +245,10 @@ export default {
             }
             this.$refs[this.componentKey].focus();
             this.clickInput();
+            if  (this.isDefaultSearchOn && !this.searchName) {
+                // 获取焦点时 && input值为空才去请求接口
+                this.inputQuery();
+            }
         },
         hideButtom() {
             this.showButtom = false;
@@ -268,30 +262,24 @@ export default {
             //     this.showButtom = true;
             // }
         },
-        inputChange() {
-            let offsetWidth = parseInt(
-                this.$refs[this.componentKey].offsetWidth
-            );
-            this.$refs[this.componentKey].style.width = offsetWidth + 5 + "px";
-        },
        
         init(data) {
             let tmp = $obj.clone(data);
             this.data = $util.addPrimaryAndCk(tmp);
         },
         onEmit() {
-            let selectedItems = this.getSelectList;
-            let vals = selectedItems.join(",");
+            let selectVals = this.getSelectedItems().vals;
+            let vals = selectVals.join(',');
             this.$emit("input", vals);
-            this.$emit("change", vals, this.tagList);
+            this.$emit("change", vals, this.getSelectedItems().items);
 
             if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
                 this.leForm && this.leForm.validateSubComponent(this);
             }
         },
         checkPlaceholder() {
-            let selectedItems = this.getSelectList;
-            let vals = selectedItems.join(",");
+            let selectVals = this.getSelectedItems().vals;
+            let vals = selectVals.join(',');
             if (vals != "") {
                 this.placeholderStr = "";
             } else {
@@ -300,30 +288,38 @@ export default {
         },
 
         inputQuery: debounce(function(e) { // input输入触发
-            if (!this.inputFlag) {
+            const {getUrl, params, analysis, method = 'get'} = this.remoteOptions;
+            if (!getUrl()) { // url必填
                 return;
             }
-            this.showButtom = true;
-            if (this.isRemoteFlag) { // 远程搜索
-                if (e && e.target.value) {
-                    this.$emit('search', e.target.value);
-                } else {
-                    this.$emit('search', '');
+            
+            const name = this.searchName.trim();
+            let dataPromise = null; // 存储接口的返回值
+            let requestUrl = getUrl(); // 存储最终的url（get需要url上拼接参数）
+            // get请求：('/getAllList?q=1000&name=wang', {}); 其他请求：('/getAllList', Object)
+            if (method === 'get') {
+                requestUrl += name;
+                dataPromise = this.ajax.get(requestUrl);
+            } else { // 其他请求
+                let queryData = $obj.clone(params);
+                const list = Object.keys(queryData);
+                if (list.length) {
+                    queryData[list[list.length - 1]] = name;
                 }
-            } else { // 非远端搜索（过滤下拉列表）
-                this.init(this.dataSource); // 确保每次输入后都是从全量的下拉列表了来过滤
-                if (e && e.target.value) {
-                    this.data = this.filterData(e.target.value); // 根据input的值过滤下拉数据
-                }
-                const value = ('' + this.value).toString(); // 已选中的值的集合
-                if (value) {
-                    const valueList = value.split(',');
-                    valueList.forEach(item => {
-                        this.setDataStatus(item); // 给下拉列表选中的数据设置状态
-                    });
-                }
+                dataPromise = this.ajax[method](requestUrl, queryData);
             }
+
+            dataPromise.then(data => {
+                // 如果存在analysis字段，就把数据抛出，由用户自行传入，否则用接口返回数据
+                const list = $obj.clone(analysis ? analysis(data) : data);
+                this.init(list);
+                this.setValue();
+                this.clickInput();
+            }).catch(e => {
+                this.alert.showAlert("error", e);
+            })
         }, 200),
+
         setDataStatus(item) { // 给下拉列表选中的数据设置状态
             const tmp = this.data.find(it => {
                 return it[this.displayValue] == item;
@@ -358,20 +354,8 @@ export default {
                 }
             }
         },
-        filterData(val) { // 非远端搜索时根据input值过滤数据
-            return this.data.filter((item) => {
-                return (
-                    item[this.displayName]
-                        .toLowerCase()
-                        .indexOf(val.toLowerCase()) != -1
-                );
-            });
-        },
-        setValue(type) { // 设置选中值：下拉框值 + tag值
+        setValue() { // 设置选中值：下拉框值 + tag值
             const value = ('' + this.value).toString();
-            const dataSource = $obj.clone(this.dataSource);
-            this.data = $util.addPrimaryAndCk(dataSource);
-            
             //重置
             this.resetDataCkStatus();
             if (value) {
@@ -380,27 +364,20 @@ export default {
                     this.setDataStatus(item); // 给下拉列表选中的数据设置状态
                     this.setTagList(item); // 把选中的值添加到tagList列表里
                 });
+                this.tagList = $obj.clone(this.filterExcludeeTagList(value));
             } else {
                 this.tagList = [];
-                if (!type) {
-                    this.searchName = '';
-                }
             }
-            this.filterExcludeeTagList(value);
             this.checkPlaceholder();
         },
 
         filterExcludeeTagList(value) { // 过滤掉tagList里不包含value的项
-            // 这块是因为在已选中的值改变后，把tagList里不包含value的值过滤掉
-            const tagList = this.tagList.filter((item, ind) => {
-                const haveValue = value.split(',').find(it => {
-                    return it == item[this.displayValue];
-                });
-                if (haveValue) {
-                    return item;
-                }
-            });
-            this.tagList = $obj.clone(tagList);
+            const list = $obj.clone(this.tagList);
+            return list.filter(it => {
+                return value && value.split(",").find(item => {
+                    return item == it[this.displayValue];
+                })
+            })
         },
 
         delTagItem(item) { // 在tag删除、取消选中时，删除tagList的对应数据
@@ -431,6 +408,10 @@ export default {
                 }
                 item.ck = !item.ck;
                 item.cls = !item.ck ? '' : 'active fa fa-check';
+                if (this.readonlyFlag) {
+                    return;
+                }
+                this.$refs[this.componentKey].focus();
             } else {
                 //单选
                 this.data.forEach((x) => {
@@ -463,12 +444,23 @@ export default {
             this.deselectDataItem(item); // 查找在data数据里是否要删除的item,如果有则取消选中
             this.onEmit();
         },
+
+        getSelectedItems() {
+            let vals = [];
+            this.tagList.forEach(item => {
+                vals.push(item[this.displayValue]);
+            });
+            return {
+                vals,
+                items: this.tagList
+            };
+        },
        
         getValue() {
             if (this.tagList.length == 0) {
                 return "";
             }
-            return this.getSelectList.join(",");
+            return this.getSelectedItems().vals.join(',');
         },
 
         resetDataCkStatus() {
@@ -485,10 +477,8 @@ export default {
             this.resetDataCkStatus();
             this.searchName = "";
             this.tagList = [];
-            // this.allList = $obj.clone(this.dataSource);
             this.$emit('input', '');
-            this.$emit('change', '', this.tagList);
-            this.$emit('search', '')
+            this.$emit('change', '', this.getSelectedItems().items);
             this.showButtom = false;
             this.leForm && this.leForm.verifySubComponentAfterEmit(this);
         },

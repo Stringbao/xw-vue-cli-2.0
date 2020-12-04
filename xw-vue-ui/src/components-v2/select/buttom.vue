@@ -3,6 +3,7 @@
 		<div class="selectList" v-show="showButtom">
 			<ul>
 				<li @click.stop="selectItem(item)"  :title="`${item[displayName]}(${item[displayValue]})`"  v-for="(item,index) in data" :key="index" :class="item.cls">{{item[displayName]}}</li>
+				<li class="no_data" v-show="data.length == 0">暂无数据</li>
 			</ul>
 		</div>
 		<!-- <div class="selectList" v-show="searchKey && data.length == 0?true:false">
@@ -86,7 +87,7 @@
 
 
 	.selectList li{
-			width: 100%;
+		width: 100%;
 		font-size: 14px;
 		padding: 0 30px 0 10px;
 		position: relative;
@@ -101,12 +102,17 @@
 		text-align: left;
 	}
 
-	.selectList li:hover{
+	.selectList li.no_data {
+		cursor: text;
+		color: #999999;
+	}
+
+	.selectList li:not(.no_data):hover{
 		background-color: #51536a;
 		color: #fff;
 	}
 
-	.selectList li i{
+	.selectList li:not(.no_data) i{
 		display: inline-block;
 		position: absolute;
 		top: 0;

@@ -2,7 +2,7 @@
     <div class="selectedTagBox">
         <div class="selectedTag">
             <!-- <span>{{data.length!=0 && data[0][displayName]}}</span> -->
-            <div class="selectedTagItem" v-for="(item,idx) in data" :title="`${item[displayName]}(${item[displayValue]})`" :key="idx">{{item[displayName]}}<i class="fa fa-times" v-if="isMultiple" @click.stop="removeItem(data[idx])"></i></div>
+            <div class="selectedTagItem" v-for="(item,idx) in data" :title="`${item[displayName]}(${item[displayValue]})`" :key="idx">{{item[displayName] ? item[displayName] : item[displayValue]}}<i class="fa fa-times" :class="{'readonly-i': readonly}" v-if="isMultiple" @click.stop="removeItem(data[idx])"></i></div>
 
             <!-- <i class="fa fa-times" @click.stop="removeItem(data[0])"></i> -->
         </div>
@@ -16,7 +16,7 @@
     export default {
         name: 'LeftSection',
         components: {},
-        props:["data","noticeParent","displayName",'displayValue','multiple'],
+        props:["data","noticeParent","displayName",'displayValue','multiple','readonly'],
         data () {
             return {}
 		},
@@ -75,7 +75,7 @@
 		
 	}
 	
-	.searchMulSelect .selectedTagBox .selectedTag i:hover{
+	.searchMulSelect .selectedTagBox .selectedTag i:not(.readonly-i):hover{
 		cursor: pointer;
 		background-color: #acadb0;
 	}
