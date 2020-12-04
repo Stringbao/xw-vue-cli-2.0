@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
     mode:"development",
     devtool:'eval-source-map',
@@ -36,6 +37,7 @@ module.exports = {
             "@root":path.resolve(__dirname,".."),
             "@":path.resolve(__dirname,"../src/"),
             "@components":path.resolve(__dirname,"../src/components-v2"),
+            // "@components":path.resolve(__dirname,"../src/components"),
             "@assets":path.resolve(__dirname,"../src/assets"),
             "@route":path.resolve(__dirname,"../app/route"),
             "@pages":path.resolve(__dirname,"../app/pages"),
@@ -53,7 +55,8 @@ module.exports = {
         hot:true,
         proxy:{
             '/': {
-                target: 'https://admin.gl.lenovouat.cn',
+                // target: 'https://admin.gl.lenovouat.cn',
+                target: 'https://admin.nec.lenovouat.cn',
                 secure: false,
                 changeOrigin: true
             }
@@ -77,6 +80,13 @@ module.exports = {
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        new CopyWebpackPlugin( {
+            patterns:[ {
+                from : path.join(__dirname,'../static'),
+                to : 'static'
+            },
+            ]
+        })
     ],
     watchOptions: {
         ignored: /node_modules/

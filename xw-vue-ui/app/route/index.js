@@ -24,6 +24,11 @@ const routers = [
         path: '/demo-test',
         name: 'demo-test',
         component:() => import('@pages/demo/Demo-test.vue')
+    },
+    {
+        path: '/demo-ue',
+        name: 'demo-ue',
+        component:() => import('@pages/demo/Demo-ue.vue')
     }
 ];
 
