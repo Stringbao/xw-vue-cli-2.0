@@ -133,7 +133,7 @@
             return {
                 currentValue: this.value,
                 config: {
-                    readonly: this.readonlyFlag,
+                    readonly: this.readonly,
                     UEDITOR_HOME_URL: window.UEditorBaseUrl,
                     serverUrl: window.UEditorBaseUrl + "responsejson.json",
                     toolbars: this.toolbars,
