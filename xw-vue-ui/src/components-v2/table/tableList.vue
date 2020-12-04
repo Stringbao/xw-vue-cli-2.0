@@ -23,6 +23,8 @@
                         :cols="state.cols"
                         :accpet-h-b-notice="accpetHBNotice"
                         :data="state.data"
+                        :drag="drag"
+                        @dragUpdate="dragUpdate" @dragChange="dragChange" @dragStart="dragStart" @dragEnd="dragEnd"
                     ></body-section>
                 </table>
             </div>
@@ -54,7 +56,7 @@ import { $idSeed, $util, $obj, $event_publisher,$array } from "../leCompsTool.js
 
 export default {
     components: { HeaderSection, BodySection, PagingSection },
-    props: ["options", "title"],
+    props: ["options", "title","drag"],
     name: "TableList",
     data() {
         return {
@@ -101,6 +103,10 @@ export default {
         },
     },
     methods: {
+        dragUpdate(e) {this.$emit('dragUpdate', e)},
+        dragChange(e) {this.$emit('dragChange', e)},
+        dragStart(e) {this.$emit('dragStart', e)},
+        dragEnd(e) {this.$emit('dragEnd', e)},
         setData(res,index,size) {
             if (res.data && res.data instanceof Array && res.data.length != 0) {
                 let arr = $util.addPrimaryAndCk(res.data);
