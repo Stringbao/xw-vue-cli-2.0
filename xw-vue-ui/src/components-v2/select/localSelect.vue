@@ -60,7 +60,6 @@
                         hideInput: !inputFlag || readonlyFlag,
                     }"
                     v-model="searchName"
-                    @blur="onBlur($event)"
                 />
 
                 <p class="promptMsg" @click.stop v-show="state.showError">
@@ -261,10 +260,10 @@ export default {
         }
     },
     watch: {
-        value(val) {
-            this.setValue(val);
-            if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
-                this.leForm && this.leForm.validateSubComponent(this);
+        value(newVal,oldVal) {
+            this.setValue(newVal);
+            if(newVal&&newVal!=''){
+                this.state.showError = false
             }
         },
         dataSource(val) {
@@ -291,6 +290,7 @@ export default {
         },
         hideButtom() {
             this.showButtom = false;
+            this.searchName = "";
         },
 
         clickInput() {
@@ -435,15 +435,6 @@ export default {
             }
             if (this.showClear === '' || this.showClear) {
                 this.showArrow = false;
-            }
-        },
-        onBlur(e){
-            let isMatchedSearchName = this.data.every(item => {
-                return item[this.displayName].toLowerCase().indexOf(e.target.value.toLowerCase()) == -1
-            })
-            if(isMatchedSearchName){
-                this.searchName = '';
-                this.hideButtom();
             }
         }
     },
