@@ -1,35 +1,45 @@
 <template>
-    <tbody>
+    <le-drag
+        class="parents"
+        :disabled="isDraggable"
+        element="tbody"
+        :options="dragOptions"
+        @update="dragUpdate"
+        @change="dragChange"
+        @start="dragStart"
+        @end="dragEnd"
+    >
         <template v-if="data.length > 0">
-            <tr v-for="(row,index) in data" @click="e=>selectRow(row,e)" :key="index">
-                <td v-if="showCk">
-                    <div v-if="singleSelected">
-                        <input :name="radioKey" type="radio" :checked="row.ck"/>
-                    </div>
-                    <div v-else>
-                        <input type="checkbox" :checked="row.ck" />
-                    </div>
-                </td>
-                <td class="opration" v-if="actions && actions.length != 0"  >
-                    <div v-for="(x,i) in actions" class="btnContent" :key="i">
-                        <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
-                    </div>
-                </td>
-                <td v-for="(item,idx) in cols" :key="idx" :width="item.width">
-                    <div v-if="item.etype == 'img'">
-                        <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
-                    </div>
-                    
-                    <div v-else>
-                        <div v-html="item.convert?item.convert(item,row):getValByFieldInRow(item,row)" @click="item.action && item.action(row,item)"></div>
-                    </div>
-                </td>
-            </tr>
+            
+                <tr v-for="(row,index) in data" @click="e=>selectRow(row,e)" :key="index">
+                    <td v-if="showCk">
+                        <div v-if="singleSelected">
+                            <input :name="radioKey" type="radio" :checked="row.ck"/>
+                        </div>
+                        <div v-else>
+                            <input type="checkbox" :checked="row.ck" />
+                        </div>
+                    </td>
+                    <td class="opration" v-if="actions && actions.length != 0"  >
+                        <div v-for="(x,i) in actions" class="btnContent" :key="i">
+                            <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
+                        </div>
+                    </td>
+                    <td v-for="(item,idx) in cols" :key="idx" :width="item.width">
+                        <div v-if="item.etype == 'img'">
+                            <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
+                        </div>
+                        
+                        <div v-else>
+                            <div v-html="item.convert?item.convert(item,row):getValByFieldInRow(item,row)" @click="item.action && item.action(row,item)"></div>
+                        </div>
+                    </td>
+                </tr>
         </template>
         <tr v-show="data.length == 0" style="text-align:center;width:100%;color:#333;">
             <td :colspan="getAllCols">No data available</td>
         </tr>
-    </tbody>
+    </le-drag>
 </template>
 
 <script>
@@ -37,13 +47,21 @@
     
     export default {
         name: "BodySection",
-        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected"],
+        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag"],
         data(){
             return {
+                // list: [],
+                dragOptions: {},
                 radioKey:$idSeed.newId()
             }
         },
         computed:{
+            isDraggable() {
+                if (this.data.length && (this.drag === '' || this.drag)) {
+                    return false;
+                }
+                return true;
+            },
             getAllCols(){
                 let count = 0;
                 if(this.showCk){
@@ -62,6 +80,27 @@
             
         },
         methods:{
+            dragUpdate(e) { // 挪动了位置才会触发
+                // const list = $obj.clone(this.data);
+                const oldData = this.data[e.oldIndex];
+                const newData = this.data[e.newIndex];
+                [this.data[e.newIndex], this.data[e.oldIndex]] = [this.data[e.oldIndex], this.data[e.newIndex]]
+                this.$emit('dragUpdate', {
+                    ...e,
+                    oldData,
+                    newData,
+                    updateList: this.data
+                })
+            },
+            dragChange(e) { // 挪动了位置才会触发，并且返回按下的行的数据
+                this.$emit('dragChange', e);
+            },
+            dragStart(e) { // 开始挪动时触发（鼠标按下 & 鼠标值变化）
+                this.$emit('dragStart', e);
+            },
+            dragEnd(e) { // 鼠标放下时触发（不管位置是否挪动，都会触发）
+                this.$emit('dragEnd', e);
+            },
             actionShowFn(action,row){
                 if(action.show){
                     return action.show(row);

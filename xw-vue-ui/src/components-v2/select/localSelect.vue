@@ -42,6 +42,7 @@
                 >
                 <left-section
                     :readonly="readonlyFlag"
+                    :multiple="multiple"
                     :display-name="displayName"
                     :displayValue="displayValue"
                     :data="leftArray"
@@ -77,7 +78,6 @@
                 :displayValue="displayValue"
                 :searchKey="searchName"
                 :data="buttomArray"
-                :multipl="multiple"
                 :notice-parent="noticeFromButtom"
             ></buttom-section>
         </div>

@@ -8,6 +8,7 @@ import LeRadioList from "@components/radio/radioList.vue";
 import LeInput from "@components/input/vInput.vue";
 import LeTextarea from "@components/input/vTextarea.vue";
 import LeLocalSelect from "@components/select/localSelect.vue";
+import LeRemoteSelect from "@components/remoteSelect/remoteSelect.vue";
 import TableList from "@components/table/tableList.vue";
 import LocalTableList from "@components/localTable/tableList.vue";
 import LeUpload from "@components/upload/upload.vue";
@@ -23,6 +24,7 @@ import LeLoading from "@components/loading/loading.vue";
 import Message from "@components/message";
 import MessageBox from "@components/messageBox";
 import LeUEditor from "@components/ueditor/ueditor.vue";
+import LeDrag from 'vuedraggable';
 
 
 // import LeUploadFile from "@components/upload/uploadFile.vue";
@@ -52,6 +54,7 @@ export default {
         Vue.component('LeInput', LeInput);
         Vue.component('LeTextarea', LeTextarea);
         Vue.component('LeLocalSelect', LeLocalSelect);
+        Vue.component('LeRemoteSelect', LeRemoteSelect);
         Vue.component('TableList', TableList);
         Vue.component('LocalTableList', LocalTableList);
         Vue.component('LeUpload', LeUpload);
@@ -65,7 +68,8 @@ export default {
         Vue.component('LeForm', LeForm);
         Vue.component("LeLoading", LeLoading);
         Vue.component("LeUEditor", LeUEditor);
-
+        Vue.component("LeDrag", LeDrag);
+        
         // Vue.component('LeUploadFile',LeUploadFile);
 
         Vue.prototype.lang18n = lang18n;
