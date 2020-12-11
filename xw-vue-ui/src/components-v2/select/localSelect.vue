@@ -37,7 +37,7 @@
                 <span
                     class="placeholderText"
                     @click.stop="focusInput"
-                    v-show="placeholderStr && !inputFlag && !readonlyFlag"
+                    v-show="placeholderStr && (!inputFlag || readonlyFlag)"
                     >{{ placeholderStr }}</span
                 >
                 <left-section

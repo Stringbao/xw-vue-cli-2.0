@@ -21,6 +21,7 @@
                 @blur="blurEvent($event)"
                 @change="changeEvent($event)"
                 @input="inputEvent($event)"
+                :disabled="readonlyFlag"
                 :readonly="readonlyFlag"
                 :value="value"
             />
@@ -70,9 +71,7 @@ export default {
         rules: {
             type: Function | Object,
         },
-        value: {
-            type: String | Number | Boolean,
-        },
+        value:{},
         placeholder: {
             type: String,
             default: Constant.INPUT.PLACEHOLDER,

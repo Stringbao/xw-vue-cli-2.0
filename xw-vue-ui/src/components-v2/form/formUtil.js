@@ -1,17 +1,19 @@
 
-import {isEmpty, isNumber, toString} from "lodash-es";
+import {isEmpty, isNumber, toString,isBoolean} from "lodash-es";
 import Contant from "./contant.js";
 
 export default {
     verifyIsOn(comp){
-        if(comp.on ==="" || comp.on){
+        if(comp.on === "" || comp.on){
             return true;
         }
         return false;
     },
     verifyRequire(){
         return function(value){
-            // 这里有问题 isEmpty(1)
+            if(isBoolean(value) || isFinite(value)){
+                return true;
+            }
             return !isEmpty(value);
         }
     },

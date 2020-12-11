@@ -34,12 +34,12 @@
                     class="fa fa-chevron-down icon-del fa-times-circle"
                     @click.stop="clear"
                 ></i>
-                <!-- <span
+                <span
                     class="placeholderText"
                     @click.stop="focus"
-                    v-show="placeholderStr && !inputFlag && !readonlyFlag"
+                    v-show="placeholderStr && readonlyFlag"
                     >{{ placeholderStr }}</span
-                > -->
+                >
                 <left-section
                     :readonly="readonlyFlag"
                     :display-name="displayName"
@@ -301,7 +301,7 @@ export default {
                 requestUrl += name;
                 dataPromise = this.ajax.get(requestUrl);
             } else { // 其他请求
-                let queryData = $obj.clone(params);
+                let queryData = $obj.clone(params());
                 const list = Object.keys(queryData);
                 if (list.length) {
                     queryData[list[list.length - 1]] = name;

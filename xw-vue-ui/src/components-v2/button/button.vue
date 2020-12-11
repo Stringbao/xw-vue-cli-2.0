@@ -1,5 +1,5 @@
 <template>
-    <span class="asBtn" @click.stop="clickHandle" :disabled="cdisabled" :class="[data.cls,disabledClass]">
+    <span class="asBtn" @click="clickHandle" :disabled="cdisabled" :class="[data.cls,disabledClass]">
         <!-- <i class="fa" :class="data.iCls"></i> -->
         {{value}}
     </span>	
