@@ -11,7 +11,7 @@ export default {
     },
     verifyRequire(){
         return function(value){
-            if(isBoolean(value) || isFinite(value)){
+            if(isBoolean(value) || isNumber(value)){
                 return true;
             }
             return !isEmpty(value);
