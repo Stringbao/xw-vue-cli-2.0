@@ -104,8 +104,8 @@ let _tool = {
      * @param month:月份
      * @returns 天数:int
      */
-    getDays(year, month) {
-        let date = new Date(year, month, 0);
+    getDays(year, month, flag, num) {
+        let date = $date.setTimeZone(flag, num, new Date(year, month, 0));
         return date.getDate();
     },
     /**
@@ -114,9 +114,9 @@ let _tool = {
      * @param month:月份
      * @returns 第一天是周几:int
      */
-    getWeek(year, month) {
+    getWeek(year, month, flag, num) {
         let str = year + "  " + month + "/" + "01";
-        let data = new Date(str);
+        let data = $date.setTimeZone(flag, num, new Date(str));
         return data.getDay();
     },
     /**
@@ -125,11 +125,11 @@ let _tool = {
      * @param month:月份
      * @returns days:int
      */
-    getCurrentDays() {
-        let date = new Date();
+    getCurrentDays(flag, num) {
+        let date = $date.setTimeZone(flag, num);
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
-        return _tool.getDays(year, month);
+        return _tool.getDays(year, month, flag, num);
     },
     /**
      * @description 根据月份获取上个月的年月日数据
@@ -137,16 +137,16 @@ let _tool = {
      * @param month:月份
      * @returns json:{year:0,month:0,days:0}
      */
-    getPrevMonthDays(year, month) {
+    getPrevMonthDays(year, month, flag, num) {
         let res = { year: 0, month: 0, days: 0 };
         if (month == 1) {
             res.year = parseInt(year) - 1;
             res.month = 12;
-            res.days = this.getDays(res.year, res.month);
+            res.days = this.getDays(res.year, res.month, flag, num);
         } else {
             res.year = year;
             res.month = parseInt(month) - 1;
-            res.days = this.getDays(res.year, res.month);
+            res.days = this.getDays(res.year, res.month, flag, num);
         }
         return res;
     },
@@ -156,16 +156,16 @@ let _tool = {
      * @param month:月份
      * @returns json:{year:0,month:0,days:0}
      */
-    getNextMonthDays(year, month) {
+    getNextMonthDays(year, month, flag, num) {
         let res = { year: 0, month: 0, days: 0 };
         if (month == 12) {
             res.year = parseInt(year) + 1;
             res.month = 1;
-            res.days = this.getDays(res.year, res.month);
+            res.days = this.getDays(res.year, res.month, flag, num);
         } else {
             res.year = year;
             res.month = parseInt(month) + 1;
-            res.days = this.getDays(res.year, res.month);
+            res.days = this.getDays(res.year, res.month, flag, num);
         }
         return res;
     },
@@ -189,7 +189,7 @@ let _tool = {
 };
 
 import Constant from "../contant/index.js";
-import { $idSeed, $util, $obj } from "../leCompsTool.js";
+import { $idSeed, $util, $obj, $date } from "../leCompsTool.js";
 
 /**
  * @description 日期格式  6(row)*7(col)
@@ -245,6 +245,14 @@ export default {
             type: String | Boolean,
             default: false,
         },
+        timeZoneFlag: {
+            type: String | Boolean,
+            default: false,
+        },
+        timeZoneNum: {
+            type: String | Number,
+            default: 8,
+        },
     },
     data() {
         return {
@@ -254,9 +262,9 @@ export default {
             },
             componentKey: $idSeed.newId(),
             current: {
-                currentYear: new Date().getFullYear(),
-                currentMonth: new Date().getMonth() + 1,
-                currentDay: new Date().getDate(),
+                currentYear: $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getFullYear(),
+                currentMonth: $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMonth() + 1,
+                currentDay: $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getDate(),
             },
             data: [],
             selectDay: "",
@@ -338,6 +346,12 @@ export default {
             }
             return false;
         },
+        isTimeZoneFlag() {
+            if (this.timeZoneFlag === "" || this.timeZoneFlag) {
+                return true;
+            }
+            return false;
+        }
     },
     methods: {
         checkDate(str) {
@@ -366,13 +380,13 @@ export default {
         getFullData(year, month) {
             let res = [];
             //获取当前月第一天是周几
-            let week = _tool.getWeek(year, month);
+            let week = _tool.getWeek(year, month, this.isTimeZoneFlag, this.timeZoneNum);
             //获取当前月一起多少天
-            let currentDays = _tool.getDays(year, month);
+            let currentDays = _tool.getDays(year, month, this.isTimeZoneFlag, this.timeZoneNum);
             //上个月的数据条数
             let prevDaylen = week;
             //获取上一个月有多少天
-            let prevMonthDays = _tool.getPrevMonthDays(year, month);
+            let prevMonthDays = _tool.getPrevMonthDays(year, month, this.isTimeZoneFlag, this.timeZoneNum);
 
             let allData = [];
             //push上个月填充的数据
@@ -389,9 +403,9 @@ export default {
             let tmp = { y: 0, m: 0, d: 0 };
             if (this.selectDay == "") {
                 tmp = {
-                    y: new Date().getFullYear(),
-                    m: new Date().getMonth() + 1,
-                    d: new Date().getDate(),
+                    y: $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getFullYear(),
+                    m: $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMonth() + 1,
+                    d: $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getDate(),
                 };
             }
             //如果选择了日期
@@ -414,7 +428,7 @@ export default {
 
             //push下个月剩余的数据
             let nextDaysLen = 42 - (prevDaylen + currentDays);
-            let nextMonthDays = _tool.getNextMonthDays(year, month);
+            let nextMonthDays = _tool.getNextMonthDays(year, month, this.isTimeZoneFlag, this.timeZoneNum);
             for (let i = 1; i <= nextDaysLen; i++) {
                 allData.push({
                     year: nextMonthDays.year,
@@ -566,9 +580,9 @@ export default {
          */
         setValue(str) {
             if (!str) {
-                this.current.currentYear = new Date().getFullYear();
-                this.current.currentMonth = parseInt(new Date().getMonth() + 1);
-                this.current.currentDay = parseInt(new Date().getDate());
+                this.current.currentYear = $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getFullYear();
+                this.current.currentMonth = parseInt($date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMonth() + 1);
+                this.current.currentDay = parseInt($date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getDate());
 
                 this.selectDay = "";
                 this.setPickerDateSource(

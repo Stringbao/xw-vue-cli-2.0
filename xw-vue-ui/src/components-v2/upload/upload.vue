@@ -454,14 +454,13 @@ export default {
             }
         },
         setValue(srcs) {
+            this.srcs = [];
             if (!srcs) {
                 return;
             }
-            if (this.srcs.length == 0) {
-                srcs.split(",").forEach((x, idx) => {
-                    this.srcs.push({ name: x, idx: this.srcs.length + 1 });
-                });
-            }
+            srcs.split(",").forEach((x, idx) => {
+                this.srcs.push({ name: x, idx: this.srcs.length + 1 });
+            });
         },
         getNames(data) {
             let res = [];
@@ -494,6 +493,14 @@ export default {
     mounted() {
         this.setValue(this.value);
     },
+    watch: {
+        value: {
+            handler(val) {
+                this.setValue(val);
+            },
+            deep: true
+        }
+    }
 };
 </script>
 <style scoped>
