@@ -10,22 +10,23 @@
         <div
             class="form-item-div searchMulSelect"
             :class="{ 'fa-times-circle-o': state.showError }"
-            @click="focus"
+            @click="focusInput"
+            :ref="componentKey"
             tabindex="0"
             v-bodyClick="hideButtom"
-            :_body_tag="componentKey"
+            :_body_tag="inputdomKey"
         >
             <!--选中的标签-->
             <div
                 class="tags"
-                :_body_tag="componentKey"
+                :_body_tag="inputdomKey"
                 :class="{ readonlyIcon: readonlyFlag }"
                 @mouseenter="showArr"
                 @mouseleave="hideArr"
             >
                 <i
                     v-show="showArrow"
-                    :_body_tag="componentKey"
+                    :_body_tag="inputdomKey"
                     class="fa fa-chevron-down icon-del"
                     @click="clickInput"
                 ></i>
@@ -36,7 +37,7 @@
                 ></i>
                 <span
                     class="placeholderText"
-                    @click.stop="focus"
+                    @click.stop="focusInput"
                     v-show="placeholderStr && readonlyFlag"
                     >{{ placeholderStr }}</span
                 >
@@ -51,9 +52,9 @@
 
                 <input
                     :placeholder="placeholderStr"
-                    :_body_tag="componentKey"
+                    :_body_tag="inputdomKey"
                     @click="clickInput"
-                    :ref="componentKey"
+                    :ref="inputdomKey"
                     :readonly="readonlyFlag"
                     type="text"
                     :class="{
@@ -167,6 +168,7 @@ export default {
             ajax,
             validataComponentType: "RemoteSelect",
             componentKey: $idSeed.newId(),
+            inputdomKey: $idSeed.newId(),
             state: {
                 showError: false,
                 errorMsg: "",
@@ -229,7 +231,7 @@ export default {
                 this.isAllowDataSource = true;
             }
             this.setValue();
-        },
+        }
     },
     mounted() { // 只支持接收一次数据源：this.dataSource
         if (!this.isAllowDataSource && this.dataSource.length) {
@@ -240,12 +242,15 @@ export default {
     },
     methods: {
         focus() {
+            this.$refs[this.componentKey].focus();
+        },
+        focusInput() {
             if (this.readonlyFlag) {
                 return;
             }
-            this.$refs[this.componentKey].focus();
+            this.$refs[this.inputdomKey].focus();
             this.clickInput();
-            if  (this.isDefaultSearchOn && !this.searchName) {
+            if  (this.isDefaultSearchOn && !this.searchName && this.tagList.length == 0) {
                 // 获取焦点时 && input值为空才去请求接口
                 this.inputQuery();
             }
@@ -287,7 +292,11 @@ export default {
             }
         },
 
-        inputQuery: debounce(function(e) { // input输入触发
+        handleGetData(queryName) {
+            this.inputQuery({}, queryName);
+        },
+
+        inputQuery: debounce(function(e, queryName) { // input输入触发
             const {getUrl, params, analysis, method = 'get'} = this.remoteOptions;
             if (!getUrl()) { // url必填
                 return;
@@ -298,13 +307,13 @@ export default {
             let requestUrl = getUrl(); // 存储最终的url（get需要url上拼接参数）
             // get请求：('/getAllList?q=1000&name=wang', {}); 其他请求：('/getAllList', Object)
             if (method === 'get') {
-                requestUrl += name;
+                requestUrl += queryName ? queryName : name;
                 dataPromise = this.ajax.get(requestUrl);
             } else { // 其他请求
                 let queryData = $obj.clone(params());
                 const list = Object.keys(queryData);
                 if (list.length) {
-                    queryData[list[list.length - 1]] = name;
+                    queryData[list[list.length - 1]] = queryName ? queryName : name;
                 }
                 dataPromise = this.ajax[method](requestUrl, queryData);
             }
@@ -314,9 +323,9 @@ export default {
                 const list = $obj.clone(analysis ? analysis(data) : data);
                 this.init(list);
                 this.setValue();
-                this.clickInput();
+                // this.clickInput();
             }).catch(e => {
-                this.alert.showAlert("error", e);
+                this.alert.showAlert("error", e.msg);
             })
         }, 200),
 
@@ -411,7 +420,7 @@ export default {
                 if (this.readonlyFlag) {
                     return;
                 }
-                this.$refs[this.componentKey].focus();
+                this.$refs[this.inputdomKey].focus();
             } else {
                 //单选
                 this.data.forEach((x) => {
@@ -480,6 +489,7 @@ export default {
             this.$emit('input', '');
             this.$emit('change', '', this.getSelectedItems().items);
             this.showButtom = false;
+            this.handleGetData('');
             this.leForm && this.leForm.verifySubComponentAfterEmit(this);
         },
         hideArr() {

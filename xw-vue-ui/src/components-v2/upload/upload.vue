@@ -453,14 +453,37 @@ export default {
                 return 1;
             }
         },
+        returnRenderList(srcs) {
+            let renderList = [];
+            let isBase64 = false;
+            const baseList = ['data:image/png;base64', 'data:image/jpg;base64', 'data:image/gif;base64', 'data:image/jpeg;base64', 'data:image/icon;base64']
+            baseList.forEach(item => {
+                if (srcs.indexOf(item) != -1) {
+                    isBase64 = true;
+                }
+            });
+            const splitList = srcs.split(',');
+            if (isBase64) {
+                for(let i = 0; i < splitList.length; i += 2){
+                    renderList.push(splitList.slice(i,i+2).join());
+                }
+            } else {
+                renderList = splitList;
+            }
+            return renderList;
+        },
         setValue(srcs) {
             this.srcs = [];
             if (!srcs) {
                 return;
             }
-            srcs.split(",").forEach((x, idx) => {
-                this.srcs.push({ name: x, idx: this.srcs.length + 1 });
-            });
+            if (this.multipleTag) { // 多选
+                this.returnRenderList(srcs).forEach((x, idx) => {
+                    this.srcs.push({ name: x, idx: this.srcs.length + 1 });
+                });
+            } else { // 单选
+                this.srcs = [{name: srcs, idx: 1}];
+            }
         },
         getNames(data) {
             let res = [];

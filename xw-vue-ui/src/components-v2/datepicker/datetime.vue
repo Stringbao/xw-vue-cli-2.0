@@ -37,7 +37,7 @@
                                 :splitKey="splitStr"
                                 :ref="dateKey"
                                 timeZoneFlag
-                                timeZoneNum="0"
+                                :timeZoneNum="timeZoneNum"
                                 is-datetime-picker
                                 :datetime-picker-key="dateTimeKey"
                             ></le-date-picker>
@@ -46,7 +46,7 @@
                             <le-time-picker
                                 :ref="timeKey"
                                 timeZoneFlag
-                                timeZoneNum="0"
+                                :timeZoneNum="timeZoneNum"
                                 is-datetime-picker
                                 :datetime-picker-key="dateTimeKey"
                             ></le-time-picker>
@@ -264,6 +264,8 @@ export default {
                 return;
             }
             this.showDateTimePicker = false;
+            this.$refs[this.dateKey].closePicker();
+            this.$refs[this.timeKey].closePicker();
             this.$emit("input", "");
             this.$emit("change", "");
             // form check
@@ -314,6 +316,8 @@ export default {
             }
         },
         closeDateTimePicker() {
+            this.$refs[this.dateKey] && this.$refs[this.dateKey].closePicker();
+            this.$refs[this.timeKey] && this.$refs[this.timeKey].closePicker();
             this.showDateTimePicker = false;
         },
     },
