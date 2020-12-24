@@ -37,12 +37,12 @@
                 <span
                     class="placeholderText"
                     @click.stop="focusInput"
-                    v-show="placeholderStr && (!inputFlag || readonlyFlag)"
+                    v-show="placeholderStr && !searchName"
                     >{{ placeholderStr }}</span
                 >
                 <left-section
                     :readonly="readonlyFlag"
-                    :multiple="multiple"
+                    :multiple="isMultiple"
                     :display-name="displayName"
                     :displayValue="displayValue"
                     :data="leftArray"
@@ -50,7 +50,7 @@
                 ></left-section>
 
                 <input
-                    :placeholder="placeholderStr"
+                    placeholder=""
                     :_body_tag="inputdomKey"
                     @click="clickInput"
                     :ref="inputdomKey"
@@ -131,7 +131,8 @@ export default {
             type: Number | String,
         },
         multiple: {
-            type: Boolean | String
+            type: Boolean | String,
+            default: false
         },
         displayName: {
             type: String
@@ -196,6 +197,12 @@ export default {
         },
         isRequired(){
             if (this.required === "" || this.required) {
+                return true;
+            }
+            return false;
+        },
+        isMultiple() { // 是否多选
+            if (this.multiple === "" || this.multiple) {
                 return true;
             }
             return false;
@@ -308,7 +315,7 @@ export default {
             let selectedItems = this.getSelectedItems();
             let vals = selectedItems.vals.join(",");
             this.$emit("input", vals);
-            this.$emit("change", vals);
+            this.$emit("change", vals, selectedItems.items);
 
             if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
                 this.leForm && this.leForm.validateSubComponent(this);
@@ -326,7 +333,7 @@ export default {
 
         noticeFromButtom(item) {
             //多选
-            if (this.multiple != undefined) {
+            if (this.isMultiple) {
                 item.ck = !item.ck;
                 item.cls = !item.ck ? "" : "active fa fa-check";
             } else {
@@ -378,7 +385,7 @@ export default {
             //重置
             this.resetDataCkStatus();
             //选中
-            ids.split &&
+            if (ids) {
                 ids.split(",").forEach((val) => {
                     let tmp = getItemByDisplayValue(
                         this.data,
@@ -390,6 +397,10 @@ export default {
                         tmp.ck = true;
                     }
                 });
+                if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
+                    this.leForm && this.leForm.validateSubComponent(this);
+                }
+            }
             this.checkPlaceholder();
         },
         resetDataCkStatus() {
@@ -406,7 +417,7 @@ export default {
             this.resetDataCkStatus();
             this.searchName = "";
             this.$emit("input", "");
-            this.$emit("change", "");
+            this.$emit("change", "", []);
             this.showButtom = false;
             this.leForm && this.leForm.verifySubComponentAfterEmit(this);
         },
@@ -501,10 +512,14 @@ export default {
     color: #b9bdc3;
     /* color: red; */
     font-size: 14px;
+    user-select: none;
     position: absolute;
     top: 52%;
     left: 10px;
     transform: translateY(-50%);
+    width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .searchMulSelect .tags.readonlyIcon {

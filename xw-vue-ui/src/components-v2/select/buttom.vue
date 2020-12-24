@@ -3,7 +3,7 @@
 		<div class="selectList" v-show="showButtom">
 			<ul>
 				<li @click.stop="selectItem(item)"  :title="`${item[displayName]}(${item[displayValue]})`"  v-for="(item,index) in data" :key="index" :class="item.cls">{{item[displayName]}}</li>
-				<li class="no_data" v-show="data.length == 0">暂无数据</li>
+				<li class="no_data" v-show="data.length == 0">No data available</li>
 			</ul>
 		</div>
 		<!-- <div class="selectList" v-show="searchKey && data.length == 0?true:false">

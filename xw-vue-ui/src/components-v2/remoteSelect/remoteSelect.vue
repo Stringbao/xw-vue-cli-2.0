@@ -38,7 +38,7 @@
                 <span
                     class="placeholderText"
                     @click.stop="focusInput"
-                    v-show="placeholderStr && readonlyFlag"
+                    v-show="placeholderStr && !searchName"
                     >{{ placeholderStr }}</span
                 >
                 <left-section
@@ -46,12 +46,12 @@
                     :display-name="displayName"
                     :displayValue="displayValue"
                     :data="tagList"
-                    :multiple="multiple"
+                    :multiple="isMultiple"
                     :notice-parent="noticeFromLeft"
                 ></left-section>
 
                 <input
-                    :placeholder="placeholderStr"
+                    placeholder=""
                     :_body_tag="inputdomKey"
                     @click="clickInput"
                     :ref="inputdomKey"
@@ -120,7 +120,8 @@ export default {
             type: Number | String,
         },
         multiple: { // 是否支持多选
-            type: Boolean | String
+            type: Boolean | String,
+            default: false
         },
         displayName: {
             type: String
@@ -193,6 +194,12 @@ export default {
         },
         isRequired(){ // 是否必填
             if (this.required === "" || this.required) {
+                return true;
+            }
+            return false;
+        },
+        isMultiple() { // 是否多选
+            if (this.multiple === "" || this.multiple) {
                 return true;
             }
             return false;
@@ -277,7 +284,6 @@ export default {
             let vals = selectVals.join(',');
             this.$emit("input", vals);
             this.$emit("change", vals, this.getSelectedItems().items);
-
             if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
                 this.leForm && this.leForm.validateSubComponent(this);
             }
@@ -357,8 +363,8 @@ export default {
                 });
                 if (!havaTag) { // 并且也不在tagList里，给tagList的displayValue赋值，displayName=空串
                     let obj = {};
-                    obj[this.displayValue] = item;
                     obj[this.displayName] = '';
+                    obj[this.displayValue] = item;
                     this.tagList.push(obj);
                 }
             }
@@ -374,6 +380,9 @@ export default {
                     this.setTagList(item); // 把选中的值添加到tagList列表里
                 });
                 this.tagList = $obj.clone(this.filterExcludeeTagList(value));
+                if (this.leForm && this.leForm.checkSubComponentVerify(this)) {
+                    this.leForm && this.leForm.validateSubComponent(this);
+                }
             } else {
                 this.tagList = [];
             }
@@ -409,7 +418,7 @@ export default {
 
         noticeFromButtom(item) { // 下拉框点击item触发
             //多选
-            if (this.multiple != undefined) {
+            if (this.isMultiple) {
                 if (!item.ck) { // 要选中,向tagList里添加数据
                     this.tagList.push(item);
                 } else { // 要取消选中，需要把tagList里删除对应数据
@@ -575,9 +584,13 @@ export default {
     /* color: red; */
     font-size: 14px;
     position: absolute;
+    user-select: none;
     top: 52%;
     left: 10px;
     transform: translateY(-50%);
+    width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .searchMulSelect .tags.readonlyIcon {
