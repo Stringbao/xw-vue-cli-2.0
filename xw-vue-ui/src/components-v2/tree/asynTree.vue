@@ -141,6 +141,7 @@ export default {
          * @param node 当前节点
          */
         reloadNode(node){
+            const oldNode = $obj.clone(node);
             let _url  = this.asynOptions.getUrl(node);
             node.__cls = "fa-caret-load";
             this.ajax.get(_url).then(d=>{
@@ -148,7 +149,11 @@ export default {
                 if(tmp && tmp instanceof Array && tmp.length != 0){
                     let tmpData = Constant.TREE_CONFIG.ASYNINITATTRIBUTE(tmp, node, false);
                     node.__children = tmpData;
-                    node.__cls = "fa-caret-down";
+                    if (oldNode.__cls == 'fa-caret-left' || oldNode.__cls == 'fa-caret-right') {
+                        node.__cls = 'fa-caret-right'
+                    } else {
+                        node.__cls = "fa-caret-down";
+                    }
                 }else{
                     node.__children = [];
                     node.__cls = "fa-caret-left";

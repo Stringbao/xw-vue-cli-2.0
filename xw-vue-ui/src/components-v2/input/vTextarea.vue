@@ -14,6 +14,7 @@
                 :ref="componentKey"
                 :placeholder="placeholder"
                 :class="{ readonlyIcon: readonlyFlag }"
+                :disabled="readonlyFlag"
                 :readonly="readonlyFlag"
                 class="form-item-input"
                 :value="value"
@@ -69,9 +70,7 @@ export default {
         rules: {
             type: Function | Object,
         },
-        value: {
-            type: String,
-        },
+        value: {},
         placeholder: {
             type: String,
             default: Constant.TEXTAREA.PLACEHOLDER,
@@ -272,11 +271,11 @@ export default {
     transform: translateY(-50%);
 }
 
-.fa-times-circle-o .form-item-input {
+.form-item .fa-times-circle-o .form-item-input {
     border: 1px solid #f56c6c;
 }
 
-.fa-check-circle-o .form-item-input {
+.form-item .fa-check-circle-o .form-item-input {
     border: 1px solid #67c23a;
 }
 

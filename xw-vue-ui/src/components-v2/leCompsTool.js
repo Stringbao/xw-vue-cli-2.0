@@ -93,6 +93,24 @@ const $date = {
         }else{
             return new Date(one).getTime() > new Date(two).getTime()?true:false;
         }
+    },
+    setTimeZone(flag, num, date) {
+        if (!flag) {
+            if (date) {
+                return date;
+            } else {
+                return new Date();
+            }
+        } else {
+            let nowStemp = null;
+            if (date) {
+                nowStemp = date.getTime();
+            } else {
+                nowStemp = new Date().getTime();
+            }
+            const timeDifference = new Date().getTimezoneOffset();
+            return new Date(nowStemp + timeDifference * 60 * 1000 + num * 60 * 60 * 1000);
+        }
     }
 }
 

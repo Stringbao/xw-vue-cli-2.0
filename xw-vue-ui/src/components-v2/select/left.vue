@@ -2,7 +2,7 @@
     <div class="selectedTagBox">
         <div class="selectedTag">
             <!-- <span>{{data.length!=0 && data[0][displayName]}}</span> -->
-            <div class="selectedTagItem" v-for="(item,idx) in data" :title="`${item[displayName]}(${item[displayValue]})`" :key="idx">{{item[displayName] ? item[displayName] : item[displayValue]}}<i class="fa fa-times" :class="{'readonly-i': readonly}" v-if="isMultiple" @click.stop="removeItem(data[idx])"></i></div>
+            <div class="selectedTagItem" v-for="(item,idx) in data" :title="`${item[displayName]}(${item[displayValue]})`" :key="idx">{{item[displayName] ? item[displayName] : item[displayValue]}}<i class="fa fa-times" :class="{'readonly-i': readonly}" v-if="multiple" @click.stop="removeItem(data[idx])"></i></div>
 
             <!-- <i class="fa fa-times" @click.stop="removeItem(data[0])"></i> -->
         </div>
@@ -20,15 +20,7 @@
         data () {
             return {}
 		},
-		computed:{
-			isMultiple(){
-				if(this.multiple != undefined){
-					return true;
-				}else{
-					return false;
-				}
-			}
-		},
+		computed:{},
         methods:{
             removeItem(item){
                 this.noticeParent(item);

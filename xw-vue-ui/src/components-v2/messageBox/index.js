@@ -20,7 +20,7 @@ function merge(target) {
 }
 
 const defaults = {
-    title: "title",
+    title: "",
     closed: false,
     message:"",
     cancelName:"Cancel",

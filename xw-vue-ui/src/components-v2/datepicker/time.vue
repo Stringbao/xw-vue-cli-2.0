@@ -97,7 +97,7 @@
 
 <script>
 import Constant from "../contant/index.js";
-import { $idSeed, $util, $obj } from "../leCompsTool.js";
+import { $idSeed, $util, $obj, $date } from "../leCompsTool.js";
 const _tool = {
     on: (function () {
         if (document.addEventListener) {
@@ -175,6 +175,14 @@ export default {
             type: String | Boolean,
             default: false,
         },
+        timeZoneFlag: {
+            type: String | Boolean,
+            default: false,
+        },
+        timeZoneNum: {
+            type: String | Number,
+            default: 8,
+        },
     },
     data() {
         return {
@@ -247,6 +255,12 @@ export default {
             }
             return false;
         },
+        isTimeZoneFlag() {
+            if (this.timeZoneFlag === "" || this.timeZoneFlag) {
+                return true;
+            }
+            return false;
+        }
     },
     watch: {
         value(val) {
@@ -351,17 +365,17 @@ export default {
             str ? (this.timeStr = str) : (this.timeStr = "");
             if (!str) {
                 let h =
-                    new Date().getHours() >= 10
-                        ? new Date().getHours()
-                        : "0" + new Date().getHours();
+                    $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours() >= 10
+                        ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours()
+                        : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours();
                 let m =
-                    new Date().getMinutes() >= 10
-                        ? new Date().getMinutes()
-                        : "0" + new Date().getMinutes();
+                    $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes() >= 10
+                        ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes()
+                        : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes();
                 let s =
-                    new Date().getSeconds() >= 10
-                        ? new Date().getSeconds()
-                        : "0" + new Date().getSeconds();
+                    $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds() >= 10
+                        ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds()
+                        : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds();
                 str = h + ":" + m + ":" + s;
             }
             let currentHour = str.split(":")[0];
@@ -391,17 +405,17 @@ export default {
             let res = this.getValue();
             if (!res) {
                 let h =
-                    new Date().getHours() >= 10
-                        ? new Date().getHours()
-                        : "0" + new Date().getHours();
+                    $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours() >= 10
+                        ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours()
+                        : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours();
                 let m =
-                    new Date().getMinutes() >= 10
-                        ? new Date().getMinutes()
-                        : "0" + new Date().getMinutes();
+                    $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes() >= 10
+                        ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes()
+                        : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes();
                 let s =
-                    new Date().getSeconds() >= 10
-                        ? new Date().getSeconds()
-                        : "0" + new Date().getSeconds();
+                    $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds() >= 10
+                        ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds()
+                        : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds();
                 return [parseInt(h), parseInt(m), parseInt(s)];
             }
             return [

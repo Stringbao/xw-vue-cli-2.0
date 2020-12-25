@@ -36,6 +36,8 @@
                             <le-date-picker
                                 :splitKey="splitStr"
                                 :ref="dateKey"
+                                timeZoneFlag
+                                :timeZoneNum="timeZoneNum"
                                 is-datetime-picker
                                 :datetime-picker-key="dateTimeKey"
                             ></le-date-picker>
@@ -43,6 +45,8 @@
                         <div class="ipt" style="margin-left: 10px">
                             <le-time-picker
                                 :ref="timeKey"
+                                timeZoneFlag
+                                :timeZoneNum="timeZoneNum"
                                 is-datetime-picker
                                 :datetime-picker-key="dateTimeKey"
                             ></le-time-picker>
@@ -80,7 +84,7 @@
 import LeDatePicker from "./date.vue";
 import LeTimePicker from "./time.vue";
 import Constant from "../contant/index.js";
-import { $idSeed, $util, $obj, $event_publisher } from "../leCompsTool.js";
+import { $idSeed, $util, $obj, $event_publisher, $date } from "../leCompsTool.js";
 
 export default {
     name: "LeDateTimePicker",
@@ -120,6 +124,14 @@ export default {
         required: {
             type: String | Boolean,
             default: false,
+        },
+        timeZoneFlag: {
+            type: String | Boolean,
+            default: false,
+        },
+        timeZoneNum: {
+            type: String | Number,
+            default: 8,
         },
     },
     components: { LeDatePicker, LeTimePicker },
@@ -180,6 +192,12 @@ export default {
             }
             return false;
         },
+        isTimeZoneFlag() {
+            if (this.timeZoneFlag === "" || this.timeZoneFlag) {
+                return true;
+            }
+            return false;
+        }
     },
     watch: {
         value(val) {
@@ -246,33 +264,35 @@ export default {
                 return;
             }
             this.showDateTimePicker = false;
+            this.$refs[this.dateKey].closePicker();
+            this.$refs[this.timeKey].closePicker();
             this.$emit("input", "");
             this.$emit("change", "");
             // form check
             this.leForm && this.leForm.verifySubComponentAfterEmit(this);
         },
         initDateAndTime() {
-            let y = new Date().getFullYear();
+            let y = $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getFullYear();
             let m =
-                parseInt(new Date().getMonth() + 1) > 10
-                    ? new Date().getMonth() + 1
-                    : "0" + (new Date().getMonth() + 1);
+                parseInt($date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMonth() + 1) > 10
+                    ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMonth() + 1
+                    : "0" + ($date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMonth() + 1);
             let d =
-                parseInt(new Date().getDate()) > 10
-                    ? new Date().getDate()
-                    : "0" + new Date().getDate();
+                parseInt($date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getDate()) > 10
+                    ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getDate()
+                    : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getDate();
             let hh =
-                new Date().getHours() >= 10
-                    ? new Date().getHours()
-                    : "0" + new Date().getHours();
+                $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours() >= 10
+                    ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours()
+                    : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getHours();
             let mm =
-                new Date().getMinutes() >= 10
-                    ? new Date().getMinutes()
-                    : "0" + new Date().getMinutes();
+                $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes() >= 10
+                    ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes()
+                    : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getMinutes();
             let ss =
-                new Date().getSeconds() >= 10
-                    ? new Date().getSeconds()
-                    : "0" + new Date().getSeconds();
+                $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds() >= 10
+                    ? $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds()
+                    : "0" + $date.setTimeZone(this.isTimeZoneFlag, this.timeZoneNum).getSeconds();
             this.$refs[this.dateKey].setValue(
                 y + this.splitStr + m + this.splitStr + d
             );
@@ -296,6 +316,8 @@ export default {
             }
         },
         closeDateTimePicker() {
+            this.$refs[this.dateKey] && this.$refs[this.dateKey].closePicker();
+            this.$refs[this.timeKey] && this.$refs[this.timeKey].closePicker();
             this.showDateTimePicker = false;
         },
     },

@@ -13,7 +13,7 @@
                 </td>
                 <td class="opration" v-if="actions && actions.length != 0">
                     <div v-for="(x,i) in actions" class="btnContent" :key="i">
-                        <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="x.val"></le-button>
+                        <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="actionVal(x, row)"></le-button>
                     </div>
                 </td>
                 
@@ -36,6 +36,7 @@
 
 <script>
     import { $idSeed,$util,$obj } from "../leCompsTool.js";
+    import {isFunction} from "lodash-es";
     export default {
         name: "BodySection",
         props:["actions","data","cols","accpetHBNotice","showCk","singleSelected"],
@@ -69,6 +70,12 @@
                 }else{
                     return true;
                 }
+            },
+            actionVal(action,row) {
+                if (isFunction(action.val)) {
+                    return action.val(row);
+                }
+                return action.val;
             },
             selectRow:function(row,e){
                 if(this.singleSelected){
