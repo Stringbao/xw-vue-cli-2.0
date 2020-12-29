@@ -155,6 +155,10 @@ export default {
         placeholder: {
             type: String,
             default: Constant.INPUT.PLACEHOLDER,
+        },
+        inSingleSelect: { // 单选时是否保留已选中的值（默认不保留）
+            type: Boolean | String,
+            default: false
         }
     },
     inject: {
@@ -227,6 +231,12 @@ export default {
             }
             return false;
         },
+        inSingleAllowSelect() { // 单选时是否保留已选中的值（默认不保留）
+            if (this.inSingleSelect === "" || this.inSingleSelect) {
+                return true;
+            }
+            return false;
+        }
     },
     watch: {
         value(val) {
@@ -436,7 +446,7 @@ export default {
                     if (x[this.displayValue] == item[this.displayValue]) {
                         // 已选择状态 并且 showClearBtn=false时 不需要取消选中，
                         // 其他状态下直接取反即可
-                        item.ck = (item.ck && !this.showClearBtn) ? item.ck : !item.ck;
+                        item.ck = (item.ck && this.inSingleAllowSelect) ? item.ck : (item.ck && !this.showClearBtn) ? item.ck : !item.ck;
                         item.cls = item.ck ? "active fa fa-check" : "";
                         if (item.ck) {
                             this.tagList = [item];

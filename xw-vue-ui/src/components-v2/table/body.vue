@@ -218,12 +218,14 @@
         height: auto;
         display: inline-block;
         vertical-align: middle;
-        margin:0 4px;
+        /* margin:0 4px; */
         /* transform: translateY(25%); */
         /* float: left;
         transform: translateY(0); */
     }
-    
+    .btnContent .asBtn {
+        margin: 0 4px;
+    }
     .opration{
         max-width: 1000px;
     }

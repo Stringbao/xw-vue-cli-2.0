@@ -181,6 +181,9 @@
         height: auto;
         display: inline-block;
         vertical-align: middle;
+        /* margin: 0 4px; */
+    }
+    .btnContent .asBtn {
         margin: 0 4px;
     }
 
