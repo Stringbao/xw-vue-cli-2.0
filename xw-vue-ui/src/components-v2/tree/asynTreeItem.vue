@@ -4,7 +4,7 @@
             <!-- <input type="button"  class="fa" :class="item.__cls" /> -->
             <span @click="expandNode(item)" type="button" class="fa arrIcon" :class="item.__cls"></span>
             <span v-if="checkbox!=undefined?true:false" class="fa" :class="getCheckedCls(item)" @click="changeCheckboxStatus(item)"></span>
-            <span class="tree-item-name" @click="selectItem(item)">{{item[displayName]}}</span>     
+            <span class="tree-item-name" @click="selectItem(item)" :title="item[displayName]">{{item[displayName]}}</span>     
         </div>
         <div v-if="item.__children instanceof Array && item.__children.length != 0" v-show="item.__expand">
             <tree-item
