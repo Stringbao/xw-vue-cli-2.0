@@ -78,7 +78,8 @@
               on
               required
               enabledInput
-              multiple
+              :inSingleSelect="true"
+              :multiple="false"
               label="下拉框："
               msg="select is required"
               :data-source="selectList"
@@ -86,6 +87,7 @@
               display-value="code"
               placeholder="placeholder"
               v-model="form.select"
+              @change="selectChange"
             ></le-local-select>
           </div>
           <div class="col3">
@@ -268,6 +270,10 @@ export default {
         },
         reset(){
             this.$refs['form1'].reset();
+        },
+        selectChange(val, list) {
+          console.log(val);
+          console.log(list);
         }
     },
     mounted(){

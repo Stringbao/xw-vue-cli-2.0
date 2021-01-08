@@ -112,6 +112,9 @@
             label: {
                 type: String,
             },
+            labelWidth: {
+                type: Number | String,
+            },
             on: {
                 type: Boolean | String,
                 default: false,
