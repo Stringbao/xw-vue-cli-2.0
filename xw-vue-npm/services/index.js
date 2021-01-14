@@ -30,8 +30,4 @@ router.get("/getConfigPath", controller.getConfigPath);
 router.post("/setConfigPath", controller.setConfigPath);
 router.post("/upload", upload.single('file'), controller.upload);
 
-
-router.get("/test", controller.test);
-
-
 module.exports = router;

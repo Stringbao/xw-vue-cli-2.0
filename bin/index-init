@@ -59,7 +59,7 @@ async function startServer() {
         //start npm dev mode
         command.startGitServer();
     }).catch(err=>{
-        log.error("git and npm packages install failed!");
+        log.error(err);
     })
 }
 
