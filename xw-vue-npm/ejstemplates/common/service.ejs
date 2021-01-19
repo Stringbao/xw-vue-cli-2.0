@@ -13,7 +13,7 @@ export default {
     <%= row.fnName %>(){
         return Promise.resolve({data:<%= row.url%>});
     <%_ _%><% }else { -%>
-    async <%= row.fnName %>(){
+    async <%= row.fnName %>(params){
         try{
             let res = await Ajax.<%= row.isGetReq == 'get' ? 'get' : 'post'%>(map['<%= row.mapKey%>'], params);
             //deal res

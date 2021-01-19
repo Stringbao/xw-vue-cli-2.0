@@ -6,7 +6,7 @@ const fsTool = require("../tool/fsapi.js");
 let _test_data = require("../project.js");
 const Util = require("../tool/util.js");
 
-const TEST = require("./test.js");
+// const TEST = require("./test.js");
 
 const api = {
     upload(req, res){
@@ -47,10 +47,6 @@ const api = {
         let _path = "C:/Users/wupeng5/AppData/Roaming/npm/node_modules/lev2-vue";
         Util.setConfigPath(_path);
         return res && res.status("200").json({status:200, data:null,msg:"set path success"});
-    },
-    test(req,res){
-        let result = TEST();
-        return res && res.status("200").json({status:200, data:result,msg:"success"});
     }
 }
 
