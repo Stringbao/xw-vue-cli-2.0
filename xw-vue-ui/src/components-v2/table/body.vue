@@ -25,7 +25,8 @@
                             <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="actionVal(x, row)"></le-button>
                         </div>
                     </td>
-                    <td v-for="(item,idx) in cols" :key="idx" :width="item.width">
+                    <!-- cols -->
+                    <td v-for="(item,idx) in comShowCols" :key="idx" :width="item.width">
                         <div v-if="item.etype == 'img'">
                             <img style="width:50px;height:50px;" v-bind:src="row[item.key]" />
                         </div>
@@ -74,6 +75,14 @@
                     count = count + this.cols.length;
                 }
                 return count;
+            },
+            comShowCols() {
+                return this.cols.length && this.cols.filter(item => {
+                    if (item.show) {
+                        return item.show(item);
+                    }
+                    return true;
+                });
             }
         },
         mounted(){

@@ -304,9 +304,9 @@ export default {
             if (this.readonlyFlag) {
                 return;
             }
-            if (this.data.length != 0) {
-                this.showButtom = true;
-            }
+            // if (this.data.length != 0) {
+            this.showButtom = true;
+            // }
         },
 
         inputChange() {
