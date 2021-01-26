@@ -1,10 +1,7 @@
 <template>
     <div class="selectedTagBox">
         <div class="selectedTag">
-            <!-- <span>{{data.length!=0 && data[0][displayName]}}</span> -->
             <div class="selectedTagItem" v-for="(item,idx) in data" :title="`${item[displayName]}(${item[displayValue]})`" :key="idx">{{item[displayName] ? item[displayName] : item[displayValue]}}<i class="fa fa-times" :class="{'readonly-i': readonly}" v-if="multiple" @click.stop="removeItem(data[idx])"></i></div>
-
-            <!-- <i class="fa fa-times" @click.stop="removeItem(data[0])"></i> -->
         </div>
 		<!-- <span class="selectedTag" style="width: 23px;padding: 0px;" v-show="data.length > 1?true:false" >
             <span>+{{data.length-1}}</span>

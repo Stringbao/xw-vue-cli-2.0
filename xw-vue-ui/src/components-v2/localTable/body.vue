@@ -13,7 +13,7 @@
                 </td>
                 <td class="opration" v-if="actions && actions.length != 0">
                     <div v-for="(x,i) in actions" class="btnContent" :key="i">
-                        <le-button v-if="actionShowFn(x,row)" :type="x.key" @click="e=>{x.action(row)}" :value="actionVal(x, row)"></le-button>
+                        <le-button v-if="actionShowFn(x,row)" :disabled="actionDisabled(x, row)" :type="x.key" @click="e=>{x.action(row)}" :value="actionVal(x, row)"></le-button>
                     </div>
                 </td>
                 
@@ -69,6 +69,13 @@
                     return action.show(row);
                 }else{
                     return true;
+                }
+            },
+            actionDisabled(action, row) {
+                if (action.disabled) {
+                    return action.disabled(row);
+                } else {
+                    return false;
                 }
             },
             actionVal(action,row) {
