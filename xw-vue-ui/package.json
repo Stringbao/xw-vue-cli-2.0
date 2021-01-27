@@ -25,13 +25,13 @@
     "vue-ueditor-wrap": "^2.4.4",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",
-    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^6.3.2",
     "jquery": "^3.5.1",
-    "vue-router": "^3.3.4"
+    "vue-router": "^3.3.4",
+    "webpack-cli": "^3.3.12"
   }
 }

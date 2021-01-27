@@ -8,6 +8,19 @@
       <div class="le_list_search_pannel clearfix">
         <le-form ref="form1" labelWidth="120">
           <div class="col3">
+            <le-remote-select
+              showClear
+              label="Country:" 
+              ref="remoteSelect"
+              v-model="form.remoteSelect"
+              display-name="name" 
+              display-value="code"
+              on required
+              msg="Country can not be null"
+              :remoteOptions = "remoteOptions"
+          ></le-remote-select>
+          </div>
+          <div class="col3">
             <le-checkbox-list
               on
               v-show="show"
@@ -134,6 +147,9 @@
                 v-model="form.localUpload"
               ></le-local-upload>
           </div>
+          <local-table-list
+            :options="list_page_option"
+          ></local-table-list>
         </le-form>
         <le-button @click="submit" value="验证"></le-button>
         <le-button @click="reset" value="reset"></le-button>
@@ -146,6 +162,25 @@
 export default {
     data() {
         return {
+          remoteOptions: {
+                getUrl: () => {
+                    return `/dictapi/dict/getdictmap?keys=CountryCode&searchName=`
+                },
+                analysis: (data) => {
+                    if (data && data.data && data.data.CountryCode) {
+                        let newData = data.data.CountryCode;
+                        let arr = [];
+                        Object.keys(newData).forEach((item,index)=>{
+                            arr.push({
+                                name: newData[item],
+                                code: item
+                            });
+                        })
+                        return arr;
+                    }
+                    return [];
+                }
+          },
             show:false,
             form: {
                 checkBox: '',
@@ -154,6 +189,7 @@ export default {
                 inputNum: '',
                 textarea: '',
                 select: '',
+                remoteSelect: '',
                 date: '',
                 time: '',
                 dateTime: '',
@@ -247,6 +283,85 @@ export default {
                 fname: "file",
                 callback: (ck) => {
                     console.log(ck);
+                }
+            },
+            list_page_option: {
+                map: [
+                    { key: "companyCode", val: "Company ID" },
+                    { key: "companyName", val: "Name" },
+                    { key: "status", val: "Status"},
+                    { key: "convertCountryName", val: "Country" },
+                    { key: "convertStoreTypeName", val: "Store Type" },
+                    { key: "storeId", val: "Store Id" },
+                    { key: "convertStoreName", val: "Store Name" },
+                    { key: "tierName", val: "Tier Name" },
+                    { key: "createUser", val: "Created By" },
+                    {
+                        key: "createTime",
+                        val: "Created Time",
+                        type: "dateTime"
+                    },
+                    { key: "modifyUser", val: "Last Updated By" },
+                    { key: "updateTime", val: "Updated Time", type: "dateTime" }
+                ],
+                actions: [
+                    { key: "update", val: "Modify", action: this.update }
+                ],
+                getUrl: () => {
+                    return `/ofpaccount_admin/adm/smb/company/findSmbCompanyByPage?storeId=${
+                        this.$refs.scopeRef.getValue().store
+                    }&tierName=${this.searchModel.tierName}&companyName=${
+                        this.searchModel.companyName
+                    }`;
+                },
+                pageOption: {
+                    sizeKey: "pageSize",
+                    indexKey: "pageNumber",
+                    index: 1,
+                    size: 20
+                },
+                analysis: data => {
+                    if (data && data.data && data.data.data) {
+                        let resultData = data.data.data;
+                        const storeIdMapping = [];
+                        resultData.map(i => {
+                            if (i.storeId) {
+                                i.tierName = i.companyTierRule.tierName;
+                                storeIdMapping.push(i.storeId);
+                                i.convertStoreName = "";
+                                i.convertCountryName = "";
+                                i.convertStoreTypeName = "";
+                            }
+                        });
+                        this.getAllTableStores(storeIdMapping).then(res => {
+                            if (res && res.data) {
+                                resultData.map(i => {
+                                    for (var convertStoreId in res.data) {
+                                        if (i.storeId === convertStoreId) {
+                                            i.convertStoreName =
+                                                res.data[
+                                                    convertStoreId
+                                                ].Geo_Store.name;
+                                            i.convertCountryName =
+                                                res.data[
+                                                    convertStoreId
+                                                ].Geo_Country.name;
+                                            i.convertStoreTypeName =
+                                                res.data[
+                                                    convertStoreId
+                                                ].Geo_BusinessType.name;
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        return {
+                            data: data.data.data,
+                            count: data.data.totalCount
+                        };
+                    } else {
+                        return { data: [], count: 0 };
+                    }
                 }
             }
         }

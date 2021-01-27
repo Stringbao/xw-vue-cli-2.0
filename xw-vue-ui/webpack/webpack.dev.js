@@ -55,8 +55,8 @@ module.exports = {
         hot:true,
         proxy:{
             '/': {
-                // target: 'https://admin.gl.lenovouat.cn',
-                target: 'https://admin.nec.lenovouat.cn',
+                target: 'https://admin.gl.lenovouat.cn',
+                // target: 'https://admin.nec.lenovouat.cn',
                 secure: false,
                 changeOrigin: true
             }

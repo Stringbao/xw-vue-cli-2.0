@@ -10,7 +10,7 @@
                Operation
             </th>
             
-            <th v-for="(item,index) in cols" :key="index" class="thCols">
+            <th v-for="(item,index) in comShowCols" :key="index" class="thCols">
                 {{item.val}}
                 <i v-if="false" class="icon icon-caidan menu" @click.stop="showChangeColsDialog"></i>
                 <!-- <i v-if="index == 0  ? true : false" class="icon icon-caidan menu" @click.stop="showChangeColsDialog"></i> -->
@@ -40,7 +40,15 @@
         computed:{
             defaultCols:function(){
                 return $util.addPrimaryAndCk($obj.clone(this.originCols),true);
-            }
+            },
+            comShowCols() {
+                return this.cols.length && this.cols.filter(item => {
+                    if (item.show) {
+                        return item.show(item);
+                    }
+                    return true;
+                });
+            },
         },
         methods:{
             setAll:function(){
@@ -68,7 +76,7 @@
             },
             bodyClick:function(){
                 this.colsModalShow = false;
-            }
+            },
         },
         mounted(){
             document.body.addEventListener("click",this.bodyClick,false);
