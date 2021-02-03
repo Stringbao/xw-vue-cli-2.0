@@ -10,14 +10,15 @@
           <div class="col3">
             <le-remote-select
               showClear
-              label="Country:" 
+              label="Country:"
+              multiple
               ref="remoteSelect"
               v-model="form.remoteSelect"
-              display-name="name" 
-              display-value="code"
+              display-name="nodeCode" 
+              display-value="nodeCode"
               on required
               msg="Country can not be null"
-              :remoteOptions = "remoteOptions"
+              :remoteOptions="remoteOptions"
           ></le-remote-select>
           </div>
           <div class="col3">
@@ -91,7 +92,7 @@
               on
               required
               enabledInput
-              :inSingleSelect="true"
+              :inSingleSelect="false"
               :multiple="false"
               label="下拉框："
               msg="select is required"
@@ -164,19 +165,12 @@ export default {
         return {
           remoteOptions: {
                 getUrl: () => {
-                    return `/dictapi/dict/getdictmap?keys=CountryCode&searchName=`
+                    return '/productAPI/admin/catalog/search.jhtm?code.condition=start&type.condition=eq&type.value=1&code.value='
                 },
                 analysis: (data) => {
-                    if (data && data.data && data.data.CountryCode) {
-                        let newData = data.data.CountryCode;
-                        let arr = [];
-                        Object.keys(newData).forEach((item,index)=>{
-                            arr.push({
-                                name: newData[item],
-                                code: item
-                            });
-                        })
-                        return arr;
+                    console.log(data);
+                    if (data && data.data && data.data.data) {
+                        return data.data.data;
                     }
                     return [];
                 }

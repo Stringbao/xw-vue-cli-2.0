@@ -53,6 +53,7 @@
                     placeholder=""
                     :_body_tag="inputdomKey"
                     @click="clickInput"
+                    @blur="blur"
                     :ref="inputdomKey"
                     :readonly="!inputFlag || readonlyFlag"
                     type="text"
@@ -285,9 +286,13 @@ export default {
         },
     },
     methods: {
-        
         focus() {
             this.$refs[this.componentKey].focus();
+        },
+        blur() {
+            setTimeout(() => {
+                this.searchName = '';
+            }, 150);
         },
         focusInput() {
             if (this.readonlyFlag) {
