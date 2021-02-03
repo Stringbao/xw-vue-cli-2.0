@@ -315,6 +315,45 @@ export default {
             _treeTool.checkedNodes = [];
             _treeTool.getAllCheckboxNodesExcludeParent(this.state.data);
             return _treeTool.checkedNodes;
+        },
+
+        /**
+         * @description 对外暴露数据回显方法
+         * @param {String} field
+         * @param {Array} array
+         */
+        bindCKByField(field,array){
+            this.recurrentStatus(this.state.data,field,array);
+        },
+        /**
+         * @description 根据数据源，需绑定字段，绑定数据来递归绑定
+         * @param {Array} data 
+         * @param {String} field 
+         * @param {Array} array 
+         */
+        recurrentStatus(data,field,array){
+            if(data && data instanceof Array && data.length >0){
+                for(let i=0;i<data.length;i++){
+                    if(array && array instanceof Array && this.checkExist(array,data[i][field])){
+                        data[i].__checkboxStatus = true;
+                    }else{
+                        data[i].__checkboxStatus = false;
+                    }
+                    let _children = data[i][this.childrenKey];
+                    if(_children && _children instanceof Array && _children.length != 0){
+                        this.recurrentStatus(_children,field,array);
+                    }
+                }
+            }
+        },
+        checkExist(data,val){
+            let res = false;
+            data.forEach(x=>{
+                if(x == val){
+                    res = true;
+                }
+            })
+            return res;
         }
     },
     mounted(){
