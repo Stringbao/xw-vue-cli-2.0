@@ -44,7 +44,7 @@
                 </p>
             </div>
             <!-- 展开下拉 -->
-            <div class="picker-box" v-show="isShowPicker" @click.stop>
+            <div :class="['picker-box', isFloatRight ? 'float-right' : '']" v-show="isShowPicker" @click.stop>
                 <div class="picker-header">
                     <span>
                         <i
@@ -253,6 +253,10 @@ export default {
             type: String | Number,
             default: 8,
         },
+        floatRight: {
+            type: String | Boolean,
+            default: false,
+        }
     },
     data() {
         return {
@@ -348,6 +352,12 @@ export default {
         },
         isTimeZoneFlag() {
             if (this.timeZoneFlag === "" || this.timeZoneFlag) {
+                return true;
+            }
+            return false;
+        },
+        isFloatRight() {
+            if (this.floatRight === "" || this.floatRight) {
                 return true;
             }
             return false;
@@ -672,6 +682,9 @@ form .form-item .form-item-div .div-box {
     background: #fff;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     z-index: 999;
+}
+.picker-box.float-right {
+    right: 0;
 }
 /* 选择器器头部 */
 .picker-header {

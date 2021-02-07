@@ -42,7 +42,7 @@
                 <p class="tip" v-show="!state.showError">{{ tip }}</p>
             </div>
             <div
-                class="timePicker"
+                :class="['timePicker', isFloatRight ? 'float-right' : '']"
                 v-show="isShowTimePicker"
                 @click.stop
                 :name="KEYS.timePanelDomKey"
@@ -183,6 +183,10 @@ export default {
             type: String | Number,
             default: 8,
         },
+        floatRight: {
+            type: String | Boolean,
+            default: false,
+        }
     },
     data() {
         return {
@@ -257,6 +261,12 @@ export default {
         },
         isTimeZoneFlag() {
             if (this.timeZoneFlag === "" || this.timeZoneFlag) {
+                return true;
+            }
+            return false;
+        },
+        isFloatRight() {
+            if (this.floatRight === "" || this.floatRight) {
                 return true;
             }
             return false;
@@ -571,6 +581,10 @@ li {
     user-select: none;
     box-sizing: content-box;
     margin-top: 3px;
+}
+.timeContent .timePicker.float-right {
+    right: 0;
+    left: auto;
 }
 .timeContent .timePicker .timePanel {
     height: 190px;

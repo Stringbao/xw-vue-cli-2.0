@@ -30,7 +30,7 @@
                     v-model="dateTimeStr"
                 />
                 <!-- 展开日期下拉 -->
-                <div class="picker-box" v-show="showDateTimePicker">
+                <div :class="['picker-box', isFloatRight ? 'float-right' : '']" v-show="showDateTimePicker">
                     <div class="picker-header" style="height: 272px">
                         <div class="ipt">
                             <le-date-picker
@@ -133,6 +133,10 @@ export default {
             type: String | Number,
             default: 8,
         },
+        floatRight: {
+            type: String | Boolean,
+            default: false,
+        }
     },
     components: { LeDatePicker, LeTimePicker },
     data() {
@@ -194,6 +198,12 @@ export default {
         },
         isTimeZoneFlag() {
             if (this.timeZoneFlag === "" || this.timeZoneFlag) {
+                return true;
+            }
+            return false;
+        },
+        isFloatRight() {
+            if (this.floatRight === "" || this.floatRight) {
                 return true;
             }
             return false;
@@ -411,6 +421,9 @@ export default {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     z-index: 10000;
     margin-bottom: 30px;
+}
+.picker-box.float-right {
+    right: 0;
 }
 /* 选择器器头部 */
 .picker-header {

@@ -9,9 +9,10 @@
             <th class="opration" v-if="actions && actions.length != 0">
                 Operation
             </th>
-            
-            <th v-for="(item,index) in cols" :key="index" class="thCols">
-                {{item.val}}
+            <!-- {{cols}} -->
+            <th v-for="(item,index) in comShowCols" :key="index" class="thCols">
+                <!-- {{item.val}} -->
+                {{comHeadText(item)}}
                 <i v-if="false" class="icon icon-caidan menu" @click.stop="showChangeColsDialog"></i>
                 <!-- <i v-if="index == 0  ? true : false" class="icon icon-caidan menu" @click.stop="showChangeColsDialog"></i> -->
                 <div class="colsModal" v-if="index == 0 && colsModalShow ? true : false" @click.stop>
@@ -40,6 +41,22 @@
         computed:{
             defaultCols:function(){
                 return $util.addPrimaryAndCk($obj.clone(this.originCols),true);
+            },
+            comShowCols() {
+                return this.cols.length && this.cols.filter(item => {
+                    if (item.show) {
+                        return item.show(item);
+                    }
+                    return true;
+                });
+            },
+            comHeadText() {
+                return (item) => {
+                    if (typeof item.val == 'function') {
+                        return item.val(item);
+                    }
+                    return item.val;
+                }
             }
         },
         methods:{

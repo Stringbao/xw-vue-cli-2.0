@@ -63,6 +63,7 @@
                     }"
                     v-model="searchName"
                     @input="inputQuery"
+                    @blur="blur"
                 />
 
                 <p class="promptMsg" @click.stop v-show="state.showError">
@@ -258,6 +259,11 @@ export default {
         this.setValue();
     },
     methods: {
+        blur() {
+            setTimeout(() => {
+                this.searchName = '';
+            }, 150);
+        },
         focus() {
             this.$refs[this.componentKey].focus();
         },
@@ -459,8 +465,8 @@ export default {
                     }
                 });
                 this.showButtom = false;
-                this.searchName = ""; // 只有单选才清空用户输入
             }
+            this.searchName = "";
             this.onEmit();
         },
 
