@@ -14,10 +14,10 @@
                 <tr v-for="(row,index) in data" @click="e=>selectRow(row,e)" :key="index">
                     <td v-if="showCk">
                         <div v-if="singleSelected">
-                            <input :name="radioKey" type="radio" :checked="row.ck"/>
+                            <input :name="radioKey" type="radio" @change="radioCheckChange(row)" :checked="row.ck"/>
                         </div>
                         <div v-else>
-                            <input type="checkbox" :checked="row.ck" />
+                            <input type="checkbox" @change="radioCheckChange(row)" :checked="row.ck" />
                         </div>
                     </td>
                     <td class="opration" v-if="actions && actions.length != 0"  >
@@ -45,10 +45,10 @@
 
 <script>
     import { $idSeed,$util,$obj,$date } from "../leCompsTool.js";
-    import {isFunction} from "lodash-es";
+    import {isFunction, debounce} from "lodash-es";
     export default {
         name: "BodySection",
-        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag"],
+        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag", "checkChange"],
         data(){
             return {
                 // list: [],
@@ -89,6 +89,9 @@
             
         },
         methods:{
+            radioCheckChange: debounce(function(row) {
+                this.checkChange(row);
+            }),
             dragUpdate(e) { // 挪动了位置才会触发
                 // const list = $obj.clone(this.data);
                 const oldData = this.data[e.oldIndex];
@@ -137,6 +140,7 @@
                     });
                 }
                 row.ck = !row.ck;
+                this.radioCheckChange(row);
                 this.accpetHBNotice(null,{data:this.data});
             },
             getValByFieldInRow:function(item,row){
