@@ -23,6 +23,7 @@
                         :cols="state.cols"
                         :accpet-h-b-notice="accpetHBNotice"
                         :data="state.data"
+                        :checkChange="checkChange"
                         :drag="drag"
                         @dragUpdate="dragUpdate" @dragChange="dragChange" @dragStart="dragStart" @dragEnd="dragEnd"
                     ></body-section>
@@ -326,6 +327,10 @@ export default {
         },
         scrollHandler(e) {
             this.fixedHeight = e.target.scrollTop;
+        },
+        // body的radio || checkbox的change事件
+        checkChange(row) {
+            this.options.checkChange && this.options.checkChange(row);
         },
     },
     mounted() {

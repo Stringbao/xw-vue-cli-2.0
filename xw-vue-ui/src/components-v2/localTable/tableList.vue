@@ -6,7 +6,7 @@
                 <table class="table">
                     <header-section :singleSelected="singleSelected" :show-ck="showCk" :origin-cols="originCols" :accpet-h-b-notice="accpetHBNotice" :notice-change-cols="noticeChangeCols" :ck="state.ck" :actions="actions" :cols="state.cols"></header-section>        
 
-                    <body-section :singleSelected="singleSelected" :show-ck="showCk" :actions="actions" :cols="state.cols" :accpet-h-b-notice="accpetHBNotice" :data="state.data"></body-section>
+                    <body-section :singleSelected="singleSelected" :show-ck="showCk" :actions="actions" :cols="state.cols" :accpet-h-b-notice="accpetHBNotice" :data="state.data" :checkChange="checkChange"></body-section>
                 </table>
             </div>
         </div>
@@ -150,7 +150,11 @@
                         this.state.data = $array.removeItem(this.state.data, ['ck',true]);
                     }
                 }
-            }
+            },
+            // body的radio || checkbox的change事件
+            checkChange(row) {
+                this.options.checkChange && this.options.checkChange(row);
+            },
         },
         mounted () {
 
