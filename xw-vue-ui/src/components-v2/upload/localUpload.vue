@@ -411,7 +411,7 @@ export default {
                     this.srcs.push({ name: x.name, idx: this.getMaxIndex() });
                 });
             } else {
-                this.srcs = [{ name: this.allFileList[0].name, idx: 1 }];
+                this.srcs = this.allFileList[0] ? [{ name: this.allFileList[0].name, idx: 1 }] : [];
             }
             this.leForm && this.leForm.verifySubComponentAfterEmit(this);
             this.options.callback &&
