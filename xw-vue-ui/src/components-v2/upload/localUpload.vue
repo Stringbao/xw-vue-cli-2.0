@@ -42,7 +42,7 @@
                                     item.name
                                 }}</a>
                                 <!-- <a target="_blank" :href="item.name">{{"attachment_" + item.idx}}</a> -->
-                                <!-- <i v-show="!readonlyFlag" @click="removeItem(item)" class="fa fa-times"></i> -->
+                                <i v-show="!readonlyFlag" @click="removeItem(item, index)" class="fa fa-times"></i>
                             </span>
                         </div>
                         <div v-else>
@@ -148,12 +148,12 @@ export default {
             return this.options.tip ? this.options.tip : "";
         },
         multipleTag() {
-            // if(this.options.multiple!=undefined){
-            //     if(this.options.multiple === false){
-            //         return false;
-            //     }
-            //     return true;
-            // }
+            if(this.options.multiple!=undefined){
+                if(this.options.multiple === false){
+                    return false;
+                }
+                return true;
+            }
             return false;
         },
         noResultTag() {
@@ -338,7 +338,7 @@ export default {
                     }
                 }
             } else {
-                this.allFileList = fls;
+                this.allFileList = [fls[0]];
             }
         },
         getFormDataByFileList() {
@@ -455,7 +455,7 @@ export default {
                 });
             return res.join(",");
         },
-        removeItem(item) {
+        removeItem(item, index) {
             if (this.readonlyFlag) {
                 return;
             }
@@ -468,6 +468,7 @@ export default {
             this.allFileList = res;
             this.setSrcs();
             this.$emit("input", this.getNames(this.srcs));
+            this.$emit('removeItem', item, index);
         },
         reset() {
             this.$emit("input", "");
@@ -488,6 +489,14 @@ export default {
     mounted() {
         this.setValue(this.value);
     },
+    watch: {
+        value: {
+            handler(val) {
+                this.setValue(val);
+            },
+            deep: true
+        }
+    }
 };
 </script>
 <style scoped>
@@ -561,7 +570,7 @@ export default {
     color: #606266;
 }
 .upaload .fileList span.fileContent {
-    /* padding-right: 20px; */
+    padding-right: 20px;
     padding-top: 1px;
 }
 .upaload .fileList span.noResult {
