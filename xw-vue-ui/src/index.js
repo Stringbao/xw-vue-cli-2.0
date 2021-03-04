@@ -68,6 +68,7 @@ export default {
         Vue.component('LeForm', LeForm);
         Vue.component("LeLoading", LeLoading);
         Vue.component("LeUEditor", LeUEditor);
+        Vue.component("LeUeditors", LeUEditor);
         Vue.component("LeDrag", LeDrag);
         
         // Vue.component('LeUploadFile',LeUploadFile);
