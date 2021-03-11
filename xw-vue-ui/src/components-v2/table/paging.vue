@@ -87,6 +87,11 @@
                 }
                 this.goIndex(eIndex);
             }
+        },
+        mounted(){
+            $event_publisher.on("clearInput",(data)=>{
+                this.$refs[this.goIndexKey].value = "";
+            })
         }
     }
 </script>
