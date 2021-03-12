@@ -48,7 +48,7 @@
     import {isFunction, debounce} from "lodash-es";
     export default {
         name: "BodySection",
-        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag", "checkChange"],
+        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag", "checkChange","disbleClickRowCheck"],
         data(){
             return {
                 // list: [],
@@ -134,14 +134,16 @@
                 return action.val;
             },
             selectRow:function(row,e){
-                if(this.singleSelected){
-                    this.data.forEach(el => {
-                        el.ck = false;
-                    });
+                if(!this.disbleClickRowCheck){
+                    if(this.singleSelected){
+                        this.data.forEach(el => {
+                            el.ck = false;
+                        });
+                    }
+                    row.ck = !row.ck;
+                    this.radioCheckChange(row);
+                    this.accpetHBNotice(null,{data:this.data});
                 }
-                row.ck = !row.ck;
-                this.radioCheckChange(row);
-                this.accpetHBNotice(null,{data:this.data});
             },
             getValByFieldInRow:function(item,row){
                 let key = item.key;
