@@ -1,11 +1,14 @@
 <template>
     <div class="form-item current">
-        <label
-            :style="{ width: labelWidthVal + 'px' }"
+         <div :style="{ width: labelWidthVal + 'px' }"  class="form-item-label">
+            <label
+            
             class="form-item-label"
             :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
+            <p class="left_tips">{{leftTips}}</p>
+        </div>
         <div
             class="form-item-div dataTimePicker"
             :class="{ 'fa-times-circle-o': state.showError }"
@@ -136,6 +139,9 @@ export default {
         floatRight: {
             type: String | Boolean,
             default: false,
+        },
+        leftTips:{
+            
         }
     },
     components: { LeDatePicker, LeTimePicker },

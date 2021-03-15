@@ -321,6 +321,7 @@ export default {
             } else {
                 this.getData(this.state.pageOption.index);
             }
+            $event_publisher.broadcast("clearInput");
         },
         /**
          * @description 在当前index下搜索

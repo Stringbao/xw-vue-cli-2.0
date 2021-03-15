@@ -288,3 +288,8 @@ html,body{
 .le_comps_core_css .warning {
     color: red;
 }
+.le_comps_core_css .left_tips{
+    font-size: 12px;
+    color: #b5bcc9;
+    word-break: break-all;
+}

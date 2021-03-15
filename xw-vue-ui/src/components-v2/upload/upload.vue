@@ -127,6 +127,7 @@ export default {
                 showError: false,
                 errorMsg: "",
             },
+            singleName:''
         };
     },
     computed: {
@@ -346,6 +347,7 @@ export default {
 
             let dom = this.$refs[this.componentKey];
             let fileList = dom.files;
+            this.singleName = fileList.length?fileList[0].name:fileList.name
             let formData = new FormData();
             for (let i = 0; i < fileList.length; i++) {
                 formData.append(this.fname, fileList[i]);
@@ -512,6 +514,9 @@ export default {
             this.srcs = [];
             this.leForm && this.leForm.verifySubComponentAfterEmit(this);
         },
+        getSingleName(){
+            return this.singleName
+        }
     },
     mounted() {
         this.setValue(this.value);

@@ -272,8 +272,11 @@ export default {
         },
     },
     watch: {
-        value(val) {
-            this.setValue(val);
+        value(newVal,oldVal) {
+            this.setValue(newVal);
+            if(newVal&&newVal!=''){
+                this.state.showError = false
+            }
         },
         dataSource(val) {
             if (val && val.length > 0) {
@@ -303,6 +306,7 @@ export default {
         },
         hideButtom() {
             this.showButtom = false;
+            this.searchName = "";
         },
 
         clickInput() {
@@ -452,7 +456,7 @@ export default {
             if (this.showClear === '' || this.showClear) {
                 this.showArrow = false;
             }
-        },
+        }
     },
     mounted() {
         if (this.dataSource && this.dataSource.length > 0) {

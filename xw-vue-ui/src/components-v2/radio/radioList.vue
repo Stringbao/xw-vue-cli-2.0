@@ -181,7 +181,8 @@ export default {
          * @param val 单个值
          * @returns
          */
-        setValue(val = "") {
+        setValue(val) {
+            val = val || '';
             val = val.toString();
             this.resetData();
             if (val) {

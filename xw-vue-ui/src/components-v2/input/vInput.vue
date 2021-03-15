@@ -1,11 +1,14 @@
 <template>
     <div class="form-item">
-        <label
-            :style="{ width: labelWidthVal + 'px' }"
+        <div :style="{ width: labelWidthVal + 'px' }"  class="form-item-label">
+            <label
+            
             class="form-item-label"
             :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
+            <p class="left_tips">{{leftTips}}</p>
+        </div>
         <div
             class="form-item-div fa"
             :class="{ 'fa-times-circle-o': state.showError }"
@@ -27,7 +30,7 @@
             />
             <i
                 v-if="showClearBtn"
-                v-show=" value.toString().length > 0 ? true : false"
+                v-show=" value&&value.toString().length > 0 ? true : false"
                 class="fa fa-times-circle icon-del"
                 @click.stop="clear"
             ></i>
@@ -50,7 +53,7 @@ export default {
             default: false,
         },
         required: {
-            type: Boolean | String,
+            type: Boolean | String | undefined | null,
             default: false,
         },
         max: {
@@ -94,6 +97,9 @@ export default {
             type: String,
             default: "text",
         },
+        leftTips:{
+
+        }
     },
     inject: {
         leForm:{
@@ -146,6 +152,12 @@ export default {
             }
             return false;
         },
+        isRequired(){
+            if(this.required ===''){
+                return true
+            }
+            return this.required
+        }
     },
     methods: {
         //event begin
