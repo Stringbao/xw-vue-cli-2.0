@@ -6,7 +6,16 @@
                 <table class="table">
                     <header-section :singleSelected="singleSelected" :show-ck="showCk" :origin-cols="originCols" :accpet-h-b-notice="accpetHBNotice" :notice-change-cols="noticeChangeCols" :ck="state.ck" :actions="actions" :cols="state.cols"></header-section>        
 
-                    <body-section :singleSelected="singleSelected" :show-ck="showCk" :actions="actions" :cols="state.cols" :accpet-h-b-notice="accpetHBNotice" :data="state.data" :checkChange="checkChange"></body-section>
+                    <body-section 
+                        :singleSelected="singleSelected" 
+                        :show-ck="showCk" 
+                        :actions="actions" 
+                        :cols="state.cols" 
+                        :accpet-h-b-notice="accpetHBNotice" 
+                        :data="state.data" 
+                        :checkChange="checkChange" 
+                        :disableClickRowCheck="disableClickRowCheck"
+                    ></body-section>
                 </table>
             </div>
         </div>
@@ -44,6 +53,9 @@
             },
             singleSelected(){
                 return this.options.singleSelected;
+            },
+            disableClickRowCheck(){
+                return this.options.disableClickRowCheck;
             },
         },
         methods:{

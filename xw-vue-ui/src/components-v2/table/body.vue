@@ -48,7 +48,7 @@
     import {isFunction, debounce} from "lodash-es";
     export default {
         name: "BodySection",
-        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag", "checkChange","disbleClickRowCheck"],
+        props:["actions","data","cols","accpetHBNotice","showCk","singleSelected","drag", "checkChange","disableClickRowCheck"],
         data(){
             return {
                 // list: [],
@@ -90,6 +90,7 @@
         },
         methods:{
             radioCheckChange: debounce(function(row) {
+                this.disableClickRowCheck ? this.chooseRowFn(row) : '';
                 this.checkChange(row);
             }),
             dragUpdate(e) { // 挪动了位置才会触发
@@ -133,17 +134,18 @@
                 }
                 return action.val;
             },
-            selectRow:function(row,e){
-                if(!this.disbleClickRowCheck){
-                    if(this.singleSelected){
-                        this.data.forEach(el => {
-                            el.ck = false;
-                        });
-                    }
-                    row.ck = !row.ck;
-                    this.radioCheckChange(row);
-                    this.accpetHBNotice(null,{data:this.data});
+            chooseRowFn: function(row, e){
+                if(this.singleSelected){
+                    this.data.forEach(el => {
+                        el.ck = false;
+                    });
                 }
+                row.ck = !row.ck;
+                this.disableClickRowCheck ? '' : this.radioCheckChange(row);
+                this.accpetHBNotice(null,{data:this.data});
+            },
+            selectRow:function(row,e){
+                this.disableClickRowCheck ? '' : this.chooseRowFn(row, e);
             },
             getValByFieldInRow:function(item,row){
                 let key = item.key;
