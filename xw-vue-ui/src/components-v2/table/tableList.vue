@@ -24,7 +24,7 @@
                         :accpet-h-b-notice="accpetHBNotice"
                         :data="state.data"
                         :checkChange="checkChange"
-                        :disbleClickRowCheck="disbleClickRowCheck"
+                        :disableClickRowCheck="disableClickRowCheck"
                         :drag="drag"
                         @dragUpdate="dragUpdate" @dragChange="dragChange" @dragStart="dragStart" @dragEnd="dragEnd"
                     ></body-section>
@@ -94,9 +94,6 @@ export default {
         showCk: function () {
             return this.options.showCk;
         },
-        disbleClickRowCheck: function(){
-            return this.options.disbleClickRowCheck;
-        },
         actions: function () {
             return this.options.actions;
         },
@@ -105,6 +102,9 @@ export default {
         },
         singleSelected: function () {
             return this.options.singleSelected;
+        },
+        disableClickRowCheck: function(){
+            return this.options.disableClickRowCheck;
         },
     },
     methods: {

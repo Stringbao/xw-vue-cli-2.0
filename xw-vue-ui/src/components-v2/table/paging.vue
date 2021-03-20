@@ -89,8 +89,12 @@
             }
         },
         mounted(){
+            let _this = this;
             $event_publisher.on("clearInput",(data)=>{
-                this.$refs[this.goIndexKey].value = "";
+                let indexInput = _this.$refs[_this.goIndexKey];
+                if( indexInput ){
+                    indexInput.value = "";
+                }
             })
         }
     }

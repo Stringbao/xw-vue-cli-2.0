@@ -182,7 +182,9 @@ export default {
          * @returns
          */
         setValue(val) {
-            val = val || '';
+            if(val != 0){
+                val = val || '';
+            }
             val = val.toString();
             this.resetData();
             if (val) {
