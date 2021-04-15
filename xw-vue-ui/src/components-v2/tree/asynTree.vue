@@ -8,7 +8,7 @@
             :asynOptions="asynOptions"
             :EVENTPUBLISHKEY="EVENTPUBLISHKEY"
             :checkbox="checkbox"
-            :readonly="readonlyFlag"
+            :readonly="readonlyFlag(item)"
         ></tree-item>
     </div>
 </template>
@@ -32,8 +32,19 @@ export default {
         }
     },
     computed:{
-        readonlyFlag(){
+        
+    },
+    methods:{
+        readonlyFlag(item){
             if(this.readonly == undefined){
+            /**
+             * @description 这里是树节点针对每个节点上的私有方法
+             * @param 当前node节点
+             * @returns
+             */
+                if(this.asynOptions.privateMethod){
+                    return this.asynOptions.privateMethod(item)
+                }
                 return false;
             }
             if(this.readonly === ""){
@@ -44,8 +55,6 @@ export default {
             }
             return true;
         },
-    },
-    methods:{
         /**
          * @description 根据当前节点的checkbox状态，修改所有父节点的checkbox状态
          * @param 当前node节点
@@ -318,6 +327,7 @@ export default {
                 }else{
                     item.__checkboxStatus = d.checkboxStatus;
                 }
+                this.itemClick(item);
             }
         })
     }

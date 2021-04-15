@@ -2,8 +2,6 @@
     <div class="form-item">
         <div :style="{ width: labelWidthVal + 'px' }"  class="form-item-label">
             <label
-            
-            class="form-item-label"
             :class="{'required':isVertify && isRequired}"
             >{{ label }}</label
         >
