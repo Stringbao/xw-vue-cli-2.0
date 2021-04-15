@@ -14,7 +14,7 @@
                     <input
                         :disabled="readonlyFlag"
                         :multiple="multipleTag"
-                        @change="change"
+                        @change="change($event)"
                         type="file"
                         :ref="componentKey"
                         class="imgFile"
@@ -186,6 +186,18 @@ export default {
         vtype() {
             return this.options.vtype ? this.options.vtype : "";
         },
+        minWidth() {
+            return this.options.minWidth ? this.options.minWidth : "";
+        },
+        minHeight(){
+            return this.options.minHeight ? this.options.minHeight : "";
+        },
+        maxWidth() {
+            return this.options.maxWidth ? this.options.maxWidth : "";
+        },
+        maxHeight(){
+            return this.options.maxHeight ? this.options.maxHeight : "";
+        },
         width() {
             return this.options.width ? this.options.width : "";
         },
@@ -240,7 +252,7 @@ export default {
         },
     },
     methods: {
-        change() {
+        change(e) {
             let val = this.$refs[this.componentKey].value;
             this.upload();
         },
@@ -294,15 +306,15 @@ export default {
                             let image = new Image();
                             image.src = data;
                             image.onload = () => {
-                                let flag = true;
-                                if (that.width && that.width != image.width) {
-                                    flag = false;
+                                let flag = 0;
+                                if ((that.width && that.width != image.width)|| (that.height && that.height != image.height)) {
+                                    flag = 1;
                                 }
-                                if (
-                                    that.height &&
-                                    that.height != image.height
-                                ) {
-                                    flag = false;
+                                if ((that.minWidth && that.minWidth > image.width)|| (that.minHeight && that.minHeight > image.height)) {
+                                    flag = 2;
+                                }
+                                if ((that.maxWidth && that.maxWidth < image.width)|| (that.maxHeight && that.maxHeight < image.height)) {
+                                    flag = 3;
                                 }
                                 resolve(flag);
                             };
@@ -320,16 +332,18 @@ export default {
             let resultPromise = new Promise((resResolt, resReject) => {
                 Promise.all(readerPromises)
                     .then((xx) => {
-                        let count = 0;
-                        xx.forEach((f) => {
-                            if (!f) {
+                        let count = 0, index = 0;
+                        for(let i = 0;i < xx.length; i++){
+                            if( xx[i] > 0 ){
+                                index = i;
                                 count++;
+                                break;
                             }
-                        });
+                        }
                         if (count == 0) {
                             resResolt(true);
                         } else {
-                            resResolt(false);
+                            resResolt(xx[index]);
                         }
                     })
                     .catch((x) => {
@@ -373,21 +387,35 @@ export default {
             }
             //控制规格,仅支持图片规格
             if (
-                this.fileType == Constant.UPLOADFILE.IMAGE &&
-                this.width &&
-                this.height
+                this.fileType == Constant.UPLOADFILE.IMAGE && ((this.width && this.height) || (this.maxWidth && this.maxHeight) || (this.minWidth && this.minHeight))
             ) {
                 this.checkSpecification(fileList)
                     .then((x) => {
-                        if (x) {
+                        if ( x == true ) {
                             this.doUploadAjax(formData);
                         } else {
+                            let extInfo = '', height = 0, width = 0;
+                            switch ( x ) {
+                                case 1:
+                                    height = this.height;
+                                    width = this.width;
+                                case 2:
+                                    extInfo = 'larger than ';
+                                    height = this.minHeight;
+                                    width = this.minWidth;
+                                    break;
+                                case 3:
+                                    extInfo = 'smaller than ';
+                                    height = this.maxHeight;
+                                    width = this.maxWidth;
+                                    break;
+                            }
                             this.alert.showAlert(
                                 "error",
-                                "Image format must be " +
-                                    this.width +
+                                `Image format must be ${extInfo}` +
+                                    width +
                                     "*" +
-                                    this.height
+                                    height
                             );
                         }
                     })
