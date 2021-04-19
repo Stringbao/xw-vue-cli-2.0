@@ -8,6 +8,7 @@
             :asynOptions="asynOptions"
             :EVENTPUBLISHKEY="EVENTPUBLISHKEY"
             :checkbox="checkbox"
+            ref="tree"
             :readonly="readonlyFlag(item)"
         ></tree-item>
     </div>
@@ -283,6 +284,11 @@ export default {
                     node.__checkboxStatus = 1;
                 })
             });
+            console.log(this.$refs.tree[0].$children);
+            let child = this.$refs.tree[0].$children;
+            child.forEach(item => {
+                console.log(item);
+            })
         }
     },
     mounted(){
@@ -339,6 +345,10 @@ export default {
         overflow: auto;
         width: 100%;
         height: 100%;
+    }
+    .item_color{
+        color: blue;
+        font-weight: bold;
     }
 </style>
 
