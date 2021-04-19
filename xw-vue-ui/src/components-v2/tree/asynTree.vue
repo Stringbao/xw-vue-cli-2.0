@@ -36,15 +36,15 @@ export default {
     },
     methods:{
         readonlyFlag(item){
-            if(this.readonly == undefined){
-            /**
+             /**
              * @description 这里是树节点针对每个节点上的私有方法
              * @param 当前node节点
              * @returns
              */
-                if(this.asynOptions.privateMethod){
-                    return this.asynOptions.privateMethod(item)
-                }
+            if(this.asynOptions.showPartialCheckBox){
+                return this.asynOptions.showPartialCheckBox(item)
+            }
+            if(this.readonly == undefined){
                 return false;
             }
             if(this.readonly === ""){

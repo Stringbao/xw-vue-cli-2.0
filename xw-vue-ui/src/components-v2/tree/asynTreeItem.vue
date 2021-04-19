@@ -15,7 +15,7 @@
                 :asynOptions="asynOptions"
                 :EVENTPUBLISHKEY="EVENTPUBLISHKEY"
                 :checkbox = "checkbox"
-                :readonly="readonly"
+                :readonly="readonlyFlag(x)"
             ></tree-item>
         </div>
     </div>
@@ -35,6 +35,26 @@ export default {
         }
     },
     methods:{
+        readonlyFlag(item){
+            /**
+             * @description 这里是树节点针对每个节点上的私有方法
+             * @param 当前node节点
+             * @returns
+             */
+            if(this.asynOptions.showPartialCheckBox){
+                return this.asynOptions.showPartialCheckBox(item)
+            }
+            if(this.readonly == undefined){
+                return false;
+            }
+            if(this.readonly === ""){
+                return true;
+            }
+            if(this.readonly === false){
+                return false;
+            }
+            return true;
+        },
         getCheckedCls(item){
             if(item.__checkboxStatus == "1"){
                 return 'fa-checkBox fa-check-square';
