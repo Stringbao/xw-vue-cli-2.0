@@ -3,8 +3,8 @@
          <div class = "fa-item" :class="item.__color" :style="'margin-left:'+(item.__level-1)*10+'px'">
             <!-- <input type="button"  class="fa" :class="item.__cls" /> -->
             <span @click="expandNode(item)" type="button" class="fa arrIcon" :class="item.__cls"></span>
-            <span v-if="checkbox!=undefined?true:false" class="fa" :class="getCheckedCls(item)" @click="changeCheckboxStatus(item)"></span>
-            <span ref="itemName" class="tree-item-name" @click="selectItem(item)" :title="item[displayName]">{{item[displayName]}}</span>     
+            <span v-if="checkbox!=undefined?true:false" class="fa" :class="[getCheckedCls(item),readonly?'readonly-checkbox':'']" @click="changeCheckboxStatus(item)"></span>
+            <span class="tree-item-name" @click="selectItem(item)" :title="item[displayName]">{{item[displayName]}}</span>     
         </div>
         <div v-if="item.__children instanceof Array && item.__children.length != 0" v-show="item.__expand">
             <tree-item
@@ -120,6 +120,9 @@ export default {
          * @param item:当前选中项
          */
         selectItem(item){
+            if(this.readonly){
+                return false
+            }
             $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
                 actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
                 __tmpId:item.__tmpId,
@@ -225,5 +228,8 @@ export default {
 
     .fa-minus-square:before{
         color: #337ab7;
+    }
+    .readonly-checkbox{
+        background-color: #f1f1f1;
     }
 </style>
