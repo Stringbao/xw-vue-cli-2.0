@@ -36,7 +36,7 @@
                 <p class="tip" v-show="!state.showError">{{ tip }}</p>
             </div>
         </div>
-        <p>
+        <p v-if="isShowPre">
             <span class="asBtn" @click="clickHandlePre" :disabled="cdisabled" :class="[data.cls,disabledClass]">
                 {{values}}
             </span>
@@ -44,7 +44,7 @@
                 Success:{{successValue}}, fail: {{errorValue}}
             </span>
         </p>
-        <p>
+        <p v-if="isShowPro">
             <span class="asBtn" @click="clickHandlePro" :disabled="cdisabled" :class="[data.cls,disabledClass]">
                 {{values1}}
             </span>
@@ -140,6 +140,14 @@ export default {
         errorValue1:{
             type: String
         },
+        isShowPre: {
+            type: Boolean,
+            default: false
+        },
+        isShowPro: {
+            type: Boolean,
+            default: false
+        }
     },
     inject: {
         leForm:{

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="le_comps_core_css">
-      <h4 class="le_page_name">title</h4>
+      <!-- <h4 class="le_page_name">title</h4>
       <div class="le_list_breadcrumb_pannel">
         <a href="">Product Management > <b>category</b></a>
       </div>
@@ -154,6 +154,22 @@
         </le-form>
         <le-button @click="submit" value="验证"></le-button>
         <le-button @click="reset" value="reset"></le-button>
+      </div> -->
+      <div class="le_list_search_pannel ">
+          <textarea-btn
+            label="Component Name:"
+            v-model="textarea.welMsg"
+            values="goPre"
+            values1="goPro"
+            :isShowPre="true"
+            :isShowPro="false"
+            :successValue="preSuccessValue"
+            :successValue1="proSuccessValue"
+            :errorValue="preErrorValue"
+            :errorValue1="proErrorValue"
+            @clickHandlePre="handlePre"
+            @clickHandlePro="handlePro"
+          ></textarea-btn>
       </div>
     </div>
   </div>
@@ -175,6 +191,13 @@ export default {
                     return [];
                 }
           },
+          textarea:{
+              welMsg: "",
+          },
+          preSuccessValue:"",
+          proSuccessValue:"",
+          preErrorValue:"",
+          proErrorValue:"",
             show:false,
             form: {
                 checkBox: '',
@@ -383,6 +406,14 @@ export default {
         selectChange(val, list) {
           console.log(val);
           console.log(list);
+        },
+        handlePre(){
+            this.preSuccessValue = "123223,456778";
+            this.preErrorValue = "123,4534,63488";
+        },
+        handlePro(){
+            this.proSuccessValue = "123,456,789";
+            this.proErrorValue = "123,234,345,456";
         }
     },
     mounted(){
