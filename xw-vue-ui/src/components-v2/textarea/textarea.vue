@@ -40,10 +40,16 @@
             <span class="asBtn" @click="clickHandlePre" :disabled="cdisabled" :class="[data.cls,disabledClass]">
                 {{values}}
             </span>
+            <span>
+                Success:{{successValue}}, fail: {{errorValue}}
+            </span>
         </p>
         <p>
             <span class="asBtn" @click="clickHandlePro" :disabled="cdisabled" :class="[data.cls,disabledClass]">
                 {{values1}}
+            </span>
+            <span>
+                Success:{{successValue1}}, fail: {{errorValue1}}
             </span>
         </p>
         
@@ -121,7 +127,19 @@ export default {
         },
         values1: {
             type: String
-        }
+        },
+        successValue:{
+            type: String
+        },
+        successValue1:{
+            type: String
+        },
+        errorValue:{
+            type: String
+        },
+        errorValue1:{
+            type: String
+        },
     },
     inject: {
         leForm:{
