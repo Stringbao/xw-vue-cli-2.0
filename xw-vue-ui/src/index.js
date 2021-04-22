@@ -24,6 +24,7 @@ import LeLoading from "@components/loading/loading.vue";
 import Message from "@components/message";
 import MessageBox from "@components/messageBox";
 import LeUEditor from "@components/ueditor/ueditor.vue";
+import TextareaBtn from "@components/textarea/textarea.vue";
 import LeDrag from 'vuedraggable';
 
 
@@ -69,6 +70,7 @@ export default {
         Vue.component("LeLoading", LeLoading);
         Vue.component("LeUEditor", LeUEditor);
         Vue.component("LeUeditors", LeUEditor);
+        Vue.component("TextareaBtn", TextareaBtn);
         Vue.component("LeDrag", LeDrag);
         
         // Vue.component('LeUploadFile',LeUploadFile);
