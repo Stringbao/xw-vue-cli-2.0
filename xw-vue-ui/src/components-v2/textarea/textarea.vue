@@ -275,12 +275,12 @@ export default {
 
         clickHandlePre(){
             if(!this.disabled){
-                this.$emit('clickHandlePre');
+                this.$emit('clickHandlePre',this.value);
             }
         },
         clickHandlePro(){
             if(!this.disabled){
-                this.$emit('clickHandlePro');
+                this.$emit('clickHandlePro',this.value);
             }
         },
         submit(){
