@@ -391,7 +391,7 @@ export default {
             ) {
                 this.checkSpecification(fileList)
                     .then((x) => {
-                        if ( x == true ) {
+                        if ( x === true ) {
                             this.doUploadAjax(formData);
                         } else {
                             let extInfo = '', height = 0, width = 0;
@@ -399,6 +399,7 @@ export default {
                                 case 1:
                                     height = this.height;
                                     width = this.width;
+                                    break;
                                 case 2:
                                     extInfo = 'larger than ';
                                     height = this.minHeight;
