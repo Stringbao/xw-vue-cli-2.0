@@ -27,7 +27,7 @@
                     :placeholder="placeholder"
                     class="dateTimeText"
                     :_body_tag="dateTimeKey"
-                    :readonly="enableInput"
+                    :readonly="!enableInput"
                     :class="{ readonlyIcon: readonlyFlag }"
                     @click="showDateTimePickerHandle"
                     v-model="dateTimeStr"
