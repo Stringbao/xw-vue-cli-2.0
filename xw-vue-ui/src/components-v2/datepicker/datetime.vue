@@ -27,7 +27,7 @@
                     :placeholder="placeholder"
                     class="dateTimeText"
                     :_body_tag="dateTimeKey"
-                    :readonly="true"
+                    :readonly="enableInput"
                     :class="{ readonlyIcon: readonlyFlag }"
                     @click="showDateTimePickerHandle"
                     v-model="dateTimeStr"
@@ -142,6 +142,10 @@ export default {
         },
         leftTips:{
             
+        },
+        enableInput:{
+            type: String | Boolean,
+            default: false
         }
     },
     components: { LeDatePicker, LeTimePicker },
