@@ -41,7 +41,8 @@
                 {{values}}
             </span>
             <span>
-                Success:{{successValue}}, fail: {{errorValue}}
+                Success:{{successValue}}, 
+                fail: <span class="errType">{{errorValue}}</span>
             </span>
         </p>
         <p v-if="isShowPro">
@@ -49,7 +50,8 @@
                 {{values1}}
             </span>
             <span>
-                Success:{{successValue1}}, fail: {{errorValue1}}
+                Success:{{successValue1}}, 
+                fail: <span class="errType">{{errorValue1}}</span>
             </span>
         </p>
         
@@ -469,5 +471,8 @@ export default {
         padding: 22px 30px;
         background-color: #ecf0f1;
         border-radius: 0 0 4px 4px;
+    }
+    .errType{
+        color: red;
     }
 </style>
