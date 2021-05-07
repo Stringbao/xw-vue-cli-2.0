@@ -34,12 +34,12 @@
                     class="fa fa-chevron-down icon-del fa-times-circle"
                     @click.stop="clear"
                 ></i>
-                <span
+                <!-- <span
                     class="placeholderText"
-                    @click.stop="focusInput"
+                    @click="focusInput"
                     v-show="placeholderStr && !searchName"
                     >{{ placeholderStr }}</span
-                >
+                > -->
                 <left-section
                     :readonly="readonlyFlag"
                     :multiple="isMultiple"
@@ -50,7 +50,7 @@
                 ></left-section>
 
                 <input
-                    placeholder=""
+                    :placeholder="placeholderStr && !searchName?placeholderStr:''"
                     :_body_tag="inputdomKey"
                     @click="clickInput"
                     @blur="blur"
@@ -60,6 +60,7 @@
                     :class="{
                         searchMsg: true,
                         hideInput: !inputFlag || readonlyFlag,
+                        flex_item:true
                     }"
                     v-model="searchName"
                 />

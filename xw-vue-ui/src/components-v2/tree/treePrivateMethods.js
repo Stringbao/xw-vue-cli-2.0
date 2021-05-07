@@ -96,6 +96,17 @@ let _treeTool = {
                 _treeTool.getAllCheckboxNodesExcludeParent(_children);
             }
         }
+    },
+    getOnlyCheckedNodes(arr){
+        for(let i =0;i<arr.length;i++){
+            if(arr[i].__checkboxStatus == 1&& arr[i].__children.length == 0){
+                _treeTool.checkedNodes.push(arr[i]);
+            }
+            let _children = arr[i].__children;
+            if(_children && _children instanceof Array && _children.length >0){
+                _treeTool.getOnlyCheckedNodes(_children);
+            }
+        }
     }
 }
 

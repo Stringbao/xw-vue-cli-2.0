@@ -239,6 +239,11 @@ export default {
             _treeTool.getAllCheckboxNodesExcludeParent(this.state.data);
             return _treeTool.checkedNodes;
         },
+        getOnlyCheckedNodes(){
+            _treeTool.checkedNodes = [];
+            _treeTool.getOnlyCheckedNodes(this.state.data);
+            return _treeTool.checkedNodes;
+        },
         expandNodeById(field, idArr, count = 0, cb){
             if(idArr.length == count){
                 cb && cb();
