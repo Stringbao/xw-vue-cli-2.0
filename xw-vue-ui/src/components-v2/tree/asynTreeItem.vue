@@ -4,7 +4,7 @@
             <!-- <input type="button"  class="fa" :class="item.__cls" /> -->
             <span @click="expandNode(item)" type="button" class="fa arrIcon" :class="item.__cls"></span>
             <span v-if="checkbox!=undefined?true:false" class="fa" :class="[getCheckedCls(item),readonly?'readonly-checkbox':'']" @click="changeCheckboxStatus(item)"></span>
-            <span class="tree-item-name" @click="selectItem(item)" :title="item[displayName]">{{asynOptions.convert?asynOptions.convert(item):item[displayName]}}</span>     
+            <span class="tree-item-name" @dblclick="dbClickItem(item)" @click="selectItem(item)" :title="item[displayName]">{{asynOptions.convert?asynOptions.convert(item):item[displayName]}}</span>    
         </div>
         <div v-if="item.__children instanceof Array && item.__children.length != 0" v-show="item.__expand">
             <tree-item
@@ -143,12 +143,23 @@ export default {
             if(this.readonly){
                 return false
             }
-            $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
-                __tmpId:item.__tmpId,
-                item:item,
-                selectedItem:item
-            });
+            if(this.asynOptions.expandNotSelect){
+                this.expandNode(item);
+                return;
+            }else{
+                if(this.asynOptions.expandAndSelect){
+                    this.expandNode(item);
+                }
+                $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                    actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
+                    __tmpId:item.__tmpId,
+                    item:item,
+                    selectedItem:item
+                });
+            }
+        },
+        dbClickItem(item){
+            console.log(item)
         }
     },
     mounted(){
