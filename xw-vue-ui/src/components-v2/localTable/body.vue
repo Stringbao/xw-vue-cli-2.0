@@ -2,7 +2,7 @@
     <tbody>
         <template v-if="data.length > 0">
 
-            <tr v-for="(row,index) in data" @click="e=>selectRow(row,e)" :key="index">
+            <tr v-for="(row,index) in data" @click="e=>selectRow(row,e)" :key="index" v-show="!row.isRowHide">
                 <td v-if="showCk">
                     <div v-if="singleSelected">
                         <input :name="radioKey" type="radio" @change="radioCheckChange(row)" :checked="row.ck"/>
