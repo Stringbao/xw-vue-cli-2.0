@@ -25,7 +25,7 @@
 import Constant from "../contant/index.js";
 import { $idSeed,$obj,$event_publisher } from "../leCompsTool.js";
 // import Ajax from "../../tool/http.js";
-
+var time = null; 
 export default {
     name:"TreeItem",
     props:["item","displayName","asynOptions","EVENTPUBLISHKEY","checkbox","readonly"],
@@ -140,26 +140,35 @@ export default {
          * @param item:当前选中项
          */
         selectItem(item){
-            if(this.readonly){
-                return false
-            }
-            if(this.asynOptions.expandNotSelect){
-                this.expandNode(item);
-                return;
-            }else{
-                if(this.asynOptions.expandAndSelect){
-                    this.expandNode(item);
+            clearTimeout(time);  //首先清除计时器
+            time = setTimeout(() => {
+                if(this.readonly){
+                    return false
                 }
-                $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
-                    actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
-                    __tmpId:item.__tmpId,
-                    item:item,
-                    selectedItem:item
-                });
-            }
+                if(this.asynOptions.expandNotSelect){
+                    this.expandNode(item);
+                    return;
+                }else{
+                    if(this.asynOptions.expandAndSelect){
+                        this.expandNode(item);
+                    }
+                    $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                        actionKey:Constant.TREE_CONFIG.ACTIONKEY.SELECTEDITEM,
+                        __tmpId:item.__tmpId,
+                        item:item,
+                        selectedItem:item
+                    });
+                }
+            },300)
         },
         dbClickItem(item){
-            console.log(item)
+            clearTimeout(time);
+            $event_publisher.broadcast(this.EVENTPUBLISHKEY,{
+                actionKey:Constant.TREE_CONFIG.ACTIONKEY.DBSELECTEDITEM,
+                __tmpId:item.__tmpId,
+                item:item,
+                selectedItem:item
+            });
         }
     },
     mounted(){

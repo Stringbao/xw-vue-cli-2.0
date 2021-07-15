@@ -22,7 +22,7 @@ import { $idSeed,$event_publisher,$obj,$array} from "../leCompsTool.js";
 export default {
     name:"LeAsynTree",
     components:{TreeItem},
-    props:["displayName","asynOptions","itemClick",'checkbox',"readonly","related"],
+    props:["displayName","asynOptions","itemClick",'itemDbClick','checkbox',"readonly","related"],
     data(){
         return {
             originData:null,
@@ -339,6 +339,12 @@ export default {
                     item.__checkboxStatus = d.checkboxStatus;
                 }
                 this.itemClick(item);
+            }
+            //当前项双击事件，执行callback
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.DBSELECTEDITEM){
+                console.log("do dbclick item");
+                _treeTool.setSingleColor(this.state.data,item);
+                this.itemDbClick(item);
             }
         })
     }

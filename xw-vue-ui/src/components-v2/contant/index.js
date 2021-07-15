@@ -134,6 +134,7 @@ let Constant = {
             OPEN:"open",
             UPDATECHILDREN:"updateChilden",
             SELECTEDITEM:"selectedItem",
+            DBSELECTEDITEM:"dbSelectedItem",
             CHECKBOX:"checkbox"
         }
     },

@@ -21,7 +21,7 @@ import { $idSeed,$event_publisher,$obj} from "../leCompsTool.js";
 export default {
     name:"LeLocalTree",
     components:{TreeItem},
-    props:["displayName","itemClick",'checkbox','childrenKey',"related"],
+    props:["displayName","itemClick",'itemDbClick','checkbox','childrenKey',"related"],
     data(){
         return {
             originData:null,
@@ -388,6 +388,12 @@ export default {
                 }else{
                     item.__checkboxStatus = d.checkboxStatus;
                 }
+            }
+            //当前项双击事件，执行callback
+            else if(d.actionKey == Constant.TREE_CONFIG.ACTIONKEY.DBSELECTEDITEM){
+                console.log("do dbclick item");
+                _treeTool.setSingleColor(this.state.data,item);
+                this.itemDbClick(item);
             }
         })
     }
