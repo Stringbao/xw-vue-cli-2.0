@@ -168,7 +168,9 @@ export default {
                     node.__children = [];
                     node.__cls = "fa-caret-left";
                 }
-            })
+            }).catch(e => {
+                this.alert.showAlert("error",e.msg || e)
+            });
         },
         /**
          * @description 删除节点
@@ -268,7 +270,9 @@ export default {
                     node.__cls = "fa-caret-down";
                     count++;
                     this.expandNodeById(field, idArr, count, cb);
-                })
+                }).catch(e => {
+                    this.alert.showAlert("error",e.msg || e)
+                });
             }else{
                 count++;
                 this.expandNodeById(field, idArr, count, cb);

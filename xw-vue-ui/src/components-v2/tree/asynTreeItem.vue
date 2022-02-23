@@ -111,7 +111,9 @@ export default {
                         tmpObject.data.cls = "fa-caret-left";
                     }
                     $event_publisher.broadcast(this.EVENTPUBLISHKEY,tmpObject);
-                })
+                }).catch(e => {
+                    this.alert.showAlert("error",e.msg || e)
+                });
             }else{
                 let cls = "";
                 if(item.__children && item.__children instanceof Array && item.__children.length != 0){

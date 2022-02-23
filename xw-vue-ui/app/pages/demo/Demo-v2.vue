@@ -5,6 +5,15 @@
             <div class="le_list_breadcrumb_pannel">
                 <a href="">Product Management > <b>category</b></a>
             </div>
+            <le-uEditor
+                class="ueditor"
+                :readonly="true"
+                v-model="aaa"
+                labelWidth="0"
+                height="150"
+                imgUploadUrl="/file/img/upload"
+                :toolbars="toolbars"
+            ></le-uEditor>
             <div class='le_list_search_pannel clearfix'>
                 <le-form ref='form1' labelWidth="80">
                     <!-- <div class="col2">
@@ -29,7 +38,16 @@
                     <!-- <div class="col2">
                         <le-local-select on required label="选择职业:" :data-source="occupations" display-name="name" display-value="code" v-model="entity.job"></le-local-select> 
                     </div> -->
-
+                    <le-remote-select 
+                        label="Icon ID:"
+                        labelWidth="170"
+                        showClear
+                        multiple
+                        display-name="name"
+                        display-value="code"
+                        v-model="aaa"
+                        :remoteOptions="remoteOptions"
+                    ></le-remote-select>
                     <!-- <div class="col2">
                         <le-upload-file :options="imgUploadOpt" label="学生文件:"
                             on required mag="学生文件必须上传"
@@ -70,6 +88,10 @@ export default {
     components:{Container},
     data() {
         return {
+            aaa: 'TARGET AUDIENCE: Enterprises and Professionals on the go who need a powerful thin and light notebook IS SOMEONE WHO þ values portability and ruggedness þ needs all the business ports available without dongles þ requires full-day battery life IS NOT SOMEONE WHO ý wants an inexpensive device that sacrifices quality and durability ý is looking for a consumer device solution',
+            toolbars: [
+                ['source', 'forecolor','backcolor','italic','underline','strikethrough','simpleupload', 'superscript','subscript', 'fontsize','fontfamily','lineheight','bold','link', 'unlink','insertorderedlist', 'insertunorderedlist']
+            ],
             imgUploadOpt: {
                 multiple: true,
                 url: "/file/img/upload",

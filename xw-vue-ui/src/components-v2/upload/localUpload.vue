@@ -570,7 +570,7 @@ export default {
     color: #606266;
 }
 .upaload .fileList span.fileContent {
-    padding-right: 20px;
+    padding-right: 10px;
     padding-top: 1px;
 }
 .upaload .fileList span.noResult {
